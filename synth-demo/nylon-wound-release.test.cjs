@@ -6,8 +6,9 @@ const model=vm.runInContext('NylonBridgeModel',scope),settings={bodyFit:1,refere
 const hash=y=>crypto.createHash('sha256').update(Buffer.from(y.buffer)).digest('hex');
 for(const rate of [44100,48000]){
  for(const midi of [40,45,50])assert.equal(hash(model.render(rate,midi,settings)),fixture.approved[`${rate}:${midi}`],'Same sound as approved comparison');
- for(const midi of [35,55,59,64,66,69])assert.equal(hash(model.render(rate,midi,settings)),fixture.public[`${rate}:${midi}`],'Plain/seventh strings unchanged from public app');
- for(const midi of [38,40,45,50]){
+ assert.notEqual(hash(model.render(rate,35,settings)),fixture.public[`${rate}:35`],"Seventh string now uses wound release");
+ for(const midi of [55,59,64,66,69])assert.equal(hash(model.render(rate,midi,settings)),fixture.public[`${rate}:${midi}`],'Plain strings unchanged from public app');
+ for(const midi of [35,38,40,45,50]){
   const off={},on={},a=model.render(rate,midi,{...settings,highDecay:0},off),b=model.render(rate,midi,settings,on);
   assert(b.every(Number.isFinite));assert.equal(on.initialEnergy,off.initialEnergy);assert.equal(on.initialBodyEnergy,0);
   for(let i=0;i<Math.floor(.025*rate);i++)assert(Math.abs(a[i]*off.rawPeak-b[i]*on.rawPeak)<1e-6*Math.max(1,off.rawPeak),'First 25ms raw attack preserved');
@@ -21,4 +22,6 @@ for(const extra of [{referenceTone:0},{bodyFit:0}]){
  const a=model.render(44100,40,{...settings,...extra}),b=model.render(44100,40,{...settings,...extra,stringTexture:0,highDecay:0});assert(Buffer.from(a.buffer).equals(Buffer.from(b.buffer)),'Existing OFF paths preserved');
 }
 const page=fs.readFileSync(path.join(__dirname,'index.html'),'utf8');assert(page.includes("stringTexture:Number($('guitar-reference-tone').checked)"));assert(page.includes("highDecay:Number($('guitar-reference-tone').checked)"));assert(page.includes('wound-2026-10-21:'));
-console.log('Wound release: exact approved sound on strings 4/5/6 at both rates, unchanged public plain/seventh strings, preserved attack, passive energy, worker extremes and UI settings passed');
+assert(!/<input id="guitar-drop-d"[^>]*checked/.test(page),'Drop D defaults OFF');
+assert(page.includes('guitar-test-35'));
+console.log('Wound release: exact approved sound on strings 4/5/6 at both rates, unchanged public plain strings, seventh string wound release, preserved attack, passive energy, worker extremes and UI settings passed');

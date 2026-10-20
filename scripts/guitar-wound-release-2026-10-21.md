@@ -2,7 +2,7 @@
 
 The reference recording's high band has a brief attack with little audible sustain. The previous synthesis retained audible upper partials. This update applies the reviewed high-decay sound to classical-guitar wound strings 4–6, with their approved excitation balance and two-polarization texture. It does not replay recorded audio or add a body strike.
 
-The app enables `stringTexture:1` and `highDecay:1` together with `referenceTone:1`. The model's new optional parameters default to zero; existing reference-tone OFF and body-fit OFF paths remain available. The new wound release is restricted to strings 4–6. Plain strings 1–3 and the seventh string retain their previously published waveforms.
+The app enables `stringTexture:1` and `highDecay:1` together with `referenceTone:1`. The model's new optional parameters default to zero; existing reference-tone OFF and body-fit OFF paths remain available. A subsequent user-requested extension applies the same release to string 7, retaining its B1 tuning and using the low wound-string profile. Plain strings 1–3 retain their previously published waveforms.
 
 - The wound excitation profile redistributes, rather than increases, initial pluck energy. The fifth string interpolates between low and upper wound-string profiles; no dedicated fifth-string reference recording was supplied.
 - The accepted texture changes the two polarizations' relative participation on strings 5–6. The fourth string keeps its prior polarization setting.
@@ -13,7 +13,7 @@ In the local E2 comparison, at identical before/after gain, the >800Hz band fell
 
 ## Validation
 
-`nylon-wound-release.test.cjs` compares both 44.1/48kHz outputs for E2/A2/D3 with hashes saved from the reviewed implementation before integration. It also compares G3/B3/E4/F♯4/A4 and seventh-string B1 against the pre-update public implementation. `nylon-wound-approved.json` contains these synthesis-only regression hashes.
+`nylon-wound-release.test.cjs` compares both 44.1/48kHz outputs for E2/A2/D3 with hashes saved from the reviewed implementation before integration. It also compares G3/B3/E4/F♯4/A4 against the pre-update public implementation, and checks that seventh-string B1 adopts the wound release while preserving passive energy and the first 25ms attack. `nylon-wound-approved.json` contains these synthesis-only regression hashes.
 
 Tests cover unchanged raw attack, fixed initial energy, passive energy and radiation budgets, Drop D and worker control extremes, plus legacy OFF paths. The existing audio, score and sequencer tests pass. In a real Edge browser, the app's worker matched the reviewed waveform within 5.9e-11 maximum sample error (browser/Node floating-point differences), and preparation, reference-tone switching, cache reuse and preview playback worked without JavaScript errors.
 

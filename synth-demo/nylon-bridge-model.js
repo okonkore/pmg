@@ -37,7 +37,7 @@ const NylonBridgeModel = {
   const sr=new Float64Array(modes*2),si=new Float64Array(modes*2),sw=new Float64Array(modes*2);
   const sc=new Float64Array(modes*2),ss=new Float64Array(modes*2);
   const stiffness=(wound?.000007:.000003)*Math.min(3,2**(fret/12));
-  const woundRelease=!!(fit&&referenceTone&&wound&&number>=4&&number<=6);
+  const woundRelease=!!(fit&&referenceTone&&wound&&number>=4&&number<=7);
   const texture=woundRelease?Math.max(0,Math.min(1,stringTexture))*Math.max(0,Math.min(1,(50-openMidi)/10)):0;
   const highAmount=woundRelease?Math.max(0,Math.min(1,highDecay)):0;
   const highLoss=new Float64Array(modes*2),highStep=new Float64Array(modes*2);
