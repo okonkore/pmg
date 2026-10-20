@@ -8,6 +8,18 @@ https://okonkore.github.io/pmg/
 
 Select **Nylon Guitar** in the instrument menu and press the audio enable button. The first preparation may take a moment. Use the on-screen keyboard or play one of the Bach pieces.
 
+## Piano-roll editor
+
+Open **ピアノロール** to inspect a score. Built-in pieces are read-only; choose **コピーして編集** to create an independent editable copy in **マイソング**. **新しい曲** creates an empty score.
+
+- Select and drag notes to move them; drag their right edges to resize them. The pencil or a double click in empty space adds notes.
+- Shift-click or drag a selection rectangle to select multiple notes. Delete removes them; arrow keys move them; Shift + up/down transposes an octave.
+- Set the grid, note length, BPM, meter and selected-note velocity. Quantize aligns selected note onsets to the grid.
+- Undo/redo and internal note copy/paste use Ctrl/Command shortcuts. The ruler sets the playback cursor; Space starts/stops playback. Loop repeats from the cursor to the final note.
+- Edits are automatically stored in this browser. JSON export/import transfers editable songs between browsers or keeps a backup; it does not sync through GitHub. Source credits are preserved in copies and exports.
+
+`node synth-demo/sequencer-model.test.cjs` checks original-score protection, undo/redo and persistence. With the local server running, open `http://127.0.0.1:8765/scripts/sequencer-browser-test.html` for the browser integration checks; it temporarily backs up and restores the song storage key. The test covers real DOM editing, transport scheduling and reload, and is excluded from the Pages deployment.
+
 ## Sample pieces
 
 BWV 1012 includes Prélude, Allemande, Courante, Sarabande, Gavotte I, Gavotte II, and Gigue, in score order. Each movement plays through once without repeats, using the selected synthesizer sound. The existing BWV 1007 selections are retained in a separate menu group.

@@ -1,0 +1,58 @@
+<!doctype html><meta charset="utf-8"><title>Sequencer browser test</title><body><pre id="result">RUNNING</pre><script>
+const storageKey='pmg.songs.v1',backup=localStorage.getItem(storageKey);localStorage.removeItem(storageKey);
+const result=document.getElementById('result');
+function assert(value,message){if(!value)throw Error(message)}
+function wait(ms){return new Promise(r=>setTimeout(r,ms))}
+(async()=>{
+ const iframe=document.createElement('iframe');iframe.width=1200;iframe.height=1000;
+ const loaded=new Promise(r=>iframe.onload=r);iframe.src=new URL('../synth-demo/',location.href);document.body.append(iframe);await loaded;
+ const w=iframe.contentWindow,d=w.document,$=id=>d.getElementById(id),get=()=>w.eval('scoreEditor.currentDocument()');
+ assert(w.eval('typeof scoreEditor')==='object','Editor mounts without errors');
+ assert($('song').options.length===12,'Built-in repertoire retained');
+ $('open-editor').click();assert(!$('score-editor').hidden,'Open piano roll');assert($('seq-title').disabled,'Built-in title protected');assert($('seq-draw').disabled,'Built-in drawing protected');
+ const original=JSON.stringify(w.eval('songs.gavotte'));
+ $('seq-copy').click();const userId=$('song').value;assert(userId.startsWith('user-'),'Copy becomes editable song');assert(!$('seq-title').disabled,'Copy is editable');assert(get().notes.length===258,'Full score copied');
+ $('seq-title').value='Browser test edit';$('seq-title').dispatchEvent(new w.Event('change'));assert(get().title==='Browser test edit','Rename copy');
+ $('seq-bpm').value='120';$('seq-bpm').dispatchEvent(new w.Event('change'));assert(get().bpm===120,'Change BPM');$('seq-undo').click();assert(get().bpm===108,'Undo BPM');$('seq-redo').click();assert(get().bpm===120,'Redo BPM');
+ const grid=$('seq-grid');grid.setPointerCapture=()=>{};
+ let n=get().notes.find(n=>n.pitch===50&&n.beat===0);const startId=n.id;
+ let el=d.querySelector('[data-note="'+startId+'"]'),rect=el.getBoundingClientRect();
+ el.dispatchEvent(new w.PointerEvent('pointerdown',{bubbles:true,button:0,pointerId:1,clientX:rect.left+3,clientY:rect.top+8}));
+ grid.dispatchEvent(new w.PointerEvent('pointermove',{bubbles:true,pointerId:1,clientX:rect.left+59,clientY:rect.top-12}));
+ grid.dispatchEvent(new w.PointerEvent('pointerup',{bubbles:true,pointerId:1}));
+ n=get().notes.find(n=>n.id===startId);assert(n.beat===1&&n.pitch===51,'Drag note in time and pitch');
+ el=d.querySelector('[data-note="'+startId+'"]');rect=el.getBoundingClientRect();
+ el.querySelector('.seq-resize').dispatchEvent(new w.PointerEvent('pointerdown',{bubbles:true,button:0,pointerId:2,clientX:rect.right-2,clientY:rect.top+8}));
+ grid.dispatchEvent(new w.PointerEvent('pointermove',{bubbles:true,pointerId:2,clientX:rect.right+26,clientY:rect.top+8}));grid.dispatchEvent(new w.PointerEvent('pointerup',{bubbles:true,pointerId:2}));
+ assert(get().notes.find(n=>n.id===startId).duration===1.5,'Resize note');
+ $('seq-velocity').value='64';$('seq-velocity').dispatchEvent(new w.Event('change'));assert(Math.abs(get().notes.find(n=>n.id===startId).velocity-64/127)<.001,'Edit velocity');
+ $('seq-delete').click();assert(!get().notes.find(n=>n.id===startId),'Delete selection');$('seq-undo').click();assert(get().notes.find(n=>n.id===startId),'Undo deletion');
+ $('seq-save').click();assert(localStorage.getItem('pmg.songs.v1').includes('Browser test edit'),'Save user song');
+ assert(JSON.stringify(w.eval('songs.gavotte'))===original,'Original remains unchanged');
+ $('song').value='prelude1012';$('song').dispatchEvent(new w.Event('change'));assert(get().notes.length===1349,'Long built-in opens');assert($('seq-title').disabled,'Original remains read-only after switching');
+ $('song').value=userId;$('song').dispatchEvent(new w.Event('change'));assert(get().title==='Browser test edit'&&get().bpm===120,'Switching songs preserves changes');
+ $('seq-new').click();assert(get().notes.length===0,'New blank song');$('seq-draw').click();
+ const r=grid.getBoundingClientRect();grid.dispatchEvent(new w.PointerEvent('pointerdown',{bubbles:true,button:0,pointerId:3,clientX:r.left+5,clientY:r.top+(108-60)*20+5}));grid.dispatchEvent(new w.PointerEvent('pointerup',{bubbles:true,pointerId:3}));assert(get().notes.length===1&&get().notes[0].pitch===60,'Draw note in new song');
+ $('seq-at').value='0.13';$('seq-at').dispatchEvent(new w.Event('change'));$('seq-quantize').click();assert(get().notes[0].beat===0.25,'Quantize selected note');
+ const key=(key,extra={})=>$('seq-scroll').dispatchEvent(new w.KeyboardEvent('keydown',{key,bubbles:true,...extra}));
+ key('c',{ctrlKey:true});
+ let rr=$('seq-ruler').getBoundingClientRect();$('seq-ruler').dispatchEvent(new w.PointerEvent('pointerdown',{bubbles:true,button:0,clientX:rr.left+112,clientY:rr.top+10}));
+ key('v',{ctrlKey:true});assert(get().notes.length===2&&get().notes.some(n=>n.beat===2),'Copy/paste notes at cursor');
+ key('a',{ctrlKey:true});key('ArrowUp',{shiftKey:true});assert(get().notes.every(n=>n.pitch===72),'Transpose group one octave');
+ const oldId=$('song').value;$('seq-title').value='Immediate copy';$('seq-title').dispatchEvent(new w.Event('change'));$('seq-copy').click();assert(get().title.includes('Immediate copy'),'Duplicate includes unsaved edits');
+ $('song').value=oldId;$('song').dispatchEvent(new w.Event('change'));
+ rr=$('seq-ruler').getBoundingClientRect();$('seq-ruler').dispatchEvent(new w.PointerEvent('pointerdown',{bubbles:true,button:0,clientX:rr.left+14,clientY:rr.top+10}));$('seq-save').click();
+ $('seq-play').click();await wait(300);assert(w.eval('!!ctx'),'Audio context created');assert(w.eval('allVoices.size')>0,'Editor starts scheduled playback');$('seq-stop').click();assert(w.eval('allVoices.size')===0,'Stop clears voices');
+ // Headless virtual time does not advance the native AudioContext clock. Drive the
+ // scheduler's clock deterministically to exercise repeated scheduling as well.
+ w.eval('var testBase=ctx.currentTime,testStart=performance.now(),testCycles=[];var testPlay=play;play=(...args)=>{testCycles.push(args[0]);return testPlay(...args)};Object.defineProperty(ctx,"currentTime",{configurable:true,get:()=>testBase+(performance.now()-testStart)/1000})');
+ $('seq-rewind').click();$('seq-loop').checked=true;$('seq-play').click();await wait(2300);assert(w.eval('demoEnds===Infinity'),'Loop remains active');assert(w.eval("testCycles.some(id=>id.startsWith('d1-'))"),'Loop schedules the next cycle');assert($('seq-play').textContent.includes('停止'),'Transport shows active playback');$('seq-stop').click();
+ $('seq-pan').click();const ss=$('seq-scroll'),beforeTop=ss.scrollTop;grid.dispatchEvent(new w.PointerEvent('pointerdown',{bubbles:true,button:0,pointerId:4,clientX:300,clientY:500}));grid.dispatchEvent(new w.PointerEvent('pointermove',{bubbles:true,pointerId:4,clientX:200,clientY:450}));grid.dispatchEvent(new w.PointerEvent('pointerup',{bubbles:true,pointerId:4}));assert(ss.scrollTop>=beforeTop,'Hand tool scrolls grid');
+ iframe.width=390;w.dispatchEvent(new w.Event('resize'));await wait(50);assert(d.documentElement.scrollWidth<=w.innerWidth+1,'Mobile layout has no page overflow');iframe.width=1200;
+
+ const reloaded=new Promise(r=>iframe.onload=r);iframe.src=new URL('../synth-demo/?reload=1',location.href);await reloaded;
+ assert(w.document.getElementById('song').options.length===15,'Saved songs restored after reload');
+ result.textContent='PASS: mount, read-only originals, independent copy, rename, BPM, undo/redo, note drag/resize/delete, velocity, persistence, switching, drawing, audio playback, looping, multi-note transpose, clipboard, quantize, mobile layout, and reload.';
+ document.body.removeChild(iframe);
+})().catch(e=>{result.textContent='FAIL: '+e.stack}).finally(()=>{document.querySelector('iframe')?.remove();if(backup===null)localStorage.removeItem(storageKey);else localStorage.setItem(storageKey,backup)});
+</script>
