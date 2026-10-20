@@ -33,6 +33,7 @@ jobs:
           cp synth-demo/*.html synth-demo/*.js synth-demo/*.css _site/
           mkdir -p _site/audio
           cp synth-demo/audio/guitar-tone-before-after.wav _site/audio/
+          cp -R synth-demo/reference-comparison _site/
           touch _site/.nojekyll
       - uses: actions/upload-pages-artifact@v4
         with:

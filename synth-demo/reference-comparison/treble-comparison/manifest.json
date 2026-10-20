@@ -1,0 +1,51 @@
+{
+  "sampleRate": 48000,
+  "firTaps": 2049,
+  "seconds": 3.1,
+  "notes": [
+    {
+      "midi": 55,
+      "label": "3弦開放 G3",
+      "reference": true,
+      "referenceF0": 195.212,
+      "take": 2
+    },
+    {
+      "midi": 59,
+      "label": "2弦開放 B3（参考録音なし）",
+      "reference": false
+    },
+    {
+      "midi": 64,
+      "label": "1弦開放 E4",
+      "reference": true,
+      "referenceF0": 329.507,
+      "take": 2
+    },
+    {
+      "midi": 66,
+      "label": "1弦2フレット F♯4",
+      "reference": true,
+      "referenceF0": 369.606,
+      "take": 2
+    },
+    {
+      "midi": 69,
+      "label": "1弦5フレット A4",
+      "reference": true,
+      "referenceF0": 440.164,
+      "take": 2
+    }
+  ],
+  "splits": {
+    "treble": [
+      500,
+      2000
+    ],
+    "wound": [
+      180,
+      800
+    ]
+  },
+  "commonHeadroomGain": 1
+}

@@ -1,0 +1,93 @@
+{
+  "source": "E2 recording / unchanged attack before / faster high-mode decay after; common before-after gain",
+  "sampleRate": 48000,
+  "referenceF0": 82.189,
+  "boundariesHz": [
+    180,
+    800
+  ],
+  "firTaps": 2049,
+  "seconds": 3.1,
+  "bands": {
+    "full": {
+      "reference": {
+        "rmsRelativeDb": 1.928654933106574e-15,
+        "matchedGainDb": -0.06387852219794776
+      },
+      "before": {
+        "rmsRelativeDb": 0.0,
+        "matchedGainDb": -1.2791087618719177
+      },
+      "after": {
+        "rmsRelativeDb": -0.004061153405666356,
+        "matchedGainDb": -1.2791087618719177
+      }
+    },
+    "low": {
+      "reference": {
+        "rmsRelativeDb": -13.62392128637518,
+        "matchedGainDb": 13.24324335631874
+      },
+      "before": {
+        "rmsRelativeDb": -8.869989502370842,
+        "matchedGainDb": 8.31210164625848
+      },
+      "after": {
+        "rmsRelativeDb": -8.870150569451436,
+        "matchedGainDb": 8.31210164625848
+      }
+    },
+    "mid": {
+      "reference": {
+        "rmsRelativeDb": -0.30962949747275376,
+        "matchedGainDb": 0.17661254582228791
+      },
+      "before": {
+        "rmsRelativeDb": -0.7373644728373414,
+        "matchedGainDb": -0.6009211793439794
+      },
+      "after": {
+        "rmsRelativeDb": -0.7376903264199561,
+        "matchedGainDb": -0.6009211793439794
+      }
+    },
+    "high": {
+      "reference": {
+        "rmsRelativeDb": -29.301409316317848,
+        "matchedGainDb": 28.390450757738854
+      },
+      "before": {
+        "rmsRelativeDb": -29.84007735494192,
+        "matchedGainDb": 26.513888965920486
+      },
+      "after": {
+        "rmsRelativeDb": -38.153268141608265,
+        "matchedGainDb": 26.513888965920486
+      }
+    }
+  },
+  "afterVsBeforeDb": {
+    "low": {
+      "(0, 0.025)": -1.0664092038601284e-06,
+      "(0.025, 0.08)": -9.279672726716088e-05,
+      "(0.08, 0.2)": -0.00021336497977943267,
+      "(0.2, 0.5)": -0.0004372829639048024,
+      "(0.5, 1)": -0.0006343865655050384
+    },
+    "mid": {
+      "(0, 0.025)": 3.42930393221358e-06,
+      "(0.025, 0.08)": -0.0002102893833269602,
+      "(0.08, 0.2)": -0.0004220076890953624,
+      "(0.2, 0.5)": -0.0014090998037021225,
+      "(0.5, 1)": -0.0014647584979389178
+    },
+    "high": {
+      "(0, 0.025)": -0.00013270718972113106,
+      "(0.025, 0.08)": -2.315738032638897,
+      "(0.08, 0.2)": -20.16864499706052,
+      "(0.2, 0.5)": -38.76575710469114,
+      "(0.5, 1)": -35.48060612952351
+    }
+  },
+  "commonHeadroomGain": 1
+}

@@ -1,6 +1,10 @@
-# Private listening comparisons
+# Listening comparisons
 
-Reference recordings and generated clips stay in gitignored `reference-recordings/`. They are never copied to GitHub Pages. The page template and generation tools contain no recordings.
+On 2026-10-21 the user authorized public hosting so they can compare from iPhone. Selected 3.1-second excerpts (24 wound and 144 treble WAVs) are copied into `synth-demo/reference-comparison/` and deployed to GitHub Pages. Original recordings and analysis stay in gitignored `reference-recordings/`.
+
+Public hub: https://okonkore.github.io/pmg/reference-comparison/
+
+After rebuilding locally, run `python3 scripts/publish_reference_comparisons.py` to update these authorized excerpts. The script copies only the comparison files, leaving unrelated recordings and trial audio out.
 
 With the existing private server on port 8769:
 
