@@ -27,15 +27,15 @@
  </div>
  <label class="guitar-coupling-toggle"><input id="guitar-bridge" type="checkbox" checked> ブリッジ・胴モデル（新方式・試作）</label>
  <label class="guitar-coupling-toggle"><input id="guitar-body-fit" type="checkbox" checked> 胴の音色調整（共通プロファイル）</label>
- <label class="guitar-coupling-toggle"><input id="guitar-reference-tone" type="checkbox" checked> 録音を参考にした音色（OFFで今回の調整前）</label>
+ <label class="guitar-coupling-toggle"><input id="guitar-reference-tone" type="checkbox" checked> 録音を参考にした音色（4〜6弦の高域減衰を含む）</label>
  <label class="guitar-coupling-toggle"><input id="guitar-attack" type="checkbox" checked> はじき始めの応答（試作）</label>
  <label class="guitar-coupling-toggle"><input id="guitar-harmonics" type="checkbox" checked> 倍音調整（前回の方式）</label>
  <label class="guitar-coupling-toggle"><input id="guitar-drop-d" type="checkbox" checked> ドロップD：6弦開放をD2にする</label>
  <label class="guitar-coupling-toggle"><input id="guitar-contact" type="checkbox"> 指・爪の接触（試作）</label>
  <label class="guitar-coupling-toggle"><input id="guitar-coupling" type="checkbox"> 弦と胴の相互作用（旧方式）</label>
- <p class="hint">新方式：ブリッジを通して弦と胴が振動を受け渡し、胴の振動を音にします。倍音の強弱と減衰を同じモデルで計算します。<br>「録音を参考にした音色」は、6音の単音録音を参考に、全音共通の胴の出力バランスを調整しています。OFFにすると今回の調整前と比較できます。弦と胴の結合や減衰係数はそのままで、特定の音だけを短くする補正はありません。「胴の音色調整」をOFFにすると、以前の無調整モデルへ戻ります。<br>「はじき始めの応答」は別に比較できます。<br>新方式をオフにすると、前回の倍音調整で比較できます。接触も併用できます。<br>ドロップDオン：D2〜G♯2は6弦、D3は4弦開放。音程は変えず、合成に使う弦を変えます。<br>爪の硬さ：指の腹寄り ← → 爪寄り ／ はじく位置：ブリッジ寄り ← → 弦の中央寄り<br>変更時はいったん発音を止め、新しい音色を準備します。<a href="https://www.youtube.com/watch?v=zBdK-ailioA" target="_blank" rel="noopener">分析に使った参考演奏：BWV 1007</a></p>
- <div class="actions" aria-label="比較用の単音"><button id="guitar-test-38">D2 を試聴</button><button id="guitar-test-40">E2 を試聴</button><button id="guitar-test-50">D3 を試聴</button><button id="guitar-test-55">G3 を試聴</button><button id="guitar-test-64">E4 を試聴</button><button id="guitar-test-66">F♯4 を試聴</button><button id="guitar-test-69">A4 を試聴</button></div>
- <p class="hint"><a href="comparison.html" target="_blank" rel="noopener">調整前 → 調整後の比較音源を開く（30秒）</a></p>
+ <p class="hint">新方式：ブリッジを通して弦と胴が振動を受け渡し、胴の振動を音にします。倍音の強弱と減衰を同じモデルで計算します。<br>「録音を参考にした音色」は、共通の胴の出力バランスに加え、4〜6弦の倍音と減衰を調整します。高域は弾き始めを残し、その後の余韻を短くしています。1〜3弦の音は従来のままです。OFFで以前の音色調整と比較できます。「胴の音色調整」をOFFにすると、以前の無調整モデルへ戻ります。<br>「はじき始めの応答」は別に比較できます。<br>新方式をオフにすると、前回の倍音調整で比較できます。接触も併用できます。<br>ドロップDオン：D2〜G♯2は6弦、D3は4弦開放。音程は変えず、合成に使う弦を変えます。<br>爪の硬さ：指の腹寄り ← → 爪寄り ／ はじく位置：ブリッジ寄り ← → 弦の中央寄り<br>変更時はいったん発音を止め、新しい音色を準備します。<a href="https://www.youtube.com/watch?v=zBdK-ailioA" target="_blank" rel="noopener">分析に使った参考演奏：BWV 1007</a></p>
+ <div class="actions" aria-label="比較用の単音"><button id="guitar-test-38">D2 を試聴</button><button id="guitar-test-40">E2 を試聴</button><button id="guitar-test-45">A2 を試聴</button><button id="guitar-test-50">D3 を試聴</button><button id="guitar-test-55">G3 を試聴</button><button id="guitar-test-64">E4 を試聴</button><button id="guitar-test-66">F♯4 を試聴</button><button id="guitar-test-69">A4 を試聴</button></div>
+ <p class="hint"><a href="comparison.html" target="_blank" rel="noopener">以前の調整の比較音源を開く（2026-10-20・30秒）</a></p>
 </div>
 <div class="monitor"><canvas id="scope" aria-label="発音中の波形"></canvas><div class="monitor-foot"><span id="note">READY</span><span id="latency">OUTPUT —</span></div></div>
 <div class="octave-bar"><div class="octave-buttons"><button id="octave-down" aria-label="1オクターブ下げる">− OCT</button><output id="octave-range" aria-live="polite"></output><button id="octave-up" aria-label="1オクターブ上げる">＋ OCT</button></div><button id="octave-reset">C4に戻す</button></div>
@@ -121,8 +121,8 @@ function renderGuitar(midi,settings){
 async function prepareGuitar(extra=[]){
  while(isGuitar()){
   const signature=guitarSettings(),label=presets[preset].label;
-  const needed=new Set([...extra,38,40,50,55,64,66,69,...keys.map(k=>shiftedMidi(k[1])).filter(inPianoRange),...songs[$('song').value].score.events.map(e=>e[1])]);
-  const settings={bridge:$('guitar-bridge').checked,bodyFit:Number($('guitar-body-fit').checked),referenceTone:Number($('guitar-reference-tone').checked),attack:Number($('guitar-attack').checked),harmonics:Number($('guitar-harmonics').checked),dropD:$('guitar-drop-d').checked,contact:$('guitar-contact').checked?1:0,coupling:$('guitar-coupling').checked?1:0,nail:+$('guitar-nail').value,position:+$('guitar-position').value,body:+$('guitar-body').value};
+  const needed=new Set([...extra,38,40,45,50,55,64,66,69,...keys.map(k=>shiftedMidi(k[1])).filter(inPianoRange),...songs[$('song').value].score.events.map(e=>e[1])]);
+  const settings={bridge:$('guitar-bridge').checked,bodyFit:Number($('guitar-body-fit').checked),referenceTone:Number($('guitar-reference-tone').checked),stringTexture:Number($('guitar-reference-tone').checked),highDecay:Number($('guitar-reference-tone').checked),attack:Number($('guitar-attack').checked),harmonics:Number($('guitar-harmonics').checked),dropD:$('guitar-drop-d').checked,contact:$('guitar-contact').checked?1:0,coupling:$('guitar-coupling').checked?1:0,nail:+$('guitar-nail').value,position:+$('guitar-position').value,body:+$('guitar-body').value};
   const missing=[...needed].filter(midi=>!stringBuffers.has(label+':'+midi+':'+signature));
   if(!missing.length)return;
   $('status').textContent='ギター音色を準備中…';
@@ -143,7 +143,7 @@ function warmGuitar(){
  if(ctx&&isGuitar())guitarPrepareTimer=setTimeout(()=>prepareGuitar().then(()=>{if(isGuitar())$('status').textContent='演奏できます'}).catch(report),120);
 }
 function isGuitar(){return presets[preset].excitation==='guitar'}
-function guitarSettings(){return ['guitar-nail','guitar-position','guitar-body'].map(id=>$(id).value).join(':')+':'+['guitar-bridge','guitar-body-fit','guitar-reference-tone','guitar-attack','guitar-coupling','guitar-contact','guitar-harmonics','guitar-drop-d'].map(id=>Number($(id).checked)).join(':')}
+function guitarSettings(){return 'wound-2026-10-21:'+ ['guitar-nail','guitar-position','guitar-body'].map(id=>$(id).value).join(':')+':'+['guitar-bridge','guitar-body-fit','guitar-reference-tone','guitar-attack','guitar-coupling','guitar-contact','guitar-harmonics','guitar-drop-d'].map(id=>Number($(id).checked)).join(':')}
 function updateGuitarControls(event){
  stop();
  $('guitar-harmonics').disabled=$('guitar-bridge').checked;
@@ -165,7 +165,7 @@ $('guitar-bridge').addEventListener('change',updateGuitarControls);
 $('guitar-body-fit').addEventListener('change',updateGuitarControls);
 $('guitar-reference-tone').addEventListener('change',updateGuitarControls);
 $('guitar-attack').addEventListener('change',updateGuitarControls);
-for(const midi of [38,40,50,55,64,66,69])$('guitar-test-'+midi).addEventListener('click',async()=>{
+for(const midi of [38,40,45,50,55,64,66,69])$('guitar-test-'+midi).addEventListener('click',async()=>{
  stop();const run=playbackRun;
  try{await enable();if(run!==playbackRun||!isGuitar())return;const voice=play('guitar-compare',midi);voice.release(ctx.currentTime+3.2)}catch(error){report(error)}
 });

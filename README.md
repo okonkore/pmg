@@ -10,9 +10,11 @@ Select **Nylon Guitar** in the instrument menu and press the audio enable button
 
 ## Guitar reference tone
 
-Nylon Guitar includes a shared body-output adjustment guided by six isolated guitar notes. **録音を参考にした音色** switches it on; switch it off to compare the previous sound. E2, D3, G3, E4, F♯4 and A4 preview buttons are available alongside D2. The reference recordings use standard tuning (Drop D off). Recordings remain local and are not included in the site.
+Nylon Guitar includes a shared body-output adjustment guided by six isolated guitar notes. **録音を参考にした音色** switches it on; switch it off to compare the previous sound. E2, A2, D3, G3, E4, F♯4 and A4 preview buttons are available alongside D2. The reference recordings use standard tuning (Drop D off). Recordings remain local and are not included in the site.
 
-Details and limitations: [2026-10-20 tone adjustment](scripts/guitar-tone-2026-10-20.md).
+The 2026-10-21 update also adjusts wound strings 4–6: their high-frequency attack remains, while upper partials decay faster. The current plain strings 1–3 and seventh string retain their published waveforms. The approved texture settings are enabled with the same reference-tone checkbox.
+
+Details and limitations: [wound-string update](scripts/guitar-wound-release-2026-10-21.md), [earlier shared-body adjustment](scripts/guitar-tone-2026-10-20.md).
 
 ## Piano-roll editor
 
@@ -56,6 +58,6 @@ The selected files in `analysis-1007` are regression fixtures for these tests. R
 
 ## Deployment
 
-GitHub Actions publishes only `synth-demo/index.html` and its JavaScript files to Pages. The repository root also contains an earlier Bar Drop prototype, which is not the Pages entry point.
+GitHub Actions publishes the HTML, JavaScript, CSS and selected synthesis-only comparison WAV from `synth-demo` to Pages. Reference recordings remain local. The repository root also contains an earlier Bar Drop prototype, which is not the Pages entry point.
 
 Score credits and licenses are shown in the app footer.

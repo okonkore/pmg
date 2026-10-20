@@ -76,3 +76,63 @@ const NylonReferenceFit = {
   0.46337326
  ]
 };
+
+// Wound-string release spectrum. Smooth harmonic-order curves for the low and
+// upper wound strings; the fifth string interpolates between them. These are
+// excitation amplitudes, not a sampled signal or measured impulse response.
+const NylonWoundExcitation = {
+ "knots": [
+  1,
+  2,
+  3,
+  4,
+  6,
+  9,
+  14,
+  22,
+  40,
+  96
+ ],
+ "low": [
+  0,
+  4.93691,
+  5.44278,
+  2.7055,
+  -6.36522,
+  -4.953,
+  4.50965,
+  0.89375,
+  -0.75144,
+  -0.72077
+ ],
+ "high": [
+  0,
+  1.62304,
+  -1.7805,
+  -5.83769,
+  -4.60939,
+  1.65379,
+  5.33859,
+  -3.43717,
+  -4.03771,
+  -3.53914
+ ]
+};
+NylonWoundExcitation.gain = function(harmonic,openMidi,frequency=0){
+ const x=this.knots;let k=0;
+ while(k<x.length-2&&harmonic>x[k+1])k++;
+ const t=Math.max(0,Math.min(1,Math.log(harmonic/x[k])/Math.log(x[k+1]/x[k])));
+ const blend=Math.max(0,Math.min(1,(openMidi-40)/10));
+ const at=curve=>curve[k]*(1-t)+curve[k+1]*t;
+ // Gentle release rolloff; low-order core remains unaffected below 550 Hz.
+ const q=Math.max(0,(frequency-550)/900),rolloff=-3*q*q/(1+q*q);
+ return 10**((at(this.low)*(1-blend)+at(this.high)*blend+rolloff)/20);
+};
+
+// Additional intrinsic amplitude loss (/s), confined to upper wound partials.
+// Low partials keep their sustain; no filtering or sampled resonance is added.
+NylonWoundExcitation.loss = function(frequency,openMidi=50){
+ const q=Math.max(0,(frequency-500)/500);
+ const blend=Math.max(0,Math.min(1,(openMidi-40)/10));
+ return Math.min(8,(.75+.35*blend)*q*q/(1+q));
+};

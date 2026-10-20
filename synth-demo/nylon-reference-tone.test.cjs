@@ -12,7 +12,8 @@ for(const [midi,hash] of Object.entries(hashes)){
  const off=model.render(48000,+midi,{...settings,referenceTone:0},before),on=model.render(48000,+midi,{...settings,referenceTone:1},after);
  assert.equal(crypto.createHash('sha256').update(Buffer.from(off.buffer)).digest('hex'),hash,'OFF preserves the exact accepted sound');
  assert.notEqual(Buffer.compare(Buffer.from(off.buffer),Buffer.from(on.buffer)),0);
- for(const key of ['initialEnergy','finalEnergy','releaseEnergy','releaseRemainder','maxEnergy','maxBodyEnergy'])assert.equal(after[key],before[key],'Only observation changes, not mechanical state: '+key);
+ if(+midi>=55)for(const key of ['initialEnergy','finalEnergy','releaseEnergy','releaseRemainder','maxEnergy','maxBodyEnergy'])assert.equal(after[key],before[key],'Plain-string mechanics retained: '+key);
+ else assert(Math.abs(after.initialEnergy-before.initialEnergy)<1e-12,'Wound adjustment redistributes the same initial energy');
  const rms=(y,a,b)=>{let power=0;for(let i=Math.round(a*48000);i<Math.round(b*48000);i++)power+=y[i]**2;return Math.sqrt(power/Math.round((b-a)*48000))};
  if(+midi===66){const tail=y=>20*Math.log10(rms(y,1,1.3)/rms(y,.04,.14));assert(tail(on)>tail(off)-3,'Do not copy the reference F#4 rapid damping')}
 }
@@ -26,4 +27,4 @@ for(const body of [0,1])for(const contact of [0,1])for(const dropD of [false,tru
  assert(!reply.error,reply.error);assert(reply.values.every(Number.isFinite));
 }
 const a=model.render(48000,50,{bodyFit:0,referenceTone:0}),b=model.render(48000,50,{bodyFit:0,referenceTone:1});assert(Buffer.from(a.buffer).equals(Buffer.from(b.buffer)));
-console.log('Reference tone: exact previous-sound switch, identical mechanical energy, no forced F#4 damping, 44.1/48kHz full range and worker controls passed');
+console.log('Reference tone: exact previous-sound switch, fixed pluck energy and unchanged plain-string mechanics, no forced F#4 damping, 44.1/48kHz full range and worker controls passed');
