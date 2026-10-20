@@ -112,10 +112,16 @@ let guitarWorker,guitarJobId=0,guitarPrepareTimer,guitarGeneration=0;
 const guitarJobs=new Map(),guitarPending=new Map();
 function renderGuitar(midi,settings){
  if(!guitarWorker){
-  guitarWorker=new Worker('nylon-worker.js?v=responsive-2026-10-21');
-  guitarWorker.onmessage=({data})=>{const job=guitarJobs.get(data.id);if(!job)return;guitarJobs.delete(data.id);data.error?job.reject(new Error(data.error)):job.resolve(data.values)};
-  guitarWorker.onerror=()=>{for(const job of guitarJobs.values())job.reject(new Error('ギター音色の準備に失敗しました'));guitarJobs.clear();guitarWorker.terminate();guitarWorker=undefined};
+  const worker=new Worker('nylon-worker.js?v=responsive-2026-10-21');guitarWorker=worker;
+  worker.onmessage=({data})=>{if(guitarWorker!==worker)return;const job=guitarJobs.get(data.id);if(!job)return;guitarJobs.delete(data.id);data.error?job.reject(new Error(data.error)):job.resolve(data.values)};
+  worker.onerror=event=>{
+   event.preventDefault();if(guitarWorker!==worker)return;
+   guitarWorker=undefined;worker.terminate();
+   const jobs=[...guitarJobs.values()];guitarJobs.clear();
+   for(const job of jobs)job.reject(new Error('ギター音色の準備に失敗しました'));
+  };
  }
+
  return new Promise((resolve,reject)=>{const id=++guitarJobId;guitarJobs.set(id,{resolve,reject});guitarWorker.postMessage({id,rate:ctx.sampleRate,midi,settings})});
 }
 function cancelGuitarWork(){
