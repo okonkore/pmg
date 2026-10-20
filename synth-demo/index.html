@@ -76,7 +76,7 @@ for(const [label,collection] of [['BWV 1012 · 無伴奏チェロ組曲 第6番'
 }
 $('song').value='gavotte';
 function updateSong(){const {score,edition}=songs[$('song').value];const seconds=Math.round(score.events.reduce((end,[at,midi,duration])=>Math.max(end,at+duration),0)*60/score.bpm);$('song-info').textContent=edition+'／約'+seconds+'秒／♩ = '+score.bpm+'（試聴曲はオクターブ移動の対象外）'}
-$('song').onchange=()=>{stop();updateSong();scoreEditor?.songChanged()};
+$('song').onchange=()=>{stop();updateSong();scoreEditor?.songChanged();warmGuitar()};
 updateSong();
 const presets={
  lead:{label:'Warm Lead',description:'少し音程をずらした、太く温かいリード。',cutoff:2600,release:.28,space:.18,attack:.012,decay:.22,sustain:.65,detune:8,wave:'sawtooth',sub:.23,resonance:2.4},
@@ -100,47 +100,62 @@ function noteName(midi){return ['C','C♯','D','D♯','E','F','F♯','G','G♯',
 function shiftedMidi(base){return base+octaveOffset*12}
 function inPianoRange(midi){return midi>=21&&midi<=108}
 function updateOctave(){for(const [name,base,key] of keys){const b=keyEls.get(base),midi=shiftedMidi(base);b.disabled=!inPianoRange(midi);b.setAttribute('aria-label',noteName(midi)+(b.disabled?'（音域外）':''));b.querySelector('span').textContent=noteName(midi)+'\n'+key.toUpperCase()}const low=Math.max(21,shiftedMidi(60)),high=Math.min(108,shiftedMidi(72));$('octave-range').textContent=noteName(low)+' – '+noteName(high);$('keyboard').setAttribute('aria-label',noteName(low)+'から'+noteName(high)+'の鍵盤');$('octave-down').disabled=octaveOffset===-4;$('octave-up').disabled=octaveOffset===3;$('octave-reset').disabled=octaveOffset===0;refreshKeys()}
-function changeOctave(offset){const next=Math.max(-4,Math.min(3,offset));if(next===octaveOffset)return;stop();octaveOffset=next;updateOctave()}
+function changeOctave(offset){const next=Math.max(-4,Math.min(3,offset));if(next===octaveOffset)return;stop();octaveOffset=next;updateOctave();warmGuitar()}
 $('octave-down').onclick=()=>changeOctave(octaveOffset-1);$('octave-up').onclick=()=>changeOctave(octaveOffset+1);$('octave-reset').onclick=()=>changeOctave(0);
-for(const [name,midi,key,left] of keys){const b=document.createElement('button');b.className='key '+(left?'black':'white');if(left)b.style.left=(left*100)+'%';b.innerHTML='<span>'+key.toUpperCase()+'</span>';b.setAttribute('aria-label',name);$('keyboard').append(b);keyEls.set(midi,b);b.addEventListener('pointerdown',async e=>{e.preventDefault();const pitch=shiftedMidi(midi);if(!inPianoRange(pitch))return;b.setPointerCapture(e.pointerId);const token='p'+e.pointerId;held.set(token,pitch);try{await enable();if(held.has(token))play(token,pitch)}catch(error){report(error)}});for(const event of ['pointerup','pointercancel','lostpointercapture'])b.addEventListener(event,e=>releaseToken('p'+e.pointerId));}
+for(const [name,midi,key,left] of keys){const b=document.createElement('button');b.className='key '+(left?'black':'white');if(left)b.style.left=(left*100)+'%';b.innerHTML='<span>'+key.toUpperCase()+'</span>';b.setAttribute('aria-label',name);$('keyboard').append(b);keyEls.set(midi,b);b.addEventListener('pointerdown',async e=>{e.preventDefault();const pitch=shiftedMidi(midi);if(!inPianoRange(pitch))return;b.setPointerCapture(e.pointerId);const token='p'+e.pointerId;held.set(token,pitch);try{await enable([pitch]);if(held.has(token))play(token,pitch)}catch(error){report(error)}});for(const event of ['pointerup','pointercancel','lostpointercapture'])b.addEventListener(event,e=>releaseToken('p'+e.pointerId));}
 function report(e){$('status').textContent='音声を開始できませんでした: '+e.message}
-async function enable(){if(!readyPromise){readyPromise=(async()=>{ctx=new AudioContext({latencyHint:'interactive'});master=ctx.createGain();master.gain.value=+$('volume').value;const comp=ctx.createDynamicsCompressor();comp.threshold.value=-16;comp.ratio.value=5;analyser=ctx.createAnalyser();analyser.fftSize=1024;bus=ctx.createGain();bus.gain.value=.65;delay=ctx.createDelay(1);delay.delayTime.value=.29;feedback=ctx.createGain();feedback.gain.value=.28;wet=ctx.createGain();wet.gain.value=+$('space').value;bus.connect(master);bus.connect(delay);delay.connect(feedback).connect(delay);delay.connect(wet).connect(master);master.connect(comp).connect(analyser).connect(ctx.destination);draw();})();}await readyPromise;await ctx.resume();if(isGuitar())await prepareGuitar();$('power').textContent='音声 ON';$('status').textContent='演奏できます';if(typeof ctx.outputLatency==='number')$('latency').textContent='OUTPUT ≈ '+Math.round(ctx.outputLatency*1000)+' ms（推定）';}
+async function enable(notes){const generation=guitarGeneration;if(!readyPromise){readyPromise=(async()=>{ctx=new AudioContext({latencyHint:'interactive'});master=ctx.createGain();master.gain.value=+$('volume').value;const comp=ctx.createDynamicsCompressor();comp.threshold.value=-16;comp.ratio.value=5;analyser=ctx.createAnalyser();analyser.fftSize=1024;bus=ctx.createGain();bus.gain.value=.65;delay=ctx.createDelay(1);delay.delayTime.value=.29;feedback=ctx.createGain();feedback.gain.value=.28;wet=ctx.createGain();wet.gain.value=+$('space').value;bus.connect(master);bus.connect(delay);delay.connect(feedback).connect(delay);delay.connect(wet).connect(master);master.connect(comp).connect(analyser).connect(ctx.destination);draw();})();}await readyPromise;await ctx.resume();if(isGuitar()&&generation!==guitarGeneration)return false;if(isGuitar()&&!await prepareGuitar(notes))return false;$('power').textContent='音声 ON';$('status').textContent='演奏できます';if(typeof ctx.outputLatency==='number')$('latency').textContent='OUTPUT ≈ '+Math.round(ctx.outputLatency*1000)+' ms（推定）';}
 function play(id,midi,when=ctx.currentTime,velocity=1){if(voices.has(id))return;while(allVoices.size>=12){const oldest=allVoices.values().next().value;oldest.kill();}const p=presets[preset];if(p.engine==='string')return playString(id,midi,when,p,velocity);const freq=440*2**((midi-69)/12),filter=ctx.createBiquadFilter(),env=ctx.createGain();filter.type='lowpass';filter.Q.value=p.resonance;if(preset==='clav'){const bright=+$('cutoff').value;filter.frequency.setValueAtTime(Math.max(250,bright*.5),when);filter.frequency.exponentialRampToValueAtTime(Math.min(16000,bright*2.4),when+.008);filter.frequency.exponentialRampToValueAtTime(Math.max(200,bright*.55),when+.17)}else if(preset==='bass'){const bright=+$('cutoff').value;filter.frequency.setValueAtTime(Math.min(16000,bright*3),when);filter.frequency.exponentialRampToValueAtTime(Math.max(100,bright*.5),when+p.decay)}else if(preset==='brass'){const bright=+$('cutoff').value;filter.frequency.setValueAtTime(Math.max(200,bright*.4),when);filter.frequency.exponentialRampToValueAtTime(Math.min(16000,bright*1.8),when+p.attack);filter.frequency.exponentialRampToValueAtTime(bright,when+p.attack+p.decay)}else if(preset==='organ'){filter.frequency.setValueAtTime(+$('cutoff').value,when)}else{filter.frequency.setValueAtTime(Math.min(18000,+$('cutoff').value*1.7),when);filter.frequency.exponentialRampToValueAtTime(+$('cutoff').value,when+p.decay);}filter.connect(env).connect(bus);env.gain.setValueAtTime(0,when);env.gain.linearRampToValueAtTime(.19*velocity,when+p.attack);env.gain.exponentialRampToValueAtTime(.19*velocity*p.sustain,when+p.attack+p.decay);const oscillators=[],mixers=[];const layers=p.layers||(preset==='clav'?[['custom',0,.95,1]]:[[p.wave,-p.detune,.44,1],[p.wave,p.detune,.44,1],['sine',0,p.sub,.5]]);for(const [wave,cents,level,mult] of layers){const o=ctx.createOscillator(),g=ctx.createGain();if(wave==='custom'){if(!clavWave){const real=new Float32Array(49),imag=new Float32Array(49);for(let n=1;n<49;n++)imag[n]=Math.sin(n*Math.PI*.23)*Math.sin(n*Math.PI*.15)/n**.85;clavWave=ctx.createPeriodicWave(real,imag)}o.setPeriodicWave(clavWave)}else{o.type=wave}o.frequency.value=freq*mult;o.detune.value=cents;g.gain.value=level;o.connect(g).connect(filter);o.start(when);oscillators.push(o);mixers.push(g)}let stopped=false,cleaned=false;const voice={midi,id,filter,release(at=ctx.currentTime){if(stopped)return;stopped=true;const r=+$('release').value;env.gain.cancelAndHoldAtTime(at);env.gain.setTargetAtTime(0,at,Math.max(.01,r/5));oscillators.forEach(o=>o.stop(at+r+.06));},kill(){if(cleaned)return;cleaned=true;oscillators.forEach(o=>{try{o.stop()}catch{}o.disconnect()});mixers.forEach(g=>g.disconnect());filter.disconnect();env.disconnect();allVoices.delete(voice);if(voices.get(id)===voice)voices.delete(id);refreshKeys()}};oscillators[0].onended=()=>voice.kill();voices.set(id,voice);allVoices.add(voice);refreshKeys();$('note').textContent=noteName(midi)+' / '+presetsName();return voice;}
 // A damped, fractional-delay string loop. Buffers are synthesized locally and reused.
 const stringBuffers=new Map();
-let guitarWorker,guitarJobId=0,guitarPrepareTimer;
+let guitarWorker,guitarJobId=0,guitarPrepareTimer,guitarGeneration=0;
 const guitarJobs=new Map(),guitarPending=new Map();
 function renderGuitar(midi,settings){
  if(!guitarWorker){
-  guitarWorker=new Worker('nylon-worker.js');
+  guitarWorker=new Worker('nylon-worker.js?v=responsive-2026-10-21');
   guitarWorker.onmessage=({data})=>{const job=guitarJobs.get(data.id);if(!job)return;guitarJobs.delete(data.id);data.error?job.reject(new Error(data.error)):job.resolve(data.values)};
   guitarWorker.onerror=()=>{for(const job of guitarJobs.values())job.reject(new Error('ギター音色の準備に失敗しました'));guitarJobs.clear();guitarWorker.terminate();guitarWorker=undefined};
  }
  return new Promise((resolve,reject)=>{const id=++guitarJobId;guitarJobs.set(id,{resolve,reject});guitarWorker.postMessage({id,rate:ctx.sampleRate,midi,settings})});
 }
-async function prepareGuitar(extra=[]){
- while(isGuitar()){
+function cancelGuitarWork(){
+ guitarGeneration++;clearTimeout(guitarPrepareTimer);
+ if(guitarWorker){guitarWorker.terminate();guitarWorker=undefined}
+ for(const job of guitarJobs.values())job.resolve(null);
+ guitarJobs.clear();guitarPending.clear();
+}
+function trimGuitarCache(protectedKeys){
+ let bytes=0;const entries=[],currentSuffix=':'+guitarSettings();
+ for(const [key,buffer] of stringBuffers)if(key.startsWith('Nylon Guitar:')){const size=buffer.length*buffer.numberOfChannels*4;entries.push([key,size]);bytes+=size}
+ for(const [key,size] of entries){if(bytes<=32*1024*1024)break;if(!protectedKeys.has(key)&&!key.endsWith(currentSuffix)){stringBuffers.delete(key);bytes-=size}}
+}
+async function prepareGuitar(notes){
+ const generation=guitarGeneration;
+ while(isGuitar()&&generation===guitarGeneration){
   const signature=guitarSettings(),label=presets[preset].label;
-  const needed=new Set([...extra,38,40,45,50,55,64,66,69,...keys.map(k=>shiftedMidi(k[1])).filter(inPianoRange),...songs[$('song').value].score.events.map(e=>e[1])]);
+  const needed=new Set((notes===undefined?keys.map(k=>shiftedMidi(k[1])):notes).filter(inPianoRange));
   const settings={bridge:$('guitar-bridge').checked,bodyFit:Number($('guitar-body-fit').checked),referenceTone:Number($('guitar-reference-tone').checked),stringTexture:Number($('guitar-reference-tone').checked),highDecay:Number($('guitar-reference-tone').checked),attack:Number($('guitar-attack').checked),harmonics:Number($('guitar-harmonics').checked),dropD:$('guitar-drop-d').checked,contact:$('guitar-contact').checked?1:0,coupling:$('guitar-coupling').checked?1:0,nail:+$('guitar-nail').value,position:+$('guitar-position').value,body:+$('guitar-body').value};
+  const protectedKeys=new Set([...needed].map(midi=>label+':'+midi+':'+signature));
   const missing=[...needed].filter(midi=>!stringBuffers.has(label+':'+midi+':'+signature));
-  if(!missing.length)return;
+  if(!missing.length){trimGuitarCache(protectedKeys);return true}
   $('status').textContent='ギター音色を準備中…';
-  await Promise.all(missing.map(async midi=>{
+  for(const midi of missing){
+   if(generation!==guitarGeneration||!isGuitar())return false;
    const key=label+':'+midi+':'+signature;
    if(!guitarPending.has(key)){
     const job=renderGuitar(midi,settings).then(values=>{
-     if(signature!==guitarSettings())return;
-     const buffer=ctx.createBuffer(1,values.length,ctx.sampleRate);buffer.getChannelData(0).set(values);stringBuffers.set(key,buffer);
-    }).finally(()=>guitarPending.delete(key));guitarPending.set(key,job);
+     if(!values||generation!==guitarGeneration||signature!==guitarSettings()||!isGuitar())return;
+     const buffer=ctx.createBuffer(1,values.length,ctx.sampleRate);buffer.getChannelData(0).set(values);stringBuffers.set(key,buffer);trimGuitarCache(protectedKeys);
+    }).finally(()=>{if(guitarPending.get(key)===job)guitarPending.delete(key)});guitarPending.set(key,job);
    }
    await guitarPending.get(key);
-  }));
+  }
  }
+ return false;
 }
 function warmGuitar(){
  clearTimeout(guitarPrepareTimer);
- if(ctx&&isGuitar())guitarPrepareTimer=setTimeout(()=>prepareGuitar().then(()=>{if(isGuitar())$('status').textContent='演奏できます'}).catch(report),120);
+ if(ctx&&isGuitar())guitarPrepareTimer=setTimeout(()=>prepareGuitar().then(ready=>{if(ready&&isGuitar())$('status').textContent='演奏できます'}).catch(report),120);
 }
 function isGuitar(){return presets[preset].excitation==='guitar'}
 function guitarSettings(){return 'wound-2026-10-21:'+ ['guitar-nail','guitar-position','guitar-body'].map(id=>$(id).value).join(':')+':'+['guitar-bridge','guitar-body-fit','guitar-reference-tone','guitar-attack','guitar-coupling','guitar-contact','guitar-harmonics','guitar-drop-d'].map(id=>Number($(id).checked)).join(':')}
@@ -167,7 +182,7 @@ $('guitar-reference-tone').addEventListener('change',updateGuitarControls);
 $('guitar-attack').addEventListener('change',updateGuitarControls);
 for(const midi of [38,40,45,50,55,64,66,69])$('guitar-test-'+midi).addEventListener('click',async()=>{
  stop();const run=playbackRun;
- try{await enable();if(run!==playbackRun||!isGuitar())return;const voice=play('guitar-compare',midi);voice.release(ctx.currentTime+3.2)}catch(error){report(error)}
+ try{await enable([midi]);if(run!==playbackRun||!isGuitar())return;const voice=play('guitar-compare',midi);voice.release(ctx.currentTime+3.2)}catch(error){report(error)}
 });
 updateGuitarControls();
 function stringBuffer(midi,p){
@@ -259,27 +274,29 @@ function playString(id,midi,when,p,velocity=1){
 function presetsName(){return presets[preset].label.toUpperCase()}
 function refreshKeys(){for(const [m,b]of keyEls)b.classList.toggle('active',[...voices.values()].some(v=>v.midi===shiftedMidi(m)))}
 function releaseToken(id){held.delete(id);const v=voices.get(id);if(v){v.release();voices.delete(id);refreshKeys()}}
-function stop(){scoreEditor?.transportStop();playbackRun++;clearTimeout(demoTimer);demoEnds=0;held.clear();for(const v of [...allVoices])v.kill();voices.clear();if(ctx){const now=ctx.currentTime;wet.gain.cancelScheduledValues(now);wet.gain.setValueAtTime(0,now);feedback.gain.cancelScheduledValues(now);feedback.gain.setValueAtTime(0,now);feedback.gain.setValueAtTime(.28,now+1.05);wet.gain.setValueAtTime(+$('space').value,now+1.05)}$('demo').textContent='▶ 曲を再生';$('note').textContent='READY';refreshKeys()}
+function stop(){cancelGuitarWork();scoreEditor?.transportStop();playbackRun++;clearTimeout(demoTimer);demoEnds=0;held.clear();for(const v of [...allVoices])v.kill();voices.clear();if(ctx){const now=ctx.currentTime;wet.gain.cancelScheduledValues(now);wet.gain.setValueAtTime(0,now);feedback.gain.cancelScheduledValues(now);feedback.gain.setValueAtTime(0,now);feedback.gain.setValueAtTime(.28,now+1.05);wet.gain.setValueAtTime(+$('space').value,now+1.05)}$('demo').textContent='▶ 曲を再生';$('note').textContent='READY';if(ctx)$('status').textContent='停止しました';refreshKeys()}
 $('power').onclick=()=>enable().catch(report);$('stop').onclick=stop;
 for(const name of ['cutoff','release','space','volume']){$(name).addEventListener('input',()=>update(name));update(name)}
 function update(name){const value=+$(name).value;$(name+'-out').textContent=name==='cutoff'?(value/1000).toFixed(1)+'k':name==='release'?value.toFixed(2)+'s':Math.round(value*100)+'%';if(!ctx)return;const now=ctx.currentTime;if(name==='volume')master.gain.setTargetAtTime(value,now,.015);if(name==='space')wet.gain.setTargetAtTime(value,now,.03);if(name==='cutoff')for(const v of allVoices){v.filter.frequency.cancelScheduledValues(now);v.filter.frequency.setTargetAtTime(value,now,.025)}}
 for(const [value,p] of Object.entries(presets)){const option=document.createElement('option');option.value=value;option.textContent=p.label;$('preset').append(option)}
-function selectPreset(){stop();preset=$('preset').value;for(const name of ['cutoff','release','space']){$(name).value=presets[preset][name];update(name)}$('preset-info').textContent=presets[preset].description;$('guitar-controls').hidden=!isGuitar();$('note').textContent=presetsName();warmGuitar()}
+function selectPreset(){stop();preset=$('preset').value;for(const name of ['cutoff','release','space']){$(name).value=presets[preset][name];update(name)}$('preset-info').textContent=presets[preset].description;$('guitar-controls').hidden=!isGuitar();$('note').textContent=presetsName();if(ctx&&!isGuitar())$('status').textContent='演奏できます';warmGuitar()}
 $('preset').onchange=selectPreset;
 $('preset-info').textContent=presets[preset].description;
-window.addEventListener('keydown',async e=>{if(e.defaultPrevented||e.target.closest?.('#score-editor'))return;if(e.ctrlKey||e.metaKey||e.altKey||['INPUT','SELECT','TEXTAREA'].includes(e.target.tagName))return;if(e.key.toLowerCase()==='z'||e.key.toLowerCase()==='x'){e.preventDefault();if(!e.repeat)changeOctave(octaveOffset+(e.key.toLowerCase()==='z'?-1:1));return}const k=keys.find(k=>k[2]===e.key.toLowerCase());if(!k||e.repeat)return;e.preventDefault();const id='k'+k[2],midi=shiftedMidi(k[1]);if(!inPianoRange(midi))return;held.set(id,midi);try{await enable();if(held.has(id))play(id,midi)}catch(error){report(error)}});
+window.addEventListener('keydown',async e=>{if(e.defaultPrevented||e.target.closest?.('#score-editor'))return;if(e.ctrlKey||e.metaKey||e.altKey||['INPUT','SELECT','TEXTAREA'].includes(e.target.tagName))return;if(e.key.toLowerCase()==='z'||e.key.toLowerCase()==='x'){e.preventDefault();if(!e.repeat)changeOctave(octaveOffset+(e.key.toLowerCase()==='z'?-1:1));return}const k=keys.find(k=>k[2]===e.key.toLowerCase());if(!k||e.repeat)return;e.preventDefault();const id='k'+k[2],midi=shiftedMidi(k[1]);if(!inPianoRange(midi))return;held.set(id,midi);try{await enable([midi]);if(held.has(id))play(id,midi)}catch(error){report(error)}});
 window.addEventListener('keyup',e=>releaseToken('k'+e.key.toLowerCase()));window.addEventListener('blur',stop);document.addEventListener('visibilitychange',()=>{if(document.hidden)stop()});
 async function startSong({fromBeat=0,loop=false}={}){
   stop();
   try {
     const run=playbackRun;
-    await enable();
+    await enable([]);
     if(run!==playbackRun)return;
     const {score,label}=songs[$('song').value],beat=60/score.bpm;
     const endBeat=score.events.reduce((end,[at,midi,duration])=>Math.max(end,at+duration),0);
     if(!endBeat){$('status').textContent='音符を追加してから再生してください';return}
     if(fromBeat>=endBeat)fromBeat=0;
     const events=score.events.filter(([at,midi,duration])=>at+duration>fromBeat).map(([at,midi,duration,velocity=1])=>[Math.max(at,fromBeat),midi,at+duration-Math.max(at,fromBeat),velocity]).sort((a,b)=>a[0]-b[0]);
+    if(isGuitar()&&!await prepareGuitar(events.map(e=>e[1])))return;
+    if(run!==playbackRun)return;
     const length=(endBeat-fromBeat)*beat;
     let start=ctx.currentTime+.06,index=0,cycle=0;
     demoEnds=loop?Infinity:start+length;
@@ -306,8 +323,8 @@ async function startSong({fromBeat=0,loop=false}={}){
 $('demo').onclick=()=>startSong();
 scoreEditor=ScoreEditor.mount({songs,updateSong,stop,play:startSong,audition:async midi=>{
  const run=playbackRun;
- try{await enable();if(isGuitar())await prepareGuitar([midi]);if(run!==playbackRun)return;const voice=play('editor-preview-'+performance.now(),midi);voice.release(ctx.currentTime+.35)}catch(error){report(error)}
+ try{await enable([midi]);if(run!==playbackRun)return;const voice=play('editor-preview-'+performance.now(),midi);voice.release(ctx.currentTime+.35)}catch(error){report(error)}
 }});
 updateOctave();
-function draw(){const canvas=$('scope'),g=canvas.getContext('2d'),data=new Uint8Array(analyser.fftSize);function frame(){requestAnimationFrame(frame);const width=Math.round(canvas.clientWidth*devicePixelRatio),height=Math.round(canvas.clientHeight*devicePixelRatio);if(canvas.width!==width||canvas.height!==height){canvas.width=width;canvas.height=height}analyser.getByteTimeDomainData(data);g.clearRect(0,0,width,height);g.strokeStyle='#ffffff09';g.lineWidth=1;for(let x=0;x<width;x+=width/16){g.beginPath();g.moveTo(x,0);g.lineTo(x,height);g.stroke()}g.strokeStyle='#e6bf7c';g.lineWidth=1.5*devicePixelRatio;g.beginPath();for(let i=0;i<data.length;i++){const x=i/(data.length-1)*width,y=data[i]/255*height;i?g.lineTo(x,y):g.moveTo(x,y)}g.stroke()}frame()}
+function draw(){const canvas=$('scope'),g=canvas.getContext('2d'),data=new Uint8Array(analyser.fftSize);let lastFrame=0;function frame(now=performance.now()){requestAnimationFrame(frame);if(document.hidden||now-lastFrame<30)return;lastFrame=now;const width=Math.round(canvas.clientWidth*devicePixelRatio),height=Math.round(canvas.clientHeight*devicePixelRatio);if(canvas.width!==width||canvas.height!==height){canvas.width=width;canvas.height=height}analyser.getByteTimeDomainData(data);g.clearRect(0,0,width,height);g.strokeStyle='#ffffff09';g.lineWidth=1;for(let x=0;x<width;x+=width/16){g.beginPath();g.moveTo(x,0);g.lineTo(x,height);g.stroke()}g.strokeStyle='#e6bf7c';g.lineWidth=1.5*devicePixelRatio;g.beginPath();for(let i=0;i<data.length;i++){const x=i/(data.length-1)*width,y=data[i]/255*height;i?g.lineTo(x,y):g.moveTo(x,y)}g.stroke()}frame()}
 </script></body></html>

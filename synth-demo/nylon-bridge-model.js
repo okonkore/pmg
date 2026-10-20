@@ -9,7 +9,19 @@ const NylonBridgeModel = {
   [1190,100,1,.9],[1430,340,.4,.12],
   [1850,420,.55,.02],[2610,350,2.348,.9],[3300,800,1,.6],[4350,1050,.6,.45]],
  stringFor(midi,settings){return NylonModel.stringFor(midi,settings)},
- render(rate,midi,{nail=.38,position=.22,body=.48,dropD=false,contact=0,attack=0,bodyFit=0,referenceTone=0,stringTexture=0,highDecay=0}={},diagnostics){
+ render(rate,midi,settings={},diagnostics){
+  const steps=this.renderSteps(rate,midi,settings,diagnostics);let result;
+  do{result=steps.next()}while(!result.done);
+  return result.value;
+ },
+ async renderAsync(rate,midi,settings={},diagnostics,scheduler={}){
+  const now=scheduler.now||(()=>performance.now());
+  const pause=scheduler.pause||(()=>new Promise(resolve=>setTimeout(resolve,8)));
+  const steps=this.renderSteps(rate,midi,settings,diagnostics);let result,slice=now();
+  while(!(result=steps.next()).done){if(now()-slice>=6){await pause();slice=now()}}
+  return result.value;
+ },
+ renderSteps(rate,midi,{nail=.38,position=.22,body=.48,dropD=false,contact=0,attack=0,bodyFit=0,referenceTone=0,stringTexture=0,highDecay=0}={},diagnostics){
   const fit=bodyFit?(referenceTone?NylonReferenceFit:NylonBodyFit):null;
   const string=NylonModel.stringFor(midi,{dropD}),{number,openMidi,fret,wound}=string;
   const fundamental=440*2**((midi-69)/12),count=Math.ceil(rate*3.6);
@@ -98,7 +110,11 @@ const NylonBridgeModel = {
   let maximum=initialEnergy,maximumBody=0,previousInput=0,previousOutput=0,peak=0,radiatedEnergy=0;
   const out=new Float32Array(count),pole=Math.exp(-2*Math.PI*45/rate);
   if(diagnostics)diagnostics.snapshots=[];
-  for(let i=0;i<count;i++){
+  let cursor=0,finished=false;
+  return {next:()=>{
+   if(finished)return {done:true};
+   const end=Math.min(count,cursor+1024);
+   for(let i=cursor;i<end;i++){
    for(let k=0;k<sr.length;k++){const re=sr[k],im=si[k];sr[k]=sc[k]*re-ss[k]*im;si[k]=ss[k]*re+sc[k]*im}
    if(highAmount&&i>=rate*.025){
     const q=Math.min(1,(i/rate-.025)/.025),mix=q*q*(3-2*q);
@@ -121,8 +137,11 @@ const NylonBridgeModel = {
    out[i]=high*Math.min(1,(count-1-i)/(rate*.06));peak=Math.max(peak,Math.abs(out[i]));
    if(diagnostics&&i%256===0){const state=energy();maximum=Math.max(maximum,state.total);maximumBody=Math.max(maximumBody,state.body);if(i%4096===0)diagnostics.snapshots.push({time,...state,bodyModeEnergies:Array.from(br,(v,k)=>v*v+bi[k]**2),partials:Array.from({length:modes},(_,n)=>sr[2*n]**2+si[2*n]**2+sr[2*n+1]**2+si[2*n+1]**2)})}
   }
+  cursor=end;if(cursor<count)return {done:false};
+  finished=true;
   if(diagnostics)Object.assign(diagnostics,{initialEnergy,maxEnergy:maximum,maxBodyEnergy:maximumBody,finalEnergy:energy().total,radiatedEnergy,rawPeak:peak,initialBodyEnergy,impedance,pluckPosition,releaseEnergy,releaseRemainder});
   if(peak>0)for(let i=0;i<count;i++)out[i]*=.8/peak;
-  return out;
+  return {done:true,value:out};
+  }};
  }
 };

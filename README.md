@@ -6,7 +6,7 @@ A browser synthesizer with a physically modelled Nylon Guitar. String vibration 
 
 https://okonkore.github.io/pmg/
 
-Select **Nylon Guitar** in the instrument menu and press the audio enable button. The first preparation may take a moment. Use the on-screen keyboard or play one of the Bach pieces.
+Select **Nylon Guitar** in the instrument menu and press the audio enable button. The first preparation may take a moment. Use the on-screen keyboard or play one of the Bach pieces. Initial guitar preparation covers the visible keyboard; uncached previews and score pitches are prepared when requested. Changing settings or stopping cancels obsolete preparation. The synthesis worker pauses between short calculation slices to keep interaction responsive.
 
 ## Guitar reference tone
 
@@ -51,6 +51,8 @@ for test in synth-demo/*.test.cjs; do
   node "$test" || exit
 done
 ```
+
+Worker scheduling and preparation changes are described in [the responsiveness note](scripts/guitar-preparation-performance-2026-10-21.md), including the optional existing-Playwright browser test.
 
 The MIDI converter can be checked with `python3 scripts/test_bwv1012.py`.
 
