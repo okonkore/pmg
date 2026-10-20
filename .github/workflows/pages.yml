@@ -30,7 +30,9 @@ jobs:
       - name: Assemble static app
         run: |
           mkdir -p _site
-          cp synth-demo/index.html synth-demo/*.js synth-demo/*.css _site/
+          cp synth-demo/*.html synth-demo/*.js synth-demo/*.css _site/
+          mkdir -p _site/audio
+          cp synth-demo/audio/guitar-tone-before-after.wav _site/audio/
           touch _site/.nojekyll
       - uses: actions/upload-pages-artifact@v4
         with:
