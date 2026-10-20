@@ -9,3 +9,6 @@
 /synth-demo/assets/
 /_site/
 __pycache__/
+
+# User-provided instrument references stay local.
+/reference-recordings/

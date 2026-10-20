@@ -8,6 +8,12 @@ https://okonkore.github.io/pmg/
 
 Select **Nylon Guitar** in the instrument menu and press the audio enable button. The first preparation may take a moment. Use the on-screen keyboard or play one of the Bach pieces.
 
+## Guitar reference tone
+
+Nylon Guitar includes a shared body-output adjustment guided by six isolated guitar notes. **録音を参考にした音色** switches it on; switch it off to compare the previous sound. E2, D3, G3, E4, F♯4 and A4 preview buttons are available alongside D2. The reference recordings use standard tuning (Drop D off). Recordings remain local and are not included in the site.
+
+Details and limitations: [2026-10-20 tone adjustment](scripts/guitar-tone-2026-10-20.md).
+
 ## Piano-roll editor
 
 Open **ピアノロール** to inspect a score. Built-in pieces are read-only; choose **コピーして編集** to create an independent editable copy in **マイソング**. **新しい曲** creates an empty score.

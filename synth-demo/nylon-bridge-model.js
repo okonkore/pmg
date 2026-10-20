@@ -9,8 +9,8 @@ const NylonBridgeModel = {
   [1190,100,1,.9],[1430,340,.4,.12],
   [1850,420,.55,.02],[2610,350,2.348,.9],[3300,800,1,.6],[4350,1050,.6,.45]],
  stringFor(midi,settings){return NylonModel.stringFor(midi,settings)},
- render(rate,midi,{nail=.38,position=.22,body=.48,dropD=false,contact=0,attack=0,bodyFit=0}={},diagnostics){
-  const fit=bodyFit?NylonBodyFit:null;
+ render(rate,midi,{nail=.38,position=.22,body=.48,dropD=false,contact=0,attack=0,bodyFit=0,referenceTone=0}={},diagnostics){
+  const fit=bodyFit?(referenceTone?NylonReferenceFit:NylonBodyFit):null;
   const string=NylonModel.stringFor(midi,{dropD}),{number,openMidi,fret,wound}=string;
   const fundamental=440*2**((midi-69)/12),count=Math.ceil(rate*3.6);
   // A fret shortens the vibrating length; drop D lowers the sixth string tension.
