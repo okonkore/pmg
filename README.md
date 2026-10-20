@@ -8,6 +8,12 @@ https://okonkore.github.io/pmg/
 
 Select **Nylon Guitar** in the instrument menu and press the audio enable button. The first preparation may take a moment. Use the on-screen keyboard or play one of the Bach pieces.
 
+## Sample pieces
+
+BWV 1012 includes Prélude, Allemande, Courante, Sarabande, Gavotte I, Gavotte II, and Gigue, in score order. Each movement plays through once without repeats, using the selected synthesizer sound. The existing BWV 1007 selections are retained in a separate menu group.
+
+BWV 1012 note data is adapted from Hajo Dezelski's Mutopia engraving under CC BY-SA 3.0. Source links, licenses and reproduction instructions are in [scripts/score-sources/bwv1012](scripts/score-sources/bwv1012/README.md).
+
 ## Run locally
 
 ```sh
@@ -25,6 +31,8 @@ for test in synth-demo/*.test.cjs; do
   node "$test" || exit
 done
 ```
+
+The MIDI converter can be checked with `python3 scripts/test_bwv1012.py`.
 
 The selected files in `analysis-1007` are regression fixtures for these tests. Reference recordings and generated analysis outputs are not included.
 

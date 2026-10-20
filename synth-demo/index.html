@@ -37,20 +37,36 @@
 <div class="monitor"><canvas id="scope" aria-label="発音中の波形"></canvas><div class="monitor-foot"><span id="note">READY</span><span id="latency">OUTPUT —</span></div></div>
 <div class="octave-bar"><div class="octave-buttons"><button id="octave-down" aria-label="1オクターブ下げる">− OCT</button><output id="octave-range" aria-live="polite"></output><button id="octave-up" aria-label="1オクターブ上げる">＋ OCT</button></div><button id="octave-reset">C4に戻す</button></div>
 <div class="keyboard" id="keyboard" aria-label="C4からC5の鍵盤"></div>
-<div class="song-picker"><label for="song">試聴曲 · J. S. Bach</label><select id="song"><option value="gavotte">BWV 1012 · Gavotte I</option><option value="prelude">BWV 1007 · Prélude（プレリュード）</option></select><p id="song-info" class="hint" aria-live="polite"></p></div>
+<div class="song-picker"><label for="song">試聴曲 · J. S. Bach</label><select id="song"></select><p id="song-info" class="hint" aria-live="polite"></p></div>
 <div class="bottom"><div class="actions"><button id="demo">▶ フレーズを試聴</button><button id="stop">すべて止める</button></div><small>和音OK · 最大12音</small></div>
 <div class="hint">白鍵 A S D F G H J K ／ 黒鍵 W E T Y U<br>Z / X でオクターブ上下 · 対応音域 A0〜C8（88鍵）<br>鍵盤を押して演奏できます。弦楽器系は押し続けても自然に減衰します。スマホは画面の鍵盤で。</div>
 </section>
-<footer>最初に「音を有効にする」を押してください。有線イヤホン・内蔵スピーカー推奨。<br>波形合成 → フィルター → 音量エンベロープ → ディレイ。Funky Clavは弦風の倍音と短い減衰、オートワウで音を作ります。すべて合成音です。Nylon Guitarは弦の振動・爪や指の接触・胴の共鳴を計算しています。<br>試聴データ：<a href="https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=1506" target="_blank" rel="noopener">Mutopia / Hajo Dezelski</a>（<a href="https://creativecommons.org/licenses/by-sa/3.0/" target="_blank" rel="noopener">CC BY-SA 3.0</a>）。音符データを変換し、テンポ・音の切り方を試聴用に調整。<br>BWV 1007（Prélude / Allemande / Courante / Sarabande / Gigue）：<a href="https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=517" target="_blank" rel="noopener">Mutopia / Andreas Scherer</a>（Public Domain）。音符データを変換し、音の切り方を試聴用に調整。</footer>
+<footer>最初に「音を有効にする」を押してください。有線イヤホン・内蔵スピーカー推奨。<br>波形合成 → フィルター → 音量エンベロープ → ディレイ。Funky Clavは弦風の倍音と短い減衰、オートワウで音を作ります。すべて合成音です。Nylon Guitarは弦の振動・爪や指の接触・胴の共鳴を計算しています。<br>BWV 1012：Mutopia / Hajo Dezelski（<a href="https://creativecommons.org/licenses/by-sa/3.0/" target="_blank" rel="noopener">CC BY-SA 3.0</a>）。音符データを変換し、テンポ・音の切り方を試聴用に調整。反復なし。出典：<a href="https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=1494" target="_blank" rel="noopener">Prélude</a> / <a href="https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=1503" target="_blank" rel="noopener">Allemande</a> / <a href="https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=1504" target="_blank" rel="noopener">Courante</a> / <a href="https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=1505" target="_blank" rel="noopener">Sarabande</a> / <a href="https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=1506" target="_blank" rel="noopener">Gavotte I</a> / <a href="https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=1507" target="_blank" rel="noopener">Gavotte II</a> / <a href="https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=1508" target="_blank" rel="noopener">Gigue</a>。<br>BWV 1007（Prélude / Allemande / Courante / Sarabande / Gigue）：<a href="https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=517" target="_blank" rel="noopener">Mutopia / Andreas Scherer</a>（Public Domain）。音符データを変換し、音の切り方を試聴用に調整。</footer>
 </main>
 <script src="gavotte.js"></script>
 <script src="prelude.js"></script>
 <script src="bach-solos.js"></script>
+<script src="bach-1012.js"></script>
 <script>
 'use strict';
 const $=id=>document.getElementById(id);
-const songs={gavotte:{score:gavotteScore,label:'Gavotte I',edition:'全曲・反復なし'},prelude:{score:preludeScore,label:'Prélude',edition:'全曲'},...bachSoloSongs};
-for(const [value,song] of Object.entries(bachSoloSongs)){const option=document.createElement('option');option.value=value;option.textContent=song.option;$('song').append(option)}
+const suite1012={
+ prelude1012:bach1012Songs.prelude1012,
+ allemande1012:bach1012Songs.allemande1012,
+ courante1012:bach1012Songs.courante1012,
+ sarabande1012:bach1012Songs.sarabande1012,
+ gavotte:{score:gavotteScore,label:'Gavotte I',edition:'全曲・反復なし',option:'Gavotte I（ガヴォット I）'},
+ gavotte2:bach1012Songs.gavotte2,
+ gigue1012:bach1012Songs.gigue1012
+};
+const suite1007={prelude:{score:preludeScore,label:'Prélude',edition:'全曲',option:'Prélude（プレリュード）'},...bachSoloSongs};
+const songs={...suite1012,...suite1007};
+for(const [label,collection] of [['BWV 1012 · 無伴奏チェロ組曲 第6番',suite1012],['BWV 1007 · 無伴奏チェロ組曲 第1番',suite1007]]){
+ const group=document.createElement('optgroup');group.label=label;
+ for(const [value,song] of Object.entries(collection)){const option=document.createElement('option');option.value=value;option.textContent=song.option;group.append(option)}
+ $('song').append(group);
+}
+$('song').value='gavotte';
 function updateSong(){const {score,edition}=songs[$('song').value];const seconds=Math.round(Math.max(...score.events.map(([at,midi,duration])=>at+duration))*60/score.bpm);$('song-info').textContent=edition+'／約'+seconds+'秒／♩ = '+score.bpm+'（試聴曲はオクターブ移動の対象外）'}
 $('song').onchange=()=>{stop();updateSong()};
 updateSong();

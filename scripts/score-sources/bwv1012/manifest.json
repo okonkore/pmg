@@ -1,0 +1,79 @@
+[
+  {
+    "key": "prelude1012",
+    "title": "Prélude",
+    "sourceId": 1494,
+    "source": "https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=1494",
+    "midi": "https://www.mutopiaproject.org/ftp/BachJS/BWV1012/bwv-1012-1/bwv-1012-1.mid",
+    "sha256": "42b5142d195a9302119752dc945262f9fc87b02c218153879617c46580d40407",
+    "notes": 1349,
+    "beats": 623.5,
+    "bpm": 144
+  },
+  {
+    "key": "allemande1012",
+    "title": "Allemande",
+    "sourceId": 1503,
+    "source": "https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=1503",
+    "midi": "https://www.mutopiaproject.org/ftp/BachJS/BWV1012/bwv-1012-2/bwv-1012-2.mid",
+    "sha256": "93c8574b0b8e830604116a8a90da27d193f48120961a78a9d4c5b6c3c4b0ab69",
+    "notes": 541,
+    "beats": 80.25,
+    "bpm": 36
+  },
+  {
+    "key": "courante1012",
+    "title": "Courante",
+    "sourceId": 1504,
+    "source": "https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=1504",
+    "midi": "https://www.mutopiaproject.org/ftp/BachJS/BWV1012/bwv-1012-3/bwv-1012-3.mid",
+    "sha256": "eec84bf148dd0288a5dc2b3f833ef818d98099b2e2ef4834bce3fa786db4beda",
+    "notes": 639,
+    "beats": 216.0,
+    "bpm": 132
+  },
+  {
+    "key": "sarabande1012",
+    "title": "Sarabande",
+    "sourceId": 1505,
+    "source": "https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=1505",
+    "midi": "https://www.mutopiaproject.org/ftp/BachJS/BWV1012/bwv-1012-4/bwv-1012-4.mid",
+    "sha256": "cb6a7d95f1e8f96263463ab9c01ee4fc13a8bef78c2ecd8d79ad2053eed51389",
+    "notes": 301,
+    "beats": 192.0,
+    "bpm": 72
+  },
+  {
+    "key": "gavotte",
+    "title": "Gavotte I",
+    "sourceId": 1506,
+    "source": "https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=1506",
+    "midi": "https://www.mutopiaproject.org/ftp/BachJS/BWV1012/bwv-1012-5-1/bwv-1012-5-1.mid",
+    "sha256": "80203e3cf81642d743828e6f9804108254e3aa46af9f3e93f67d9d47ec25dee5",
+    "notes": 258,
+    "beats": 114.0,
+    "bpm": 108
+  },
+  {
+    "key": "gavotte2",
+    "title": "Gavotte II",
+    "sourceId": 1507,
+    "source": "https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=1507",
+    "midi": "https://www.mutopiaproject.org/ftp/BachJS/BWV1012/bwv-1012-5-2/bwv-1012-5-2.mid",
+    "sha256": "a4b612a595ad2d61847a566e4de349495ea57a23cf6b07b654de8d929aaacfd7",
+    "notes": 214,
+    "beats": 98.0,
+    "bpm": 108
+  },
+  {
+    "key": "gigue1012",
+    "title": "Gigue",
+    "sourceId": 1508,
+    "source": "https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=1508",
+    "midi": "https://www.mutopiaproject.org/ftp/BachJS/BWV1012/bwv-1012-6/bwv-1012-6.mid",
+    "sha256": "21d5aa001acac48db1942713b56243b247067feca0c90614d9fb8b119614bcbc",
+    "notes": 655,
+    "beats": 204.5,
+    "bpm": 168
+  }
+]
