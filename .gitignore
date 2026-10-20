@@ -1,0 +1,11 @@
+# Reference recordings and generated analysis are local only.
+/reference-*.wav
+/analysis-1007/**/*.wav
+/analysis-1007/**/*.f32
+/analysis-1007/**/*.png
+
+# Development screenshots and unused prototype assets.
+/synth-demo/*preview.png
+/synth-demo/assets/
+/_site/
+__pycache__/
