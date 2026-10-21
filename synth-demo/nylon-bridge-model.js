@@ -164,6 +164,10 @@ const NylonBridgeModel = {
    // At zero body, expose the unamplified string so the slider has a dry endpoint.
    if(body===0)for(let k=0;k<sr.length;k++)input+=sr[k];
    const time=i/rate;input*=1-Math.exp(-time/(.0006+.0012*(1-nail)));
+   if(thirdAmount&&time<NylonThirdExcitation.onsetRiseSeconds){
+    const onset=.5-.5*Math.cos(Math.PI*time/NylonThirdExcitation.onsetRiseSeconds);
+    input*=1-thirdAmount+thirdAmount*onset;
+   }
    const high=input-previousInput+pole*previousOutput;previousInput=input;previousOutput=high;
    out[i]=high*Math.min(1,(count-1-i)/(rate*.06));peak=Math.max(peak,Math.abs(out[i]));
    if(diagnostics&&i%256===0){const state=energy();maximum=Math.max(maximum,state.total);maximumBody=Math.max(maximumBody,state.body);if(i%4096===0)diagnostics.snapshots.push({time,...state,bodyModeEnergies:Array.from(br,(v,k)=>v*v+bi[k]**2),partials:Array.from({length:modes},(_,n)=>sr[2*n]**2+si[2*n]**2+sr[2*n+1]**2+si[2*n+1]**2)})}

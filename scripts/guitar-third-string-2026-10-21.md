@@ -42,3 +42,15 @@ The resulting first-40ms off-partial share is approximately 6.9%. The 5–10kHz 
 `high3/before.f32` retains high-2, and `high3/after.f32` retains this candidate under the private reference directory. `analyze_third_texture.py` reports the common mask/band measurements. The comparison now labels high-2 as “前回”, and audio URLs use `g3-high-3`. The high-2 public page and clips are archived locally in `high3/previous-public/`.
 
 `nylon-third-contact.test.cjs` checks finite reserved energy, passive budgets, a restored but short 5–10kHz attack, and exact deterministic sync/async output at both normal sample rates. Third-tone, wound-release and responsive-worker regressions pass. No new browser audio computation is needed: the comparison uses the generated WAVs.
+
+## Softer onset revision (g3-attack-4)
+
+The user found the timbre closer but the synthetic attack too strong. Relative to each note's 40–140ms RMS, high-3's full first-5ms RMS was about +0.4dB, versus the three references' -14.1/-22.9/-19.1dB. Its upper-band peak appeared at about 1.1ms and -8.9dB, versus reference peaks around 24–46ms and -16.7 to -18.5dB. The annotated recording onsets have limited time precision, so these are approximate alignment-dependent diagnostics rather than exact release timing.
+
+The trial adds a 20ms half-cosine acoustic onset window, on top of the existing sub-millisecond fade, enabled only with `thirdTone`. It has unity gain after 20ms and does not change excitation, body/string dynamics, damping, or the short contact source. It only attenuates early acoustic output. The existing high-pass state has a brief settling effect; regression checks confirm the later raw waveform and level are retained.
+
+The new full first-5ms RMS is approximately -22.5dB. The high-band peak is about -16.7dB at 20.1ms. Full-note peak time shifts from 12.0 to 22.3ms. Later RMS windows remain effectively unchanged. The candidate is pre-rendered for listening; the main instrument has not adopted it.
+
+The previous high-3 audio is stored in `attack4/before.f32` and the public snapshot in `attack4/previous-public/`. The latest waveform is `attack4/after.f32`; `analyze_third_attack.py` reproduces the onset measurements. The new “前回” source exactly retains high-3, and the URL revision is `g3-attack-4`. Compare with band matching OFF, because independent attack-level matching would partially compensate the intended change.
+
+`nylon-third-onset.test.cjs` verifies a significantly softer first 5ms, identical mechanical/radiation diagnostics, and retained later waveform and level at both common sample rates. Third-tone, finite-contact, wound-release and responsive-worker tests pass. Browser checks cover all 24 WAVs, gain modes, source sequences and mobile-width playback.
