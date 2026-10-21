@@ -81,7 +81,7 @@ const ScoreEditor=(()=>{
    $('seq-notice').textContent=readonly()?'内蔵曲は変更できません。「コピーして編集」で自分の曲として編集できます。':'編集内容はこのブラウザに自動保存されます。別の端末へ移すときはJSONで書き出してください。';
    for(const id of ['seq-draw','seq-save','seq-remove'])$(id).disabled=readonly();
    $('seq-origin').textContent=d.source?`コピー元：${d.source.title} · ${d.source.credit} · ${d.source.license}`:'';
-   roll.style.width=GUTTER+width+'px';roll.style.height=RULER+88*rowHeight+'px';grid.style.width=width+'px';grid.style.height=88*rowHeight+'px';grid.style.setProperty('--row-height',rowHeight+'px');for(const key of $('seq-piano').children){key.style.height=rowHeight+'px';key.style.lineHeight=Math.max(1,rowHeight-1)+'px'}grid.style.setProperty('--bar-px',bar*px+'px');grid.style.setProperty('--step-px',(snap()||1)*px+'px');grid.dataset.tool=tool;grid.dataset.readonly=String(readonly());
+   roll.style.width=GUTTER+width+'px';roll.style.height=RULER+88*rowHeight+'px';grid.style.width=width+'px';grid.style.height=88*rowHeight+'px';grid.style.setProperty('--row-height',rowHeight+'px');$('seq-piano').style.height=88*rowHeight+'px';for(const [row,key] of [...$('seq-piano').children].entries()){key.style.top=row*rowHeight+'px';key.style.height=rowHeight+'px';key.style.lineHeight=Math.max(1,rowHeight-1)+'px'}grid.style.setProperty('--bar-px',bar*px+'px');grid.style.setProperty('--step-px',(snap()||1)*px+'px');grid.dataset.tool=tool;grid.dataset.readonly=String(readonly());
    ruler.style.width=width+'px';ruler.replaceChildren();
    // Thin out measure labels at low zoom while retaining true bar positions.
    const stride=Math.max(1,Math.ceil(45/(bar*px)));
