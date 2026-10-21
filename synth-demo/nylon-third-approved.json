@@ -1,0 +1,16 @@
+{
+  "revision": "g3-attack-4",
+  "settings": {
+    "bodyFit": 1,
+    "referenceTone": 1,
+    "attack": 1,
+    "stringTexture": 1,
+    "highDecay": 1,
+    "thirdTone": 1,
+    "dropD": false
+  },
+  "approved": {
+    "44100:55": "bbd33e0204f836015036c987499660d483b963a27b16d55bc521279d410afd03",
+    "48000:55": "49ad2fa4f1efd7b6e08e1c8db7f73c5d0fb5d5a9ceaf43f9dfeb066ae8ca414a"
+  }
+}

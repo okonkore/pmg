@@ -54,3 +54,9 @@ The new full first-5ms RMS is approximately -22.5dB. The high-band peak is about
 The previous high-3 audio is stored in `attack4/before.f32` and the public snapshot in `attack4/previous-public/`. The latest waveform is `attack4/after.f32`; `analyze_third_attack.py` reproduces the onset measurements. The new “前回” source exactly retains high-3, and the URL revision is `g3-attack-4`. Compare with band matching OFF, because independent attack-level matching would partially compensate the intended change.
 
 `nylon-third-onset.test.cjs` verifies a significantly softer first 5ms, identical mechanical/radiation diagnostics, and retained later waveform and level at both common sample rates. Third-tone, finite-contact, wound-release and responsive-worker tests pass. Browser checks cover all 24 WAVs, gain modes, source sequences and mobile-width playback.
+
+## Adoption and second-string preparation
+
+The user accepted `g3-attack-4`. The main instrument now passes `thirdTone:1` when its reference-tone control is enabled, and the worker/module URL is versioned for the release. `nylon-third-approved.json` freezes the accepted G3 output at both rates; its 48kHz source was checked byte-for-byte against the accepted listening render before integration. The model API still defaults to zero to retain legacy comparisons. `nylon-third-approved.test.cjs` verifies worker routing and unchanged strings 1/2/4/5/6. The browser preparation test also compares actual production G3 with an independent approved-settings render and confirms B3 is unchanged.
+
+A B3 preview is added to the instrument, and the generic treble comparison supports `?note=59`. Its B3 waveform is unchanged; no second-string reference has been supplied. Reference buttons stay disabled for B3. Earlier G3 comparison audio is preserved and labeled as a baseline.

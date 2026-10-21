@@ -7,7 +7,7 @@ const hash=y=>crypto.createHash('sha256').update(Buffer.from(y.buffer)).digest('
 for(const rate of [44100,48000]){
  for(const midi of [40,45,50])assert.equal(hash(model.render(rate,midi,settings)),fixture.approved[`${rate}:${midi}`],'Same sound as approved comparison');
  assert.notEqual(hash(model.render(rate,35,settings)),fixture.public[`${rate}:35`],"Seventh string now uses wound release");
- for(const midi of [55,59,64,66,69])assert.equal(hash(model.render(rate,midi,settings)),fixture.public[`${rate}:${midi}`],'Plain strings unchanged from public app');
+ for(const midi of [55,59,64,66,69])assert.equal(hash(model.render(rate,midi,settings)),fixture.public[`${rate}:${midi}`],'Legacy plain path retained when thirdTone is disabled');
  for(const midi of [35,38,40,45,50]){
   const off={},on={},a=model.render(rate,midi,{...settings,highDecay:0},off),b=model.render(rate,midi,settings,on);
   assert(b.every(Number.isFinite));assert.equal(on.initialEnergy,off.initialEnergy);assert.equal(on.initialBodyEnergy,0);
@@ -24,4 +24,4 @@ for(const extra of [{referenceTone:0},{bodyFit:0}]){
 const page=fs.readFileSync(path.join(__dirname,'index.html'),'utf8');assert(page.includes("stringTexture:Number($('guitar-reference-tone').checked)"));assert(page.includes("highDecay:Number($('guitar-reference-tone').checked)"));assert(page.includes('wound-2026-10-21:'));
 assert(!/<input id="guitar-drop-d"[^>]*checked/.test(page),'Drop D defaults OFF');
 assert(page.includes('guitar-test-35'));
-console.log('Wound release: exact approved sound on strings 4/5/6 at both rates, unchanged public plain strings, seventh string wound release, preserved attack, passive energy, worker extremes and UI settings passed');
+console.log('Wound release: exact approved sound on strings 4/5/6 at both rates, unchanged legacy plain path, seventh string wound release, preserved attack, passive energy, worker extremes and UI settings passed');

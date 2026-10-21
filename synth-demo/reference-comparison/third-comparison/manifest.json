@@ -13,6 +13,6 @@
   "thirdTone": 1,
   "revision": "g3-attack-4",
   "before": "previous G3 trial",
-  "status": "trial; main instrument unchanged",
+  "status": "approved; production reference tone enables thirdTone:1",
   "normalization": "independent full-note 40-140ms RMS; optional independent band attack matching"
 }

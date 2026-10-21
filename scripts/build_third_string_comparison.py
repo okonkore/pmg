@@ -31,6 +31,6 @@ for name,q in clips.items():
  q=q.copy()*gain;q[-1920:]*=np.linspace(1,0,1920);assert np.all(np.isfinite(q)) and np.max(abs(q))<1
  with wave.open(str(out/'audio'/f'{name}.wav'),'wb') as w:w.setnchannels(1);w.setsampwidth(2);w.setframerate(rate);w.writeframes(np.round(q*32767).astype('<i2').tobytes())
 (out/'index.html').write_text((repo/'scripts/third-string-comparison.html').read_text(encoding='utf-8'),encoding='utf-8')
-manifest={'midi':55,'referenceTake':2,'referenceF0':take['fundamentalHz'],'sampleRate':rate,'seconds':3.1,'boundariesHz':[500,2000],'firTaps':2049,'commonHeadroomGain':float(gain),'thirdTone':1,'revision':'g3-attack-4','before':'previous G3 trial','status':'trial; main instrument unchanged','normalization':'independent full-note 40-140ms RMS; optional independent band attack matching'}
+manifest={'midi':55,'referenceTake':2,'referenceF0':take['fundamentalHz'],'sampleRate':rate,'seconds':3.1,'boundariesHz':[500,2000],'firTaps':2049,'commonHeadroomGain':float(gain),'thirdTone':1,'revision':'g3-attack-4','before':'previous G3 trial','status':'approved; production reference tone enables thirdTone:1','normalization':'independent full-note 40-140ms RMS; optional independent band attack matching'}
 (out/'manifest.json').write_text(json.dumps(manifest,indent=2),encoding='utf-8')
 print('Built 24 G3 comparison clips; complementary reconstruction, finite output and headroom verified.')
