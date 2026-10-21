@@ -49,7 +49,7 @@ const NylonBridgeModel = {
   let stringNorm=0;
   for(let n=1;n<=modes;n++)for(let p=0;p<2;p++){
    const k=(n-1)*2+p;
-   const firstPolarization=firstProfile&&n>=2&&n<=6?firstProfile.polarizations[n-2]:null;
+   const firstPolarization=firstProfile&&n>=2&&n<=firstProfile.polarizations.length+1?firstProfile.polarizations[n-2]:null;
    let frequency=fundamental*n*Math.sqrt((1+stiffness*n*n)/(1+stiffness))*(p?1+(wound?.00045:.0007):1);
    if(firstPolarization){
     const center=fundamental*n*Math.sqrt((1+stiffness*n*n)/(1+stiffness));
@@ -91,7 +91,8 @@ const NylonBridgeModel = {
   // Redistribute a fixed pluck energy across the wound-string modes.
   if((woundRelease||thirdAmount||firstAmount)&&tunedPluckEnergy>0){const scale=Math.sqrt(originalPluckEnergy/tunedPluckEnergy);for(let k=0;k<sr.length;k++){sr[k]*=scale;si[k]*=scale}}
   stringNorm=Math.sqrt(stringNorm);for(let k=0;k<sw.length;k++)sw[k]/=stringNorm;
-  const extraContactModes=thirdAmount&&body>0&&attack>0&&NylonThirdExcitation.contactEnergyFraction>0?[[5600,1400,0,.25],[7400,1800,0,.25],[9200,2400,0,.2]]:[];
+  const firstContact=firstAmount&&body>0&&attack>0?NylonFirstExcitation:null;
+  const extraContactModes=firstContact?[[4800,1500,0,.25],[6500,1800,0,.25],[8500,2200,0,.2],[10500,2600,0,.2]]:thirdAmount&&body>0&&attack>0&&NylonThirdExcitation.contactEnergyFraction>0?[[5600,1400,0,.25],[7400,1800,0,.25],[9200,2400,0,.2]]:[];
   const definitions=[...NylonBridgeModel.bodyModes,...extraContactModes].filter(mode=>mode[0]<rate*.45);
   const br=new Float64Array(definitions.length),bi=new Float64Array(definitions.length),bw=new Float64Array(definitions.length);
   const bc=new Float64Array(definitions.length),bs=new Float64Array(definitions.length),radiation=new Float64Array(definitions.length),bodyLoss=new Float64Array(definitions.length);
@@ -132,15 +133,16 @@ const NylonBridgeModel = {
   let contactForce=null,contactEnergy=0;
   if(extraContactModes.length){
    let stored=0;for(let k=0;k<sr.length;k++)stored+=sr[k]**2+si[k]**2;
-   const fraction=thirdAmount*NylonThirdExcitation.contactEnergyFraction;
+   const fraction=firstContact?firstAmount*firstProfile.contactEnergyFraction:thirdAmount*NylonThirdExcitation.contactEnergyFraction;
    contactEnergy=stored*fraction;cr[0]=Math.sqrt(contactEnergy);
    for(let k=0;k<sr.length;k++){sr[k]*=Math.sqrt(1-fraction);si[k]*=Math.sqrt(1-fraction)}
    let weightNorm=0;
-   for(let k=0;k<definitions.length;k++){const f=definitions[k][0];contactWeights[k]=f>=2500?Math.min(1,(f-2000)/2000):0;weightNorm+=contactWeights[k]**2}
+   for(let k=0;k<definitions.length;k++){const f=definitions[k][0];contactWeights[k]=firstContact?(f>=4500?Math.min(1,(f-4000)/2000):0):(f>=2500?Math.min(1,(f-2000)/2000):0);weightNorm+=contactWeights[k]**2}
    for(let k=0;k<contactWeights.length;k++)contactWeights[k]/=Math.sqrt(weightNorm);
-   const length=Math.round(rate*NylonThirdExcitation.contactDuration),hp=Math.exp(-2*Math.PI*2000/rate),lp=1-Math.exp(-2*Math.PI*10000/rate);
+   const contactProfile=firstContact||NylonThirdExcitation;
+   const length=Math.round(rate*contactProfile.contactDuration),hp=Math.exp(-2*Math.PI*(firstContact?4000:2000)/rate),lp=1-Math.exp(-2*Math.PI*10000/rate);
    contactForce=new Float64Array(length);let seed=(midi*2654435761)>>>0,previous=0,high=0,low=0;
-   for(let i=0;i<length;i++){seed=(Math.imul(seed,1664525)+1013904223)>>>0;const white=seed/2147483648-1;high=white-previous+hp*high;previous=white;low+=lp*(high-low);const time=i/rate,envelope=(1-Math.exp(-time/.0008))*Math.exp(-time/NylonThirdExcitation.contactTimeConstant)*Math.min(1,(length-1-i)/(rate*.008));contactForce[i]=.05*low*envelope}
+   for(let i=0;i<length;i++){seed=(Math.imul(seed,1664525)+1013904223)>>>0;const white=seed/2147483648-1;high=white-previous+hp*high;previous=white;low+=lp*(high-low);const time=i/rate,envelope=(1-Math.exp(-time/.0008))*Math.exp(-time/contactProfile.contactTimeConstant)*Math.min(1,(length-1-i)/(rate*.008));contactForce[i]=(firstContact?firstContact.contactForceScale:.05)*low*envelope}
   }
   const energy=()=>{let stringEnergy=0,bodyEnergy=0;for(let k=0;k<sr.length;k++)stringEnergy+=sr[k]**2+si[k]**2;for(let k=0;k<br.length;k++)bodyEnergy+=br[k]**2+bi[k]**2;const excitation=er[0]**2+ei[0]**2+cr[0]**2+ci[0]**2;return {string:stringEnergy,body:bodyEnergy,excitation,total:stringEnergy+bodyEnergy+excitation}};
   const initialEnergy=energy().total,initialBodyEnergy=energy().body;

@@ -30,3 +30,15 @@ User feedback prioritized the middle band, then the high band. The first fit mat
 In E4 the 0.5–0.8s levels of partials 2/3, relative to the initial fundamental, were about -26.5/-34.8dB before and -43.3/-23.4dB now, versus -40.4/-24.4dB in the selected recording. Initial levels remain approximately unchanged. High-band differences remain, particularly the E4 2–4kHz tail. This revision prioritizes the middle-band evolution rather than claiming a complete match.
 
 The comparison now uses the previous published first-string candidate as “前回” and this revision as “今回”; the main instrument still retains its existing first-string tone. Building requires the saved previous candidate PCM files under the private analysis folder.
+
+## Revision first-high-3
+
+The listener accepted the middle band and described the remaining high band as unnaturally consolidated. Analysis distinguishes two problems: almost purely periodic high output in the model's onset, and a shared monotonic envelope for upper partials. The recording also becomes strongly tonal after its first contact; this does not justify continuous broadband hiss.
+
+Paired-component fitting now extends through harmonic 24, but only partials above about 2100Hz at each recorded fret are refitted. Initial 5–40ms behavior is included as well as the later envelope. For example, F♯'s seventh partial previously started stronger than its 40–140ms level; the new candidate starts much weaker and emerges later. High partials now have differing separations, phases and nonnegative losses. These remain phenomenological fits to the supplied excerpts, not uniquely identified physics. F♯'s overall decay is still not forced to match the unusually short reference.
+
+A seeded, finite contact reservoir excites four strongly damped body states at 4.8/6.5/8.5/10.5kHz through a separate orthogonal port. Its energy is taken from the same pluck, its force lasts at most 180ms, and unused energy is included in detached release energy. No reference sample or noise is mixed directly into the output. The existing third-string reservoir and all other strings retain their exact output. The added high response is only enabled by the comparison's firstTone and attack settings.
+
+The approved first-mid-2 middle-partial envelopes are stored in nylon-first-middle-approved.json. The high-band regression checks them at three notes, four time windows and both sample rates; measured change stays below 0.02dB relative to the initial fundamental. This does not assert that the entire listening band is mathematically identical. High-band differences remain, including some F♯ early sustain and individual late partial levels, and need listening feedback.
+
+The comparison uses first-mid-2 as “前回” and first-high-3 as “今回”. The instrument's main first-string tone remains unchanged pending listening approval. In addition to existing regressions, nylon-first-high.test.cjs checks preserved middle envelopes, delayed high-partial onset, bounded contact energy and passive energy accounting.

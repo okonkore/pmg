@@ -19,6 +19,6 @@ gain=min(1,.92/max(float(np.max(abs(q))) for q in clips.values()))
 for name,q in clips.items():
  q=q.copy()*gain;q[-1920:]*=np.linspace(1,0,1920);assert np.all(np.isfinite(q)) and np.max(abs(q))<1
  with wave.open(str(out/'audio'/f'{name}.wav'),'wb') as w:w.setnchannels(1);w.setsampwidth(2);w.setframerate(rate);w.writeframes(np.round(q*32767).astype('<i2').tobytes())
-manifest={'revision':'first-mid-2','beforeRevision':'first-1','firstTone':1,'sampleRate':rate,'seconds':3.1,'notes':notes,'boundariesHz':[500,2000],'firTaps':2049,'commonHeadroomGain':gain,'status':'trial; main first-string tone unchanged','normalization':'independent full-note 40-140ms RMS, optional band attack matching'}
+manifest={'revision':'first-high-3','beforeRevision':'first-mid-2','firstTone':1,'sampleRate':rate,'seconds':3.1,'notes':notes,'boundariesHz':[500,2000],'firTaps':2049,'commonHeadroomGain':gain,'status':'trial; main first-string tone unchanged','normalization':'independent full-note 40-140ms RMS, optional band attack matching'}
 (out/'manifest.json').write_text(json.dumps(manifest,ensure_ascii=False,indent=2),encoding='utf-8');(out/'index.html').write_text((repo/'scripts/first-string-comparison.html').read_text(encoding='utf-8').replace('__CONFIG__',json.dumps(manifest,ensure_ascii=False)),encoding='utf-8')
 print('Built 72 first-string clips; complementary reconstruction, finite output and peak safety verified.')

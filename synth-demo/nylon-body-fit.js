@@ -261,24 +261,24 @@ const NylonFirstExcitation = {
     2.3,
     -2.96,
     -3.935,
-    -0.9,
-    -4.646,
-    -4.02,
-    -8.045,
-    6.651,
-    12.417,
-    -3.898,
-    0.959,
-    -6.454,
-    6.371,
-    13.273,
-    12.134,
-    10.305,
-    6.866,
-    11.621,
-    17.058,
+    -2.95,
+    -0.107,
+    -5.758,
+    -12.658,
+    3.369,
+    8.947,
+    -6.462,
+    0.013,
+    -6.908,
+    9.655,
     18.0,
-    17.443,
+    18.0,
+    18.0,
+    6.319,
+    11.393,
+    17.589,
+    18.0,
+    17.189,
     18.0,
     18.0,
     18.0,
@@ -311,23 +311,23 @@ const NylonFirstExcitation = {
     1.2083,
     1.7281,
     1.2559,
-    1.2321,
-    0.26,
-    1.6444,
-    0.7707,
-    0.6535,
-    1.0441,
-    0.9996,
-    0.7668,
+    1.9286,
+    1.878,
+    4.3318,
+    0.6771,
+    0,
+    0.9392,
+    0,
+    1.5789,
+    0.0,
+    0,
+    2.0,
+    0.6,
+    2.0,
     0.0,
     0.0,
     0.0,
-    0.0,
-    0.0,
-    0.0,
-    0.0,
-    0.0,
-    0.0,
+    0.6,
     0.0,
     0.0,
     0.0,
@@ -379,8 +379,99 @@ const NylonFirstExcitation = {
      "ratio": 0.2,
      "splitHz": 2.7,
      "phase": -1.047198
+    },
+    {
+     "ratio": 0.4,
+     "splitHz": 4.0,
+     "phase": -2.094395
+    },
+    {
+     "ratio": 0.2,
+     "splitHz": 1.5,
+     "phase": 2.879793
+    },
+    {
+     "ratio": 0.92,
+     "splitHz": 4.0,
+     "phase": 2.879793
+    },
+    {
+     "ratio": 0.92,
+     "splitHz": 4.0,
+     "phase": -3.141593
+    },
+    {
+     "ratio": 0.4,
+     "splitHz": 4.0,
+     "phase": -2.094395
+    },
+    {
+     "ratio": 0.92,
+     "splitHz": 6.0,
+     "phase": 1.570796
+    },
+    {
+     "ratio": 0.6,
+     "splitHz": 3.0,
+     "phase": -3.141593
+    },
+    {
+     "ratio": 0.8,
+     "splitHz": 2.0,
+     "phase": -2.879793
+    },
+    {
+     "ratio": 0.0766667,
+     "splitHz": 3.46109,
+     "phase": 0.24
+    },
+    {
+     "ratio": 0.97,
+     "splitHz": 4.0,
+     "phase": 1.570796
+    },
+    {
+     "ratio": 0.92,
+     "splitHz": 1.0,
+     "phase": -3.141593
+    },
+    {
+     "ratio": 0.8,
+     "splitHz": 0.7,
+     "phase": -3.141593
+    },
+    {
+     "ratio": 0.92,
+     "splitHz": 2.0,
+     "phase": 2.356194
+    },
+    {
+     "ratio": 0.0766667,
+     "splitHz": 4.61479,
+     "phase": 0.24
+    },
+    {
+     "ratio": 0.0766667,
+     "splitHz": 4.84553,
+     "phase": 0.24
+    },
+    {
+     "ratio": 0.0766667,
+     "splitHz": 5.07626,
+     "phase": 0.24
+    },
+    {
+     "ratio": 0.8,
+     "splitHz": 1.0,
+     "phase": -3.141593
+    },
+    {
+     "ratio": 0.0766667,
+     "splitHz": 5.53774,
+     "phase": 0.24
     }
-   ]
+   ],
+   "contactEnergyFraction": 3.52e-05
   },
   {
    "fret": 2,
@@ -391,27 +482,27 @@ const NylonFirstExcitation = {
     10.309,
     -8.671,
     10.547,
-    16.001,
-    10.34,
-    9.203,
-    2.203,
-    12.362,
-    8.243,
-    8.324,
-    11.116,
+    15.348,
+    8.056,
+    8.716,
+    -2.678,
+    11.432,
+    6.528,
+    7.449,
+    17.0,
+    18.0,
+    13.607,
+    8.383,
     18.0,
     18.0,
-    10.95,
+    3.358,
     18.0,
-    18.0,
-    3.292,
-    18.0,
-    15.586,
+    15.896,
     18.0,
     18.0,
     18.0,
     18.0,
-    16.814,
+    18.0,
     -19.2,
     18.0,
     -20.4,
@@ -441,23 +532,23 @@ const NylonFirstExcitation = {
     1.373,
     1.1736,
     2.5296,
-    1.6615,
-    1.7201,
-    0.8752,
-    1.7614,
-    0.6337,
-    0.3921,
-    1.3209,
-    0.5998,
-    0.6878,
+    2.0431,
+    1.544,
+    2.5209,
+    1.2936,
+    2.2112,
+    0.2131,
+    0.7321,
+    1.9799,
+    0.4459,
+    0,
+    0.6,
+    5.2,
+    0.2,
     0.0,
+    1.3055,
     0.0,
-    0.0,
-    0.0,
-    0.0,
-    0.5274,
-    0.0,
-    0.0,
+    0,
     0.0,
     0.0,
     0.0,
@@ -507,11 +598,102 @@ const NylonFirstExcitation = {
      "phase": 1.570796
     },
     {
-     "ratio": 0.35,
-     "splitHz": 0.85,
-     "phase": -2.356194
+     "ratio": 0.92,
+     "splitHz": 3.0,
+     "phase": 2.617994
+    },
+    {
+     "ratio": 0.97,
+     "splitHz": 3.0,
+     "phase": 2.879793
+    },
+    {
+     "ratio": 0.92,
+     "splitHz": 3.0,
+     "phase": 2.879793
+    },
+    {
+     "ratio": 0.8,
+     "splitHz": 8.0,
+     "phase": 1.570796
+    },
+    {
+     "ratio": 0.97,
+     "splitHz": 3.0,
+     "phase": 2.879793
+    },
+    {
+     "ratio": 0.92,
+     "splitHz": 2.849,
+     "phase": 2.879793
+    },
+    {
+     "ratio": 0.8,
+     "splitHz": 3.108,
+     "phase": 2.617994
+    },
+    {
+     "ratio": 0.97,
+     "splitHz": 1.5,
+     "phase": 2.879793
+    },
+    {
+     "ratio": 0.97,
+     "splitHz": 3.6259,
+     "phase": 2.617994
+    },
+    {
+     "ratio": 0.97,
+     "splitHz": 8.0,
+     "phase": 2.094395
+    },
+    {
+     "ratio": 0.4,
+     "splitHz": 6.0,
+     "phase": 2.617994
+    },
+    {
+     "ratio": 0.97,
+     "splitHz": 2.0,
+     "phase": 2.879793
+    },
+    {
+     "ratio": 0.97,
+     "splitHz": 3.0,
+     "phase": 2.879793
+    },
+    {
+     "ratio": 0.0766667,
+     "splitHz": 4.92093,
+     "phase": 0.24
+    },
+    {
+     "ratio": 0.92,
+     "splitHz": 3.0,
+     "phase": 2.617994
+    },
+    {
+     "ratio": 0.0766667,
+     "splitHz": 5.43892,
+     "phase": 0.24
+    },
+    {
+     "ratio": 0.6,
+     "splitHz": 4.0,
+     "phase": 2.879793
+    },
+    {
+     "ratio": 0.0766667,
+     "splitHz": 5.95691,
+     "phase": 0.24
+    },
+    {
+     "ratio": 0.0766667,
+     "splitHz": 6.21591,
+     "phase": 0.24
     }
-   ]
+   ],
+   "contactEnergyFraction": 3.52e-06
   },
   {
    "fret": 5,
@@ -521,19 +703,19 @@ const NylonFirstExcitation = {
     -3.413,
     7.947,
     -5.388,
-    1.869,
-    -21.649,
-    -6.18,
-    3.624,
-    7.133,
-    4.787,
-    -12.356,
-    14.106,
-    -0.148,
+    5.049,
+    -14.428,
+    -2.68,
+    -2.913,
+    3.649,
+    3.954,
+    -12.712,
+    10.035,
+    6.034,
     18.0,
-    16.577,
-    7.531,
+    14.357,
     18.0,
+    15.214,
     18.0,
     18.0,
     18.0,
@@ -571,23 +753,23 @@ const NylonFirstExcitation = {
     2.4933,
     3.3667,
     3.1846,
-    1.7329,
+    2.8354,
+    3.8,
+    4.2261,
+    0.2599,
+    0.2646,
+    0.6428,
+    0.6,
+    0.2579,
+    1.2,
     0,
-    2.4522,
-    1.7981,
-    1.937,
-    0.4281,
-    0.0,
-    1.7361,
-    0.0,
-    0.5694,
-    0.0,
-    0.0,
-    0.0,
-    0.0,
-    0.0,
+    2.2,
+    0.6,
+    0.6,
+    0,
+    0,
     1.3186,
-    0.0,
+    0,
     0.0,
     0.0,
     0.0,
@@ -633,22 +815,116 @@ const NylonFirstExcitation = {
      "phase": -0.523599
     },
     {
-     "ratio": 0.65,
-     "splitHz": 1.0,
+     "ratio": 0.92,
+     "splitHz": 1.5,
+     "phase": 2.879793
+    },
+    {
+     "ratio": 0.92,
+     "splitHz": 1.5,
      "phase": -2.879793
+    },
+    {
+     "ratio": 0.97,
+     "splitHz": 1.5,
+     "phase": -3.141593
+    },
+    {
+     "ratio": 0.97,
+     "splitHz": 8.0,
+     "phase": 1.570796
+    },
+    {
+     "ratio": 0.97,
+     "splitHz": 3.0,
+     "phase": 2.879793
+    },
+    {
+     "ratio": 0.97,
+     "splitHz": 3.08,
+     "phase": 2.617994
+    },
+    {
+     "ratio": 0.97,
+     "splitHz": 2.0,
+     "phase": -3.141593
+    },
+    {
+     "ratio": 0.97,
+     "splitHz": 3.696,
+     "phase": 2.617994
+    },
+    {
+     "ratio": 0.8,
+     "splitHz": 2.0,
+     "phase": 2.617994
+    },
+    {
+     "ratio": 0.97,
+     "splitHz": 4.312,
+     "phase": 2.617994
+    },
+    {
+     "ratio": 0.8,
+     "splitHz": 4.62,
+     "phase": 2.617994
+    },
+    {
+     "ratio": 0.8,
+     "splitHz": 1.0,
+     "phase": 2.617994
+    },
+    {
+     "ratio": 0.92,
+     "splitHz": 4.0,
+     "phase": 2.617994
+    },
+    {
+     "ratio": 0.92,
+     "splitHz": 1.5,
+     "phase": 2.879793
     },
     {
      "ratio": 0.8,
      "splitHz": 1.5,
-     "phase": -1.570796
+     "phase": 2.879793
+    },
+    {
+     "ratio": 0.0766667,
+     "splitHz": 6.16,
+     "phase": 0.24
+    },
+    {
+     "ratio": 0.97,
+     "splitHz": 2.0,
+     "phase": 2.879793
+    },
+    {
+     "ratio": 0.0766667,
+     "splitHz": 6.776,
+     "phase": 0.24
+    },
+    {
+     "ratio": 0.0766667,
+     "splitHz": 7.084,
+     "phase": 0.24
+    },
+    {
+     "ratio": 0.0766667,
+     "splitHz": 7.392,
+     "phase": 0.24
     }
-   ]
+   ],
+   "contactEnergyFraction": 1.92e-05
   }
- ]
+ ],
+ "contactDuration": 0.18,
+ "contactTimeConstant": 0.04,
+ "contactForceScale": 0.015
 };
 NylonFirstExcitation.at = function(fret){
  const knots=this.anchors;let k=0;while(k<knots.length-2&&fret>knots[k+1].fret)k++;
  const a=knots[k],b=knots[k+1],q=Math.max(0,Math.min(1,(fret-a.fret)/(b.fret-a.fret)));
  const blend=(x,y)=>x*(1-q)+y*q;
- return {stiffness:blend(a.stiffness,b.stiffness)*Math.min(3,2**(Math.max(0,fret-knots[knots.length-1].fret)/12)),gainDb:a.gainDb.map((v,n)=>blend(v,b.gainDb[n])),lossPerSecond:a.lossPerSecond.map((v,n)=>blend(v,b.lossPerSecond[n])),polarizations:a.polarizations.map((v,n)=>({ratio:blend(v.ratio,b.polarizations[n].ratio),splitHz:blend(v.splitHz,b.polarizations[n].splitHz),phase:v.phase+q*Math.atan2(Math.sin(b.polarizations[n].phase-v.phase),Math.cos(b.polarizations[n].phase-v.phase))}))};
+ return {contactEnergyFraction:blend(a.contactEnergyFraction,b.contactEnergyFraction),stiffness:blend(a.stiffness,b.stiffness)*Math.min(3,2**(Math.max(0,fret-knots[knots.length-1].fret)/12)),gainDb:a.gainDb.map((v,n)=>blend(v,b.gainDb[n])),lossPerSecond:a.lossPerSecond.map((v,n)=>blend(v,b.lossPerSecond[n])),polarizations:a.polarizations.map((v,n)=>({ratio:blend(v.ratio,b.polarizations[n].ratio),splitHz:blend(v.splitHz,b.polarizations[n].splitHz),phase:v.phase+q*Math.atan2(Math.sin(b.polarizations[n].phase-v.phase),Math.cos(b.polarizations[n].phase-v.phase))}))};
 };
