@@ -10,10 +10,10 @@ const ScoreEditor=(()=>{
   const library=new M.Library(api.songs,storage),histories=new Map();
   const panel=document.getElementById('score-editor'),picker=document.getElementById('song');
   let history,currentId,selection=new Set(),tool='select',px=56,cursor=0,clipboard=[],gesture,transport,raf=0,saveTimer;
-  let draft=null,rowHeight=20,pinch=null,pinchTail=false,tapStart=null,lastTap=null,lastTouch=-Infinity,suppressClicksUntil=0,pinchFrame=0;
+  let draft=null,rowHeight=20,pinch=null,pinchTail=false,tapStart=null,lastTap=null,lastTouch=-Infinity,suppressClicksUntil=0,pinchFrame=0,rulerTap=null;
   const touches=new Map();
   panel.innerHTML=`
-   <div class="seq-header"><div class="seq-heading"><h2>ピアノロール</h2><span id="seq-badge" class="seq-badge"></span></div><div class="seq-tools"><button id="seq-menu-toggle" aria-expanded="true">メニューを閉じる</button><span class="seq-menu-item seq-tools"><button id="seq-new">＋ 新しい曲</button><button id="seq-copy">コピーして編集</button></span><button id="seq-close" aria-label="ピアノロールを閉じる">閉じる</button></div></div>
+   <div class="seq-header"><div class="seq-heading"><h2>ピアノロール</h2><span id="seq-badge" class="seq-badge"></span></div><div class="seq-tools"><button id="seq-menu-toggle" aria-expanded="true">▾ メニューを閉じる</button><span class="seq-menu-item seq-tools"><button id="seq-new">＋ 新しい曲</button><button id="seq-copy">コピーして編集</button></span><button id="seq-close" aria-label="ピアノロールを閉じる">閉じる</button></div></div>
    <div class="seq-title-row seq-menu-item"><input id="seq-title" aria-label="曲名" maxlength="100"><span id="seq-save-state" class="seq-save-state" role="status"></span></div>
    <p id="seq-notice" class="seq-notice seq-menu-item"></p>
    <div class="seq-toolbar">
@@ -27,7 +27,7 @@ const ScoreEditor=(()=>{
    </div>
    <div id="seq-scroll" class="seq-scroll" tabindex="0" role="region" aria-label="ピアノロール。音符を選択し矢印キーで移動。Deleteで削除。" aria-describedby="seq-help"><div id="seq-roll" class="seq-roll"><div id="seq-grid" class="seq-grid"></div><div id="seq-playhead" class="seq-playhead"></div><div id="seq-piano" class="seq-piano"></div><div id="seq-ruler" class="seq-ruler"></div><div id="seq-corner" class="seq-corner">小節</div></div></div>
    <div class="seq-inspector seq-menu-item"><span id="seq-selection-info" class="seq-selection-info">音符を選択</span><label>音程 <input id="seq-pitch" aria-label="選択音符の音程" placeholder="C4"></label><label>位置（拍）<input id="seq-at" type="number" min="0" max="4095" step="0.25"></label><label>長さ（拍）<input id="seq-duration" type="number" min="0.0078125" max="4096" step="0.25"></label><label>強さ <input id="seq-velocity" type="range" min="1" max="127" value="127"><output id="seq-velocity-out">127</output></label></div>
-   <p id="seq-help" class="seq-help seq-menu-item">空白のドラッグでスクロール。2本指のピンチで拡大・縮小。音符をダブルタップで削除。鉛筆または空白のダブルタップで音符を追加。音符をドラッグで移動、右端で長さ変更。<kbd>Shift</kbd>＋クリック／Shift＋空白のドラッグで範囲選択。ルーラーで再生位置を指定。<br><kbd>V</kbd> 選択 · <kbd>P</kbd> 鉛筆 · <kbd>Space</kbd> 再生／停止 · <kbd>Delete</kbd> 削除 · <kbd>Ctrl / ⌘ C・V</kbd> コピー／貼り付け · <kbd>Ctrl / ⌘ Z</kbd> Undo<span id="seq-origin" class="seq-origin"></span></p>`;
+   <p id="seq-help" class="seq-help seq-menu-item">空白のドラッグでスクロール。小節番号の行をピンチで横方向、左の鍵盤列をピンチで縦方向に拡大・縮小。描画領域ではピンチは無効です。音符をダブルタップで削除。鉛筆または空白のダブルタップで音符を追加。音符をドラッグで移動、右端で長さ変更。<kbd>Shift</kbd>＋クリック／Shift＋空白のドラッグで範囲選択。ルーラーで再生位置を指定。<br><kbd>V</kbd> 選択 · <kbd>P</kbd> 鉛筆 · <kbd>Space</kbd> 再生／停止 · <kbd>Delete</kbd> 削除 · <kbd>Ctrl / ⌘ C・V</kbd> コピー／貼り付け · <kbd>Ctrl / ⌘ Z</kbd> Undo<span id="seq-origin" class="seq-origin"></span></p>`;
   const $=id=>document.getElementById(id),scroll=$('seq-scroll'),grid=$('seq-grid'),roll=$('seq-roll'),ruler=$('seq-ruler');
   const readonly=()=>history?.readonly;
   const doc=()=>draft||history.current;
@@ -166,29 +166,32 @@ const ScoreEditor=(()=>{
   grid.addEventListener('pointercancel',()=>{tapStart=lastTap=null;finishGesture(true)});
   grid.addEventListener('lostpointercapture',()=>finishGesture());
   grid.addEventListener('dblclick',e=>{if(performance.now()<suppressClicksUntil||performance.now()-lastTouch<700||readonly()||tool!=='select')return;const note=e.target.closest('[data-note]');if(note){selection=new Set([note.dataset.note]);deleteSelection();return}addNote(point(e))});
-  function touchGeometry(){const points=[...touches.values()].slice(0,2);return {x:(points[0].x+points[1].x)/2,y:(points[0].y+points[1].y)/2,distance:Math.max(1,Math.hypot(points[0].x-points[1].x,points[0].y-points[1].y))}}
+  function touchGeometry(){const points=[...touches.values()].slice(0,2);return {x:(points[0].x+points[1].x)/2,y:(points[0].y+points[1].y)/2,width:Math.max(1,Math.abs(points[0].x-points[1].x)),height:Math.max(1,Math.abs(points[0].y-points[1].y))}}
   scroll.addEventListener('pointerdown',e=>{
-   if(e.pointerType!=='touch')return;lastTouch=performance.now();touches.set(e.pointerId,{x:e.clientX,y:e.clientY});
+   if(e.pointerType!=='touch')return;lastTouch=performance.now();const axis=e.target.closest('#seq-ruler')?'time':e.target.closest('#seq-piano')?'pitch':null;touches.set(e.pointerId,{x:e.clientX,y:e.clientY,axis});
    if(touches.size<2&&!pinchTail)return;
-   e.preventDefault();e.stopPropagation();tapStart=lastTap=null;finishGesture(true);pinchTail=true;
-   if(touches.size===2){const c=touchGeometry(),r=scroll.getBoundingClientRect();pinch={...c,px,rowHeight,beat:(scroll.scrollLeft+c.x-r.left-GUTTER)/px,row:(scroll.scrollTop+c.y-r.top-RULER)/rowHeight};for(const id of touches.keys())scroll.setPointerCapture(id)}
+   e.preventDefault();e.stopPropagation();tapStart=lastTap=null;rulerTap=null;finishGesture(true);pinchTail=true;
+   if(touches.size===2){const points=[...touches.values()],axis=points[0].axis&&points[0].axis===points[1].axis?points[0].axis:null;const c=touchGeometry(),r=scroll.getBoundingClientRect();pinch=axis?{...c,axis,distance:axis==='time'?c.width:c.height,px,rowHeight,beat:(scroll.scrollLeft+c.x-r.left-GUTTER)/px,row:(scroll.scrollTop+c.y-r.top-RULER)/rowHeight}:null;for(const id of touches.keys())scroll.setPointerCapture(id)}
   },{capture:true});
   function paintPinch(){
    pinchFrame=0;if(!pinch||touches.size<2)return;
-   const c=touchGeometry(),scale=c.distance/pinch.distance,r=scroll.getBoundingClientRect();px=clamp(pinch.px*scale,1,160);rowHeight=clamp(pinch.rowHeight*scale,8,40);$('seq-zoom').value=px;render();
-   scroll.scrollLeft=Math.max(0,pinch.beat*px+GUTTER-(c.x-r.left));scroll.scrollTop=Math.max(0,pinch.row*rowHeight+RULER-(c.y-r.top));sticky();
+   const c=touchGeometry(),scale=(pinch.axis==='time'?c.width:c.height)/pinch.distance,r=scroll.getBoundingClientRect();if(pinch.axis==='time')px=clamp(pinch.px*scale,1,160);else rowHeight=clamp(pinch.rowHeight*scale,8,40);$('seq-zoom').value=px;render();
+   if(pinch.axis==='time')scroll.scrollLeft=Math.max(0,pinch.beat*px+GUTTER-(c.x-r.left));else scroll.scrollTop=Math.max(0,pinch.row*rowHeight+RULER-(c.y-r.top));sticky();
   }
   scroll.addEventListener('pointermove',e=>{
-   if(e.pointerType!=='touch'||!touches.has(e.pointerId))return;touches.set(e.pointerId,{x:e.clientX,y:e.clientY});
+   if(e.pointerType!=='touch'||!touches.has(e.pointerId))return;touches.set(e.pointerId,{...touches.get(e.pointerId),x:e.clientX,y:e.clientY});
    if(!pinchTail)return;e.preventDefault();e.stopPropagation();
    if(pinch&&!pinchFrame)pinchFrame=requestAnimationFrame(paintPinch);
   },{capture:true});
   for(const type of ['pointerup','pointercancel'])scroll.addEventListener(type,e=>{if(e.pointerType!=='touch')return;lastTouch=performance.now();if(pinchFrame){cancelAnimationFrame(pinchFrame);paintPinch()}touches.delete(e.pointerId);if(pinchTail){e.preventDefault();e.stopPropagation();pinch=null;suppressClicksUntil=performance.now()+600;tapStart=lastTap=null;if(!touches.size)pinchTail=false}},{capture:true});
   scroll.addEventListener('click',e=>{if(performance.now()<suppressClicksUntil){e.preventDefault();e.stopPropagation()}},{capture:true});
   grid.addEventListener('contextmenu',e=>{e.preventDefault();if(touches.size||performance.now()-lastTouch<800)return;const el=e.target.closest('[data-note]');if(el&&!readonly()){selection=new Set([el.dataset.note]);deleteSelection()}});
-  ruler.addEventListener('pointerdown',e=>{if(e.button!==0)return;api.stop();const r=ruler.getBoundingClientRect();setPosition(Math.max(0,quantize((e.clientX-r.left)/px)));scroll.focus({preventScroll:true})});
+  function seekRuler(e){api.stop();const r=ruler.getBoundingClientRect();setPosition(Math.max(0,quantize((e.clientX-r.left)/px)));scroll.focus({preventScroll:true})}
+  ruler.setAttribute('aria-label','小節行：2本指で横方向に拡大・縮小');ruler.title='小節行をピンチ：横方向の拡大・縮小';
+  ruler.addEventListener('pointerdown',e=>{if(e.button!==0)return;if(e.pointerType==='touch'){rulerTap={pointer:e.pointerId,x:e.clientX,y:e.clientY};ruler.setPointerCapture(e.pointerId)}else seekRuler(e)});
+  ruler.addEventListener('pointerup',e=>{if(rulerTap?.pointer===e.pointerId&&Math.hypot(e.clientX-rulerTap.x,e.clientY-rulerTap.y)<8)seekRuler(e);rulerTap=null});ruler.addEventListener('pointercancel',()=>{rulerTap=null});
   scroll.addEventListener('scroll',sticky,{passive:true});
-  const piano=$('seq-piano');
+  const piano=$('seq-piano');piano.setAttribute('aria-label','鍵盤列：2本指で縦方向に拡大・縮小');piano.title='鍵盤列をピンチ：縦方向の拡大・縮小';
   for(let pitch=TOP;pitch>=21;pitch--){const key=document.createElement('button');key.className='seq-piano-key'+([1,3,6,8,10].includes(pitch%12)?' black':'');key.textContent=noteName(pitch);key.title=noteName(pitch)+' を試聴';key.addEventListener('click',()=>api.audition(pitch));piano.append(key)}
   $('open-editor').addEventListener('click',open);
   $('copy-song').addEventListener('click',()=>{if(currentId!==picker.value)load(picker.value);if(!readonly())save();choose(library.duplicate(picker.value).id);if(!api.showEditor)panel.scrollIntoView({behavior:'smooth',block:'start'})});
@@ -197,7 +200,7 @@ const ScoreEditor=(()=>{
   $('seq-close').onclick=()=>{if(api.closeEditor){api.closeEditor();return}panel.hidden=true;$('open-editor').setAttribute('aria-expanded','false');$('open-editor').focus()};
   $('seq-new').onclick=()=>choose(library.create().id);
   $('seq-copy').onclick=()=>{if(!readonly())save();choose(library.duplicate(currentId).id)};
-  $('seq-menu-toggle').onclick=()=>{const collapsed=panel.classList.toggle('seq-menu-collapsed');document.body.classList.toggle('editor-menu-collapsed',collapsed);$('seq-menu-toggle').setAttribute('aria-expanded',String(!collapsed));$('seq-menu-toggle').textContent=collapsed?'メニューを開く':'メニューを閉じる'};
+  $('seq-menu-toggle').onclick=()=>{const collapsed=panel.classList.toggle('seq-menu-collapsed');document.body.classList.toggle('editor-menu-collapsed',collapsed);$('seq-menu-toggle').setAttribute('aria-expanded',String(!collapsed));$('seq-menu-toggle').textContent=collapsed?'▸ メニューを開く':'▾ メニューを閉じる'};
   $('seq-select').onclick=()=>setTool('select');$('seq-draw').onclick=()=>setTool('draw');$('seq-pan').onclick=()=>setTool('pan');
   $('seq-undo').onclick=()=>historyAction('undo');$('seq-redo').onclick=()=>historyAction('redo');$('seq-delete').onclick=deleteSelection;
   $('seq-quantize').onclick=()=>edit(d=>d.notes.filter(n=>selection.has(n.id)).forEach(n=>n.beat=clamp(quantize(n.beat),0,M.MAX_BEATS-n.duration)));

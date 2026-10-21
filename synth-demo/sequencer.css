@@ -46,3 +46,5 @@
 .seq-grid[data-tool=pan]{cursor:grab}.seq-grid[data-tool=pan] .seq-note{cursor:grab}
 
 .seq-scroll{touch-action:none}.seq-roll,.seq-roll *{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none}.seq-grid[data-tool=select]{cursor:grab}.seq-menu-collapsed .seq-menu-item{display:none!important}.editor-view.editor-menu-collapsed #editor-header,.editor-view.editor-menu-collapsed #editor-song-slot{display:none!important}.editor-view.editor-menu-collapsed{padding:12px}.editor-view.editor-menu-collapsed .sequencer{margin:0}.editor-view.editor-menu-collapsed .seq-scroll{height:calc(100dvh - 180px);min-height:260px;max-height:none}
+
+.editor-view #seq-menu-toggle{position:fixed;right:max(16px,env(safe-area-inset-right));bottom:calc(16px + env(safe-area-inset-bottom));z-index:50;background:#e4c18a;color:#352417;border:1px solid #f4ddb5;box-shadow:0 4px 18px #0006;font-weight:700;padding:12px 16px;min-height:44px}
