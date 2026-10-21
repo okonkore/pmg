@@ -154,7 +154,7 @@ const NylonThirdExcitation = {
   -21.428,
   -8.629,
   -5.162,
-  -2.441,
+  -4.441,
   -20.46,
   -27.329,
   -16.047,
@@ -240,5 +240,8 @@ const NylonThirdExcitation = {
   2,
   2,
   2
- ]
+ ],
+ "contactEnergyFraction": 2e-06,
+ "contactDuration": 0.12,
+ "contactTimeConstant": 0.045
 };
