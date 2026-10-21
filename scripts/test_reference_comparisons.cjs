@@ -10,6 +10,6 @@ const {chromium}=require(process.env.PMG_PLAYWRIGHT_MODULE||'playwright'),assert
  await p.selectOption('#note','64');assert(await p.locator('#audio').evaluate(a=>a.paused&&!a.hasAttribute('src')));await p.click('#all');await p.waitForFunction(()=>document.getElementById('audio').currentTime>.02);await p.click('#stop');assert(await p.locator('#audio').evaluate(a=>a.paused));
  const res=await p.request.get('http://127.0.0.1:8769/treble-comparison/audio/64-treble-high-reference.wav',{headers:{Range:'bytes=0-43'}});assert.equal(res.status(),206);
  await p.goto('http://127.0.0.1:8769/wound-comparison/');assert.equal(await p.locator('[data-band]').count(),12);await p.click('[data-band="high"][data-source="after"]');await p.waitForFunction(()=>document.getElementById('audio').currentTime>.05);assert.deepEqual(errors,[]);
- await p.goto('http://127.0.0.1:8766/synth-demo/');assert.equal(await p.locator('#guitar-controls input[type=checkbox]').count(),0);assert.equal(await p.locator('#guitar-test-35').count(),1);
+ await p.goto('http://127.0.0.1:8766/synth-demo/');assert.equal(await p.locator('#guitar-controls input[type=checkbox]').count(),0);assert.equal(await p.locator('[id^=guitar-test-]').count(),0);
  console.log('PASS: 144 clips decoded and played across five notes, two splits and gain modes; B3 reference disabled; sequence, selection cancellation, stop, range, preserved wound page, Drop D OFF, seventh preview, no JS errors.');
 }finally{await b.close()}})().catch(e=>{console.error(e);process.exitCode=1});
