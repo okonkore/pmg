@@ -113,7 +113,7 @@ let guitarWorker,guitarJobId=0,guitarPrepareTimer,guitarGeneration=0;
 const guitarJobs=new Map(),guitarPending=new Map();
 function renderGuitar(midi,settings){
  if(!guitarWorker){
-  const worker=new Worker('nylon-worker.js?v=third-approved-2026-10-21');guitarWorker=worker;
+  const worker=new Worker('nylon-worker.js?v=plain-approved-2026-10-21');guitarWorker=worker;
   worker.onmessage=({data})=>{if(guitarWorker!==worker)return;const job=guitarJobs.get(data.id);if(!job)return;guitarJobs.delete(data.id);data.error?job.reject(new Error(data.error)):job.resolve(data.values)};
   worker.onerror=event=>{
    event.preventDefault();if(guitarWorker!==worker)return;
@@ -141,7 +141,7 @@ async function prepareGuitar(notes){
  while(isGuitar()&&generation===guitarGeneration){
   const signature=guitarSettings(),label=presets[preset].label;
   const needed=new Set((notes===undefined?keys.map(k=>shiftedMidi(k[1])):notes).filter(inPianoRange));
-  const settings={bridge:$('guitar-bridge').checked,bodyFit:Number($('guitar-body-fit').checked),referenceTone:Number($('guitar-reference-tone').checked),stringTexture:Number($('guitar-reference-tone').checked),highDecay:Number($('guitar-reference-tone').checked),thirdTone:Number($('guitar-reference-tone').checked),attack:Number($('guitar-attack').checked),harmonics:Number($('guitar-harmonics').checked),dropD:$('guitar-drop-d').checked,contact:$('guitar-contact').checked?1:0,coupling:$('guitar-coupling').checked?1:0,nail:+$('guitar-nail').value,position:+$('guitar-position').value,body:+$('guitar-body').value};
+  const settings={bridge:$('guitar-bridge').checked,bodyFit:Number($('guitar-body-fit').checked),referenceTone:Number($('guitar-reference-tone').checked),stringTexture:Number($('guitar-reference-tone').checked),highDecay:Number($('guitar-reference-tone').checked),thirdTone:Number($('guitar-reference-tone').checked),firstTone:Number($('guitar-reference-tone').checked),secondTone:Number($('guitar-reference-tone').checked),attack:Number($('guitar-attack').checked),harmonics:Number($('guitar-harmonics').checked),dropD:$('guitar-drop-d').checked,contact:$('guitar-contact').checked?1:0,coupling:$('guitar-coupling').checked?1:0,nail:+$('guitar-nail').value,position:+$('guitar-position').value,body:+$('guitar-body').value};
   const protectedKeys=new Set([...needed].map(midi=>label+':'+midi+':'+signature));
   const missing=[...needed].filter(midi=>!stringBuffers.has(label+':'+midi+':'+signature));
   if(!missing.length){trimGuitarCache(protectedKeys);return true}

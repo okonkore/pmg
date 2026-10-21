@@ -21,7 +21,7 @@ const NylonBridgeModel = {
   while(!(result=steps.next()).done){if(now()-slice>=6){await pause();slice=now()}}
   return result.value;
  },
- renderSteps(rate,midi,{nail=.38,position=.22,body=.48,dropD=false,contact=0,attack=0,bodyFit=0,referenceTone=0,stringTexture=0,highDecay=0,thirdTone=0,firstTone=0}={},diagnostics){
+ renderSteps(rate,midi,{nail=.38,position=.22,body=.48,dropD=false,contact=0,attack=0,bodyFit=0,referenceTone=0,stringTexture=0,highDecay=0,thirdTone=0,firstTone=0,secondTone=0}={},diagnostics){
   const fit=bodyFit?(referenceTone?NylonReferenceFit:NylonBodyFit):null;
   const string=NylonModel.stringFor(midi,{dropD}),{number,openMidi,fret,wound}=string;
   const fundamental=440*2**((midi-69)/12),count=Math.ceil(rate*3.6);
@@ -37,8 +37,9 @@ const NylonBridgeModel = {
   const sr=new Float64Array(modes*2),si=new Float64Array(modes*2),sw=new Float64Array(modes*2);
   const sc=new Float64Array(modes*2),ss=new Float64Array(modes*2);
   const thirdAmount=fit&&referenceTone&&number===3?Math.max(0,Math.min(1,thirdTone)):0;
-  const firstAmount=fit&&referenceTone&&number===1?Math.max(0,Math.min(1,firstTone)):0;
-  const firstProfile=firstAmount?NylonFirstExcitation.at(fret):null;
+  const firstAmount=fit&&referenceTone&&(number===1||number===2)?Math.max(0,Math.min(1,number===2?secondTone:firstTone)):0;
+  const plainExcitation=number===2?NylonSecondExcitation:NylonFirstExcitation;
+  const firstProfile=firstAmount?plainExcitation.at(fret):null;
   const baseStiffness=(thirdAmount?(.000003+(NylonThirdExcitation.stiffness-.000003)*thirdAmount):(wound?.000007:.000003))*Math.min(3,2**(fret/12));
   const stiffness=firstProfile?baseStiffness*(1-firstAmount)+firstProfile.stiffness*firstAmount:baseStiffness;
   const woundRelease=!!(fit&&referenceTone&&wound&&number>=4&&number<=7);
@@ -91,7 +92,7 @@ const NylonBridgeModel = {
   // Redistribute a fixed pluck energy across the wound-string modes.
   if((woundRelease||thirdAmount||firstAmount)&&tunedPluckEnergy>0){const scale=Math.sqrt(originalPluckEnergy/tunedPluckEnergy);for(let k=0;k<sr.length;k++){sr[k]*=scale;si[k]*=scale}}
   stringNorm=Math.sqrt(stringNorm);for(let k=0;k<sw.length;k++)sw[k]/=stringNorm;
-  const firstContact=firstAmount&&body>0&&attack>0?NylonFirstExcitation:null;
+  const firstContact=firstAmount&&body>0&&attack>0?plainExcitation:null;
   const extraContactModes=firstContact?[[4800,1500,0,.25],[6500,1800,0,.25],[8500,2200,0,.2],[10500,2600,0,.2]]:thirdAmount&&body>0&&attack>0&&NylonThirdExcitation.contactEnergyFraction>0?[[5600,1400,0,.25],[7400,1800,0,.25],[9200,2400,0,.2]]:[];
   const definitions=[...NylonBridgeModel.bodyModes,...extraContactModes].filter(mode=>mode[0]<rate*.45);
   const br=new Float64Array(definitions.length),bi=new Float64Array(definitions.length),bw=new Float64Array(definitions.length);
@@ -180,8 +181,8 @@ const NylonBridgeModel = {
     const onset=.5-.5*Math.cos(Math.PI*time/NylonThirdExcitation.onsetRiseSeconds);
     input*=1-thirdAmount+thirdAmount*onset;
    }
-   if(firstAmount&&time<NylonFirstExcitation.onsetRiseSeconds){
-    const onset=.5-.5*Math.cos(Math.PI*time/NylonFirstExcitation.onsetRiseSeconds);
+   if(firstAmount&&time<plainExcitation.onsetRiseSeconds){
+    const onset=.5-.5*Math.cos(Math.PI*time/plainExcitation.onsetRiseSeconds);
     input*=1-firstAmount+firstAmount*onset;
    }
    const high=input-previousInput+pole*previousOutput;previousInput=input;previousOutput=high;

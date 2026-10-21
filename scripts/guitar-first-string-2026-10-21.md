@@ -42,3 +42,13 @@ A seeded, finite contact reservoir excites four strongly damped body states at 4
 The approved first-mid-2 middle-partial envelopes are stored in nylon-first-middle-approved.json. The high-band regression checks them at three notes, four time windows and both sample rates; measured change stays below 0.02dB relative to the initial fundamental. This does not assert that the entire listening band is mathematically identical. High-band differences remain, including some F♯ early sustain and individual late partial levels, and need listening feedback.
 
 The comparison uses first-mid-2 as “前回” and first-high-3 as “今回”. The instrument's main first-string tone remains unchanged pending listening approval. In addition to existing regressions, nylon-first-high.test.cjs checks preserved middle envelopes, delayed high-partial onset, bounded contact energy and passive energy accounting.
+
+## Adoption and second-string interpolation
+
+The user approved first-high-3 and requested string 2 derived from the approved strings 3 and 1. The main instrument now enables firstTone and secondTone together with the reference-tone control. Cache/import version is plain-approved-2026-10-21. The first-string comparison stays available and is marked adopted.
+
+NylonSecondExcitation derives model coefficients at equal fret positions. B3 is 4 of the 9 semitones from open G3 to E4, so the first-string weight is 4/9. Excitation gains interpolate in dB, extra losses linearly, positive stiffness/contact energy geometrically, and component phase over the shortest circular arc. Polarization ratios/separations and finite contact timing interpolate between the two models; body modes remain shared. This is parameter interpolation, not mixing recorded or rendered notes. There is no B3 reference, so this is an estimate rather than a recording fit.
+
+All five automatically selected second-string pitches B3–D♯4 are checked at 44.1/48kHz for finite output and passive, fixed initial energy. Exact waveform hashes for the adopted first, third and wound strings (including 7) are in nylon-plain-approved.json. API defaults preserve earlier comparisons when the new settings are absent; disabling reference/body fit retains the old path. Browser regressions check the actual UI routes to adopted first and interpolated second notes, responsive worker cancellation and cache limits.
+
+To refresh only the 16 B3 listening clips, run render_second_string.cjs, build_second_string_comparison.py (numpy), then publish_reference_comparisons.py. The other pitches in the older treble comparison are historical; use the dedicated adopted-first and adopted-third comparison pages.

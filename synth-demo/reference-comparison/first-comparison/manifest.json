@@ -30,6 +30,6 @@
   ],
   "firTaps": 2049,
   "commonHeadroomGain": 0.9180708420966904,
-  "status": "trial; main first-string tone unchanged",
+  "status": "adopted first-high-3; main instrument enabled",
   "normalization": "independent full-note 40-140ms RMS, optional band attack matching"
 }

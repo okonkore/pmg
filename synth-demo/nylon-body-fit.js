@@ -928,3 +928,25 @@ NylonFirstExcitation.at = function(fret){
  const blend=(x,y)=>x*(1-q)+y*q;
  return {contactEnergyFraction:blend(a.contactEnergyFraction,b.contactEnergyFraction),stiffness:blend(a.stiffness,b.stiffness)*Math.min(3,2**(Math.max(0,fret-knots[knots.length-1].fret)/12)),gainDb:a.gainDb.map((v,n)=>blend(v,b.gainDb[n])),lossPerSecond:a.lossPerSecond.map((v,n)=>blend(v,b.lossPerSecond[n])),polarizations:a.polarizations.map((v,n)=>({ratio:blend(v.ratio,b.polarizations[n].ratio),splitHz:blend(v.splitHz,b.polarizations[n].splitHz),phase:v.phase+q*Math.atan2(Math.sin(b.polarizations[n].phase-v.phase),Math.cos(b.polarizations[n].phase-v.phase))}))};
 };
+
+// B3 lies four semitones above G3 in the nine-semitone G3–E4 interval.
+// Interpolate model parameters at equal fret positions, never rendered audio.
+const NylonSecondExcitation = {
+ weight:4/9,
+ get onsetRiseSeconds(){return NylonThirdExcitation.onsetRiseSeconds*(1-this.weight)+NylonFirstExcitation.onsetRiseSeconds*this.weight},
+ get contactDuration(){return NylonThirdExcitation.contactDuration*(1-this.weight)+NylonFirstExcitation.contactDuration*this.weight},
+ get contactTimeConstant(){return NylonThirdExcitation.contactTimeConstant*(1-this.weight)+NylonFirstExcitation.contactTimeConstant*this.weight},
+ get contactForceScale(){return .05*(1-this.weight)+NylonFirstExcitation.contactForceScale*this.weight},
+ at(fret){
+  const q=this.weight,a=NylonThirdExcitation,b=NylonFirstExcitation.at(fret),blend=(x,y)=>x*(1-q)+y*q;
+  const thirdStiffness=a.stiffness*Math.min(3,2**(fret/12));
+  const f0=440*2**((55+fret-69)/12);
+  return {
+   stiffness:Math.exp(blend(Math.log(thirdStiffness),Math.log(b.stiffness))),
+   gainDb:a.gainDb.map((v,n)=>blend(v,b.gainDb[n])),
+   lossPerSecond:a.lossPerSecond.map((v,n)=>blend(v,b.lossPerSecond[n])),
+   contactEnergyFraction:Math.exp(blend(Math.log(a.contactEnergyFraction),Math.log(b.contactEnergyFraction))),
+   polarizations:b.polarizations.map((v,n)=>({ratio:blend(.25/.75*.23,v.ratio),splitHz:blend(f0*(n+2)*.0007,v.splitHz),phase:.24+q*Math.atan2(Math.sin(v.phase-.24),Math.cos(v.phase-.24))}))
+  };
+ }
+};

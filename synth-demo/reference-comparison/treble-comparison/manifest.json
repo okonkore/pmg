@@ -47,5 +47,12 @@
       800
     ]
   },
-  "commonHeadroomGain": 1
+  "commonHeadroomGain": 1,
+  "secondString": {
+    "revision": "second-interpolated-1",
+    "method": "model parameter interpolation from G3 and E4",
+    "firstWeight": 0.4444444444444444,
+    "headroomGain": 1,
+    "referenceAvailable": false
+  }
 }
