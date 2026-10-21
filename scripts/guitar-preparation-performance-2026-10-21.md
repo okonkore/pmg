@@ -34,3 +34,9 @@ Selecting Nylon Guitar now enables the audio context and prepares all 88 pitches
 While a bank is missing, a fixed translucent/blurred overlay displays a spinner and an actual completed-note count/progress bar. Main content is inert, keyboard commands are intercepted, and background scrolling is locked. Completion, cancellation and errors release the overlay and restore focus. The worker keeps its cooperative rendering and does not change the synthesis model.
 
 The updated browser regression checks all 88 pitches are generated once, progress reaches 88, controls/keyboard are locked during preparation, octave and preset returns require no new jobs, accepted waveforms are unchanged, ordinary playing works, and both worker failure/retry and cancellation release the UI. The former on-demand assertions are superseded by these requirements.
+
+### Configure before generating
+
+Selecting Nylon Guitar now opens a modal setup form instead of starting preparation immediately. Nail hardness, pluck position and body amount are draft inputs there; moving them only updates their labels. Confirm commits the values and starts the existing full-bank loading overlay. Cancel keeps the previous committed parameters and restores the previous preset when selection was tentative. A button in the instrument reopens the form. The synthesis settings/cache signature use committed values, never the form draft. Reconfirming unchanged settings reuses the prepared bank.
+
+Browser validation includes no rendering during setup edits, cancel rollback, generation only after confirmation, reuse on returning with the same settings, and the previous full-range/overlay/error-recovery checks.

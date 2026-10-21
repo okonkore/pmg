@@ -7,6 +7,7 @@
 <style>
 :root{color-scheme:dark;font-family:ui-sans-serif,system-ui,-apple-system,sans-serif;background:#191510;color:#f5ead8}*{box-sizing:border-box}body{margin:0;padding:44px 20px;min-height:100vh;background:radial-gradient(ellipse at 50% 0,#483425,transparent 70%)}main{max-width:980px;margin:auto}header{display:flex;justify-content:space-between;align-items:center;gap:20px;margin-bottom:28px}h1{font-size:clamp(25px,4vw,40px);letter-spacing:-1.5px;margin:6px 0}a{color:#f0d59e}small,.muted{color:#c2b39e;font-size:13px}.eyebrow{font-size:11px;letter-spacing:3px;color:#d5ad76}.panel{background:repeating-linear-gradient(92deg,#e8bd7c04 0 1px,transparent 1px 8px),linear-gradient(140deg,#79503a,#4c2e22);border:1px solid #a77b52;border-radius:20px;padding:28px;box-shadow:0 25px 65px #0006,inset 0 1px #f6dfb933}.top{display:flex;align-items:center;justify-content:space-between;gap:20px}.brand{font-size:14px;letter-spacing:4px;font-weight:800}.status{font-size:12px;color:#eedcc0}button,select{font:inherit}.song-picker{margin-top:22px}.song-picker label{color:#f0d9b4;letter-spacing:.5px;margin-bottom:9px}.song-picker select{width:100%;padding:12px;border:1px solid #ffffff35;border-radius:9px;background:#2c2018;color:#f5ead8}.song-picker .hint{margin:8px 0 0}select:focus-visible{outline:3px solid #f1ce8f;outline-offset:3px}button{cursor:pointer;border:1px solid #ffffff30;border-radius:9px;background:#2c2018;color:#f5ead8;padding:11px 17px}button:hover{filter:brightness(1.2)}button:focus-visible,input:focus-visible{outline:3px solid #f1ce8f;outline-offset:3px}.primary{background:linear-gradient(#f3e4c3,#dfc89e);color:#39291d;border:0;font-weight:700;white-space:nowrap}.preset-picker{margin:26px 0 22px}.guitar-controls{margin-top:22px;border-top:1px solid #ffffff25;padding-top:20px}.guitar-controls .controls{grid-template-columns:repeat(3,minmax(0,1fr))}.controls{display:grid;grid-template-columns:repeat(4,1fr);gap:24px}label{display:flex;flex-direction:column;gap:13px;font-size:12px;letter-spacing:1px}label span{display:flex;justify-content:space-between}output{color:#f0d39f;letter-spacing:0}input{width:100%;accent-color:#e4c18a;cursor:pointer}.monitor{margin-top:25px;background:#211b15;border:1px solid #ffffff22;border-radius:10px;overflow:hidden}canvas{display:block;width:100%;height:88px}.monitor-foot{display:flex;justify-content:space-between;padding:8px 12px;border-top:1px solid #ffffff12;font:11px ui-monospace,monospace;color:#cfb58b}.octave-bar{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-top:20px}.octave-buttons{display:flex;align-items:center;gap:10px}.octave-bar output{font:13px ui-monospace,monospace;color:#f2dfbb}button:disabled{opacity:.3;cursor:default}.key span{white-space:pre-line;line-height:1.7}.keyboard{height:195px;position:relative;display:flex;margin-top:24px;user-select:none;touch-action:none}.key{border-radius:0 0 7px 7px;padding:0;position:relative;display:flex;align-items:flex-end;justify-content:center;padding-bottom:15px;touch-action:none}.white{width:12.5%;height:100%;background:linear-gradient(#f5e9ce,#ddc8a1);border:1px solid #8c7455;color:#665039}.black{position:absolute;top:0;height:62%;width:7.5%;background:linear-gradient(#3c2c21,#201710);border:1px solid #150f0b;color:#d0b997;z-index:2;box-shadow:0 5px 5px #0006}.key.active.white{background:#d8ac68}.key.active.black{background:#976338;color:#fff0d6}.keyboard,.keyboard *{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}.key span{font-size:11px;pointer-events:none}.bottom{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:21px}.actions{display:flex;gap:8px}footer{margin-top:20px;line-height:1.8;font-size:12px;color:#b8a78f}.hint{margin-top:16px;color:#e7d1b0;font-size:12px;line-height:1.7}@media(max-width:650px){body{padding:24px 12px}.panel{padding:18px}.controls{grid-template-columns:repeat(2,1fr);gap:20px}.keyboard{height:155px}header{align-items:flex-start;flex-direction:column;gap:10px}.bottom{align-items:flex-start;flex-direction:column}.status{font-size:10px}.brand{letter-spacing:2px}}
 .guitar-loading[hidden]{display:none}.guitar-loading{position:fixed;inset:0;z-index:10000;display:grid;place-items:center;background:#18120d88;backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);touch-action:none;overscroll-behavior:contain}.loading-card{width:min(320px,85vw);padding:28px;text-align:center;border:1px solid #c49b6b;background:#36271ff2;border-radius:18px;box-shadow:0 15px 60px #0006}.loading-spinner{width:38px;height:38px;margin:0 auto 18px;border:3px solid #bfa17b55;border-top-color:#f0d59e;border-radius:50%;animation:loading-spin .85s linear infinite}.loading-card progress{width:100%;accent-color:#e4c18a}.loading-card p{margin:12px 0;color:#e7d1b0}@keyframes loading-spin{to{transform:rotate(360deg)}}@media(prefers-reduced-motion:reduce){.loading-spinner{animation:none}}
+#guitar-setup{width:min(480px,calc(100vw - 32px));max-height:85dvh;overflow:auto;padding:26px;border:1px solid #c49b6b;border-radius:18px;color:#f5ead8;background:#36271f;box-shadow:0 15px 60px #0006}#guitar-setup::backdrop{background:#18120d88;backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px)}#guitar-setup .controls{grid-template-columns:1fr;gap:24px;margin:24px 0}#guitar-setup h2{font-size:22px;margin:0}.setup-actions{display:flex;justify-content:flex-end;gap:10px;flex-wrap:wrap}
 </style>
 </head>
 <body><main>
@@ -21,12 +22,8 @@
 <label><span>VOLUME <output id="volume-out"></output></span><input id="volume" aria-label="音量" type="range" min="0" max="0.6" step="0.01" value="0.22"></label>
 </div>
 <div id="guitar-controls" class="guitar-controls" hidden>
- <div class="controls">
- <label><span>爪の硬さ <output id="guitar-nail-out"></output></span><input id="guitar-nail" aria-label="爪の硬さ" type="range" min="0" max="1" value="0.38" step="0.01"></label>
- <label><span>はじく位置 <output id="guitar-position-out"></output></span><input id="guitar-position" aria-label="はじく位置" type="range" min="0.08" max="0.45" value="0.22" step="0.01"></label>
- <label><span>胴の響き <output id="guitar-body-out"></output></span><input id="guitar-body" aria-label="胴の響き" type="range" min="0" max="1" value="0.48" step="0.01"></label>
- </div>
- <p class="hint">調整して採用したナイロンギターの音色を標準で使います。標準調弦です。<br>爪の硬さ・はじく位置・胴の響きで、弾き方や響きを調整できます。</p>
+ <button id="guitar-configure">音色を設定し直す</button>
+ <p class="hint">調整して採用したナイロンギターの音色を標準で使います。標準調弦です。<br>設定した音色で演奏します。変更するときは「音色を設定し直す」を押してください。</p>
  <p class="hint"><a href="reference-comparison/">参考録音と合成音を帯域別に比較する（1〜3弦／巻弦の保存版）</a></p>
  <p class="hint"><a href="comparison.html" target="_blank" rel="noopener">以前の調整の比較音源を開く（2026-10-20・30秒）</a></p>
 </div>
@@ -41,6 +38,11 @@
 <section id="score-editor" class="sequencer" aria-label="曲のピアノロールエディター" hidden></section>
 <footer>最初に「音を有効にする」を押してください。有線イヤホン・内蔵スピーカー推奨。<br>波形合成 → フィルター → 音量エンベロープ → ディレイ。Funky Clavは弦風の倍音と短い減衰、オートワウで音を作ります。すべて合成音です。Nylon Guitarは弦の振動・爪や指の接触・胴の共鳴を計算しています。<br>BWV 1012：Mutopia / Hajo Dezelski（<a href="https://creativecommons.org/licenses/by-sa/3.0/" target="_blank" rel="noopener">CC BY-SA 3.0</a>）。音符データを変換し、テンポ・音の切り方を試聴用に調整。反復なし。出典：<a href="https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=1494" target="_blank" rel="noopener">Prélude</a> / <a href="https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=1503" target="_blank" rel="noopener">Allemande</a> / <a href="https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=1504" target="_blank" rel="noopener">Courante</a> / <a href="https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=1505" target="_blank" rel="noopener">Sarabande</a> / <a href="https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=1506" target="_blank" rel="noopener">Gavotte I</a> / <a href="https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=1507" target="_blank" rel="noopener">Gavotte II</a> / <a href="https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=1508" target="_blank" rel="noopener">Gigue</a>。<br>BWV 1007（Prélude / Allemande / Courante / Sarabande / Gigue）：<a href="https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=517" target="_blank" rel="noopener">Mutopia / Andreas Scherer</a>（Public Domain）。音符データを変換し、音の切り方を試聴用に調整。</footer>
 </main>
+<dialog id="guitar-setup" aria-labelledby="guitar-setup-title"><form id="guitar-setup-form"><h2 id="guitar-setup-title">ナイロンギターの音色設定</h2><p class="hint">弾き方と響きを設定してから、音源を生成します。</p> <div class="controls">
+ <label><span>爪の硬さ <output id="guitar-nail-out"></output></span><input id="guitar-nail" aria-label="爪の硬さ" type="range" min="0" max="1" value="0.38" step="0.01"></label>
+ <label><span>はじく位置 <output id="guitar-position-out"></output></span><input id="guitar-position" aria-label="はじく位置" type="range" min="0.08" max="0.45" value="0.22" step="0.01"></label>
+ <label><span>胴の響き <output id="guitar-body-out"></output></span><input id="guitar-body" aria-label="胴の響き" type="range" min="0" max="1" value="0.48" step="0.01"></label>
+ </div><div class="setup-actions"><button type="button" id="guitar-setup-cancel">キャンセル</button><button type="submit" class="primary">決定して生成</button></div></form></dialog>
 <div id="guitar-loading" class="guitar-loading" role="dialog" aria-modal="true" aria-labelledby="loading-title" tabindex="-1" hidden><div class="loading-card"><div class="loading-spinner" aria-hidden="true"></div><strong id="loading-title">ナイロンギターを準備しています</strong><p id="loading-count" role="status" aria-live="polite">0 / 88音</p><progress id="loading-progress" value="0" max="88" aria-label="音色の準備状況"></progress><p>しばらくお待ちください</p></div></div>
 <script src="gavotte.js"></script>
 <script src="prelude.js"></script>
@@ -181,16 +183,27 @@ function warmGuitar(){
 }
 function isGuitar(){return presets[preset].excitation==='guitar'}
 const approvedGuitarSettings=Object.freeze({bridge:true,bodyFit:1,referenceTone:1,stringTexture:1,highDecay:1,thirdTone:1,firstTone:1,secondTone:1,attack:1,harmonics:1,dropD:false,contact:0,coupling:0});
-function guitarRenderSettings(){return {...approvedGuitarSettings,nail:+$('guitar-nail').value,position:+$('guitar-position').value,body:+$('guitar-body').value}}
+let guitarParameters={nail:.38,position:.22,body:.48},setupPreviousPreset;
+function guitarRenderSettings(){return {...approvedGuitarSettings,...guitarParameters}}
 function guitarSettings(){return 'plain-approved-2026-10-21:'+JSON.stringify(guitarRenderSettings())}
 function updateGuitarControls(){
- stop();
- $('guitar-nail-out').textContent=Math.round(+$('guitar-nail').value*100)+'%';
- $('guitar-position-out').textContent=Math.round(+$('guitar-position').value*100)+'%';
- $('guitar-body-out').textContent=Math.round(+$('guitar-body').value*100)+'%';
- for(const key of stringBuffers.keys())if(key.startsWith(presets.nylon.label+':'))stringBuffers.delete(key);warmGuitar();
+ for(const id of ['guitar-nail','guitar-position','guitar-body'])$(id+'-out').textContent=Math.round(+$(id).value*100)+'%';
+}
+function openGuitarSetup(previous=preset){
+ stop();setupPreviousPreset=previous;
+ for(const [id,key] of [['guitar-nail','nail'],['guitar-position','position'],['guitar-body','body']])$(id).value=guitarParameters[key];
+ updateGuitarControls();$('guitar-setup').returnValue='';$('guitar-setup').showModal();
 }
 for(const id of ['guitar-nail','guitar-position','guitar-body'])$(id).addEventListener('input',updateGuitarControls);
+$('guitar-configure').onclick=()=>openGuitarSetup();
+$('guitar-setup-cancel').onclick=()=>$('guitar-setup').close('cancel');
+$('guitar-setup').addEventListener('close',()=>{if($('guitar-setup').returnValue!=='generate'&&setupPreviousPreset!==preset){$('preset').value=setupPreviousPreset;selectPreset()}});
+$('guitar-setup-form').onsubmit=e=>{
+ e.preventDefault();
+ const parameters={nail:+$('guitar-nail').value,position:+$('guitar-position').value,body:+$('guitar-body').value};
+ if(JSON.stringify(parameters)!==JSON.stringify(guitarParameters)){for(const key of stringBuffers.keys())if(key.startsWith(presets.nylon.label+':'))stringBuffers.delete(key)}
+ guitarParameters=parameters;$('guitar-setup').close('generate');void enable().catch(report);
+};
 updateGuitarControls();
 function stringBuffer(midi,p){
  const cacheKey=p.label+':'+midi+(p.excitation==='guitar'?':'+guitarSettings(): '');
@@ -286,10 +299,10 @@ $('power').onclick=()=>enable().catch(report);$('stop').onclick=stop;
 for(const name of ['cutoff','release','space','volume']){$(name).addEventListener('input',()=>update(name));update(name)}
 function update(name){const value=+$(name).value;$(name+'-out').textContent=name==='cutoff'?(value/1000).toFixed(1)+'k':name==='release'?value.toFixed(2)+'s':Math.round(value*100)+'%';if(!ctx)return;const now=ctx.currentTime;if(name==='volume')master.gain.setTargetAtTime(value,now,.015);if(name==='space')wet.gain.setTargetAtTime(value,now,.03);if(name==='cutoff')for(const v of allVoices){v.filter.frequency.cancelScheduledValues(now);v.filter.frequency.setTargetAtTime(value,now,.025)}}
 for(const [value,p] of Object.entries(presets)){const option=document.createElement('option');option.value=value;option.textContent=p.label;$('preset').append(option)}
-function selectPreset(){stop();preset=$('preset').value;for(const name of ['cutoff','release','space']){$(name).value=presets[preset][name];update(name)}$('preset-info').textContent=presets[preset].description;$('guitar-controls').hidden=!isGuitar();$('note').textContent=presetsName();if(isGuitar())void enable().catch(report);else if(ctx)$('status').textContent='演奏できます'}
+function selectPreset(){const previous=preset;stop();preset=$('preset').value;for(const name of ['cutoff','release','space']){$(name).value=presets[preset][name];update(name)}$('preset-info').textContent=presets[preset].description;$('guitar-controls').hidden=!isGuitar();$('note').textContent=presetsName();if(isGuitar())openGuitarSetup(previous);else if(ctx)$('status').textContent='演奏できます'}
 $('preset').onchange=selectPreset;
 $('preset-info').textContent=presets[preset].description;
-window.addEventListener('keydown',async e=>{if(e.defaultPrevented||e.target.closest?.('#score-editor'))return;if(e.ctrlKey||e.metaKey||e.altKey||['INPUT','SELECT','TEXTAREA'].includes(e.target.tagName))return;if(e.key.toLowerCase()==='z'||e.key.toLowerCase()==='x'){e.preventDefault();if(!e.repeat)changeOctave(octaveOffset+(e.key.toLowerCase()==='z'?-1:1));return}const k=keys.find(k=>k[2]===e.key.toLowerCase());if(!k||e.repeat)return;e.preventDefault();const id='k'+k[2],midi=shiftedMidi(k[1]);if(!inPianoRange(midi))return;held.set(id,midi);try{await enable([midi]);if(held.has(id))play(id,midi)}catch(error){report(error)}});
+window.addEventListener('keydown',async e=>{if(e.defaultPrevented||$('guitar-setup').open||e.target.closest?.('#score-editor'))return;if(e.ctrlKey||e.metaKey||e.altKey||['INPUT','SELECT','TEXTAREA'].includes(e.target.tagName))return;if(e.key.toLowerCase()==='z'||e.key.toLowerCase()==='x'){e.preventDefault();if(!e.repeat)changeOctave(octaveOffset+(e.key.toLowerCase()==='z'?-1:1));return}const k=keys.find(k=>k[2]===e.key.toLowerCase());if(!k||e.repeat)return;e.preventDefault();const id='k'+k[2],midi=shiftedMidi(k[1]);if(!inPianoRange(midi))return;held.set(id,midi);try{await enable([midi]);if(held.has(id))play(id,midi)}catch(error){report(error)}});
 window.addEventListener('keyup',e=>releaseToken('k'+e.key.toLowerCase()));window.addEventListener('blur',stop);document.addEventListener('visibilitychange',()=>{if(document.hidden)stop()});
 async function startSong({fromBeat=0,loop=false}={}){
   stop();
