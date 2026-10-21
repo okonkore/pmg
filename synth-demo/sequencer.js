@@ -94,8 +94,8 @@ const ScoreEditor=(()=>{
    history=histories.get(id);selection.clear();if(reset)cursor=0;message(library.error|| (readonly()?'オリジナルを保護しています':'このブラウザに保存済み'),!!library.error);render();
    if(reset){scroll.scrollLeft=0;const notes=history.current.notes;const pitch=notes.length?[...notes].sort((a,b)=>a.pitch-b.pitch)[Math.floor(notes.length/2)].pitch:60;scroll.scrollTop=clamp((TOP-pitch)*ROW-scroll.clientHeight/2+RULER,0,88*ROW)}
   }
-  function choose(id){panel.hidden=false;updateLibraryMenu();picker.value=id;api.updateSong();load(id);$('open-editor').setAttribute('aria-expanded','true')}
-  function open(){panel.hidden=false;$('open-editor').setAttribute('aria-expanded','true');if(currentId!==picker.value)load(picker.value);else render();panel.scrollIntoView({behavior:'smooth',block:'start'})}
+  function choose(id){api.showEditor?.();panel.hidden=false;updateLibraryMenu();picker.value=id;api.updateSong();load(id);$('open-editor').setAttribute('aria-expanded','true')}
+  function open(){api.showEditor?.();panel.hidden=false;$('open-editor').setAttribute('aria-expanded','true');if(currentId!==picker.value)load(picker.value);else render();panel.scrollIntoView({behavior:'smooth',block:'start'})}
   function historyAction(action){if(readonly())return;if(history[action]())changed()}
   function deleteSelection(){if(!selection.size)return;edit(d=>d.notes=d.notes.filter(n=>!selection.has(n.id)))}
   function point(e){const r=grid.getBoundingClientRect();return {beat:clamp((e.clientX-r.left)/px,0,M.MAX_BEATS),pitch:clamp(TOP-Math.floor((e.clientY-r.top)/ROW),21,108),x:e.clientX-r.left,y:e.clientY-r.top}}
@@ -157,9 +157,11 @@ const ScoreEditor=(()=>{
   scroll.addEventListener('scroll',sticky,{passive:true});
   const piano=$('seq-piano');
   for(let pitch=TOP;pitch>=21;pitch--){const key=document.createElement('button');key.className='seq-piano-key'+([1,3,6,8,10].includes(pitch%12)?' black':'');key.textContent=noteName(pitch);key.title=noteName(pitch)+' を試聴';key.addEventListener('click',()=>api.audition(pitch));piano.append(key)}
-  $('open-editor').addEventListener('click',()=>{if(panel.hidden)open();else{panel.hidden=true;$('open-editor').setAttribute('aria-expanded','false')}});
+  $('open-editor').addEventListener('click',open);
   $('copy-song').addEventListener('click',()=>{if(currentId!==picker.value)load(picker.value);if(!readonly())save();choose(library.duplicate(picker.value).id);panel.scrollIntoView({behavior:'smooth',block:'start'})});
-  $('seq-close').onclick=()=>{panel.hidden=true;$('open-editor').setAttribute('aria-expanded','false');$('open-editor').focus()};
+  $('seq-close').textContent=api.closeEditor?'演奏画面へ':'閉じる';
+  if(api.closeEditor)$('seq-close').setAttribute('aria-label','演奏画面へ戻る');
+  $('seq-close').onclick=()=>{if(api.closeEditor){api.closeEditor();return}panel.hidden=true;$('open-editor').setAttribute('aria-expanded','false');$('open-editor').focus()};
   $('seq-new').onclick=()=>choose(library.create().id);
   $('seq-copy').onclick=()=>{if(!readonly())save();choose(library.duplicate(currentId).id)};
   $('seq-select').onclick=()=>setTool('select');$('seq-draw').onclick=()=>setTool('draw');$('seq-pan').onclick=()=>setTool('pan');
@@ -209,6 +211,7 @@ const ScoreEditor=(()=>{
   window.addEventListener('pagehide',()=>{if(history&&!readonly())save()});
   updateLibraryMenu();load(picker.value);
   return {
+   save,
    songChanged(){load(picker.value)},
    transportStart(info){transportStop();transport=info;$('seq-play').textContent='■ 停止';cancelAnimationFrame(raf);frame()},
    transportStop,
