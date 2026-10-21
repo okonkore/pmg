@@ -21,7 +21,7 @@ for(const body of [0,1])for(const contact of [0,1])for(const dropD of [false,tru
 for(const extra of [{referenceTone:0},{bodyFit:0}]){
  const a=model.render(44100,40,{...settings,...extra}),b=model.render(44100,40,{...settings,...extra,stringTexture:0,highDecay:0});assert(Buffer.from(a.buffer).equals(Buffer.from(b.buffer)),'Existing OFF paths preserved');
 }
-const page=fs.readFileSync(path.join(__dirname,'index.html'),'utf8');assert(page.includes("stringTexture:Number($('guitar-reference-tone').checked)"));assert(page.includes("highDecay:Number($('guitar-reference-tone').checked)"));assert(page.includes('wound-2026-10-21:'));
-assert(!/<input id="guitar-drop-d"[^>]*checked/.test(page),'Drop D defaults OFF');
+const page=fs.readFileSync(path.join(__dirname,'index.html'),'utf8');assert(page.includes("stringTexture:1"));assert(page.includes("highDecay:1"));assert(page.includes('plain-approved-2026-10-21:'));
+assert(page.includes('dropD:false'),'Standard tuning is fixed');
 assert(page.includes('guitar-test-35'));
 console.log('Wound release: exact approved sound on strings 4/5/6 at both rates, unchanged legacy plain path, seventh string wound release, preserved attack, passive energy, worker extremes and UI settings passed');

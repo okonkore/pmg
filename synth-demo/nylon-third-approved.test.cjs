@@ -8,5 +8,5 @@ for(const rate of [44100,48000]){
  for(const midi of [59,64,66,69])assert.equal(hash(model.render(rate,midi,fixture.settings)),baseline.public[`${rate}:${midi}`],'Strings 1/2 remain unchanged');
  for(const midi of [40,45,50])assert.equal(hash(model.render(rate,midi,fixture.settings)),baseline.approved[`${rate}:${midi}`],'Approved wound strings remain unchanged');
 }
-const page=fs.readFileSync(path.join(__dirname,'index.html'),'utf8');assert(page.includes("thirdTone:Number($('guitar-reference-tone').checked)"));assert(page.includes('guitar-test-59'));assert(page.includes('plain-approved-2026-10-21'));
+const page=fs.readFileSync(path.join(__dirname,'index.html'),'utf8');assert(page.includes("thirdTone:1"));assert(page.includes('guitar-test-59'));assert(page.includes('plain-approved-2026-10-21'));
 console.log('Approved third-string release: exact accepted G3 through worker, unchanged strings 1/2/4/5/6 at both rates, UI adoption and B3 preview.');

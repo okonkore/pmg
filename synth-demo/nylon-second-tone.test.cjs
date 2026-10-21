@@ -7,5 +7,5 @@ for(const rate of [44100,48000]){
  for(const extra of [{referenceTone:0},{bodyFit:0}])assert.equal(hash(model.render(rate,59,{...settings,...extra})),hash(model.render(rate,59,{...settings,...extra,secondTone:0})),'Disabled path retained');
 }
 const a=vm.runInContext('NylonThirdExcitation',s),b=vm.runInContext('NylonFirstExcitation.at(0)',s),c=vm.runInContext('NylonSecondExcitation.at(0)',s);assert(c.stiffness>Math.min(a.stiffness,b.stiffness)&&c.stiffness<Math.max(a.stiffness,b.stiffness));for(let n=0;n<48;n++){assert(c.lossPerSecond[n]>=0);assert(c.gainDb[n]>=Math.min(a.gainDb[n],b.gainDb[n])-1e-9&&c.gainDb[n]<=Math.max(a.gainDb[n],b.gainDb[n])+1e-9)}
-const page=fs.readFileSync(path.join(__dirname,'index.html'),'utf8');for(const key of ['firstTone','secondTone'])assert(page.includes(`${key}:Number($('guitar-reference-tone').checked)`));
+const page=fs.readFileSync(path.join(__dirname,'index.html'),'utf8');for(const key of ['firstTone','secondTone'])assert(page.includes(`${key}:1`));
 console.log('PASS: interpolated B3–D-sharp4 at both rates, passive fixed energy, disabled paths, exact adopted first/third/wound strings and UI adoption.');
