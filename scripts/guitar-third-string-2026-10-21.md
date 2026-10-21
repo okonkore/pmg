@@ -20,3 +20,13 @@ python scripts/publish_reference_comparisons.py
 Raw intermediate notes, three-take measurements and energy diagnostics remain under ignored `reference-recordings/third-string-2026-10-21/`. Selected listening excerpts are published under the user's existing authorization.
 
 Validation: `nylon-third-tone.test.cjs` checks significant second/third harmonic reduction, unchanged initial pluck energy, passive radiation/energy budgets, finite fretted notes, and exact unchanged other strings / OFF paths at both common rates. Existing wound-release and responsive-worker tests pass. At a 390px touch viewport, all 24 comparison WAVs decoded and played; gain modes, per-band/global sequences, stop and seek worked without JS errors.
+
+## High-band revision (g3-high-2)
+
+The user's comparison feedback identified the recording as brighter. The original high-partial analysis used narrow bands around integer multiples of f0. G3 upper partials are measurably stretched: clear peaks across the three takes give a median stiffness coefficient about 0.0001037, versus the model's original 0.000003. For example the reference's strong thirteenth partial is near 2.56kHz, beyond the old integration window. Its energy had been underestimated and the candidate attenuated it too far.
+
+The opt-in third-string trial now uses the measured stiffness, 48 individual excitation/loss entries, and a revised upper-partial balance. Baseline pluck energy is explicitly retained even though the frequency-dependent release response changes with stiffness. Loss remains nonnegative; other strings and the main instrument's default remain unchanged.
+
+At 50–150ms, relative to the full-note initial RMS, the three references' median 2–3kHz level is approximately -29.5dB. The previous trial was -38.4dB and the revised trial is about -30.2dB. The 3–4kHz and 4–6kHz band balances also move closer in this window. This does not mean the spectral centroid must rise: restoring missing 2.5kHz energy changes the high-band color rather than applying a broad high shelf. Very early broadband contact sound and late recording noise are not reproduced by this harmonic fit.
+
+The comparison's “前回” now plays the previous G3 trial (`previous.f32`), while “今回” plays the revision. The prior public page and WAVs were archived locally under `reference-recordings/third-string-2026-10-21/previous-public/`. Audio URLs include `v=g3-high-2` so an iPhone with cached older clips receives the new versions. `analyze_third_high.py` reproduces the time/band measurements; `test_third_comparison.cjs` accepts an optional base URL and exercises the 24 WAVs and touch-width playback. The third-tone regression also checks the high partial's actual shifted peak and restored level.

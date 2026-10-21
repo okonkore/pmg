@@ -11,6 +11,8 @@
   "firTaps": 2049,
   "commonHeadroomGain": 1.0,
   "thirdTone": 1,
+  "revision": "g3-high-2",
+  "before": "previous G3 trial",
   "status": "trial; main instrument unchanged",
   "normalization": "independent full-note 40-140ms RMS; optional independent band attack matching"
 }

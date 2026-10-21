@@ -12,7 +12,8 @@ reference=np.fromfile(base/'decoded-mono-48k.f32',dtype='<f4').astype(float)[sta
 ratio=take['fundamentalHz']/(440*2**((55-69)/12))
 signals={'reference':reference}
 for kind in ['before','after']:
- y=np.fromfile(data/f'{kind}.f32',dtype='<f4').astype(float)
+ source=data/'previous.f32' if kind=='before' and (data/'previous.f32').exists() else data/f'{kind}.f32'
+ y=np.fromfile(source,dtype='<f4').astype(float)
  signals[kind]=np.r_[np.zeros(pre),np.interp(np.arange(length-pre)*ratio,np.arange(len(y)),y)]
 for y in signals.values():y*=.1/float(np.sqrt(np.mean(y[4320:9120]**2)))
 t=np.arange(2049)-half
@@ -30,6 +31,6 @@ for name,q in clips.items():
  q=q.copy()*gain;q[-1920:]*=np.linspace(1,0,1920);assert np.all(np.isfinite(q)) and np.max(abs(q))<1
  with wave.open(str(out/'audio'/f'{name}.wav'),'wb') as w:w.setnchannels(1);w.setsampwidth(2);w.setframerate(rate);w.writeframes(np.round(q*32767).astype('<i2').tobytes())
 (out/'index.html').write_text((repo/'scripts/third-string-comparison.html').read_text(encoding='utf-8'),encoding='utf-8')
-manifest={'midi':55,'referenceTake':2,'referenceF0':take['fundamentalHz'],'sampleRate':rate,'seconds':3.1,'boundariesHz':[500,2000],'firTaps':2049,'commonHeadroomGain':float(gain),'thirdTone':1,'status':'trial; main instrument unchanged','normalization':'independent full-note 40-140ms RMS; optional independent band attack matching'}
+manifest={'midi':55,'referenceTake':2,'referenceF0':take['fundamentalHz'],'sampleRate':rate,'seconds':3.1,'boundariesHz':[500,2000],'firTaps':2049,'commonHeadroomGain':float(gain),'thirdTone':1,'revision':'g3-high-2','before':'previous G3 trial','status':'trial; main instrument unchanged','normalization':'independent full-note 40-140ms RMS; optional independent band attack matching'}
 (out/'manifest.json').write_text(json.dumps(manifest,indent=2),encoding='utf-8')
 print('Built 24 G3 comparison clips; complementary reconstruction, finite output and headroom verified.')
