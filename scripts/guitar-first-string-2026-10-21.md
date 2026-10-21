@@ -22,3 +22,11 @@ python scripts/publish_reference_comparisons.py
 ```
 
 Validation: `nylon-first-tone.test.cjs` checks the targeted E/F♯/A partial changes, bounded passive energy, preserved initial pluck energy, finite interpolated/higher notes, retained F♯ sustain, OFF paths and exact accepted third/wound/second strings at 44.1/48kHz. Third-approved and responsive-worker regressions pass. `test_first_comparison.cjs` checks all 72 listening clips, three note/source selections, both gain modes, mobile width, sequence cancellation, deep links and absence of JS errors. It accepts a base URL and the existing `PMG_PLAYWRIGHT_MODULE` override.
+
+## Revision first-mid-2
+
+User feedback prioritized the middle band, then the high band. The first fit matched the initial partial levels but missed their later evolution: in E4 take 2, partial 2 falls below partial 3 around 0.65s. The old candidate kept partial 2 dominant. Five first-string partials (2–6) now use fitted pairs of transverse components, with continuous fret interpolation of amplitude ratio, frequency separation and circular phase. Nonnegative losses and a fixed initial pluck budget are retained. These are phenomenological fits, not proof that polarization alone causes the recorded envelope.
+
+In E4 the 0.5–0.8s levels of partials 2/3, relative to the initial fundamental, were about -26.5/-34.8dB before and -43.3/-23.4dB now, versus -40.4/-24.4dB in the selected recording. Initial levels remain approximately unchanged. High-band differences remain, particularly the E4 2–4kHz tail. This revision prioritizes the middle-band evolution rather than claiming a complete match.
+
+The comparison now uses the previous published first-string candidate as “前回” and this revision as “今回”; the main instrument still retains its existing first-string tone. Building requires the saved previous candidate PCM files under the private analysis folder.

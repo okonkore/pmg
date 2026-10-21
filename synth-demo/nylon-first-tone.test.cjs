@@ -12,6 +12,11 @@ for(const rate of [44100,48000]){
   const delta=20*Math.log10(partial(b,rate,midi,n)/partial(b,rate,midi,1))-20*Math.log10(partial(a,rate,midi,n)/partial(a,rate,midi,1));assert(delta*dir>minDb,'Measured excess/missing partial is corrected');
   if(midi===66)assert(20*Math.log10(rms(b,rate,1,1.3)/rms(b,rate,.04,.14))> -20,'Do not force recorded F-sharp rapid decay');
  }
+ // E4's middle-band evolution must not collapse back to a static initial spectrum.
+ const e=model.render(rate,64,{...settings,firstTone:1});
+ const envelope=(n,a,b)=>{let best=0;for(let shift=-5;shift<=5;shift+=.5){let re=0,im=0;const start=Math.round(a*rate),length=Math.round((b-a)*rate),f=440*2**((64-69)/12)*n+shift;for(let i=0;i<length;i++){const v=e[start+i]*(.5-.5*Math.cos(2*Math.PI*i/(length-1))),angle=2*Math.PI*f*i/rate;re+=v*Math.cos(angle);im+=v*Math.sin(angle)}best=Math.max(best,Math.hypot(re,im)/length)}return best};
+ assert(20*Math.log10(envelope(3,.5,.8)/envelope(2,.5,.8))>8,'E4 later middle band lets partial 3 overtake partial 2');
+ assert(20*Math.log10(envelope(3,.15,.4)/envelope(3,.04,.14))>2,'E4 partial 3 blooms after the initial attack');
  assert.equal(hash(model.render(rate,55,{...settings,firstTone:1})),third.approved[`${rate}:55`],'Accepted third string remains exact');
  for(const midi of [40,45,50])assert.equal(hash(model.render(rate,midi,{...settings,firstTone:1})),legacy.approved[`${rate}:${midi}`],'Accepted wound strings remain exact');
  assert.equal(hash(model.render(rate,59,{...settings,firstTone:1})),legacy.public[`${rate}:59`],'Second string remains exact');

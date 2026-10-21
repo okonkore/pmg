@@ -7,7 +7,9 @@ for midi,folder,label in [(64,'2026-10-20-E4-108','1弦開放 E4'),(66,'2026-10-
  base=private/folder;take=json.loads((base/'measurements.json').read_text(encoding='utf-8'))['measurements'][1];start=round(take['onsetSeconds']*rate)-pre;reference=np.fromfile(base/'decoded-mono-48k.f32',dtype='<f4').astype(float)[start:start+length];assert len(reference)==length
  ratio=take['fundamentalHz']/(440*2**((midi-69)/12));signals={'reference':reference}
  for kind in ['before','after']:
-  y=np.fromfile(data/f'{kind}-{midi}.f32',dtype='<f4').astype(float);signals[kind]=np.r_[np.zeros(pre),np.interp(np.arange(length-pre)*ratio,np.arange(len(y)),y)]
+  filename=data/f'{kind}-{midi}.f32'
+  if kind=='before':filename=data/f'previous-{midi}.f32'
+  y=np.fromfile(filename,dtype='<f4').astype(float);signals[kind]=np.r_[np.zeros(pre),np.interp(np.arange(length-pre)*ratio,np.arange(len(y)),y)]
  for y in signals.values():y*=.1/float(np.sqrt(np.mean(y[4320:9120]**2)))
  for source,y in signals.items():
   parts={band:np.convolve(y,h,mode='full')[half:half+length] for band,h in kernels.items()};assert np.max(abs(parts['low']+parts['mid']+parts['high']-y))<1e-12
@@ -17,6 +19,6 @@ gain=min(1,.92/max(float(np.max(abs(q))) for q in clips.values()))
 for name,q in clips.items():
  q=q.copy()*gain;q[-1920:]*=np.linspace(1,0,1920);assert np.all(np.isfinite(q)) and np.max(abs(q))<1
  with wave.open(str(out/'audio'/f'{name}.wav'),'wb') as w:w.setnchannels(1);w.setsampwidth(2);w.setframerate(rate);w.writeframes(np.round(q*32767).astype('<i2').tobytes())
-manifest={'revision':'first-1','firstTone':1,'sampleRate':rate,'seconds':3.1,'notes':notes,'boundariesHz':[500,2000],'firTaps':2049,'commonHeadroomGain':gain,'status':'trial; main first-string tone unchanged','normalization':'independent full-note 40-140ms RMS, optional band attack matching'}
+manifest={'revision':'first-mid-2','beforeRevision':'first-1','firstTone':1,'sampleRate':rate,'seconds':3.1,'notes':notes,'boundariesHz':[500,2000],'firTaps':2049,'commonHeadroomGain':gain,'status':'trial; main first-string tone unchanged','normalization':'independent full-note 40-140ms RMS, optional band attack matching'}
 (out/'manifest.json').write_text(json.dumps(manifest,ensure_ascii=False,indent=2),encoding='utf-8');(out/'index.html').write_text((repo/'scripts/first-string-comparison.html').read_text(encoding='utf-8').replace('__CONFIG__',json.dumps(manifest,ensure_ascii=False)),encoding='utf-8')
 print('Built 72 first-string clips; complementary reconstruction, finite output and peak safety verified.')

@@ -1,5 +1,6 @@
 {
-  "revision": "first-1",
+  "revision": "first-mid-2",
+  "beforeRevision": "first-1",
   "firstTone": 1,
   "sampleRate": 48000,
   "seconds": 3.1,

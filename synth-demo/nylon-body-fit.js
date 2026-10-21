@@ -256,29 +256,29 @@ const NylonFirstExcitation = {
    "stiffness": 6.785914515190595e-06,
    "gainDb": [
     0,
-    -0.279,
-    -4.541,
-    1.366,
-    -0.237,
-    -2.86,
+    -4.285,
+    9.552,
+    2.3,
+    -2.96,
+    -3.935,
     -0.9,
-    -4.625,
+    -4.646,
     -4.02,
-    -8.041,
-    6.655,
-    12.419,
-    -3.894,
-    0.962,
-    -6.448,
-    6.373,
-    13.274,
-    12.135,
-    10.306,
-    6.867,
-    11.622,
-    17.06,
+    -8.045,
+    6.651,
+    12.417,
+    -3.898,
+    0.959,
+    -6.454,
+    6.371,
+    13.273,
+    12.134,
+    10.305,
+    6.866,
+    11.621,
+    17.058,
     18.0,
-    17.444,
+    17.443,
     18.0,
     18.0,
     18.0,
@@ -306,11 +306,11 @@ const NylonFirstExcitation = {
    ],
    "lossPerSecond": [
     0.4215,
-    1.1788,
-    0.9075,
-    1.1582,
-    1.4244,
-    1.2629,
+    1.0959,
+    2.1886,
+    1.2083,
+    1.7281,
+    1.2559,
     1.2321,
     0.26,
     1.6444,
@@ -353,6 +353,33 @@ const NylonFirstExcitation = {
     0.0,
     0.0,
     0.0
+   ],
+   "polarizations": [
+    {
+     "ratio": 0.8,
+     "splitHz": 0.7,
+     "phase": 0.24
+    },
+    {
+     "ratio": 0.8,
+     "splitHz": 1.25,
+     "phase": 2.356194
+    },
+    {
+     "ratio": 0.2,
+     "splitHz": 0.85,
+     "phase": -2.356194
+    },
+    {
+     "ratio": 0.5,
+     "splitHz": 3.2,
+     "phase": -2.094395
+    },
+    {
+     "ratio": 0.2,
+     "splitHz": 2.7,
+     "phase": -1.047198
+    }
    ]
   },
   {
@@ -360,31 +387,31 @@ const NylonFirstExcitation = {
    "stiffness": 1.1965020195198309e-05,
    "gainDb": [
     0,
-    3.148,
-    8.404,
-    -5.938,
-    8.781,
-    14.857,
-    10.336,
-    9.202,
-    2.205,
+    6.888,
+    10.309,
+    -8.671,
+    10.547,
+    16.001,
+    10.34,
+    9.203,
+    2.203,
     12.362,
-    8.233,
-    8.315,
+    8.243,
+    8.324,
     11.116,
     18.0,
     18.0,
     10.95,
     18.0,
     18.0,
-    3.288,
+    3.292,
     18.0,
-    15.585,
-    18.0,
-    18.0,
+    15.586,
     18.0,
     18.0,
-    16.813,
+    18.0,
+    18.0,
+    16.814,
     -19.2,
     18.0,
     -20.4,
@@ -410,11 +437,11 @@ const NylonFirstExcitation = {
    ],
    "lossPerSecond": [
     0.5979,
-    1.7046,
-    1.7821,
-    1.3688,
-    1.7114,
-    1.1109,
+    2.7955,
+    1.373,
+    1.1736,
+    2.5296,
+    1.6615,
     1.7201,
     0.8752,
     1.7614,
@@ -457,6 +484,33 @@ const NylonFirstExcitation = {
     0.0,
     0.0,
     0.0
+   ],
+   "polarizations": [
+    {
+     "ratio": 0.35,
+     "splitHz": 0.55,
+     "phase": 2.094395
+    },
+    {
+     "ratio": 0.2,
+     "splitHz": 2.2,
+     "phase": 2.356194
+    },
+    {
+     "ratio": 0.65,
+     "splitHz": 0.55,
+     "phase": 0.785398
+    },
+    {
+     "ratio": 0.35,
+     "splitHz": 0.7,
+     "phase": 1.570796
+    },
+    {
+     "ratio": 0.35,
+     "splitHz": 0.85,
+     "phase": -2.356194
+    }
    ]
   },
   {
@@ -464,21 +518,21 @@ const NylonFirstExcitation = {
    "stiffness": 2.6905595774506715e-05,
    "gainDb": [
     0,
-    -3.724,
-    6.063,
-    -3.45,
-    -0.785,
-    -17.944,
-    -6.179,
-    3.626,
-    7.131,
-    4.793,
-    -12.273,
-    14.108,
-    -0.152,
+    -3.413,
+    7.947,
+    -5.388,
+    1.869,
+    -21.649,
+    -6.18,
+    3.624,
+    7.133,
+    4.787,
+    -12.356,
+    14.106,
+    -0.148,
     18.0,
-    16.579,
-    7.532,
+    16.577,
+    7.531,
     18.0,
     18.0,
     18.0,
@@ -515,10 +569,10 @@ const NylonFirstExcitation = {
    "lossPerSecond": [
     0.8626,
     2.4933,
-    3.094,
-    1.6846,
-    2.142,
-    0.8829,
+    3.3667,
+    3.1846,
+    1.7329,
+    0,
     2.4522,
     1.7981,
     1.937,
@@ -561,6 +615,33 @@ const NylonFirstExcitation = {
     0.0,
     0.0,
     0.0
+   ],
+   "polarizations": [
+    {
+     "ratio": 0.2,
+     "splitHz": 0.616,
+     "phase": -1.832596
+    },
+    {
+     "ratio": 0.2,
+     "splitHz": 0.55,
+     "phase": -2.617994
+    },
+    {
+     "ratio": 0.5,
+     "splitHz": 1.0,
+     "phase": -0.523599
+    },
+    {
+     "ratio": 0.65,
+     "splitHz": 1.0,
+     "phase": -2.879793
+    },
+    {
+     "ratio": 0.8,
+     "splitHz": 1.5,
+     "phase": -1.570796
+    }
    ]
   }
  ]
@@ -568,5 +649,6 @@ const NylonFirstExcitation = {
 NylonFirstExcitation.at = function(fret){
  const knots=this.anchors;let k=0;while(k<knots.length-2&&fret>knots[k+1].fret)k++;
  const a=knots[k],b=knots[k+1],q=Math.max(0,Math.min(1,(fret-a.fret)/(b.fret-a.fret)));
- return {stiffness:(a.stiffness*(1-q)+b.stiffness*q)*Math.min(3,2**(Math.max(0,fret-knots[knots.length-1].fret)/12)),gainDb:a.gainDb.map((v,n)=>v*(1-q)+b.gainDb[n]*q),lossPerSecond:a.lossPerSecond.map((v,n)=>v*(1-q)+b.lossPerSecond[n]*q)};
+ const blend=(x,y)=>x*(1-q)+y*q;
+ return {stiffness:blend(a.stiffness,b.stiffness)*Math.min(3,2**(Math.max(0,fret-knots[knots.length-1].fret)/12)),gainDb:a.gainDb.map((v,n)=>blend(v,b.gainDb[n])),lossPerSecond:a.lossPerSecond.map((v,n)=>blend(v,b.lossPerSecond[n])),polarizations:a.polarizations.map((v,n)=>({ratio:blend(v.ratio,b.polarizations[n].ratio),splitHz:blend(v.splitHz,b.polarizations[n].splitHz),phase:v.phase+q*Math.atan2(Math.sin(b.polarizations[n].phase-v.phase),Math.cos(b.polarizations[n].phase-v.phase))}))};
 };
