@@ -1,0 +1,16 @@
+{
+  "midi": 55,
+  "referenceTake": 2,
+  "referenceF0": 195.212,
+  "sampleRate": 48000,
+  "seconds": 3.1,
+  "boundariesHz": [
+    500,
+    2000
+  ],
+  "firTaps": 2049,
+  "commonHeadroomGain": 1.0,
+  "thirdTone": 1,
+  "status": "trial; main instrument unchanged",
+  "normalization": "independent full-note 40-140ms RMS; optional independent band attack matching"
+}

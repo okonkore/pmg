@@ -25,3 +25,5 @@ python reference-recordings/tuning-2026-10-20/reference-comparison/serve.py
 Do not rerun older generators that overwrite the root page. The new builder updates the treble page and root navigation, leaving the saved wound page intact. The server script is part of the existing local reference data.
 
 `PMG_PLAYWRIGHT_MODULE=/path/to/existing/playwright node scripts/test_reference_comparisons.cjs` exercises all 144 treble clips, two boundaries, both gain modes, missing-reference controls, sequences, cancellation, Range requests and the preserved wound page. It expects the private server on 8769 and the repo HTTP server on 8766. Public tuning changes are limited to Drop D default OFF, applying accepted wound settings to string 7, and a B1 preview button. Strings 1–3 have not been retuned yet.
+
+The G3 trial at `/third-comparison/` adds 24 authorized excerpts, retaining the previous treble and wound audio. See [third-string adjustment](guitar-third-string-2026-10-21.md). `thirdTone` defaults to zero; the main instrument has not adopted this candidate yet.

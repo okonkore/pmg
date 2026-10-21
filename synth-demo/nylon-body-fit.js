@@ -136,3 +136,44 @@ NylonWoundExcitation.loss = function(frequency,openMidi=50){
  const blend=Math.max(0,Math.min(1,(openMidi-40)/10));
  return Math.min(8,(.75+.35*blend)*q*q/(1+q));
 };
+
+// Third-string trial: excitation and passive loss fitted across three G3 takes.
+// Opt-in for the listening comparison; does not change other strings.
+const NylonThirdExcitation = {
+ "gainDb": [
+  0,
+  -17.536,
+  -37.317,
+  -23.382,
+  -29.416,
+  -18.278,
+  1.138,
+  3.0,
+  -5.606,
+  -21.428,
+  -10.123,
+  -12.569,
+  -14.83,
+  -29.691,
+  -30.076,
+  -23.926
+ ],
+ "lossPerSecond": [
+  0,
+  0.0,
+  0.0,
+  0.7331,
+  0.4,
+  0.0,
+  1.9127,
+  2.5806,
+  1.1931,
+  0.0,
+  1.2267,
+  1.3708,
+  3.0,
+  -0.0,
+  -0.0,
+  1.2544
+ ]
+};
