@@ -32,7 +32,7 @@ function wait(ms){return new Promise(r=>setTimeout(r,ms))}
  $('song').value='prelude1012';$('song').dispatchEvent(new w.Event('change'));assert(get().notes.length===1349,'Long built-in opens');assert($('seq-title').disabled,'Original remains read-only after switching');
  $('song').value=userId;$('song').dispatchEvent(new w.Event('change'));assert(get().title==='Browser test edit'&&get().bpm===120,'Switching songs preserves changes');
  $('seq-new').click();assert(get().notes.length===0,'New blank song');$('seq-draw').click();
- const r=grid.getBoundingClientRect();grid.dispatchEvent(new w.PointerEvent('pointerdown',{bubbles:true,button:0,pointerId:3,clientX:r.left+5,clientY:r.top+(108-60)*20+5}));grid.dispatchEvent(new w.PointerEvent('pointerup',{bubbles:true,pointerId:3}));assert(get().notes.length===1&&get().notes[0].pitch===60,'Draw note in new song');
+ const r=grid.getBoundingClientRect();grid.dispatchEvent(new w.PointerEvent('pointerdown',{bubbles:true,button:0,pointerId:3,clientX:r.left+5,clientY:r.top+(108-60)*20+5}));grid.dispatchEvent(new w.PointerEvent('pointerup',{bubbles:true,pointerId:3,clientX:r.left+5,clientY:r.top+(108-60)*20+5}));assert(get().notes.length===1&&get().notes[0].pitch===60,'Draw note in new song');
  $('seq-at').value='0.13';$('seq-at').dispatchEvent(new w.Event('change'));$('seq-quantize').click();assert(get().notes[0].beat===0.25,'Quantize selected note');
  const key=(key,extra={})=>$('seq-scroll').dispatchEvent(new w.KeyboardEvent('keydown',{key,bubbles:true,...extra}));
  key('c',{ctrlKey:true});

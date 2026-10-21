@@ -27,7 +27,7 @@ const ScoreEditor=(()=>{
    </div>
    <div id="seq-scroll" class="seq-scroll" tabindex="0" role="region" aria-label="ピアノロール。音符を選択し矢印キーで移動。Deleteで削除。" aria-describedby="seq-help"><div id="seq-roll" class="seq-roll"><div id="seq-grid" class="seq-grid"></div><div id="seq-playhead" class="seq-playhead"></div><div id="seq-piano" class="seq-piano"></div><div id="seq-ruler" class="seq-ruler"></div><div id="seq-corner" class="seq-corner">小節</div></div></div>
    <div class="seq-inspector seq-menu-item"><span id="seq-selection-info" class="seq-selection-info">音符を選択</span><label>音程 <input id="seq-pitch" aria-label="選択音符の音程" placeholder="C4"></label><label>位置（拍）<input id="seq-at" type="number" min="0" max="4095" step="0.25"></label><label>長さ（拍）<input id="seq-duration" type="number" min="0.0078125" max="4096" step="0.25"></label><label>強さ <input id="seq-velocity" type="range" min="1" max="127" value="127"><output id="seq-velocity-out">127</output></label></div>
-   <p id="seq-help" class="seq-help seq-menu-item">空白のドラッグでスクロール。小節番号の行をピンチで横方向、左の鍵盤列をピンチで縦方向に拡大・縮小。描画領域ではピンチは無効です。音符をダブルタップで削除。鉛筆または空白のダブルタップで音符を追加。音符をドラッグで移動、右端で長さ変更。<kbd>Shift</kbd>＋クリック／Shift＋空白のドラッグで範囲選択。ルーラーで再生位置を指定。<br><kbd>V</kbd> 選択 · <kbd>P</kbd> 鉛筆 · <kbd>Space</kbd> 再生／停止 · <kbd>Delete</kbd> 削除 · <kbd>Ctrl / ⌘ C・V</kbd> コピー／貼り付け · <kbd>Ctrl / ⌘ Z</kbd> Undo<span id="seq-origin" class="seq-origin"></span></p>`;
+   <p id="seq-help" class="seq-help seq-menu-item">空白のドラッグでスクロール。小節番号の行をピンチで横方向、左の鍵盤列をピンチで縦方向に拡大・縮小。描画領域ではピンチは無効です。音符をダブルタップで削除。鉛筆モードでは空白をタップで音符を追加、ドラッグでスクロール。選択モードでは空白のダブルタップで追加。音符をドラッグで移動、右端で長さ変更。<kbd>Shift</kbd>＋クリック／Shift＋空白のドラッグで範囲選択。ルーラーで再生位置を指定。<br><kbd>V</kbd> 選択 · <kbd>P</kbd> 鉛筆 · <kbd>Space</kbd> 再生／停止 · <kbd>Delete</kbd> 削除 · <kbd>Ctrl / ⌘ C・V</kbd> コピー／貼り付け · <kbd>Ctrl / ⌘ Z</kbd> Undo<span id="seq-origin" class="seq-origin"></span></p>`;
   const $=id=>document.getElementById(id),scroll=$('seq-scroll'),grid=$('seq-grid'),roll=$('seq-roll'),ruler=$('seq-ruler');
   const readonly=()=>history?.readonly;
   const doc=()=>draft||history.current;
@@ -117,8 +117,7 @@ const ScoreEditor=(()=>{
     if(readonly()||!selection.has(id))return;
     api.stop();gesture={kind:e.target.closest('.seq-resize')?'resize':'move',base:M.clone(history.current),id,point:p,clientX:e.clientX,clientY:e.clientY,selection:new Set(selection),pointer:e.pointerId};
    }else if(tool==='draw'&&!readonly()){
-    const base=M.clone(history.current),beat=quantize(p.beat),duration=Math.min(+$('seq-length').value,M.MAX_BEATS-beat);if(duration<M.MIN_LENGTH)return;
-    api.stop();const note={id:M.uid('note'),beat,pitch:p.pitch,duration,velocity:1};draft=M.clone(base);draft.notes.push(note);selection=new Set([note.id]);gesture={kind:'draw',base,id:note.id,point:p,pointer:e.pointerId};renderNotes();inspector();
+    gesture={kind:'pan',blank:true,addOnTap:true,point:p,pointer:e.pointerId,x:e.clientX,y:e.clientY,left:scroll.scrollLeft,top:scroll.scrollTop};
    }else if(e.shiftKey){
     gesture={kind:'marquee',point:p,selection:new Set(selection),pointer:e.pointerId};renderNotes();inspector();
    }else{gesture={kind:'pan',blank:true,pointer:e.pointerId,x:e.clientX,y:e.clientY,left:scroll.scrollLeft,top:scroll.scrollTop}}
@@ -127,17 +126,15 @@ const ScoreEditor=(()=>{
   grid.addEventListener('pointermove',e=>{
    if(!gesture||gesture.pointer!==e.pointerId)return;const p=point(e),g=gesture;
    if(tapStart&&Math.hypot(e.clientX-tapStart.x,e.clientY-tapStart.y)>8){tapStart=null;lastTap=null}
-   if(g.kind==='pan'){g.moved=g.moved||Math.hypot(e.clientX-g.x,e.clientY-g.y)>(e.pointerType==='touch'?8:4);scroll.scrollLeft=g.left-(e.clientX-g.x);scroll.scrollTop=g.top-(e.clientY-g.y);return}
+   if(g.kind==='pan'){g.moved=g.moved||Math.hypot(e.clientX-g.x,e.clientY-g.y)>(e.pointerType==='touch'?8:4);if(g.moved){scroll.scrollLeft=g.left-(e.clientX-g.x);scroll.scrollTop=g.top-(e.clientY-g.y)}return}
    if(g.kind==='marquee'){
     const left=Math.min(g.point.beat,p.beat),right=Math.max(g.point.beat,p.beat),low=Math.min(g.point.pitch,p.pitch),high=Math.max(g.point.pitch,p.pitch);
     selection=new Set(g.selection);for(const n of doc().notes)if(n.beat<right&&n.beat+n.duration>left&&n.pitch>=low&&n.pitch<=high)selection.add(n.id);
     renderNotes();const box=document.createElement('div');box.className='seq-marquee';Object.assign(box.style,{left:left*px+'px',top:(TOP-high)*rowHeight+'px',width:(right-left)*px+'px',height:(high-low+1)*rowHeight+'px'});grid.append(box);inspector();return;
    }
-   if(g.kind!=='draw'&&Math.abs(e.clientX-g.clientX)+Math.abs(e.clientY-g.clientY)<(e.pointerType==='touch'?8:3)&&!draft)return;
+   if(Math.abs(e.clientX-g.clientX)+Math.abs(e.clientY-g.clientY)<(e.pointerType==='touch'?8:3)&&!draft)return;
    draft=M.clone(g.base);
-   if(g.kind==='draw'){
-    const start=quantize(g.point.beat),end=Math.max(start+minLength(),quantize(p.beat));draft.notes.push({id:g.id,beat:start,pitch:g.point.pitch,duration:Math.min(M.MAX_BEATS-start,end-start),velocity:1});
-   }else{
+   {
     const anchor=g.base.notes.find(n=>n.id===g.id),chosen=draft.notes.filter(n=>g.selection.has(n.id));
     if(g.kind==='move'){
      const deltaBeat=clamp(quantize(anchor.beat+p.beat-g.point.beat)-anchor.beat,-Math.min(...chosen.map(n=>n.beat)),M.MAX_BEATS-Math.max(...chosen.map(n=>n.beat+n.duration)));
@@ -162,7 +159,7 @@ const ScoreEditor=(()=>{
     if(tap.id){selection=new Set([tap.id]);deleteSelection()}else if(tool==='select')addNote(point(e));
    }else lastTap={...tap,time:now};
   }
-  grid.addEventListener('pointerup',e=>{const moved=gesture?.moved||(draft&&JSON.stringify(draft.notes)!==JSON.stringify(gesture?.base.notes));finishGesture();if(moved){tapStart=lastTap=null}else finishTap(e)});
+  grid.addEventListener('pointerup',e=>{const g=gesture;if(g&&g.pointer!==e.pointerId)return;const add=g?.addOnTap&&!g.moved&&Math.hypot(e.clientX-g.x,e.clientY-g.y)<=(e.pointerType==='touch'?8:4);const moved=gesture?.moved||(draft&&JSON.stringify(draft.notes)!==JSON.stringify(gesture?.base.notes));finishGesture();if(add&&!readonly()){tapStart=lastTap=null;api.stop();addNote(g.point)}else if(moved||g?.addOnTap){tapStart=lastTap=null}else finishTap(e)});
   grid.addEventListener('pointercancel',()=>{tapStart=lastTap=null;finishGesture(true)});
   grid.addEventListener('lostpointercapture',()=>finishGesture());
   grid.addEventListener('dblclick',e=>{if(performance.now()<suppressClicksUntil||performance.now()-lastTouch<700||readonly()||tool!=='select')return;const note=e.target.closest('[data-note]');if(note){selection=new Set([note.dataset.note]);deleteSelection();return}addNote(point(e))});
