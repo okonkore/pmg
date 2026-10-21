@@ -24,3 +24,13 @@ Local Edge verification also exercised the existing sequencer browser test: edit
 A local three-note Node benchmark (E2/A2/D3, 48kHz) measured 1.87s process CPU / 1.71s elapsed before, and 1.82s CPU / 3.16s elapsed with cooperative pauses. All three output hashes matched. Process CPU includes runtime threads, so these ratios are not whole-machine CPU percentages and will vary by machine. The browser integration run recorded a 16.8ms 95th-percentile frame interval, including a roughly 250ms maximum across initial page load and all test actions. This does not establish that every OS-level cursor stall has been reproduced or eliminated.
 
 A deployment test caught a late error callback from a terminated Worker. Handlers now capture their Worker instance and ignore stale callbacks; a canceled Worker cannot terminate or reject its replacement. `nylon-preparation-cancel.test.cjs` covers both this race and cleanup after a genuine current-Worker error. The browser test also invokes a late canceled callback explicitly.
+
+## Full-range preparation requested on 2026-10-21
+
+The user clarified that the earlier apparent UI freeze was caused by a failing mouse battery, and explicitly requested precomputing the whole keyboard on instrument selection. This replaces the previous on-demand 13-note preparation policy.
+
+Selecting Nylon Guitar now enables the audio context and prepares all 88 pitches, MIDI 21–108, for the current guitar parameters. Concurrent preparation requests share one task. Completed buffers remain cached for octave changes, scores and returning to the same preset. Tone-control changes invalidate the previous signature and prepare the full range again. The obsolete-settings cache target is 96MiB; the current full bank stays protected even when a high sample rate makes it larger.
+
+While a bank is missing, a fixed translucent/blurred overlay displays a spinner and an actual completed-note count/progress bar. Main content is inert, keyboard commands are intercepted, and background scrolling is locked. Completion, cancellation and errors release the overlay and restore focus. The worker keeps its cooperative rendering and does not change the synthesis model.
+
+The updated browser regression checks all 88 pitches are generated once, progress reaches 88, controls/keyboard are locked during preparation, octave and preset returns require no new jobs, accepted waveforms are unchanged, ordinary playing works, and both worker failure/retry and cancellation release the UI. The former on-demand assertions are superseded by these requirements.

@@ -6,6 +6,7 @@
 <link rel="stylesheet" href="sequencer.css">
 <style>
 :root{color-scheme:dark;font-family:ui-sans-serif,system-ui,-apple-system,sans-serif;background:#191510;color:#f5ead8}*{box-sizing:border-box}body{margin:0;padding:44px 20px;min-height:100vh;background:radial-gradient(ellipse at 50% 0,#483425,transparent 70%)}main{max-width:980px;margin:auto}header{display:flex;justify-content:space-between;align-items:center;gap:20px;margin-bottom:28px}h1{font-size:clamp(25px,4vw,40px);letter-spacing:-1.5px;margin:6px 0}a{color:#f0d59e}small,.muted{color:#c2b39e;font-size:13px}.eyebrow{font-size:11px;letter-spacing:3px;color:#d5ad76}.panel{background:repeating-linear-gradient(92deg,#e8bd7c04 0 1px,transparent 1px 8px),linear-gradient(140deg,#79503a,#4c2e22);border:1px solid #a77b52;border-radius:20px;padding:28px;box-shadow:0 25px 65px #0006,inset 0 1px #f6dfb933}.top{display:flex;align-items:center;justify-content:space-between;gap:20px}.brand{font-size:14px;letter-spacing:4px;font-weight:800}.status{font-size:12px;color:#eedcc0}button,select{font:inherit}.song-picker{margin-top:22px}.song-picker label{color:#f0d9b4;letter-spacing:.5px;margin-bottom:9px}.song-picker select{width:100%;padding:12px;border:1px solid #ffffff35;border-radius:9px;background:#2c2018;color:#f5ead8}.song-picker .hint{margin:8px 0 0}select:focus-visible{outline:3px solid #f1ce8f;outline-offset:3px}button{cursor:pointer;border:1px solid #ffffff30;border-radius:9px;background:#2c2018;color:#f5ead8;padding:11px 17px}button:hover{filter:brightness(1.2)}button:focus-visible,input:focus-visible{outline:3px solid #f1ce8f;outline-offset:3px}.primary{background:linear-gradient(#f3e4c3,#dfc89e);color:#39291d;border:0;font-weight:700;white-space:nowrap}.preset-picker{margin:26px 0 22px}.guitar-controls{margin-top:22px;border-top:1px solid #ffffff25;padding-top:20px}.guitar-controls .controls{grid-template-columns:repeat(3,minmax(0,1fr))}.controls{display:grid;grid-template-columns:repeat(4,1fr);gap:24px}label{display:flex;flex-direction:column;gap:13px;font-size:12px;letter-spacing:1px}label span{display:flex;justify-content:space-between}output{color:#f0d39f;letter-spacing:0}input{width:100%;accent-color:#e4c18a;cursor:pointer}.monitor{margin-top:25px;background:#211b15;border:1px solid #ffffff22;border-radius:10px;overflow:hidden}canvas{display:block;width:100%;height:88px}.monitor-foot{display:flex;justify-content:space-between;padding:8px 12px;border-top:1px solid #ffffff12;font:11px ui-monospace,monospace;color:#cfb58b}.octave-bar{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-top:20px}.octave-buttons{display:flex;align-items:center;gap:10px}.octave-bar output{font:13px ui-monospace,monospace;color:#f2dfbb}button:disabled{opacity:.3;cursor:default}.key span{white-space:pre-line;line-height:1.7}.keyboard{height:195px;position:relative;display:flex;margin-top:24px;user-select:none;touch-action:none}.key{border-radius:0 0 7px 7px;padding:0;position:relative;display:flex;align-items:flex-end;justify-content:center;padding-bottom:15px;touch-action:none}.white{width:12.5%;height:100%;background:linear-gradient(#f5e9ce,#ddc8a1);border:1px solid #8c7455;color:#665039}.black{position:absolute;top:0;height:62%;width:7.5%;background:linear-gradient(#3c2c21,#201710);border:1px solid #150f0b;color:#d0b997;z-index:2;box-shadow:0 5px 5px #0006}.key.active.white{background:#d8ac68}.key.active.black{background:#976338;color:#fff0d6}.keyboard,.keyboard *{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}.key span{font-size:11px;pointer-events:none}.bottom{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:21px}.actions{display:flex;gap:8px}footer{margin-top:20px;line-height:1.8;font-size:12px;color:#b8a78f}.hint{margin-top:16px;color:#e7d1b0;font-size:12px;line-height:1.7}@media(max-width:650px){body{padding:24px 12px}.panel{padding:18px}.controls{grid-template-columns:repeat(2,1fr);gap:20px}.keyboard{height:155px}header{align-items:flex-start;flex-direction:column;gap:10px}.bottom{align-items:flex-start;flex-direction:column}.status{font-size:10px}.brand{letter-spacing:2px}}
+.guitar-loading[hidden]{display:none}.guitar-loading{position:fixed;inset:0;z-index:10000;display:grid;place-items:center;background:#18120d88;backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);touch-action:none;overscroll-behavior:contain}.loading-card{width:min(320px,85vw);padding:28px;text-align:center;border:1px solid #c49b6b;background:#36271ff2;border-radius:18px;box-shadow:0 15px 60px #0006}.loading-spinner{width:38px;height:38px;margin:0 auto 18px;border:3px solid #bfa17b55;border-top-color:#f0d59e;border-radius:50%;animation:loading-spin .85s linear infinite}.loading-card progress{width:100%;accent-color:#e4c18a}.loading-card p{margin:12px 0;color:#e7d1b0}@keyframes loading-spin{to{transform:rotate(360deg)}}@media(prefers-reduced-motion:reduce){.loading-spinner{animation:none}}
 </style>
 </head>
 <body><main>
@@ -40,6 +41,7 @@
 <section id="score-editor" class="sequencer" aria-label="曲のピアノロールエディター" hidden></section>
 <footer>最初に「音を有効にする」を押してください。有線イヤホン・内蔵スピーカー推奨。<br>波形合成 → フィルター → 音量エンベロープ → ディレイ。Funky Clavは弦風の倍音と短い減衰、オートワウで音を作ります。すべて合成音です。Nylon Guitarは弦の振動・爪や指の接触・胴の共鳴を計算しています。<br>BWV 1012：Mutopia / Hajo Dezelski（<a href="https://creativecommons.org/licenses/by-sa/3.0/" target="_blank" rel="noopener">CC BY-SA 3.0</a>）。音符データを変換し、テンポ・音の切り方を試聴用に調整。反復なし。出典：<a href="https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=1494" target="_blank" rel="noopener">Prélude</a> / <a href="https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=1503" target="_blank" rel="noopener">Allemande</a> / <a href="https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=1504" target="_blank" rel="noopener">Courante</a> / <a href="https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=1505" target="_blank" rel="noopener">Sarabande</a> / <a href="https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=1506" target="_blank" rel="noopener">Gavotte I</a> / <a href="https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=1507" target="_blank" rel="noopener">Gavotte II</a> / <a href="https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=1508" target="_blank" rel="noopener">Gigue</a>。<br>BWV 1007（Prélude / Allemande / Courante / Sarabande / Gigue）：<a href="https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=517" target="_blank" rel="noopener">Mutopia / Andreas Scherer</a>（Public Domain）。音符データを変換し、音の切り方を試聴用に調整。</footer>
 </main>
+<div id="guitar-loading" class="guitar-loading" role="dialog" aria-modal="true" aria-labelledby="loading-title" tabindex="-1" hidden><div class="loading-card"><div class="loading-spinner" aria-hidden="true"></div><strong id="loading-title">ナイロンギターを準備しています</strong><p id="loading-count" role="status" aria-live="polite">0 / 88音</p><progress id="loading-progress" value="0" max="88" aria-label="音色の準備状況"></progress><p>しばらくお待ちください</p></div></div>
 <script src="gavotte.js"></script>
 <script src="prelude.js"></script>
 <script src="bach-solos.js"></script>
@@ -105,7 +107,16 @@ async function enable(notes){const generation=guitarGeneration;if(!readyPromise)
 function play(id,midi,when=ctx.currentTime,velocity=1){if(voices.has(id))return;while(allVoices.size>=12){const oldest=allVoices.values().next().value;oldest.kill();}const p=presets[preset];if(p.engine==='string')return playString(id,midi,when,p,velocity);const freq=440*2**((midi-69)/12),filter=ctx.createBiquadFilter(),env=ctx.createGain();filter.type='lowpass';filter.Q.value=p.resonance;if(preset==='clav'){const bright=+$('cutoff').value;filter.frequency.setValueAtTime(Math.max(250,bright*.5),when);filter.frequency.exponentialRampToValueAtTime(Math.min(16000,bright*2.4),when+.008);filter.frequency.exponentialRampToValueAtTime(Math.max(200,bright*.55),when+.17)}else if(preset==='bass'){const bright=+$('cutoff').value;filter.frequency.setValueAtTime(Math.min(16000,bright*3),when);filter.frequency.exponentialRampToValueAtTime(Math.max(100,bright*.5),when+p.decay)}else if(preset==='brass'){const bright=+$('cutoff').value;filter.frequency.setValueAtTime(Math.max(200,bright*.4),when);filter.frequency.exponentialRampToValueAtTime(Math.min(16000,bright*1.8),when+p.attack);filter.frequency.exponentialRampToValueAtTime(bright,when+p.attack+p.decay)}else if(preset==='organ'){filter.frequency.setValueAtTime(+$('cutoff').value,when)}else{filter.frequency.setValueAtTime(Math.min(18000,+$('cutoff').value*1.7),when);filter.frequency.exponentialRampToValueAtTime(+$('cutoff').value,when+p.decay);}filter.connect(env).connect(bus);env.gain.setValueAtTime(0,when);env.gain.linearRampToValueAtTime(.19*velocity,when+p.attack);env.gain.exponentialRampToValueAtTime(.19*velocity*p.sustain,when+p.attack+p.decay);const oscillators=[],mixers=[];const layers=p.layers||(preset==='clav'?[['custom',0,.95,1]]:[[p.wave,-p.detune,.44,1],[p.wave,p.detune,.44,1],['sine',0,p.sub,.5]]);for(const [wave,cents,level,mult] of layers){const o=ctx.createOscillator(),g=ctx.createGain();if(wave==='custom'){if(!clavWave){const real=new Float32Array(49),imag=new Float32Array(49);for(let n=1;n<49;n++)imag[n]=Math.sin(n*Math.PI*.23)*Math.sin(n*Math.PI*.15)/n**.85;clavWave=ctx.createPeriodicWave(real,imag)}o.setPeriodicWave(clavWave)}else{o.type=wave}o.frequency.value=freq*mult;o.detune.value=cents;g.gain.value=level;o.connect(g).connect(filter);o.start(when);oscillators.push(o);mixers.push(g)}let stopped=false,cleaned=false;const voice={midi,id,filter,release(at=ctx.currentTime){if(stopped)return;stopped=true;const r=+$('release').value;env.gain.cancelAndHoldAtTime(at);env.gain.setTargetAtTime(0,at,Math.max(.01,r/5));oscillators.forEach(o=>o.stop(at+r+.06));},kill(){if(cleaned)return;cleaned=true;oscillators.forEach(o=>{try{o.stop()}catch{}o.disconnect()});mixers.forEach(g=>g.disconnect());filter.disconnect();env.disconnect();allVoices.delete(voice);if(voices.get(id)===voice)voices.delete(id);refreshKeys()}};oscillators[0].onended=()=>voice.kill();voices.set(id,voice);allVoices.add(voice);refreshKeys();$('note').textContent=noteName(midi)+' / '+presetsName();return voice;}
 // A damped, fractional-delay string loop. Buffers are synthesized locally and reused.
 const stringBuffers=new Map();
-let guitarWorker,guitarJobId=0,guitarPrepareTimer,guitarGeneration=0;
+let guitarWorker,guitarJobId=0,guitarPrepareTimer,guitarGeneration=0,guitarPreparation;
+const guitarRange=Array.from({length:88},(_,i)=>21+i);
+let guitarLoading=false,loadingFocus,loadingOverflow;
+function setGuitarLoading(active,completed=0){
+ const overlay=$('guitar-loading'),main=document.querySelector('main');
+ if(active&&!guitarLoading){loadingFocus=document.activeElement;loadingOverflow=document.body.style.overflow;guitarLoading=true;overlay.hidden=false;main.inert=true;main.setAttribute('aria-busy','true');document.body.style.overflow='hidden';overlay.focus({preventScroll:true})}
+ if(active){$('loading-count').textContent=completed+' / 88音';$('loading-progress').value=completed;return}
+ if(!guitarLoading)return;guitarLoading=false;overlay.hidden=true;main.inert=false;main.removeAttribute('aria-busy');document.body.style.overflow=loadingOverflow;if(loadingFocus?.isConnected)loadingFocus.focus({preventScroll:true});loadingFocus=undefined;
+}
+window.addEventListener('keydown',e=>{if(guitarLoading){e.preventDefault();e.stopImmediatePropagation()}},{capture:true});
 const guitarJobs=new Map(),guitarPending=new Map();
 function renderGuitar(midi,settings){
  if(!guitarWorker){
@@ -122,7 +133,7 @@ function renderGuitar(midi,settings){
  return new Promise((resolve,reject)=>{const id=++guitarJobId;guitarJobs.set(id,{resolve,reject});guitarWorker.postMessage({id,rate:ctx.sampleRate,midi,settings})});
 }
 function cancelGuitarWork(){
- guitarGeneration++;clearTimeout(guitarPrepareTimer);
+ guitarGeneration++;clearTimeout(guitarPrepareTimer);guitarPreparation=undefined;setGuitarLoading(false);
  if(guitarWorker){guitarWorker.terminate();guitarWorker=undefined}
  for(const job of guitarJobs.values())job.resolve(null);
  guitarJobs.clear();guitarPending.clear();
@@ -130,31 +141,39 @@ function cancelGuitarWork(){
 function trimGuitarCache(protectedKeys){
  let bytes=0;const entries=[],currentSuffix=':'+guitarSettings();
  for(const [key,buffer] of stringBuffers)if(key.startsWith('Nylon Guitar:')){const size=buffer.length*buffer.numberOfChannels*4;entries.push([key,size]);bytes+=size}
- for(const [key,size] of entries){if(bytes<=32*1024*1024)break;if(!protectedKeys.has(key)&&!key.endsWith(currentSuffix)){stringBuffers.delete(key);bytes-=size}}
+ for(const [key,size] of entries){if(bytes<=96*1024*1024)break;if(!protectedKeys.has(key)&&!key.endsWith(currentSuffix)){stringBuffers.delete(key);bytes-=size}}
 }
-async function prepareGuitar(notes){
- const generation=guitarGeneration;
- while(isGuitar()&&generation===guitarGeneration){
-  const signature=guitarSettings(),label=presets[preset].label;
-  const needed=new Set((notes===undefined?keys.map(k=>shiftedMidi(k[1])):notes).filter(inPianoRange));
-  const settings=guitarRenderSettings();
-  const protectedKeys=new Set([...needed].map(midi=>label+':'+midi+':'+signature));
-  const missing=[...needed].filter(midi=>!stringBuffers.has(label+':'+midi+':'+signature));
-  if(!missing.length){trimGuitarCache(protectedKeys);return true}
-  $('status').textContent='ギター音色を準備中…';
-  for(const midi of missing){
-   if(generation!==guitarGeneration||!isGuitar())return false;
-   const key=label+':'+midi+':'+signature;
-   if(!guitarPending.has(key)){
-    const job=renderGuitar(midi,settings).then(values=>{
-     if(!values||generation!==guitarGeneration||signature!==guitarSettings()||!isGuitar())return;
-     const buffer=ctx.createBuffer(1,values.length,ctx.sampleRate);buffer.getChannelData(0).set(values);stringBuffers.set(key,buffer);trimGuitarCache(protectedKeys);
-    }).finally(()=>{if(guitarPending.get(key)===job)guitarPending.delete(key)});guitarPending.set(key,job);
+function prepareGuitar(){
+ if(!ctx||!isGuitar())return Promise.resolve(false);
+ const generation=guitarGeneration,signature=guitarSettings();
+ if(guitarPreparation?.generation===generation&&guitarPreparation.signature===signature)return guitarPreparation.promise;
+ const label=presets[preset].label,settings=guitarRenderSettings();
+ const protectedKeys=new Set(guitarRange.map(midi=>label+':'+midi+':'+signature));
+ const missing=guitarRange.filter(midi=>!stringBuffers.has(label+':'+midi+':'+signature));
+ if(!missing.length){trimGuitarCache(protectedKeys);return Promise.resolve(true)}
+ const task={generation,signature};guitarPreparation=task;
+ setGuitarLoading(true,88-missing.length);$('status').textContent='ギター音色を準備中…';
+ task.promise=(async()=>{
+  try{
+   let completed=88-missing.length;
+   for(const midi of missing){
+    if(generation!==guitarGeneration||!isGuitar()||signature!==guitarSettings())return false;
+    const key=label+':'+midi+':'+signature;
+    if(!guitarPending.has(key)){
+     const job=renderGuitar(midi,settings).then(values=>{
+      if(!values||generation!==guitarGeneration||signature!==guitarSettings()||!isGuitar())return;
+      const buffer=ctx.createBuffer(1,values.length,ctx.sampleRate);buffer.getChannelData(0).set(values);stringBuffers.set(key,buffer);
+     }).finally(()=>{if(guitarPending.get(key)===job)guitarPending.delete(key)});guitarPending.set(key,job);
+    }
+    await guitarPending.get(key);
+    if(generation!==guitarGeneration||signature!==guitarSettings())return false;
+    if(!stringBuffers.has(key))return false;
+    setGuitarLoading(true,++completed);
    }
-   await guitarPending.get(key);
-  }
- }
- return false;
+   trimGuitarCache(protectedKeys);return true;
+  }finally{if(guitarPreparation===task){guitarPreparation=undefined;setGuitarLoading(false)}}
+ })();
+ return task.promise;
 }
 function warmGuitar(){
  clearTimeout(guitarPrepareTimer);
@@ -267,7 +286,7 @@ $('power').onclick=()=>enable().catch(report);$('stop').onclick=stop;
 for(const name of ['cutoff','release','space','volume']){$(name).addEventListener('input',()=>update(name));update(name)}
 function update(name){const value=+$(name).value;$(name+'-out').textContent=name==='cutoff'?(value/1000).toFixed(1)+'k':name==='release'?value.toFixed(2)+'s':Math.round(value*100)+'%';if(!ctx)return;const now=ctx.currentTime;if(name==='volume')master.gain.setTargetAtTime(value,now,.015);if(name==='space')wet.gain.setTargetAtTime(value,now,.03);if(name==='cutoff')for(const v of allVoices){v.filter.frequency.cancelScheduledValues(now);v.filter.frequency.setTargetAtTime(value,now,.025)}}
 for(const [value,p] of Object.entries(presets)){const option=document.createElement('option');option.value=value;option.textContent=p.label;$('preset').append(option)}
-function selectPreset(){stop();preset=$('preset').value;for(const name of ['cutoff','release','space']){$(name).value=presets[preset][name];update(name)}$('preset-info').textContent=presets[preset].description;$('guitar-controls').hidden=!isGuitar();$('note').textContent=presetsName();if(ctx&&!isGuitar())$('status').textContent='演奏できます';warmGuitar()}
+function selectPreset(){stop();preset=$('preset').value;for(const name of ['cutoff','release','space']){$(name).value=presets[preset][name];update(name)}$('preset-info').textContent=presets[preset].description;$('guitar-controls').hidden=!isGuitar();$('note').textContent=presetsName();if(isGuitar())void enable().catch(report);else if(ctx)$('status').textContent='演奏できます'}
 $('preset').onchange=selectPreset;
 $('preset-info').textContent=presets[preset].description;
 window.addEventListener('keydown',async e=>{if(e.defaultPrevented||e.target.closest?.('#score-editor'))return;if(e.ctrlKey||e.metaKey||e.altKey||['INPUT','SELECT','TEXTAREA'].includes(e.target.tagName))return;if(e.key.toLowerCase()==='z'||e.key.toLowerCase()==='x'){e.preventDefault();if(!e.repeat)changeOctave(octaveOffset+(e.key.toLowerCase()==='z'?-1:1));return}const k=keys.find(k=>k[2]===e.key.toLowerCase());if(!k||e.repeat)return;e.preventDefault();const id='k'+k[2],midi=shiftedMidi(k[1]);if(!inPianoRange(midi))return;held.set(id,midi);try{await enable([midi]);if(held.has(id))play(id,midi)}catch(error){report(error)}});
