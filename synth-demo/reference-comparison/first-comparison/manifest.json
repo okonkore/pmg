@@ -1,0 +1,34 @@
+{
+  "revision": "first-1",
+  "firstTone": 1,
+  "sampleRate": 48000,
+  "seconds": 3.1,
+  "notes": [
+    {
+      "midi": 64,
+      "label": "1弦開放 E4",
+      "referenceTake": 2,
+      "referenceF0": 329.507
+    },
+    {
+      "midi": 66,
+      "label": "1弦2フレット F♯4",
+      "referenceTake": 2,
+      "referenceF0": 369.606
+    },
+    {
+      "midi": 69,
+      "label": "1弦5フレット A4",
+      "referenceTake": 2,
+      "referenceF0": 440.164
+    }
+  ],
+  "boundariesHz": [
+    500,
+    2000
+  ],
+  "firTaps": 2049,
+  "commonHeadroomGain": 1,
+  "status": "trial; main first-string tone unchanged",
+  "normalization": "independent full-note 40-140ms RMS, optional band attack matching"
+}
