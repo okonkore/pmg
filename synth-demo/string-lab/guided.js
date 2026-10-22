@@ -10,5 +10,10 @@ function config(id,supportEnabled,supportSide="nut",profile="standard"){
  if(profile==="soft")Object.assign(p,{supportMassG:2,supportStiffness:.002*(2*Math.PI*220)**2,supportDamping:.02,guidedPreset:note.id+"-soft"});
  p.tension=P.tensionAtPitch(p,note.hz,0);return p;
 }
-root.StringGuided={notes,config};if(typeof module!=='undefined')module.exports=root.StringGuided;
+const lossLevels=Object.freeze([{id:'low',label:'損失 小 · 0.02',damping:.02},{id:'medium',label:'損失 中 · 0.2',damping:.2},{id:'high',label:'損失 大 · 2',damping:2}].map(Object.freeze));
+function lossConfig(side,level){
+ const choice=lossLevels.find(v=>v.id===level);if(!choice)throw Error('損失の比較条件を確認してください');
+ return {...config('e3',true,side,'soft'),supportDamping:choice.damping,guidedPreset:'e3-soft-loss-'+side+'-'+choice.id};
+}
+root.StringGuided={notes,config,lossLevels,lossConfig};if(typeof module!=='undefined')module.exports=root.StringGuided;
 })(globalThis);
