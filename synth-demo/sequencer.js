@@ -27,7 +27,7 @@ const ScoreEditor=(()=>{
    </div>
    <div id="seq-scroll" class="seq-scroll" tabindex="0" role="region" aria-label="ピアノロール。音符を選択し矢印キーで移動。Deleteで削除。" aria-describedby="seq-help"><div id="seq-roll" class="seq-roll"><div id="seq-grid" class="seq-grid"></div><div id="seq-playhead" class="seq-playhead"></div><div id="seq-piano" class="seq-piano"></div><div id="seq-ruler" class="seq-ruler"></div><div id="seq-corner" class="seq-corner">小節</div></div></div>
    <div class="seq-inspector seq-menu-item"><span id="seq-selection-info" class="seq-selection-info">音符を選択</span><label>音程 <input id="seq-pitch" aria-label="選択音符の音程" placeholder="C4"></label><label>位置（拍）<input id="seq-at" type="number" min="0" max="4095" step="0.25"></label><label>長さ（拍）<input id="seq-duration" type="number" min="0.0078125" max="4096" step="0.25"></label><label>強さ <input id="seq-velocity" type="range" min="1" max="127" value="127"><output id="seq-velocity-out">127</output></label></div>
-   <p id="seq-help" class="seq-help seq-menu-item">空白のドラッグでスクロール。小節番号の行をピンチで横方向、左の鍵盤列をピンチで縦方向に拡大・縮小。描画領域ではピンチは無効です。音符をダブルタップで削除。鉛筆モードでは空白をタップで音符を追加、ドラッグでスクロール。選択モードでは空白のダブルタップで追加。音符をドラッグで移動、右端で長さ変更。<kbd>Shift</kbd>＋クリック／Shift＋空白のドラッグで範囲選択。ルーラーで再生位置を指定。<br><kbd>V</kbd> 選択 · <kbd>P</kbd> 鉛筆 · <kbd>Space</kbd> 再生／停止 · <kbd>Delete</kbd> 削除 · <kbd>Ctrl / ⌘ C・V</kbd> コピー／貼り付け · <kbd>Ctrl / ⌘ Z</kbd> Undo<span id="seq-origin" class="seq-origin"></span></p>`;
+   <p id="seq-help" class="seq-help seq-menu-item">空白のドラッグでスクロール。小節番号の行をピンチで横方向、左の鍵盤列をピンチで縦方向に拡大・縮小。描画領域ではピンチは無効です。音符をダブルタップで削除。鉛筆モードでは空白をタップで音符を追加、ドラッグでスクロール。選択モードでは空白のダブルタップで追加。音符をドラッグで移動、右端で長さ変更。<kbd>Shift</kbd>＋クリック／Shift＋空白のドラッグで範囲選択。小節バーのカーソルをドラッグして再生位置を移動。<br><kbd>V</kbd> 選択 · <kbd>P</kbd> 鉛筆 · <kbd>Space</kbd> 再生／停止 · <kbd>Delete</kbd> 削除 · <kbd>Ctrl / ⌘ C・V</kbd> コピー／貼り付け · <kbd>Ctrl / ⌘ Z</kbd> Undo<span id="seq-origin" class="seq-origin"></span></p>`;
   const $=id=>document.getElementById(id),scroll=$('seq-scroll'),grid=$('seq-grid'),roll=$('seq-roll'),ruler=$('seq-ruler');
   const readonly=()=>history?.readonly;
   const doc=()=>draft||history.current;
@@ -185,8 +185,14 @@ const ScoreEditor=(()=>{
   grid.addEventListener('contextmenu',e=>{e.preventDefault();if(touches.size||performance.now()-lastTouch<800)return;const el=e.target.closest('[data-note]');if(el&&!readonly()){selection=new Set([el.dataset.note]);deleteSelection()}});
   function seekRuler(e){api.stop();const r=ruler.getBoundingClientRect();setPosition(Math.max(0,quantize((e.clientX-r.left)/px)));scroll.focus({preventScroll:true})}
   ruler.setAttribute('aria-label','小節行：2本指で横方向に拡大・縮小');ruler.title='小節行をピンチ：横方向の拡大・縮小';
-  ruler.addEventListener('pointerdown',e=>{if(e.button!==0)return;if(e.pointerType==='touch'){rulerTap={pointer:e.pointerId,x:e.clientX,y:e.clientY};ruler.setPointerCapture(e.pointerId)}else seekRuler(e)});
-  ruler.addEventListener('pointerup',e=>{if(rulerTap?.pointer===e.pointerId&&Math.hypot(e.clientX-rulerTap.x,e.clientY-rulerTap.y)<8)seekRuler(e);rulerTap=null});ruler.addEventListener('pointercancel',()=>{rulerTap=null});
+  ruler.addEventListener('pointerdown',e=>{
+   if(e.button!==0)return;e.preventDefault();rulerTap={pointer:e.pointerId,x:e.clientX,y:e.clientY,dragging:e.pointerType!=='touch'};ruler.setPointerCapture(e.pointerId);if(rulerTap.dragging)seekRuler(e);
+  });
+  ruler.addEventListener('pointermove',e=>{
+   if(!rulerTap||rulerTap.pointer!==e.pointerId||pinchTail)return;e.preventDefault();if(Math.hypot(e.clientX-rulerTap.x,e.clientY-rulerTap.y)>8)rulerTap.dragging=true;if(rulerTap.dragging)seekRuler(e);
+  });
+  ruler.addEventListener('pointerup',e=>{if(rulerTap?.pointer!==e.pointerId)return;if(rulerTap.dragging||Math.hypot(e.clientX-rulerTap.x,e.clientY-rulerTap.y)<8)seekRuler(e);rulerTap=null});
+  for(const type of ['pointercancel','lostpointercapture'])ruler.addEventListener(type,()=>{rulerTap=null});
   scroll.addEventListener('scroll',sticky,{passive:true});
   const piano=$('seq-piano');piano.setAttribute('aria-label','鍵盤列：2本指で縦方向に拡大・縮小');piano.title='鍵盤列をピンチ：縦方向の拡大・縮小';
   for(let pitch=TOP;pitch>=21;pitch--){const key=document.createElement('button');key.className='seq-piano-key'+([1,3,6,8,10].includes(pitch%12)?' black':'');key.textContent=noteName(pitch);key.title=noteName(pitch)+' を試聴';key.addEventListener('click',()=>api.audition(pitch));piano.append(key)}

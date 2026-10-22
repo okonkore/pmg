@@ -14,7 +14,7 @@ function wait(ms){return new Promise(r=>setTimeout(r,ms))}
  $('seq-copy').click();const userId=$('song').value;assert(userId.startsWith('user-'),'Copy becomes editable song');assert(!$('seq-title').disabled,'Copy is editable');assert(get().notes.length===258,'Full score copied');
  $('seq-title').value='Browser test edit';$('seq-title').dispatchEvent(new w.Event('change'));assert(get().title==='Browser test edit','Rename copy');
  $('seq-bpm').value='120';$('seq-bpm').dispatchEvent(new w.Event('change'));assert(get().bpm===120,'Change BPM');$('seq-undo').click();assert(get().bpm===108,'Undo BPM');$('seq-redo').click();assert(get().bpm===120,'Redo BPM');
- const grid=$('seq-grid');grid.setPointerCapture=()=>{};
+ const grid=$('seq-grid');grid.setPointerCapture=()=>{};$('seq-ruler').setPointerCapture=()=>{};
  let n=get().notes.find(n=>n.pitch===50&&n.beat===0);const startId=n.id;
  let el=d.querySelector('[data-note="'+startId+'"]'),rect=el.getBoundingClientRect();
  el.dispatchEvent(new w.PointerEvent('pointerdown',{bubbles:true,button:0,pointerId:1,clientX:rect.left+3,clientY:rect.top+8}));

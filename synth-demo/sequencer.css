@@ -33,7 +33,8 @@
 .seq-bar{position:absolute;height:30px;border-left:1px solid #b1936166;padding:6px 7px;color:#d2bb93;font:11px ui-monospace,monospace;pointer-events:none}
 .seq-corner{position:absolute;top:0;left:0;width:62px;height:30px;background:#403323;z-index:7;color:#cdb891;font-size:10px;text-align:center;line-height:30px;will-change:transform}
 .seq-playhead{position:absolute;top:30px;bottom:0;width:1px;background:#f3dd9f;z-index:3;pointer-events:none;box-shadow:0 0 5px #f3dd9f55}
-.seq-ruler-cursor{position:absolute;width:0;height:0;border-left:5px solid transparent;border-right:5px solid transparent;border-top:8px solid #f3dd9f;top:21px;pointer-events:none;transform:translateX(-5px)}
+.seq-ruler-cursor{position:absolute;width:28px;height:30px;top:0;cursor:ew-resize;touch-action:none;transform:translateX(-14px)}
+.seq-ruler-cursor::after{content:"";position:absolute;left:9px;top:21px;border-left:5px solid transparent;border-right:5px solid transparent;border-top:8px solid #f3dd9f;pointer-events:none}
 .seq-marquee{position:absolute;border:1px solid #f2d399;background:#ecc88926;pointer-events:none;z-index:2}
 .seq-inspector{padding:10px 18px;display:flex;align-items:center;gap:10px 16px;flex-wrap:wrap;border-top:1px solid #71594066;background:#30261b;min-height:50px}
 .seq-inspector input{width:74px;cursor:text}.seq-inspector input[type=range]{width:90px;cursor:pointer;padding:0;accent-color:#d5ad70}
