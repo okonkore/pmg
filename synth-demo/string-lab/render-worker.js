@@ -1,0 +1,2 @@
+importScripts('physics.js?v=10','nonlinear.js?v=10','support.js?v=10');
+onmessage=e=>{try{const {config,sampleRate}=e.data;const started=performance.now();const result=config.supportEnabled?StringSupport.render(config,sampleRate,{autoTail:true}):StringNonlinear.render(config,sampleRate,{autoTail:true});(result.support||result.nonlinear).computeMs=performance.now()-started;postMessage({result},[result.samples.buffer]);}catch(error){postMessage({error:error.message});}};

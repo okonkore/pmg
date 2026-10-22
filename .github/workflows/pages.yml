@@ -34,6 +34,7 @@ jobs:
           mkdir -p _site/audio
           cp synth-demo/audio/guitar-tone-before-after.wav _site/audio/
           cp -R synth-demo/reference-comparison _site/
+          cp -R synth-demo/string-lab _site/
           touch _site/.nojekyll
       - uses: actions/upload-pages-artifact@v4
         with:
