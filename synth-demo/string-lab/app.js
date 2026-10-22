@@ -43,7 +43,7 @@ async function play(config,label,locked=false){
  const guidedKey=locked?JSON.stringify({request,sampleRate:context.sampleRate}):null;
  const sound=locked&&guidedCache.has(guidedKey)?guidedCache.get(guidedKey):(request.nonlinear||request.supportEnabled)?await renderNonlinear(request,context.sampleRate):P.render(request,context.sampleRate,{autoTail:true});
  if(generation!==playGeneration)return;
- if(locked){guidedCache.set(guidedKey,sound);if(guidedCache.size>9)guidedCache.delete(guidedCache.keys().next().value);}
+ if(locked){guidedCache.set(guidedKey,sound);if(guidedCache.size>12)guidedCache.delete(guidedCache.keys().next().value);}
  if(sound.nonlinear)showNonlinear(sound);if(sound.support)showSupport(sound);
  if(sound.peak>.98)throw Error('出力が大きすぎます。試聴ゲインを下げてください。');
  lastAudio=sound;$('wav').disabled=false;const b=context.createBuffer(1,sound.samples.length,sound.sampleRate);b.copyToChannel(sound.samples,0);source=context.createBufferSource();source.buffer=b;source.connect(context.destination);source.start();
@@ -56,7 +56,7 @@ $('saveA').onclick=()=>{snapshot={...state};$('playA').disabled=false;$('compari
 $('playA').onclick=()=>play(snapshot,'A');$('air').onchange=e=>{state.air=e.target.checked;update();};
 $('reset').onclick=()=>{state=initialState();sync();update();};
 $('tune').onclick=()=>{try{const t=P.tune(state,Number($('target').value));if(t<5||t>150)throw Error('計算した張力が操作範囲5〜150 Nを外れます');state.tension=t;sync();update();}catch(e){message(e.message,true);}};
-$('settings').onclick=()=>download(new Blob([JSON.stringify({version:'string-v2-listen-10',current:state,A:snapshot,lastRendered:lastAudio?{conditions:lastAudio.spec.p,sampleRate:lastAudio.sampleRate,peak:lastAudio.peak,tail:lastAudio.tail,nonlinear:lastAudio.nonlinear||null,support:lastAudio.support||null}:null,reference:{action12mmApprox:2,bridgeToPluckCmApprox:8},comparison:{targetHz:state.compareHz,matched:comparisonConfigs(),assumptions:sensitivityConfigs()},scope:'plain or homogenized wound string, optional Kirchhoff-Carrier tension OR one passive movable endpoint, bridge force monitor'},null,2)],{type:'application/json'}),'string-conditions.json');
+$('settings').onclick=()=>download(new Blob([JSON.stringify({version:'string-v2-listen-11',current:state,A:snapshot,lastRendered:lastAudio?{conditions:lastAudio.spec.p,sampleRate:lastAudio.sampleRate,peak:lastAudio.peak,tail:lastAudio.tail,nonlinear:lastAudio.nonlinear||null,support:lastAudio.support||null}:null,reference:{action12mmApprox:2,bridgeToPluckCmApprox:8},comparison:{targetHz:state.compareHz,matched:comparisonConfigs(),assumptions:sensitivityConfigs()},scope:'plain or homogenized wound string, optional Kirchhoff-Carrier tension OR one passive movable endpoint, bridge force monitor'},null,2)],{type:'application/json'}),'string-conditions.json');
 $('wav').onclick=()=>{if(!lastAudio)return;const {samples,sampleRate}=lastAudio,b=new ArrayBuffer(44+2*samples.length),v=new DataView(b),str=(o,s)=>{for(let i=0;i<s.length;i++)v.setUint8(o+i,s.charCodeAt(i));};str(0,'RIFF');v.setUint32(4,b.byteLength-8,true);str(8,'WAVEfmt ');v.setUint32(16,16,true);v.setUint16(20,1,true);v.setUint16(22,1,true);v.setUint32(24,sampleRate,true);v.setUint32(28,sampleRate*2,true);v.setUint16(32,2,true);v.setUint16(34,16,true);str(36,'data');v.setUint32(40,samples.length*2,true);samples.forEach((x,i)=>v.setInt16(44+2*i,Math.round(Math.max(-1,Math.min(1,x))*32767),true));download(new Blob([b],{type:'audio/wav'}),'string-v2.wav');};
 function comparisonConfigs(){try{return P.matchedPair(state,state.compareHz);}catch{return null;}}
 function updatePair(){
@@ -104,8 +104,8 @@ for(const c of P.assumptionCases(state,state.compareHz)){
 $('e2').onclick=()=>{state.compareHz=82.406889;state.fret=0;sync();update();message('E2（約82.41 Hz）・開放弦の比較にしました。');};
 function renderNonlinear(config,sampleRate){
  const key=JSON.stringify({config,sampleRate});if(nonlinearCache.has(key))return Promise.resolve(nonlinearCache.get(key));
- return new Promise((resolve,reject)=>{const worker=new Worker('render-worker.js?v=10');renderJob={worker,reject};
-  worker.onmessage=e=>{worker.terminate();renderJob=null;if(e.data.error)reject(new Error(e.data.error));else{nonlinearCache.set(key,e.data.result);if(nonlinearCache.size>9)nonlinearCache.delete(nonlinearCache.keys().next().value);resolve(e.data.result);}};
+ return new Promise((resolve,reject)=>{const worker=new Worker('render-worker.js?v=11');renderJob={worker,reject};
+  worker.onmessage=e=>{worker.terminate();renderJob=null;if(e.data.error)reject(new Error(e.data.error));else{nonlinearCache.set(key,e.data.result);if(nonlinearCache.size>12)nonlinearCache.delete(nonlinearCache.keys().next().value);resolve(e.data.result);}};
   worker.onerror=()=>{worker.terminate();renderJob=null;reject(new Error('物理計算を起動できませんでした。ページを再読み込みしてください。'));};
   worker.postMessage({config,sampleRate});
  });
@@ -136,7 +136,7 @@ for(const n of [3,6,9])$('supportMode'+n).onclick=()=>supportMode(n);
 for(const on of [false,true])$(on?'playSupportOn':'playSupportOff').onclick=()=>{try{const c=P.matchedPair(state,state.compareHz)[state.construction==='wound'?1:0];play({...c,supportEnabled:on,nonlinear:false},on?'動く支持':'固定支持');}catch(e){message(e.message,true);}};
 function showSupport(sound){
  const s=sound.support,spec=sound.spec;
- $('supportResult').textContent=`${s.side==='bridge'?'ブリッジ側':'ナット／押弦側'}が動く / 支持部単独 ${s.resonanceHz.toFixed(1)} Hz / 初期エネルギー ${(s.initialEnergy*1000).toFixed(3)} mJ / 必要力 ${spec.p.force.toFixed(3)} N。色線は支持部との連成から計算した弦モード座標のエネルギー、点線は固定支持の第6モードの目安です。`;
+ $('supportResult').textContent=`${s.side==='both'?'両端がそれぞれ':s.side==='bridge'?'ブリッジ側':'ナット／押弦側'}が動く / 支持部単独 ${s.resonanceHz.toFixed(1)} Hz / 初期エネルギー ${(s.initialEnergy*1000).toFixed(3)} mJ / 必要力 ${spec.p.force.toFixed(3)} N。色線は支持部との連成から計算した弦モード座標のエネルギー、点線は固定支持の第6モードの目安です。`;
  const ns=[1,3,6,9],colors=['#225f49','#c18135','#587dba','#a46476'];
  graph('supportDecay',(g,w,h)=>{const top=Math.max(0,Math.ceil(Math.max(...s.trace.filter(p=>p.t<=4).flatMap(p=>p.modal.map(m=>m.db??-60)))/10)*10),range=top+60;g.fillStyle='#617464';g.strokeStyle='#dce2d5';for(const db of [top,0,-20,-40,-60].filter((v,i,a)=>a.indexOf(v)===i)){const y=20+(top-db)/range*(h-55);g.beginPath();g.moveTo(40,y);g.lineTo(w-10,y);g.stroke();g.fillText(db+'',0,y+4);}for(let t=0;t<=4;t++)g.fillText(t+'s',40+t/4*(w-55),h-8);
   ns.forEach((n,i)=>{g.strokeStyle=colors[i];g.beginPath();let started=false;for(const p of s.trace){if(p.t>4)break;const value=p.modal.find(m=>m.n===n)?.db;if(value===null||value===undefined)continue;const x=40+p.t/4*(w-55),y=20+(top-Math.max(-60,value))/range*(h-55);if(!started){g.moveTo(x,y);started=true;}else g.lineTo(x,y);}g.stroke();});
@@ -146,7 +146,7 @@ function showSupport(sound){
 for(const note of StringGuided.notes){
  const row=document.createElement('div');row.className='guided-row';
  const label=document.createElement('strong');label.textContent=note.label+' · '+note.hz.toFixed(2)+' Hz';row.append(label);
- for(const variant of [{id:'fixed',enabled:false,side:'nut',label:'両端固定'},{id:'moving',enabled:true,side:'nut',label:'ナット側が動く'},{id:'bridge',enabled:true,side:'bridge',label:'ブリッジ側が動く'}]){
+ for(const variant of [{id:'fixed',enabled:false,side:'nut',label:'両端固定'},{id:'moving',enabled:true,side:'nut',label:'ナット側が動く'},{id:'bridge',enabled:true,side:'bridge',label:'ブリッジ側が動く'},{id:'both',enabled:true,side:'both',label:'両端が同時に動く'}]){
   const button=document.createElement('button');button.id='guided-'+note.id+'-'+variant.id;button.textContent=variant.label;button.setAttribute('aria-label',note.label+' '+button.textContent);
   button.onclick=()=>{const config=StringGuided.config(note.id,variant.enabled,variant.side);$('guidedCurrent').textContent=note.label+' / '+variant.label+'：条件固定で試聴';play(config,'条件固定 '+note.label+' '+variant.label,true);};row.append(button);
  }
