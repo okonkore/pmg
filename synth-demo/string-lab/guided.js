@@ -21,5 +21,7 @@ function stiffnessConfig(side,level){
  const base=lossConfig(side,'medium');
  return {...base,supportStiffness:base.supportStiffness*choice.ratio,guidedPreset:'e3-stiffness-'+side+'-'+choice.id};
 }
-root.StringGuided={notes,config,lossLevels,lossConfig,stiffnessLevels,stiffnessConfig};if(typeof module!=='undefined')module.exports=root.StringGuided;
+function attackLossConfig(level){const choice=lossLevels.find(v=>v.id===level);if(!choice)throw Error('アタックの比較条件を確認してください');return {...stiffnessConfig('nut','soft'),supportDamping:choice.damping,guidedPreset:'e3-attack-loss-'+choice.id};}
+function attackConfig(view){return {...stiffnessConfig('nut','soft'),attackView:view,guidedPreset:'e3-attack-view-'+view};}
+root.StringGuided={notes,config,lossLevels,lossConfig,stiffnessLevels,stiffnessConfig,attackLossConfig,attackConfig};if(typeof module!=='undefined')module.exports=root.StringGuided;
 })(globalThis);
