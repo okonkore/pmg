@@ -25,5 +25,7 @@ function attackLossConfig(level){const choice=lossLevels.find(v=>v.id===level);i
 function attackConfig(view){const data=root.StringAttackData||(typeof require!=='undefined'?require('./attack-data.js'):null);return {...data.conditions,attackView:view,guidedPreset:'e3-attack-view-'+view};}
 const massLevels=Object.freeze([{id:'light',label:'軽い · 0.5 g',massG:.5},{id:'baseline',label:'基準 · 2 g',massG:2},{id:'heavy',label:'重い · 8 g',massG:8}].map(Object.freeze));
 function massConfig(side,level){const choice=massLevels.find(v=>v.id===level);if(!choice)throw Error('質量の比較条件を確認してください');return {...lossConfig(side,'medium'),supportMassG:choice.massG,guidedPreset:'e3-mass-'+side+'-'+choice.id};}
-root.StringGuided={notes,config,lossLevels,lossConfig,stiffnessLevels,stiffnessConfig,attackLossConfig,attackConfig,massLevels,massConfig};if(typeof module!=='undefined')module.exports=root.StringGuided;
+const nearMassLevels=Object.freeze([6,7,8,9,10].map(massG=>Object.freeze({id:'g'+massG,label:massG===8?'8 g（基準）':massG+' g',massG})));
+function nearMassConfig(side,level){const choice=nearMassLevels.find(v=>v.id===level);if(!choice)throw Error('8 g近傍の比較条件を確認してください');return {...massConfig(side,'heavy'),supportMassG:choice.massG,guidedPreset:'e3-mass-near-'+side+'-'+choice.id};}
+root.StringGuided={notes,config,lossLevels,lossConfig,stiffnessLevels,stiffnessConfig,attackLossConfig,attackConfig,massLevels,massConfig,nearMassLevels,nearMassConfig};if(typeof module!=='undefined')module.exports=root.StringGuided;
 })(globalThis);
