@@ -27,5 +27,6 @@ const massLevels=Object.freeze([{id:'light',label:'軽い · 0.5 g',massG:.5},{i
 function massConfig(side,level){const choice=massLevels.find(v=>v.id===level);if(!choice)throw Error('質量の比較条件を確認してください');return {...lossConfig(side,'medium'),supportMassG:choice.massG,guidedPreset:'e3-mass-'+side+'-'+choice.id};}
 const nearMassLevels=Object.freeze([6,7,8,9,10].map(massG=>Object.freeze({id:'g'+massG,label:massG===8?'8 g（基準）':massG+' g',massG})));
 function nearMassConfig(side,level){const choice=nearMassLevels.find(v=>v.id===level);if(!choice)throw Error('8 g近傍の比較条件を確認してください');return {...massConfig(side,'heavy'),supportMassG:choice.massG,guidedPreset:'e3-mass-near-'+side+'-'+choice.id};}
-root.StringGuided={notes,config,lossLevels,lossConfig,stiffnessLevels,stiffnessConfig,attackLossConfig,attackConfig,massLevels,massConfig,nearMassLevels,nearMassConfig};if(typeof module!=='undefined')module.exports=root.StringGuided;
+function bothMassAnalysisConfig(id,view){const all=root.StringBothMassData||(typeof require!=='undefined'?require('./both-mass-data.js'):null);const data=all?.[id];if(!data)throw Error('両端分解の比較条件を確認してください');return {...data.conditions,bothMassCase:id,attackView:view,guidedPreset:'e3-both-analysis-'+id+'-'+view};}
+root.StringGuided={notes,config,lossLevels,lossConfig,stiffnessLevels,stiffnessConfig,attackLossConfig,attackConfig,massLevels,massConfig,nearMassLevels,nearMassConfig,bothMassAnalysisConfig};if(typeof module!=='undefined')module.exports=root.StringGuided;
 })(globalThis);
