@@ -4,6 +4,8 @@
 'use strict';
 const P=root.StringPhysics||(typeof require!=='undefined'?require('./physics.js'):null);
 const defaults=Object.freeze({length:.45,width:.35,thickness:.0025,density:420,youngX:10e9,youngY:.8e9,shear:.6e9,poissonXY:.3,lossAngle:.02,bridgeX:.31,bridgeY:.175});
+const startupProfiles=Object.freeze([{id:'start-linear3',label:'A：これまでの開始',milliseconds:3,shape:'linear'},{id:'start-none',label:'B：開始処理なし',milliseconds:0,shape:'none'},{id:'start-cosine3',label:'C：同じ3 msをなめらかに',milliseconds:3,shape:'half-cosine'},{id:'start-cosine10',label:'D：10 msかけて開始',milliseconds:10,shape:'half-cosine'}].map(Object.freeze));
+function startupGain(seconds,milliseconds,shape){if(seconds<0)return 0;if(milliseconds===0)return 1;const x=Math.min(1,seconds/(milliseconds/1000));return shape==='linear'?x:(1-Math.cos(Math.PI*x))/2;}
 const dot=(a,b)=>{let x=0;for(let i=0;i<a.length;i++)x+=a[i]*b[i];return x;};
 function inverse(matrix,n){
  const L=new Float64Array(n*n),out=new Float64Array(n*n),y=new Float64Array(n),x=new Float64Array(n);
@@ -87,24 +89,28 @@ function select(result,input){
  if(view.startsWith('without-mode-')&&result.body.plateDiagnostic){const component=view.slice(8);if(!result.channels[component])throw Error('Unknown plate component');if(!result.channels[view])result.channels[view]=Float32Array.from(result.channels.sum,(v,j)=>v-result.channels[component][j]);}
  if(!result.channels[view])throw Error('Unknown plate observer');
  const samples=result.channels[view];let peak=0;for(const v of samples)peak=Math.max(peak,Math.abs(v));
- return {...result,samples,peak,spec:{...result.spec,p:{...result.spec.p,bodyView:view}},body:{...result.body,view,observer:view==='velocity'?'bridge velocity; 8 FS per m/s':'compact monopole pressure '+view+'; '+result.body.radiation.pressureGainFSPerPa+' FS/Pa'}};
+ return {...result,samples,peak,spec:{...result.spec,p:{...result.spec.p,bodyView:view}},body:{...result.body,view,...(result.body.startupDiagnostic?{startupDiagnostic:{...result.body.startupDiagnostic,selectedProfile:startupProfiles.find(v=>v.id===view)||null}}:{}),observer:view==='velocity'?'bridge velocity; 8 FS per m/s':'compact monopole pressure '+view+'; '+result.body.radiation.pressureGainFSPerPa+' FS/Pa'}};
 }
 function render(input,sr=48000,options={}){
+ if(input.plateStartDiagnostic&&input.plateDiagnostic)throw Error('Separate the startup and plate-component experiments');
  const s=system(input,sr,options.modeLimit||96),over=options.oversample||32,step=stepper(s,sr,over),obs=observer(s,1,!!input.plateDiagnostic),initialEnergy=energy(s),gain=input.bodyPressureGain??4;
  if(!(gain>0&&Number.isFinite(gain)))throw Error('Invalid pressure monitor gain');
  const size=Math.ceil(sr*(options.duration||30)),raw={velocity:new Float32Array(size),top:new Float32Array(size),hole:new Float32Array(size),sum:new Float32Array(size)},alpha=1-Math.exp(-2*Math.PI*8000/sr);
+ if(input.plateStartDiagnostic)raw['start-none']=new Float32Array(size);
  const parts=input.plateDiagnostic?s.plate.modes.map((mode,j)=>({id:'mode-'+mode.m+'-'+mode.n,index:j,mode})).filter(v=>v.mode.effectiveArea!==0):[];
  const partY=new Float64Array(parts.length);for(const part of parts)raw[part.id]=new Float32Array(size);
  let vy=0,ty=0,hy=0,used=size,quiet=false,dissipated=0,maxBalanceError=0;
  for(let j=0;j<size;j++){
-  const p=obs.read(!!input.plateDiagnostic),fade=Math.min(1,j/(sr*.003));vy+=alpha*(dot(s.bridge,s.velocity)-vy);ty+=alpha*(p[0]-ty);hy+=alpha*(p[1]-hy);raw.velocity[j]=8*vy*fade;raw.top[j]=gain*ty*fade;raw.hole[j]=gain*hy*fade;raw.sum[j]=raw.top[j]+raw.hole[j];for(let k=0;k<parts.length;k++){partY[k]+=alpha*(p[3+parts[k].index]-partY[k]);raw[parts[k].id][j]=gain*partY[k]*fade;}
+  const p=obs.read(!!input.plateDiagnostic),fade=Math.min(1,j/(sr*.003));vy+=alpha*(dot(s.bridge,s.velocity)-vy);ty+=alpha*(p[0]-ty);hy+=alpha*(p[1]-hy);raw.velocity[j]=8*vy*fade;raw.top[j]=gain*ty*fade;raw.hole[j]=gain*hy*fade;raw.sum[j]=raw.top[j]+raw.hole[j];if(input.plateStartDiagnostic)raw['start-none'][j]=Math.fround(gain*ty)+Math.fround(gain*hy);for(let k=0;k<parts.length;k++){partY[k]+=alpha*(p[3+parts[k].index]-partY[k]);raw[parts[k].id][j]=gain*partY[k]*fade;}
   if(j%480===0){const E=energy(s);maxBalanceError=Math.max(maxBalanceError,Math.abs(E+dissipated-initialEnergy));if(j>sr*4&&gain*Math.sqrt(2*E*obs.coefficient)<1e-5&&8*Math.sqrt(2*E*obs.velocityCoefficient)<1e-5&&gain*Math.max(Math.abs(ty),Math.abs(hy),Math.abs(ty+hy))<1e-5&&8*Math.abs(vy)<1e-5&&gain*Math.max(0,...Array.from(partY,v=>Math.max(Math.abs(v),Math.abs(ty+hy-v))))<1e-5){used=j+1;quiet=true;break;}}
   for(let sub=0;sub<over;sub++)dissipated+=step();
  }
  const delay=Math.round(sr/s.air.c),fade=quiet?.02:2,channels={};for(const [id,data] of Object.entries(raw)){const out=new Float32Array(used+delay);out.set(data.subarray(0,used),delay);for(let j=Math.max(0,used-Math.ceil(sr*fade));j<used;j++)out[j+delay]*=(used-1-j)/(sr*fade);channels[id]=out;}
+ if(input.plateStartDiagnostic){channels['start-linear3']=channels.sum;for(const profile of startupProfiles.filter(v=>v.shape==='half-cosine'))channels[profile.id]=Float32Array.from(channels['start-none'],(v,j)=>v*startupGain((j-delay)/sr,profile.milliseconds,profile.shape));}
+ const startup=input.plateStartDiagnostic?{scope:'Same mechanical trajectory and pressure filters; only the initial output envelope changes',profiles:startupProfiles,selectedProfile:null,metrics:Object.fromEntries(startupProfiles.map(profile=>{const x=channels[profile.id],baseline=channels.sum;let energy=0,difference=0,lateDifference=0;const start=delay,end=Math.min(x.length,delay+Math.ceil(.01*sr));for(let j=start;j<end;j++){energy+=x[j]*x[j];difference+=(x[j]-baseline[j])**2;}for(let j=end;j<x.length;j++)lateDifference=Math.max(lateDifference,Math.abs(x[j]-baseline[j]));return [profile.id,{first10msRms:Math.sqrt(energy/Math.max(1,end-start)),differenceFromBaselineFirst10msRms:Math.sqrt(difference/Math.max(1,end-start)),maxDifferenceAfter10ms:lateDifference}];}))}:undefined;
  const diagnostics=input.plateDiagnostic?{components:parts.map(v=>({id:v.id,m:v.mode.m,n:v.mode.n,uncoupledHz:v.mode.hz})),scope:'Readout decomposition of the same coupled motion; excluding a component does not remove its mechanical coupling',metrics:Object.fromEntries(Object.entries(channels).filter(([id])=>id!=='velocity').map(([id,x])=>{const rms=(a,b)=>{let E=0;const start=Math.round((a+delay/sr)*sr),end=Math.min(x.length,Math.round((b+delay/sr)*sr));for(let j=start;j<end;j++)E+=x[j]*x[j];return Math.sqrt(E/Math.max(1,end-start));};return [id,{first100msRms:rms(0,.1),next400msRms:rms(.1,.5)}];}))}:undefined;
- const result={samples:channels.sum,channels,sampleRate:sr,spec:s.spec,tail:{duration:(used+delay)/sr,capped:!quiet,fadeSeconds:fade},body:{kind:'air',plate:s.plate,plateDiagnostic:diagnostics,view:'sum',initialEnergy,finalEnergy:energy(s),dissipated,maxBalanceError,oversample:over,radiation:{approximation:'co-located compact monopoles; low frequency; rigid back and sides',distanceM:1,pressureGainFSPerPa:gain,delaySamples:delay,delaySeconds:delay/sr,radiationLoading:false},air:s.air}};
+ const result={samples:channels.sum,channels,sampleRate:sr,spec:s.spec,tail:{duration:(used+delay)/sr,capped:!quiet,fadeSeconds:fade},body:{kind:'air',plate:s.plate,startupDiagnostic:startup,plateDiagnostic:diagnostics,view:'sum',initialEnergy,finalEnergy:energy(s),dissipated,maxBalanceError,oversample:over,radiation:{approximation:'co-located compact monopoles; low frequency; rigid back and sides',distanceM:1,pressureGainFSPerPa:gain,delaySamples:delay,delaySeconds:delay/sr,radiationLoading:false},air:s.air}};
  return select(result,input);
 }
-root.StringPlate={defaults,plateModes,system,energy,stepper,observer,select,render};if(typeof module!=='undefined')module.exports=root.StringPlate;
+root.StringPlate={defaults,startupProfiles,startupGain,plateModes,system,energy,stepper,observer,select,render};if(typeof module!=='undefined')module.exports=root.StringPlate;
 })(globalThis);
