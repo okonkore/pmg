@@ -59,13 +59,14 @@ function select(result,input){
  const view=input.bodyView||'velocity';if(!['velocity','top','hole','sum'].includes(view))throw Error('Unknown body observer');
  if(!result.channels)return result;
  const samples=result.channels[view];let peak=0;for(const v of samples)peak=Math.max(peak,Math.abs(v));
- return {...result,samples,peak,spec:{...result.spec,p:{...result.spec.p,bodyView:view}},body:{...result.body,view,observer:view==='velocity'?'top velocity; 8 FS per m/s; fixed 8 kHz lowpass':'compact monopole pressure '+view+'; 4 FS/Pa; fixed 8 kHz lowpass'}};
+ return {...result,samples,peak,spec:{...result.spec,p:{...result.spec.p,bodyView:view}},body:{...result.body,view,observer:view==='velocity'?'top velocity; 8 FS per m/s; fixed 8 kHz lowpass':'compact monopole pressure '+view+'; '+result.body.radiation.pressureGainFSPerPa+' FS/Pa; fixed 8 kHz lowpass'}};
 }
 function render(input,sr=48000,options={}){
  const s=system(input,sr,options.modeLimit||96),oversample=options.oversample||8,step=stepper(s,sr,oversample),initialEnergy=energy(s);
  const radiation=!!input.bodyView;if(radiation&&input.bodyId!=='air')throw Error('Radiation comparison requires the open cavity');
  const observer=radiation?radiationObserver(s):null;
- const size=Math.ceil(sr*(options.duration||30)),samples=new Float32Array(size),gain=8,pressureGain=4,alpha=1-Math.exp(-2*Math.PI*8000/sr);
+ const size=Math.ceil(sr*(options.duration||30)),samples=new Float32Array(size),gain=8,pressureGain=input.bodyPressureGain??4,alpha=1-Math.exp(-2*Math.PI*8000/sr);
+ if(!(pressureGain>0&&Number.isFinite(pressureGain)))throw Error('Invalid pressure monitor gain');
  const raw=radiation?{velocity:samples,top:new Float32Array(size),hole:new Float32Array(size),sum:new Float32Array(size)}:null;
  let y=0,topY=0,holeY=0,peak=0,dissipated=0,maxBalanceError=0,used=size,quiet=false;
  for(let j=0;j<size;j++){
