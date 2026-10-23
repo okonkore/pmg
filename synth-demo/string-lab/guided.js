@@ -23,5 +23,7 @@ function stiffnessConfig(side,level){
 }
 function attackLossConfig(level){const choice=lossLevels.find(v=>v.id===level);if(!choice)throw Error('アタックの比較条件を確認してください');return {...stiffnessConfig('nut','soft'),supportDamping:choice.damping,guidedPreset:'e3-attack-loss-'+choice.id};}
 function attackConfig(view){const data=root.StringAttackData||(typeof require!=='undefined'?require('./attack-data.js'):null);return {...data.conditions,attackView:view,guidedPreset:'e3-attack-view-'+view};}
-root.StringGuided={notes,config,lossLevels,lossConfig,stiffnessLevels,stiffnessConfig,attackLossConfig,attackConfig};if(typeof module!=='undefined')module.exports=root.StringGuided;
+const massLevels=Object.freeze([{id:'light',label:'軽い · 0.5 g',massG:.5},{id:'baseline',label:'基準 · 2 g',massG:2},{id:'heavy',label:'重い · 8 g',massG:8}].map(Object.freeze));
+function massConfig(side,level){const choice=massLevels.find(v=>v.id===level);if(!choice)throw Error('質量の比較条件を確認してください');return {...lossConfig(side,'medium'),supportMassG:choice.massG,guidedPreset:'e3-mass-'+side+'-'+choice.id};}
+root.StringGuided={notes,config,lossLevels,lossConfig,stiffnessLevels,stiffnessConfig,attackLossConfig,attackConfig,massLevels,massConfig};if(typeof module!=='undefined')module.exports=root.StringGuided;
 })(globalThis);
