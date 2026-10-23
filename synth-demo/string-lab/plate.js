@@ -66,7 +66,7 @@ function stepper(s,sr,oversample=8){
   for(let j=0;j<s.nb;j++){const mid=(s.velocity[j]+next[j])/2;s.z[j]+=h*mid;s.velocity[j]=next[j];power+=s.damping[j]*mid*mid;}return h*power;
  };
 }
-function observer(s,distance=1){
+function observer(s,distance=1,decompose=false){
  if(!(distance>0&&Number.isFinite(distance)))throw Error('Invalid observation distance');
  const factor=s.air.rho/(4*Math.PI*distance),top=Float64Array.from(s.area,(v,j)=>j===s.nb-1?0:factor*v),hole=new Float64Array(s.nb);hole[s.nb-1]=factor*s.air.holeArea;
  function norm(l){
@@ -75,30 +75,35 @@ function observer(s,distance=1){
   for(let i=0;i<s.n;i++){const x=wb*s.g[i]*s.modalK[i]/s.spec.mass,v=wb*s.g[i]*s.modalC[i]/s.spec.mass;result+=x*x/s.modalK[i]+v*v/s.spec.mass;cross+=s.g[i]*v/s.spec.mass;}
   for(let j=0;j<s.nb;j++)vb[j]-=s.bridge[j]*cross;return result+dot(vb,multiply(s.inverseSchurM,vb));
  }
- const coefficient=Math.max(norm(top),norm(hole),norm(Float64Array.from(top,(v,j)=>v+hole[j]))),velocityCoefficient=dot(s.bridge,multiply(s.inverseSchurM,s.bridge)),rhs=new Float64Array(s.nb),acceleration=new Float64Array(s.nb);
- return {coefficient,velocityCoefficient,read(){
+ const coefficient=Math.max(norm(top),norm(hole),norm(Float64Array.from(top,(v,j)=>v+hole[j])),...(decompose?s.plate.modes.filter(v=>v.effectiveArea!==0).flatMap(mode=>[norm(Float64Array.from(top,(v,j)=>s.plate.modes[j]===mode?v:0)),norm(Float64Array.from(top,(v,j)=>v+hole[j]-(s.plate.modes[j]===mode?v:0)))]):[])),velocityCoefficient=dot(s.bridge,multiply(s.inverseSchurM,s.bridge)),rhs=new Float64Array(s.nb),acceleration=new Float64Array(s.nb);
+ return {coefficient,velocityCoefficient,read(decompose=false){
   const bz=dot(s.bridge,s.z),az=dot(s.area,s.z);let reaction=0;for(let i=0;i<s.n;i++)reaction+=s.g[i]*(s.modalC[i]*s.v[i]+s.modalK[i]*s.q[i])/s.spec.mass;
   for(let j=0;j<s.nb;j++)rhs[j]=-s.damping[j]*s.velocity[j]-s.stiffness[j]*s.z[j]-s.bridge[j]*s.affineStiffness*bz-s.area[j]*s.compress*az+s.bridge[j]*reaction;
-  multiply(s.inverseSchurM,rhs,acceleration);const p=dot(top,acceleration),h=dot(hole,acceleration);return [p,h,p+h];
+  multiply(s.inverseSchurM,rhs,acceleration);const p=dot(top,acceleration),h=dot(hole,acceleration);return decompose?[p,h,p+h,...s.plate.modes.map((mode,j)=>factor*s.area[j]*acceleration[j])]:[p,h,p+h];
  }};
 }
 function select(result,input){
- const view=input.bodyView||'sum';if(!['velocity','top','hole','sum'].includes(view))throw Error('Unknown plate observer');
+ const view=input.bodyView||'sum';
+ if(view.startsWith('without-mode-')&&result.body.plateDiagnostic){const component=view.slice(8);if(!result.channels[component])throw Error('Unknown plate component');if(!result.channels[view])result.channels[view]=Float32Array.from(result.channels.sum,(v,j)=>v-result.channels[component][j]);}
+ if(!result.channels[view])throw Error('Unknown plate observer');
  const samples=result.channels[view];let peak=0;for(const v of samples)peak=Math.max(peak,Math.abs(v));
  return {...result,samples,peak,spec:{...result.spec,p:{...result.spec.p,bodyView:view}},body:{...result.body,view,observer:view==='velocity'?'bridge velocity; 8 FS per m/s':'compact monopole pressure '+view+'; '+result.body.radiation.pressureGainFSPerPa+' FS/Pa'}};
 }
 function render(input,sr=48000,options={}){
- const s=system(input,sr,options.modeLimit||96),over=options.oversample||32,step=stepper(s,sr,over),obs=observer(s),initialEnergy=energy(s),gain=input.bodyPressureGain??4;
+ const s=system(input,sr,options.modeLimit||96),over=options.oversample||32,step=stepper(s,sr,over),obs=observer(s,1,!!input.plateDiagnostic),initialEnergy=energy(s),gain=input.bodyPressureGain??4;
  if(!(gain>0&&Number.isFinite(gain)))throw Error('Invalid pressure monitor gain');
  const size=Math.ceil(sr*(options.duration||30)),raw={velocity:new Float32Array(size),top:new Float32Array(size),hole:new Float32Array(size),sum:new Float32Array(size)},alpha=1-Math.exp(-2*Math.PI*8000/sr);
+ const parts=input.plateDiagnostic?s.plate.modes.map((mode,j)=>({id:'mode-'+mode.m+'-'+mode.n,index:j,mode})).filter(v=>v.mode.effectiveArea!==0):[];
+ const partY=new Float64Array(parts.length);for(const part of parts)raw[part.id]=new Float32Array(size);
  let vy=0,ty=0,hy=0,used=size,quiet=false,dissipated=0,maxBalanceError=0;
  for(let j=0;j<size;j++){
-  const p=obs.read(),fade=Math.min(1,j/(sr*.003));vy+=alpha*(dot(s.bridge,s.velocity)-vy);ty+=alpha*(p[0]-ty);hy+=alpha*(p[1]-hy);raw.velocity[j]=8*vy*fade;raw.top[j]=gain*ty*fade;raw.hole[j]=gain*hy*fade;raw.sum[j]=raw.top[j]+raw.hole[j];
-  if(j%480===0){const E=energy(s);maxBalanceError=Math.max(maxBalanceError,Math.abs(E+dissipated-initialEnergy));if(j>sr*4&&gain*Math.sqrt(2*E*obs.coefficient)<1e-5&&8*Math.sqrt(2*E*obs.velocityCoefficient)<1e-5&&gain*Math.max(Math.abs(ty),Math.abs(hy),Math.abs(ty+hy))<1e-5&&8*Math.abs(vy)<1e-5){used=j+1;quiet=true;break;}}
+  const p=obs.read(!!input.plateDiagnostic),fade=Math.min(1,j/(sr*.003));vy+=alpha*(dot(s.bridge,s.velocity)-vy);ty+=alpha*(p[0]-ty);hy+=alpha*(p[1]-hy);raw.velocity[j]=8*vy*fade;raw.top[j]=gain*ty*fade;raw.hole[j]=gain*hy*fade;raw.sum[j]=raw.top[j]+raw.hole[j];for(let k=0;k<parts.length;k++){partY[k]+=alpha*(p[3+parts[k].index]-partY[k]);raw[parts[k].id][j]=gain*partY[k]*fade;}
+  if(j%480===0){const E=energy(s);maxBalanceError=Math.max(maxBalanceError,Math.abs(E+dissipated-initialEnergy));if(j>sr*4&&gain*Math.sqrt(2*E*obs.coefficient)<1e-5&&8*Math.sqrt(2*E*obs.velocityCoefficient)<1e-5&&gain*Math.max(Math.abs(ty),Math.abs(hy),Math.abs(ty+hy))<1e-5&&8*Math.abs(vy)<1e-5&&gain*Math.max(0,...Array.from(partY,v=>Math.max(Math.abs(v),Math.abs(ty+hy-v))))<1e-5){used=j+1;quiet=true;break;}}
   for(let sub=0;sub<over;sub++)dissipated+=step();
  }
  const delay=Math.round(sr/s.air.c),fade=quiet?.02:2,channels={};for(const [id,data] of Object.entries(raw)){const out=new Float32Array(used+delay);out.set(data.subarray(0,used),delay);for(let j=Math.max(0,used-Math.ceil(sr*fade));j<used;j++)out[j+delay]*=(used-1-j)/(sr*fade);channels[id]=out;}
- const result={samples:channels.sum,channels,sampleRate:sr,spec:s.spec,tail:{duration:(used+delay)/sr,capped:!quiet,fadeSeconds:fade},body:{kind:'air',plate:s.plate,view:'sum',initialEnergy,finalEnergy:energy(s),dissipated,maxBalanceError,oversample:over,radiation:{approximation:'co-located compact monopoles; low frequency; rigid back and sides',distanceM:1,pressureGainFSPerPa:gain,delaySamples:delay,delaySeconds:delay/sr,radiationLoading:false},air:s.air}};
+ const diagnostics=input.plateDiagnostic?{components:parts.map(v=>({id:v.id,m:v.mode.m,n:v.mode.n,uncoupledHz:v.mode.hz})),scope:'Readout decomposition of the same coupled motion; excluding a component does not remove its mechanical coupling',metrics:Object.fromEntries(Object.entries(channels).filter(([id])=>id!=='velocity').map(([id,x])=>{const rms=(a,b)=>{let E=0;const start=Math.round((a+delay/sr)*sr),end=Math.min(x.length,Math.round((b+delay/sr)*sr));for(let j=start;j<end;j++)E+=x[j]*x[j];return Math.sqrt(E/Math.max(1,end-start));};return [id,{first100msRms:rms(0,.1),next400msRms:rms(.1,.5)}];}))}:undefined;
+ const result={samples:channels.sum,channels,sampleRate:sr,spec:s.spec,tail:{duration:(used+delay)/sr,capped:!quiet,fadeSeconds:fade},body:{kind:'air',plate:s.plate,plateDiagnostic:diagnostics,view:'sum',initialEnergy,finalEnergy:energy(s),dissipated,maxBalanceError,oversample:over,radiation:{approximation:'co-located compact monopoles; low frequency; rigid back and sides',distanceM:1,pressureGainFSPerPa:gain,delaySamples:delay,delaySeconds:delay/sr,radiationLoading:false},air:s.air}};
  return select(result,input);
 }
 root.StringPlate={defaults,plateModes,system,energy,stepper,observer,select,render};if(typeof module!=='undefined')module.exports=root.StringPlate;
