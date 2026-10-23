@@ -31,5 +31,7 @@ function bothMassAnalysisConfig(id,view){const all=root.StringBothMassData||(typ
 const positionLevels=Object.freeze([40,80,160].map(position=>Object.freeze({id:'mm'+position,label:position===80?'80 mm（基準）':position+' mm',position})));
 function positionSupportConfig(level){const choice=positionLevels.find(v=>v.id===level);if(!choice)throw Error('弾く位置の比較条件を確認してください');return {...nearMassConfig('both','g8'),position:choice.position,guidedPreset:'e3-position-'+choice.id};}
 function positionConfig(level){return {...positionSupportConfig(level),supportEnabled:false,guidedPreset:'e3-position-fixed-'+level};}
-root.StringGuided={notes,config,lossLevels,lossConfig,stiffnessLevels,stiffnessConfig,attackLossConfig,attackConfig,massLevels,massConfig,nearMassLevels,nearMassConfig,bothMassAnalysisConfig,positionLevels,positionConfig,positionSupportConfig};if(typeof module!=='undefined')module.exports=root.StringGuided;
+const fretLevels=Object.freeze([0,5,12].map(fret=>Object.freeze({id:'f'+fret,label:fret===0?'開放':fret+'フレット',fret})));
+function fretConfig(level){const choice=fretLevels.find(v=>v.id===level);if(!choice)throw Error('弦長の比較条件を確認してください');const base=positionConfig('mm80');return {...base,fret:choice.fret,position:base.position*2**(-choice.fret/12),guidedPreset:'e3-fret-'+choice.id};}
+root.StringGuided={notes,config,lossLevels,lossConfig,stiffnessLevels,stiffnessConfig,attackLossConfig,attackConfig,massLevels,massConfig,nearMassLevels,nearMassConfig,bothMassAnalysisConfig,positionLevels,positionConfig,positionSupportConfig,fretLevels,fretConfig};if(typeof module!=='undefined')module.exports=root.StringGuided;
 })(globalThis);
