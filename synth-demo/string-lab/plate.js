@@ -33,9 +33,10 @@ function plateModes(parameters={},count='nine'){
 function system(input,sr=48000,modeLimit=96){
  if(input.nonlinear||input.contactWidthMm>0)throw Error('Plate experiment requires linear point excitation');
  const spec=P.model({...input,nonlinear:false,supportEnabled:true,supportSide:'bridge',releaseMs:0},sr,modeLimit),plate=plateModes(input.plateParameters,input.plateModes),nb=plate.modes.length+1,n=spec.modes.length;
+ const holeDamping=input.plateHoleDamping??.02;if(!(Number.isFinite(holeDamping)&&holeDamping>=0))throw Error('Hole damping must be finite and nonnegative');
  const rho=1.2,c=343,volume=.012,radius=.04,wall=.003,holeArea=Math.PI*radius*radius,airMass=rho*holeArea*(wall+1.46*radius),compress=rho*c*c/volume;
  const mass=new Float64Array(nb),stiffness=new Float64Array(nb),damping=new Float64Array(nb),bridge=new Float64Array(nb),area=new Float64Array(nb);
- plate.modes.forEach((v,j)=>{mass[j]=v.mass;stiffness[j]=v.stiffness;damping[j]=v.damping;bridge[j]=v.bridge;area[j]=v.effectiveArea;});mass[nb-1]=airMass;damping[nb-1]=.02;area[nb-1]=holeArea;
+ plate.modes.forEach((v,j)=>{mass[j]=v.mass;stiffness[j]=v.stiffness;damping[j]=v.damping;bridge[j]=v.bridge;area[j]=v.effectiveArea;});mass[nb-1]=airMass;damping[nb-1]=holeDamping;area[nb-1]=holeArea;
  const affineMass=spec.mu*spec.L/3,affineStiffness=spec.p.tension/spec.L,M=new Float64Array(nb*nb),K=new Float64Array(nb*nb);
  for(let i=0;i<nb;i++)for(let j=0;j<nb;j++){M[i*nb+j]=(i===j?mass[i]:0)+affineMass*bridge[i]*bridge[j];K[i*nb+j]=(i===j?stiffness[i]:0)+affineStiffness*bridge[i]*bridge[j]+compress*area[i]*area[j];}
  const inverseK=inverse(K,nb),modalK=new Float64Array(n),modalC=new Float64Array(n),g=new Float64Array(n),q=new Float64Array(n),v=new Float64Array(n),load=new Float64Array(n),shape0=1-spec.p.position/1000/spec.L,unit=multiply(inverseK,bridge);
@@ -45,7 +46,7 @@ function system(input,sr=48000,modeLimit=96){
  for(let i=0;i<n;i++)q[i]=force*load[i]/modalK[i];
  const schurM=new Float64Array(nb*nb);for(let i=0;i<nb;i++)for(let j=0;j<nb;j++)schurM[i*nb+j]=(i===j?mass[i]:0)+schurFactor*bridge[i]*bridge[j];
  const inverseSchurM=inverse(schurM,nb);
- const s={spec,plate,nb,n,mass,stiffness,damping,bridge,area,affineMass,affineStiffness,compress,M,K,inverseK,inverseSchurM,modalK,modalC,g,q,v,z,velocity,air:{rho,c,volume,radius,wall,holeArea,mass:airMass,damping:.02}};
+ const s={spec,plate,nb,n,mass,stiffness,damping,bridge,area,affineMass,affineStiffness,compress,M,K,inverseK,inverseSchurM,modalK,modalC,g,q,v,z,velocity,air:{rho,c,volume,radius,wall,holeArea,mass:airMass,damping:holeDamping}};
  spec.p.force=force;spec.displacement=force*compliance;spec.energy=energy(s);spec.modes.forEach((mode,i)=>{mode.q=q[i];mode.releasedQ=q[i];mode.releasedV=0;});return s;
 }
 function energy(s){
