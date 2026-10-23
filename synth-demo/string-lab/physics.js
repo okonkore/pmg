@@ -2,7 +2,7 @@
 (function(root){
 'use strict';
 const TAU=2*Math.PI;
-const defaults={scale:650,fret:5,diameter:1.02,density:1140,young:2,tension:60.475,position:80,force:.3,lossAngle:.02,thermal:.001,air:true,duration:4,gain:0,construction:"plain",coreDiameter:.65,coreFill:.65,filaments:100,coreCoupling:0,wireDiameter:.11,wireDensity:8900,wireYoung:110,pitchRatio:1,windingParticipation:0,windingLossAngle:.02,compareHz:196,releaseMs:0,excitation:"force",pullMm:1,nonlinear:false,supportEnabled:false,supportMassG:10,supportStiffness:100000,supportDamping:5,supportSide:"nut"};
+const defaults={scale:650,fret:5,diameter:1.02,density:1140,young:2,tension:60.475,position:80,force:.3,lossAngle:.02,thermal:.001,air:true,duration:4,gain:0,construction:"plain",coreDiameter:.65,coreFill:.65,filaments:100,coreCoupling:0,wireDiameter:.11,wireDensity:8900,wireYoung:110,pitchRatio:1,windingParticipation:0,windingLossAngle:.02,compareHz:196,releaseMs:0,excitation:"force",pullMm:1,nonlinear:false,supportEnabled:false,supportMassG:10,supportStiffness:100000,supportDamping:5,supportSide:"nut",contactWidthMm:0};
 // Close-packed single-layer round winding; all dimensions below in SI.
 // Partial interaction is an explicit hypothesis, not a measured friction law.
 function section(input){
@@ -44,18 +44,22 @@ function model(input,sampleRate=48000,modeLimit=96){
  if(p.scale<=0||p.diameter<=0||p.density<=0||p.young<0||p.tension<=0||p.force<0||p.fret<0||p.fret>24||p.position<=0||p.duration<=0||p.duration>10||sampleRate<8000||p.lossAngle<0||p.thermal<0||p.releaseMs<0||p.releaseMs>30)throw Error('物理条件の範囲を確認してください');
  const L=p.scale/1000*2**(-p.fret/12),cross=section(p),d=cross.diameter,mu=cross.mu,ei=cross.ei;
  const distance=p.position/1000;if(distance>=L)throw Error('はじく位置は振動する弦長より短くしてください');
+ const width=p.contactWidthMm/1000;if(width<0||width/2>=Math.min(distance,L-distance))throw Error('引く範囲が弦の端を越えています');
+ if(width>0&&(p.nonlinear||p.supportEnabled))throw Error('広い荷重は固定支持・線形モデルで比較してください');
+ // Integral of a normalized uniform load over its centered contact interval.
+ const loadShape=k=>Math.sin(k*(L-distance))*(width===0?1:Math.sin(k*width/2)/(k*width/2));
  const x=L-distance,mass=mu*L/2,modes=[];let compliance=0,energy=0;
  if(!['force','displacement'].includes(p.excitation)||p.pullMm<0)throw Error('引く量の条件を確認してください');
  if(p.excitation==='displacement'){
   let c=0;
-  for(let n=1;n<=modeLimit;n++){const k=n*Math.PI/L,w2=(p.tension*k*k+ei*k**4)/mu;if(Math.sqrt(w2)/TAU>=sampleRate*.425)break;c+=Math.sin(k*x)**2/(mass*w2);}
+  for(let n=1;n<=modeLimit;n++){const k=n*Math.PI/L,w2=(p.tension*k*k+ei*k**4)/mu;if(Math.sqrt(w2)/TAU>=sampleRate*.425)break;c+=loadShape(k)**2/(mass*w2);}
   if(!(c>0))throw Error('この条件では引く量を計算できません');
   p.force=p.pullMm/1000/c;
  }
  for(let n=1;n<=modeLimit;n++){
   const k=n*Math.PI/L,w=Math.sqrt((p.tension*k*k+ei*k**4)/mu),hz=w/TAU;
   if(hz>=sampleRate*.425)break;
-  const shape=Math.sin(k*x),q=p.force*shape/(mass*w*w);
+  const shape=loadShape(k),q=p.force*shape/(mass*w*w);
   const air=p.air?(2*Math.PI*1.8e-5+2*Math.PI*d*Math.sqrt(Math.PI*1.8e-5*1.2*hz))/(2*mu):0;
   const ve=4*Math.PI**3*mu*cross.bendingLoss/p.tension**2*hz**3;
   const thermal=Math.PI*hz*p.thermal,sigma=air+ve+thermal;
