@@ -1,0 +1,21 @@
+/* Exact damped modal recurrence, scheduled notes, passive note-off damping. */
+(function(root){'use strict';
+function coefficients(w,sigma,rate){const dt=1/rate;let a,b,A,B;if(Math.abs(w-sigma)<w*1e-9){const r=Math.exp(-sigma*dt);a=2*r;b=-r*r;A=r*(1+sigma*dt);B=r*dt;}else if(w>sigma){const wd=Math.sqrt(w*w-sigma*sigma),r=Math.exp(-sigma*dt),c=Math.cos(wd*dt),s=Math.sin(wd*dt);a=2*r*c;b=-r*r;A=r*(c+sigma/wd*s);B=r*s/wd;}else{const z=Math.sqrt(sigma*sigma-w*w),r1=-w*w/(sigma+z),r2=-sigma-z,e1=Math.exp(r1*dt),e2=Math.exp(r2*dt);a=e1+e2;b=-e1*e2;A=(-r2*e1+r1*e2)/(r1-r2);B=(e1-e2)/(r1-r2);}return {a,b,A,B};}
+class Voice{
+ constructor(id,data,frame,rate){this.id=id;this.rate=rate;this.start=frame;this.end=frame+Math.ceil(data.duration*rate);this.fade=Math.ceil(data.fadeSeconds*rate);this.alpha=1-Math.exp(-2*Math.PI*8000/rate);this.y=0;this.released=false;this.mass=data.mass;this.n=data.modes.length;for(const key of ['q','next','w','sigma','bridge','a','b','A','B'])this[key]=new Float64Array(this.n);data.modes.forEach((m,i)=>{this.q[i]=m.q;this.w[i]=m.w;this.sigma[i]=m.sigma;this.bridge[i]=m.bridge;this.setCoefficients(i,m.sigma,0);});}
+ setCoefficients(i,sigma,velocity){const c=coefficients(this.w[i],sigma,this.rate);for(const k of ['a','b','A','B'])this[k][i]=c[k];this.sigma[i]=sigma;this.next[i]=c.A*this.q[i]+c.B*velocity;}
+ velocity(i){return this.B[i]>1e-30?(this.next[i]-this.A[i]*this.q[i])/this.B[i]:0;}
+ energy(){let e=0;for(let i=0;i<this.n;i++)e+=.5*this.mass*(this.velocity(i)**2+this.w[i]**2*this.q[i]**2);return e;}
+ release(frame,seconds){if(this.released)return;this.released=true;seconds=Math.max(.05,Math.min(3,seconds));for(let i=0;i<this.n;i++){const v=this.velocity(i);this.setCoefficients(i,this.sigma[i]+Math.log(1000)/seconds,v);}this.end=Math.min(this.end,frame+Math.ceil((seconds+.1)*this.rate));this.fade=Math.min(this.fade,Math.ceil(.02*this.rate));}
+ choke(frame){this.end=Math.min(this.end,frame+Math.ceil(.005*this.rate));this.fade=Math.ceil(.005*this.rate);this.released=true;}
+ sample(frame){let force=0;for(let i=0;i<this.n;i++){force+=this.bridge[i]*this.q[i];const next=this.a[i]*this.next[i]+this.b[i]*this.q[i];this.q[i]=this.next[i];this.next[i]=next;}this.y+=this.alpha*(force-this.y);return .1*this.y*Math.max(0,Math.min(1,(frame-this.start)/(.003*this.rate),(this.end-1-frame)/this.fade));}
+}
+class Engine{
+ constructor(rate,onended=()=>{},maxVoices=12){this.rate=rate;this.onended=onended;this.maxVoices=maxVoices;this.voices=new Map();this.retiring=[];this.events=[];this.serial=0;}
+ enqueue(e){if(!Number.isFinite(e.frame)||!['on','off','kill','panic'].includes(e.type))throw Error('発音時刻を確認してください');this.events.push({...e,frame:Math.round(e.frame),serial:this.serial++});this.events.sort((a,b)=>a.frame-b.frame||a.serial-b.serial);}
+ retire(id,frame){const v=this.voices.get(id);if(!v)return;this.voices.delete(id);v.choke(frame);this.retiring.push(v);if(this.retiring.length>4){const oldest=this.retiring.shift();this.onended(oldest.id);}}
+ handle(e,frame){if(e.type==='on'){if(this.voices.has(e.id))this.retire(e.id,frame);if(this.voices.size>=this.maxVoices){const candidate=[...this.voices.values()].find(v=>v.released)||this.voices.values().next().value;this.retire(candidate.id,frame);}this.voices.set(e.id,new Voice(e.id,e.data,frame,this.rate));}else if(e.type==='off'){this.voices.get(e.id)?.release(frame,e.seconds);}else if(e.type==='kill'){this.events=this.events.filter(v=>v.id!==e.id);if(this.voices.has(e.id))this.retire(e.id,frame);else this.onended(e.id);}else{const ids=new Set(this.events.map(v=>v.id));this.events=[];for(const id of this.voices.keys())this.retire(id,frame);for(const id of ids)if(id!==undefined)this.onended(id);}}
+ process(output,firstFrame){for(let j=0;j<output.length;j++){const frame=firstFrame+j;while(this.events.length&&this.events[0].frame<=frame)this.handle(this.events.shift(),frame);let y=0;for(const [id,v]of this.voices){if(frame>=v.end){this.voices.delete(id);this.onended(id);}else y+=v.sample(frame);}for(let k=this.retiring.length-1;k>=0;k--){const v=this.retiring[k];if(frame>=v.end){this.retiring.splice(k,1);this.onended(v.id);}else y+=v.sample(frame);}output[j]=Number.isFinite(y)?y:0;}return true;}
+}
+root.StringVoiceCore={coefficients,Voice,Engine};if(typeof module!=='undefined')module.exports=root.StringVoiceCore;
+})(globalThis);

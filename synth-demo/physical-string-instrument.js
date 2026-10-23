@@ -1,0 +1,10 @@
+(function(root){'use strict';
+class PhysicalStringInstrument{
+ constructor(context,destination,volume,onerror=()=>{}){this.context=context;this.destination=destination;this.volume=volume;this.onerror=onerror;this.callbacks=new Map();this.serial=0;this.ready=this.init();}
+ async init(){if(!this.context.audioWorklet)throw Error('このブラウザでは弦Ver2を起動できません。HTTPSの公開ページでお試しください');await this.context.audioWorklet.addModule('physical-string-worklet.js?v=1');this.node=new AudioWorkletNode(this.context,'physical-string-ver2',{numberOfInputs:0,numberOfOutputs:1,outputChannelCount:[1]});this.output=this.context.createGain();this.output.gain.value=.2*this.volume;this.node.connect(this.output).connect(this.destination);this.node.port.onmessage=({data})=>{if(data.type==='ended'){const callback=this.callbacks.get(data.id);this.callbacks.delete(data.id);callback?.();}else if(data.type==='error')this.fail(new Error(data.message));};this.node.onprocessorerror=()=>this.fail(new Error('弦Ver2の発音が停止しました。もう一度鍵盤を押すと再起動します')); }
+ fail(error){if(this.failed)return;this.failed=true;const callbacks=[...this.callbacks.values()];this.callbacks.clear();for(const callback of callbacks)callback?.();this.node?.disconnect();this.output?.disconnect();this.onerror(error);}
+ setVolume(value){this.volume=value;this.output?.gain.setTargetAtTime(.2*value,this.context.currentTime,.015);}
+ noteOn(midi,velocity,settings,when,onended){const data=root.StringVoiceModel.prepare(midi,velocity,settings,this.context.sampleRate),id='physical-'+(++this.serial),frame=Math.round(Math.max(when,this.context.currentTime)*this.context.sampleRate);this.callbacks.set(id,onended);this.node.port.postMessage({type:'on',id,frame,data});let stopped=false;return {data,release:(at,seconds)=>{if(stopped)return;stopped=true;this.node.port.postMessage({type:'off',id,frame:Math.round(Math.max(at,this.context.currentTime)*this.context.sampleRate),seconds});},kill:()=>{this.node.port.postMessage({type:'kill',id,frame:Math.round(this.context.currentTime*this.context.sampleRate)});}};}
+}
+root.PhysicalStringInstrument=PhysicalStringInstrument;
+})(globalThis);
