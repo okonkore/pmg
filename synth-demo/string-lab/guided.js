@@ -15,5 +15,11 @@ function lossConfig(side,level){
  const choice=lossLevels.find(v=>v.id===level);if(!choice)throw Error('損失の比較条件を確認してください');
  return {...config('e3',true,side,'soft'),supportDamping:choice.damping,guidedPreset:'e3-soft-loss-'+side+'-'+choice.id};
 }
-root.StringGuided={notes,config,lossLevels,lossConfig};if(typeof module!=='undefined')module.exports=root.StringGuided;
+const stiffnessLevels=Object.freeze([{id:'soft',label:'柔らかい · 1/4',ratio:.25},{id:'baseline',label:'基準の硬さ',ratio:1},{id:'hard',label:'硬い · 4倍',ratio:4}].map(Object.freeze));
+function stiffnessConfig(side,level){
+ const choice=stiffnessLevels.find(v=>v.id===level);if(!choice)throw Error('硬さの比較条件を確認してください');
+ const base=lossConfig(side,'medium');
+ return {...base,supportStiffness:base.supportStiffness*choice.ratio,guidedPreset:'e3-stiffness-'+side+'-'+choice.id};
+}
+root.StringGuided={notes,config,lossLevels,lossConfig,stiffnessLevels,stiffnessConfig};if(typeof module!=='undefined')module.exports=root.StringGuided;
 })(globalThis);

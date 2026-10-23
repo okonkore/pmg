@@ -43,7 +43,7 @@ async function play(config,label,locked=false){
  const guidedKey=locked?JSON.stringify({request,sampleRate:context.sampleRate}):null;
  const sound=locked&&guidedCache.has(guidedKey)?guidedCache.get(guidedKey):(request.nonlinear||request.supportEnabled)?await renderNonlinear(request,context.sampleRate):P.render(request,context.sampleRate,{autoTail:true});
  if(generation!==playGeneration)return;
- if(locked){guidedCache.set(guidedKey,sound);if(guidedCache.size>25)guidedCache.delete(guidedCache.keys().next().value);}
+ if(locked){guidedCache.set(guidedKey,sound);if(guidedCache.size>34)guidedCache.delete(guidedCache.keys().next().value);}
  if(sound.nonlinear)showNonlinear(sound);if(sound.support)showSupport(sound);
  if(sound.peak>.98)throw Error('出力が大きすぎます。試聴ゲインを下げてください。');
  lastAudio=sound;$('wav').disabled=false;const b=context.createBuffer(1,sound.samples.length,sound.sampleRate);b.copyToChannel(sound.samples,0);source=context.createBufferSource();source.buffer=b;source.connect(context.destination);source.start();
@@ -56,7 +56,7 @@ $('saveA').onclick=()=>{snapshot={...state};$('playA').disabled=false;$('compari
 $('playA').onclick=()=>play(snapshot,'A');$('air').onchange=e=>{state.air=e.target.checked;update();};
 $('reset').onclick=()=>{state=initialState();sync();update();};
 $('tune').onclick=()=>{try{const t=P.tune(state,Number($('target').value));if(t<5||t>150)throw Error('計算した張力が操作範囲5〜150 Nを外れます');state.tension=t;sync();update();}catch(e){message(e.message,true);}};
-$('settings').onclick=()=>download(new Blob([JSON.stringify({version:'string-v2-listen-13',current:state,A:snapshot,lastRendered:lastAudio?{conditions:lastAudio.spec.p,sampleRate:lastAudio.sampleRate,peak:lastAudio.peak,tail:lastAudio.tail,nonlinear:lastAudio.nonlinear||null,support:lastAudio.support||null}:null,reference:{action12mmApprox:2,bridgeToPluckCmApprox:8},comparison:{targetHz:state.compareHz,matched:comparisonConfigs(),assumptions:sensitivityConfigs()},scope:'plain or homogenized wound string, optional Kirchhoff-Carrier tension OR one/two passive movable endpoints, bridge force monitor'},null,2)],{type:'application/json'}),'string-conditions.json');
+$('settings').onclick=()=>download(new Blob([JSON.stringify({version:'string-v2-listen-14',current:state,A:snapshot,lastRendered:lastAudio?{conditions:lastAudio.spec.p,sampleRate:lastAudio.sampleRate,peak:lastAudio.peak,tail:lastAudio.tail,nonlinear:lastAudio.nonlinear||null,support:lastAudio.support||null}:null,reference:{action12mmApprox:2,bridgeToPluckCmApprox:8},comparison:{targetHz:state.compareHz,matched:comparisonConfigs(),assumptions:sensitivityConfigs()},scope:'plain or homogenized wound string, optional Kirchhoff-Carrier tension OR one/two passive movable endpoints, bridge force monitor'},null,2)],{type:'application/json'}),'string-conditions.json');
 $('wav').onclick=()=>{if(!lastAudio)return;const {samples,sampleRate}=lastAudio,b=new ArrayBuffer(44+2*samples.length),v=new DataView(b),str=(o,s)=>{for(let i=0;i<s.length;i++)v.setUint8(o+i,s.charCodeAt(i));};str(0,'RIFF');v.setUint32(4,b.byteLength-8,true);str(8,'WAVEfmt ');v.setUint32(16,16,true);v.setUint16(20,1,true);v.setUint16(22,1,true);v.setUint32(24,sampleRate,true);v.setUint32(28,sampleRate*2,true);v.setUint16(32,2,true);v.setUint16(34,16,true);str(36,'data');v.setUint32(40,samples.length*2,true);samples.forEach((x,i)=>v.setInt16(44+2*i,Math.round(Math.max(-1,Math.min(1,x))*32767),true));download(new Blob([b],{type:'audio/wav'}),'string-v2.wav');};
 function comparisonConfigs(){try{return P.matchedPair(state,state.compareHz);}catch{return null;}}
 function updatePair(){
@@ -104,7 +104,7 @@ for(const c of P.assumptionCases(state,state.compareHz)){
 $('e2').onclick=()=>{state.compareHz=82.406889;state.fret=0;sync();update();message('E2（約82.41 Hz）・開放弦の比較にしました。');};
 function renderNonlinear(config,sampleRate){
  const key=JSON.stringify({config,sampleRate});if(nonlinearCache.has(key))return Promise.resolve(nonlinearCache.get(key));
- return new Promise((resolve,reject)=>{const worker=new Worker('render-worker.js?v=13');renderJob={worker,reject};
+ return new Promise((resolve,reject)=>{const worker=new Worker('render-worker.js?v=14');renderJob={worker,reject};
   worker.onmessage=e=>{worker.terminate();renderJob=null;if(e.data.error)reject(new Error(e.data.error));else{nonlinearCache.set(key,e.data.result);if(nonlinearCache.size>12)nonlinearCache.delete(nonlinearCache.keys().next().value);resolve(e.data.result);}};
   worker.onerror=()=>{worker.terminate();renderJob=null;reject(new Error('物理計算を起動できませんでした。ページを再読み込みしてください。'));};
   worker.postMessage({config,sampleRate});
@@ -158,6 +158,12 @@ for(const side of [{id:'nut',label:'ナット側が動く'},{id:'bridge',label:'
  const row=document.createElement('div');row.className='guided-row damping-row';const title=document.createElement('strong');title.textContent=side.label;row.append(title);
  for(const level of StringGuided.lossLevels){const button=document.createElement('button');button.id='loss-'+side.id+'-'+level.id;button.textContent=level.label;button.setAttribute('aria-label','E3 '+side.label+' '+level.label);button.onclick=()=>{const label='損失比較 / '+side.label+' / '+level.label;$('guidedCurrent').textContent=label+' N s/m：条件固定で試聴';play(StringGuided.lossConfig(side.id,level.id),label,true);};row.append(button);}
  $('lossButtons').append(row);
+}
+
+for(const side of [{id:'nut',label:'ナット側が動く'},{id:'bridge',label:'ブリッジ側が動く'},{id:'both',label:'両端が同時に動く'}]){
+ const row=document.createElement('div');row.className='guided-row damping-row';const title=document.createElement('strong');title.textContent=side.label;row.append(title);
+ for(const level of StringGuided.stiffnessLevels){const button=document.createElement('button');button.id='stiffness-'+side.id+'-'+level.id;button.textContent=level.label;button.setAttribute('aria-label','E3 '+side.label+' '+level.label);button.onclick=()=>{const label='硬さ比較 / '+side.label+' / '+level.label;$('guidedCurrent').textContent=label+'：条件固定で試聴';play(StringGuided.stiffnessConfig(side.id,level.id),label,true);};row.append(button);}
+ $('stiffnessButtons').append(row);
 }
 
 sync();update();
