@@ -2,7 +2,7 @@
 const $=id=>document.getElementById(id), P=StringPhysics;
 const nonlinearCache=new Map(),guidedCache=new Map();
 function initialState(){const s=P.model(P.defaults);return {...P.defaults,excitation:'displacement',pullMm:Number((s.displacement*1000).toFixed(3)),releaseMs:0};}
-let state=initialState(),snapshot=null,context=null,source=null,lastAudio=null,playGeneration=0,renderJob=null;
+let state=initialState(),snapshot=null,context=null,source=null,lastAudio=null,playGeneration=0,renderJob=null,diagnosticWavUrl=null;
 const controls=[
  ['stringControls','scale','開放弦長',400,800,1,'mm'],['stringControls','fret','フレット',0,24,1,''],['stringControls','diameter','単線の直径',.3,1.5,.01,'mm'],['stringControls','density','ナイロン材の密度（共通）',900,8000,10,'kg/m³'],['stringControls','young','ナイロン材のYoung率（共通）',.1,210,.1,'GPa'],['stringControls','tension','張力',5,150,.1,'N'],
  ['woundControls','coreDiameter','芯束の外径',.2,1.2,.01,'mm'],['woundControls','coreFill','芯束の充填率',.1,1,.01,''],['woundControls','filaments','芯の繊維数',1,500,1,'本'],['woundControls','wireDiameter','巻線の線径',.03,.3,.005,'mm'],['woundControls','wireDensity','巻線材の密度',2000,20000,10,'kg/m³'],['woundControls','wireYoung','巻線材のYoung率',1,220,1,'GPa'],['woundControls','pitchRatio','巻きピッチ / 巻線径',1,3,.05,''],
@@ -16,7 +16,7 @@ for(const [group,key,title,min,max,step,unit] of controls){
  for(const id of [key,key+'Number'])$(id).addEventListener('input',e=>{const v=Number(e.target.value);if(e.target.value===''||!Number.isFinite(v)||v<min||v>max){message('入力範囲を確認してください',true);return;}state[key]=v;sync();update();});
 }
 function sync(){for(const [,key]of controls){$(key).value=state[key];$(key+'Number').value=state[key];}$('air').checked=state.air;$('nonlinear').checked=state.nonlinear;$('supportEnabled').checked=state.supportEnabled;$('supportSide').value=state.supportSide;$('supportConstruction').value=state.construction;$('nlConstruction').value=state.construction;$('construction').value=state.construction;$('compareHz').value=state.compareHz;}
-function message(text,error=false){$('status').textContent=text;$('status').className=error?'warning':'';}
+function message(text,error=false){$('status').textContent=text;$('status').className=error?'warning':'';const near=$('attackStatus');if(near){near.textContent=text;near.className=error?'warning':'muted';}}
 function graph(id,draw){const c=$(id),g=c.getContext('2d');g.clearRect(0,0,c.width,c.height);g.font='12px system-ui';draw(g,c.width,c.height);}
 function update(){
  $('supportResult').textContent='動く支持を再生すると、実際に計算したモードの減衰を表示します。';graph('supportDecay',()=>{});updateSupportParameters();
@@ -34,7 +34,7 @@ function update(){
  updatePair();
  }catch(e){message(e.message,true);$('playPlain').disabled=true;$('playWound').disabled=true;}
 }
-function stop(){playGeneration++;if(renderJob){renderJob.worker.terminate();renderJob.reject(new Error('cancelled'));renderJob=null;}if(source){source.stop();source=null;}}
+function stop(preserveNative=false){if(!preserveNative)$('attackAudio')?.pause();playGeneration++;if(renderJob){renderJob.worker.terminate();renderJob.reject(new Error('cancelled'));renderJob=null;}if(source){source.stop();source=null;}}
 async function play(config,label,locked=false){
  stop();const generation=playGeneration;$('play').disabled=true;$('playA').disabled=true;$('playPlain').disabled=true;$('playWound').disabled=true;message(label+((config.nonlinear||config.supportEnabled)?'を計算しています…（初回は数十秒掛かることがあります）':'を計算しています…'));
  try{context??=new AudioContext();await context.resume();await new Promise(resolve=>setTimeout(resolve,30));
@@ -46,7 +46,7 @@ async function play(config,label,locked=false){
  if(locked){guidedCache.set(guidedKey,sound);if(guidedCache.size>42)guidedCache.delete(guidedCache.keys().next().value);}
  if(sound.nonlinear)showNonlinear(sound);if(sound.support)showSupport(sound);
  if(sound.peak>.98)throw Error('出力が大きすぎます。試聴ゲインを下げてください。');
- lastAudio=sound;$('wav').disabled=false;const b=context.createBuffer(1,sound.samples.length,sound.sampleRate);b.copyToChannel(sound.samples,0);source=context.createBufferSource();source.buffer=b;source.connect(context.destination);source.start();
+ lastAudio=sound;$('wav').disabled=false;if(sound.diagnostic){const audio=$('attackAudio');audio.pause();if(diagnosticWavUrl)URL.revokeObjectURL(diagnosticWavUrl);diagnosticWavUrl=URL.createObjectURL(waveBlob(sound));audio.src=diagnosticWavUrl;audio.load();$('attackAudioWrap').hidden=false;}const b=context.createBuffer(1,sound.samples.length,sound.sampleRate);b.copyToChannel(sound.samples,0);source=context.createBufferSource();source.buffer=b;source.connect(context.destination);source.start();
  message(`${label}を再生中 · ピーク ${sound.peak>0?(20*Math.log10(sound.peak)).toFixed(1):'−∞'} dBFS · 約${sound.tail.duration.toFixed(1)}秒${sound.tail.capped?'（上限・末尾を緩やかに消音）':''} · 自動音量補正なし`);
  }catch(e){if(generation===playGeneration)message(e.message,true);}finally{$('play').disabled=false;$('playA').disabled=!snapshot;updatePair();}
 }
@@ -56,8 +56,10 @@ $('saveA').onclick=()=>{snapshot={...state};$('playA').disabled=false;$('compari
 $('playA').onclick=()=>play(snapshot,'A');$('air').onchange=e=>{state.air=e.target.checked;update();};
 $('reset').onclick=()=>{state=initialState();sync();update();};
 $('tune').onclick=()=>{try{const t=P.tune(state,Number($('target').value));if(t<5||t>150)throw Error('計算した張力が操作範囲5〜150 Nを外れます');state.tension=t;sync();update();}catch(e){message(e.message,true);}};
-$('settings').onclick=()=>download(new Blob([JSON.stringify({version:'string-v2-listen-15',current:state,A:snapshot,lastRendered:lastAudio?{conditions:lastAudio.spec.p,sampleRate:lastAudio.sampleRate,peak:lastAudio.peak,tail:lastAudio.tail,nonlinear:lastAudio.nonlinear||null,support:lastAudio.support||null,diagnostic:lastAudio.diagnostic||null}:null,reference:{action12mmApprox:2,bridgeToPluckCmApprox:8},comparison:{targetHz:state.compareHz,matched:comparisonConfigs(),assumptions:sensitivityConfigs()},scope:'plain or homogenized wound string, optional Kirchhoff-Carrier tension OR one/two passive movable endpoints, bridge force monitor'},null,2)],{type:'application/json'}),'string-conditions.json');
-$('wav').onclick=()=>{if(!lastAudio)return;const {samples,sampleRate}=lastAudio,b=new ArrayBuffer(44+2*samples.length),v=new DataView(b),str=(o,s)=>{for(let i=0;i<s.length;i++)v.setUint8(o+i,s.charCodeAt(i));};str(0,'RIFF');v.setUint32(4,b.byteLength-8,true);str(8,'WAVEfmt ');v.setUint32(16,16,true);v.setUint16(20,1,true);v.setUint16(22,1,true);v.setUint32(24,sampleRate,true);v.setUint32(28,sampleRate*2,true);v.setUint16(32,2,true);v.setUint16(34,16,true);str(36,'data');v.setUint32(40,samples.length*2,true);samples.forEach((x,i)=>v.setInt16(44+2*i,Math.round(Math.max(-1,Math.min(1,x))*32767),true));download(new Blob([b],{type:'audio/wav'}),'string-v2.wav');};
+$('settings').onclick=()=>download(new Blob([JSON.stringify({version:'string-v2-listen-16',current:state,A:snapshot,lastRendered:lastAudio?{conditions:lastAudio.spec.p,sampleRate:lastAudio.sampleRate,peak:lastAudio.peak,tail:lastAudio.tail,nonlinear:lastAudio.nonlinear||null,support:lastAudio.support||null,diagnostic:lastAudio.diagnostic||null}:null,reference:{action12mmApprox:2,bridgeToPluckCmApprox:8},comparison:{targetHz:state.compareHz,matched:comparisonConfigs(),assumptions:sensitivityConfigs()},scope:'plain or homogenized wound string, optional Kirchhoff-Carrier tension OR one/two passive movable endpoints, bridge force monitor'},null,2)],{type:'application/json'}),'string-conditions.json');
+function waveBlob(sound){const {samples,sampleRate}=sound,b=new ArrayBuffer(44+2*samples.length),v=new DataView(b),str=(o,s)=>{for(let i=0;i<s.length;i++)v.setUint8(o+i,s.charCodeAt(i));};str(0,'RIFF');v.setUint32(4,b.byteLength-8,true);str(8,'WAVEfmt ');v.setUint32(16,16,true);v.setUint16(20,1,true);v.setUint16(22,1,true);v.setUint32(24,sampleRate,true);v.setUint32(28,sampleRate*2,true);v.setUint16(32,2,true);v.setUint16(34,16,true);str(36,'data');v.setUint32(40,samples.length*2,true);samples.forEach((x,i)=>v.setInt16(44+2*i,Math.round(Math.max(-1,Math.min(1,x))*32767),true));return new Blob([b],{type:'audio/wav'});}
+$('wav').onclick=()=>{if(lastAudio)download(waveBlob(lastAudio),'string-v2.wav');};
+$('attackAudio').onplay=()=>{stop(true);message('分解音を音声プレーヤーで再生中 · 同じ波形と音量');};
 function comparisonConfigs(){try{return P.matchedPair(state,state.compareHz);}catch{return null;}}
 function updatePair(){
  try{
@@ -104,7 +106,7 @@ for(const c of P.assumptionCases(state,state.compareHz)){
 $('e2').onclick=()=>{state.compareHz=82.406889;state.fret=0;sync();update();message('E2（約82.41 Hz）・開放弦の比較にしました。');};
 function renderNonlinear(config,sampleRate){
  const key=JSON.stringify({config,sampleRate});if(nonlinearCache.has(key))return Promise.resolve(nonlinearCache.get(key));
- return new Promise((resolve,reject)=>{const worker=new Worker('render-worker.js?v=15');renderJob={worker,reject};
+ return new Promise((resolve,reject)=>{const worker=new Worker('render-worker.js?v=16');renderJob={worker,reject};
   worker.onmessage=e=>{worker.terminate();renderJob=null;if(e.data.error)reject(new Error(e.data.error));else{nonlinearCache.set(key,e.data.result);if(nonlinearCache.size>12)nonlinearCache.delete(nonlinearCache.keys().next().value);resolve(e.data.result);}};
   worker.onerror=()=>{worker.terminate();renderJob=null;reject(new Error('物理計算を起動できませんでした。ページを再読み込みしてください。'));};
   worker.postMessage({config,sampleRate});
