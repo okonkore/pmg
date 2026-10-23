@@ -35,7 +35,7 @@ function stepper(s,sr,oversample=8){
 }
 function render(input,sr=48000,options={}){
  const s=system(input,sr,options.modeLimit||96),oversample=options.oversample||8,step=stepper(s,sr,oversample),initialEnergy=energy(s);
- const size=Math.ceil(sr*(options.duration||30)),samples=new Float32Array(size),gain=2,alpha=1-Math.exp(-2*Math.PI*8000/sr);
+ const size=Math.ceil(sr*(options.duration||30)),samples=new Float32Array(size),gain=8,alpha=1-Math.exp(-2*Math.PI*8000/sr);
  let y=0,peak=0,dissipated=0,maxBalanceError=0,used=size,quiet=false;
  for(let j=0;j<size;j++){
   y+=alpha*(s.av-y);samples[j]=gain*y*Math.min(1,j/(sr*.003));peak=Math.max(peak,Math.abs(samples[j]));
@@ -45,7 +45,7 @@ function render(input,sr=48000,options={}){
  }
  const output=samples.slice(0,used),fade=quiet?.02:2;
  for(let j=Math.max(0,used-Math.ceil(sr*fade));j<used;j++)output[j]*=(used-1-j)/(sr*fade);
- return {samples:output,sampleRate:sr,spec:s.spec,peak,tail:{duration:used/sr,capped:!quiet,fadeSeconds:fade},body:{...s.body,kind:input.bodyId,observer:'top velocity; 2 FS per m/s; fixed 8 kHz lowpass',airMass:s.airMass,airDamping:s.airC,initialEnergy,finalEnergy:energy(s),dissipated,maxBalanceError,oversample}};
+ return {samples:output,sampleRate:sr,spec:s.spec,peak,tail:{duration:used/sr,capped:!quiet,fadeSeconds:fade},body:{...s.body,kind:input.bodyId,observer:'top velocity; 8 FS per m/s; fixed 8 kHz lowpass',airMass:s.airMass,airDamping:s.airC,initialEnergy,finalEnergy:energy(s),dissipated,maxBalanceError,oversample}};
 }
 root.StringBody={system,energy,stepper,render};if(typeof module!=='undefined')module.exports=root.StringBody;
 })(globalThis);
