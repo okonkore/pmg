@@ -1,2 +1,2 @@
-importScripts('physics.js?v=25','nonlinear.js?v=25','support.js?v=25','attack-data.js?v=25','both-mass-data.js?v=25','attack.js?v=25');
+importScripts('physics.js?v=26','nonlinear.js?v=26','support.js?v=26','attack-data.js?v=26','both-mass-data.js?v=26','attack.js?v=26');
 onmessage=e=>{try{const {config,sampleRate}=e.data;const started=performance.now();const result=config.attackView?StringAttack.render(config,sampleRate):config.supportEnabled?StringSupport.render(config,sampleRate,{autoTail:true}):StringNonlinear.render(config,sampleRate,{autoTail:true});(result.support||result.nonlinear||result.diagnostic).computeMs=performance.now()-started;postMessage({result},[result.samples.buffer]);}catch(error){postMessage({error:error.message});}};
