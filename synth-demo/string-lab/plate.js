@@ -1,4 +1,5 @@
-/* Orthotropic simply-supported rectangular plate + string + open cavity.
+/* Orthotropic plate + string + open cavity.
+   Analytic simply-supported rectangle or computed clamped classical outline.
    Positive mechanical matrices; compact-monopole observer without radiation loading. */
 (function(root){
 'use strict';
@@ -33,13 +34,15 @@ function plateModes(parameters={},count='nine'){
 function system(input,sr=48000,modeLimit=96){
  if(input.nonlinear||input.contactWidthMm>0)throw Error('Plate experiment requires linear point excitation');
  const scale=input.plateStiffnessScale??1;if(!(Number.isFinite(scale)&&scale>0))throw Error('Plate stiffness scale must be positive and finite');
- const reference=plateModes(input.plateParameters,input.plateModes),rp=reference.parameters;
- const plate=scale===1?reference:plateModes({...rp,youngX:rp.youngX*scale,youngY:rp.youngY*scale,shear:rp.shear*scale},input.plateModes);
+ if(input.plateGeometry&&!['rectangle','classical'].includes(input.plateGeometry))throw Error('Unknown plate geometry');
+ const factory=input.plateGeometry==='classical'?(root.StringClassicalPlate||(typeof require!=='undefined'?require('./classical-plate.js'):null)).plateModes:plateModes;
+ const reference=factory(input.plateParameters,input.plateModes),rp=reference.parameters;
+ const plate=scale===1?reference:factory({...rp,youngX:rp.youngX*scale,youngY:rp.youngY*scale,shear:rp.shear*scale},input.plateModes);
  if(input.plateFixDamping){for(let j=0;j<plate.modes.length;j++){plate.modes[j].damping=reference.modes[j].damping;plate.modes[j].effectiveLossAngle=plate.modes[j].damping/(plate.modes[j].mass*plate.modes[j].w);}plate.dampingReference={law:'fixed modal viscous coefficients at reference material',parameters:{...rp},frequenciesHz:reference.modes.map(v=>v.hz)};}
  if(input.plateStiffnessScale!==undefined)plate.stiffnessScale=scale;
  const spec=P.model({...input,nonlinear:false,supportEnabled:true,supportSide:'bridge',releaseMs:0},sr,modeLimit),nb=plate.modes.length+1,n=spec.modes.length;
  const holeDamping=input.plateHoleDamping??.02;if(!(Number.isFinite(holeDamping)&&holeDamping>=0))throw Error('Hole damping must be finite and nonnegative');
- const rho=1.2,c=343,volume=.012,radius=.04,wall=.003,holeArea=Math.PI*radius*radius,airMass=rho*holeArea*(wall+1.46*radius),compress=rho*c*c/volume;
+ const rho=1.2,c=343,volume=plate.geometry?.cavityVolume??.012,radius=plate.geometry?.holeRadius??.04,wall=.003,holeArea=Math.PI*radius*radius,airMass=rho*holeArea*(wall+1.46*radius),compress=rho*c*c/volume;
  const mass=new Float64Array(nb),stiffness=new Float64Array(nb),damping=new Float64Array(nb),bridge=new Float64Array(nb),area=new Float64Array(nb);
  plate.modes.forEach((v,j)=>{mass[j]=v.mass;stiffness[j]=v.stiffness;damping[j]=v.damping;bridge[j]=v.bridge;area[j]=v.effectiveArea;});mass[nb-1]=airMass;damping[nb-1]=holeDamping;area[nb-1]=holeArea;
  const affineMass=spec.mu*spec.L/3,affineStiffness=spec.p.tension/spec.L,M=new Float64Array(nb*nb),K=new Float64Array(nb*nb);
