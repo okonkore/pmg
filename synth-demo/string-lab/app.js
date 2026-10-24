@@ -34,22 +34,40 @@ function update(){
  updatePair();
  }catch(e){message(e.message,true);$('playPlain').disabled=true;$('playWound').disabled=true;}
 }
-function stop(preserveNative=false){if(!preserveNative)$('attackAudio')?.pause();playGeneration++;if(renderJob){renderJob.worker.terminate();renderJob.reject(new Error('cancelled'));renderJob=null;}if(source){source.stop();source=null;}}
+let calculationTimer=null,calculationStarted=0,calculationFocus=null,preparedPlayback=null;
+function closeCalculation(){clearInterval(calculationTimer);calculationTimer=null;preparedPlayback=null;if($('calculationDialog').open)$('calculationDialog').close();document.querySelector('main').removeAttribute('aria-busy');if(calculationFocus?.isConnected)calculationFocus.focus({preventScroll:true});calculationFocus=null;}
+function showCalculation(label){
+ calculationFocus=document.activeElement;calculationStarted=performance.now();preparedPlayback=null;
+ $('calculationTitle').textContent='音を計算しています';$('calculationLabel').textContent=label;
+ $('calculationDetail').textContent='初回はデータの読み込みと計算に時間がかかります。完了すると再生します。';
+ $('calculationSpinner').hidden=false;$('calculationResume').hidden=true;$('calculationCancel').textContent='計算をキャンセル';
+ $('calculationElapsed').textContent='経過 0秒';clearInterval(calculationTimer);calculationTimer=setInterval(()=>{$('calculationElapsed').textContent='経過 '+Math.floor((performance.now()-calculationStarted)/1000)+'秒';},500);
+ document.querySelector('main').setAttribute('aria-busy','true');if(!$('calculationDialog').open)$('calculationDialog').showModal();
+}
+function calculationNotice(title,detail,ready=null){clearInterval(calculationTimer);calculationTimer=null;$('calculationTitle').textContent=title;$('calculationDetail').textContent=detail;$('calculationSpinner').hidden=true;$('calculationCancel').textContent='閉じる';preparedPlayback=ready;$('calculationResume').hidden=!ready;if(!$('calculationDialog').open)$('calculationDialog').showModal();document.querySelector('main').removeAttribute('aria-busy');}
+function startSound(sound,label){
+ const b=context.createBuffer(1,sound.samples.length,sound.sampleRate);b.copyToChannel(sound.samples,0);source=context.createBufferSource();source.buffer=b;source.connect(context.destination);source.start();closeCalculation();
+ message(`${label}を再生中 · ピーク ${sound.peak>0?(20*Math.log10(sound.peak)).toFixed(1):'−∞'} dBFS · 約${sound.tail.duration.toFixed(1)}秒${sound.tail.capped?'（上限・末尾を緩やかに消音）':''} · 自動音量補正なし`);
+}
+$('calculationCancel').onclick=()=>{const calculating=!!calculationTimer;stop();message(calculating?'計算をキャンセルしました。':'閉じました。');};
+$('calculationDialog').addEventListener('cancel',e=>{e.preventDefault();$('calculationCancel').click();});
+$('calculationResume').onclick=async()=>{const pending=preparedPlayback;if(!pending)return;try{await context.resume();if(pending.generation!==playGeneration)return;if(context.state!=='running')throw Error('音声を開始できませんでした。もう一度「この音を再生する」を押してください。');startSound(pending.sound,pending.label);}catch(e){if(pending.generation===playGeneration)calculationNotice('音声の再生待ち',e.message,pending);}};
+function stop(preserveNative=false){closeCalculation();$('play').disabled=false;$('playA').disabled=!snapshot;updatePair();if(!preserveNative)$('attackAudio')?.pause();playGeneration++;if(renderJob){renderJob.worker.terminate();renderJob.reject(new Error('cancelled'));renderJob=null;}if(source){source.stop();source=null;}}
 async function play(config,label,locked=false){
- stop();const generation=playGeneration;$('play').disabled=true;$('playA').disabled=true;$('playPlain').disabled=true;$('playWound').disabled=true;message(label+((config.nonlinear||config.supportEnabled||config.plateModes)?'を計算しています…（初回は数十秒掛かることがあります）':'を計算しています…'));
+ stop();const generation=playGeneration;showCalculation(label);$('play').disabled=true;$('playA').disabled=true;$('playPlain').disabled=true;$('playWound').disabled=true;message(label+((config.nonlinear||config.supportEnabled||config.plateModes)?'を計算しています…（初回は数十秒掛かることがあります）':'を計算しています…'));
  try{context??=new AudioContext();await context.resume();await new Promise(resolve=>setTimeout(resolve,30));
  if(generation!==playGeneration)return;
  const request={...config,gain:locked?config.gain:state.gain,duration:locked?config.duration:state.duration};
  const guidedKey=locked?JSON.stringify({request,sampleRate:context.sampleRate}):null;
  const sound=locked&&guidedCache.has(guidedKey)?guidedCache.get(guidedKey):(request.bodyId||request.sympatheticId||request.sequenceId||request.attackView||request.nonlinear||request.supportEnabled)?await renderNonlinear(request,context.sampleRate):P.render(request,context.sampleRate,{autoTail:true});
  if(generation!==playGeneration)return;
+ $('calculationTitle').textContent='再生を準備しています';$('calculationDetail').textContent='計算が完了しました。音声を準備しています。';
  if(locked){guidedCache.set(guidedKey,sound);if(guidedCache.size>91)guidedCache.delete(guidedCache.keys().next().value);}
  if(sound.nonlinear)showNonlinear(sound);if(sound.support)showSupport(sound);
  if(!Number.isFinite(sound.peak)||!sound.samples.every(Number.isFinite))throw Error('音の計算結果を確認できませんでした。初期条件へ戻してください。');
  if(sound.peak>.98)throw Error('出力が大きすぎます。試聴ゲインを下げてください。');
- lastAudio=sound;$('wav').disabled=false;{const audio=$('attackAudio');audio.pause();if(diagnosticWavUrl)URL.revokeObjectURL(diagnosticWavUrl);diagnosticWavUrl=URL.createObjectURL(waveBlob(sound));audio.src=diagnosticWavUrl;audio.load();$(sound.diagnostic?(sound.diagnostic.caseId?'bothMassAudioSlot':'attackAudioSlot'):'normalAudioSlot').append($('attackAudioWrap'));$('attackAudioWrap').hidden=false;}if(context.state!=='running'){message('自動再生を開始できませんでした。音声プレーヤーの▶で再生してください。',true);return;}const b=context.createBuffer(1,sound.samples.length,sound.sampleRate);b.copyToChannel(sound.samples,0);source=context.createBufferSource();source.buffer=b;source.connect(context.destination);source.start();
- message(`${label}を再生中 · ピーク ${sound.peak>0?(20*Math.log10(sound.peak)).toFixed(1):'−∞'} dBFS · 約${sound.tail.duration.toFixed(1)}秒${sound.tail.capped?'（上限・末尾を緩やかに消音）':''} · 自動音量補正なし`);
- }catch(e){if(generation===playGeneration)message(e.message,true);}finally{$('play').disabled=false;$('playA').disabled=!snapshot;updatePair();}
+ lastAudio=sound;$('wav').disabled=false;{const audio=$('attackAudio');audio.pause();if(diagnosticWavUrl)URL.revokeObjectURL(diagnosticWavUrl);diagnosticWavUrl=URL.createObjectURL(waveBlob(sound));audio.src=diagnosticWavUrl;audio.load();$(sound.diagnostic?(sound.diagnostic.caseId?'bothMassAudioSlot':'attackAudioSlot'):'normalAudioSlot').append($('attackAudioWrap'));$('attackAudioWrap').hidden=false;}if(context.state!=='running'){calculationNotice('計算完了 · 再生待ち','ブラウザーが音声を停止しています。「この音を再生する」を押してください。',{sound,label,generation});message('計算は完了しました。画面中央の「この音を再生する」を押してください。');return;}startSound(sound,label);
+ }catch(e){if(generation===playGeneration){message(e.message,true);calculationNotice('音を再生できませんでした',e.message);}}finally{if(generation===playGeneration){$('play').disabled=false;$('playA').disabled=!snapshot;updatePair();}}
 }
 function download(blob,name){const a=document.createElement('a'),url=URL.createObjectURL(blob);a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),10000);}
 $('play').onclick=()=>play({...state},'現在の条件');$('stop').onclick=()=>{stop();message('停止しました');};
@@ -57,7 +75,7 @@ $('saveA').onclick=()=>{snapshot={...state};$('playA').disabled=false;$('compari
 $('playA').onclick=()=>play(snapshot,'A');$('air').onchange=e=>{state.air=e.target.checked;update();};
 $('reset').onclick=()=>{state=initialState();sync();update();};
 $('tune').onclick=()=>{try{const t=P.tune(state,Number($('target').value));if(t<5||t>150)throw Error('計算した張力が操作範囲5〜150 Nを外れます');state.tension=t;sync();update();}catch(e){message(e.message,true);}};
-$('settings').onclick=()=>download(new Blob([JSON.stringify({version:'string-v2-listen-56',current:state,A:snapshot,lastRendered:lastAudio?{conditions:lastAudio.spec.p,sampleRate:lastAudio.sampleRate,peak:lastAudio.peak,tail:lastAudio.tail,nonlinear:lastAudio.nonlinear||null,support:lastAudio.support||null,diagnostic:lastAudio.diagnostic||null,polyphony:lastAudio.polyphony||null,body:lastAudio.body||null,sympathetic:lastAudio.sympathetic||null}:null,reference:{action12mmApprox:2,bridgeToPluckCmApprox:8},comparison:{targetHz:state.compareHz,matched:comparisonConfigs(),assumptions:sensitivityConfigs()},scope:'plain or homogenized wound string, optional Kirchhoff-Carrier tension OR one/two passive movable endpoints, bridge force monitor'},null,2)],{type:'application/json'}),'string-conditions.json');
+$('settings').onclick=()=>download(new Blob([JSON.stringify({version:'string-v2-listen-57',current:state,A:snapshot,lastRendered:lastAudio?{conditions:lastAudio.spec.p,sampleRate:lastAudio.sampleRate,peak:lastAudio.peak,tail:lastAudio.tail,nonlinear:lastAudio.nonlinear||null,support:lastAudio.support||null,diagnostic:lastAudio.diagnostic||null,polyphony:lastAudio.polyphony||null,body:lastAudio.body||null,sympathetic:lastAudio.sympathetic||null}:null,reference:{action12mmApprox:2,bridgeToPluckCmApprox:8},comparison:{targetHz:state.compareHz,matched:comparisonConfigs(),assumptions:sensitivityConfigs()},scope:'plain or homogenized wound string, optional Kirchhoff-Carrier tension OR one/two passive movable endpoints, bridge force monitor'},null,2)],{type:'application/json'}),'string-conditions.json');
 function waveBlob(sound){const {samples,sampleRate}=sound,b=new ArrayBuffer(44+2*samples.length),v=new DataView(b),str=(o,s)=>{for(let i=0;i<s.length;i++)v.setUint8(o+i,s.charCodeAt(i));};str(0,'RIFF');v.setUint32(4,b.byteLength-8,true);str(8,'WAVEfmt ');v.setUint32(16,16,true);v.setUint16(20,1,true);v.setUint16(22,1,true);v.setUint32(24,sampleRate,true);v.setUint32(28,sampleRate*2,true);v.setUint16(32,2,true);v.setUint16(34,16,true);str(36,'data');v.setUint32(40,samples.length*2,true);samples.forEach((x,i)=>v.setInt16(44+2*i,Math.round(Math.max(-1,Math.min(1,x))*32767),true));return new Blob([b],{type:'audio/wav'});}
 $('wav').onclick=()=>{if(lastAudio)download(waveBlob(lastAudio),'string-v2.wav');};
 $('attackAudio').onplay=()=>{stop(true);message('音声プレーヤーで再生中 · 同じ波形と音量');};
@@ -112,8 +130,8 @@ function renderNonlinear(config,sampleRate){
  if(config.sympatheticId&&config.sympatheticId!=='independent'&&sympatheticCache.has(sympatheticKey(config,sampleRate)))return Promise.resolve(StringSympathetic.select(sympatheticCache.get(sympatheticKey(config,sampleRate)),config));
  if(config.sequenceId&&sequenceVoiceCache.has(sampleRate))return Promise.resolve(StringPolyphony.mix(config,sequenceVoiceCache.get(sampleRate),sampleRate));
  const key=JSON.stringify({config,sampleRate});if(nonlinearCache.has(key))return Promise.resolve(nonlinearCache.get(key));
- return new Promise((resolve,reject)=>{const worker=new Worker('render-worker.js?v=56');renderJob={worker,reject};
-  worker.onmessage=e=>{worker.terminate();renderJob=null;if(e.data.error)reject(new Error(e.data.error));else{if(config.bodyView){bodyCache.set(bodyKey(config,sampleRate),e.data.result);if(bodyCache.size>8)bodyCache.delete(bodyCache.keys().next().value);}if(e.data.result.sympathetic?.shared)sympatheticCache.set(sympatheticKey(config,sampleRate),e.data.result);if(e.data.result.stems)sequenceVoiceCache.set(sampleRate,e.data.result.stems);nonlinearCache.set(key,e.data.result);if(nonlinearCache.size>12)nonlinearCache.delete(nonlinearCache.keys().next().value);resolve(e.data.result);}};
+ return new Promise((resolve,reject)=>{const worker=new Worker('render-worker.js?v=57');renderJob={worker,reject};
+  worker.onmessage=e=>{if(e.data.phase){$('calculationTitle').textContent='弦とボディの音を計算しています';$('calculationDetail').textContent='データの読み込みが完了しました。計算が終わると再生します。';return;}worker.terminate();renderJob=null;if(e.data.error)reject(new Error(e.data.error));else{if(config.bodyView){bodyCache.set(bodyKey(config,sampleRate),e.data.result);if(bodyCache.size>8)bodyCache.delete(bodyCache.keys().next().value);}if(e.data.result.sympathetic?.shared)sympatheticCache.set(sympatheticKey(config,sampleRate),e.data.result);if(e.data.result.stems)sequenceVoiceCache.set(sampleRate,e.data.result.stems);nonlinearCache.set(key,e.data.result);if(nonlinearCache.size>12)nonlinearCache.delete(nonlinearCache.keys().next().value);resolve(e.data.result);}};
   worker.onerror=()=>{worker.terminate();renderJob=null;reject(new Error('物理計算を起動できませんでした。ページを再読み込みしてください。'));};
   worker.postMessage({config,sampleRate});
  });
