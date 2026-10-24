@@ -40,6 +40,9 @@ function system(input,sr=48000,modeLimit=96){
  const plate=scale===1?reference:factory({...rp,youngX:rp.youngX*scale,youngY:rp.youngY*scale,shear:rp.shear*scale},input.plateModes);
  if(input.plateFixDamping){for(let j=0;j<plate.modes.length;j++){plate.modes[j].damping=reference.modes[j].damping;plate.modes[j].effectiveLossAngle=plate.modes[j].damping/(plate.modes[j].mass*plate.modes[j].w);}plate.dampingReference={law:'fixed modal viscous coefficients at reference material',parameters:{...rp},frequenciesHz:reference.modes.map(v=>v.hz)};}
  if(input.plateStiffnessScale!==undefined)plate.stiffnessScale=scale;
+ const attachment=[input.bodyBridgeMassG,input.bodyBridgeWidthMm,input.bodyBridgeLengthMm].some(v=>v!==undefined)?(root.StringPlateBridge||(typeof require!=='undefined'?require('./plate-bridge.js'):null)).attachment(plate,input):null;
+ if(attachment){plate.bridgeAttachment=attachment.metadata;plate.modes.forEach((m,j)=>m.bridge=attachment.port[j]);}
+ const bridgeAddedMass=attachment?.addedMass||null;
  const spec=P.model({...input,nonlinear:false,supportEnabled:true,supportSide:'bridge',releaseMs:0},sr,modeLimit),nb=plate.modes.length+1,n=spec.modes.length;
  const holeDamping=input.plateHoleDamping??.02;if(!(Number.isFinite(holeDamping)&&holeDamping>=0))throw Error('Hole damping must be finite and nonnegative');
  const rho=1.2,c=343,volume=plate.geometry?.cavityVolume??.012,radius=plate.geometry?.holeRadius??.04,wall=.003,holeArea=Math.PI*radius*radius,airMass=rho*holeArea*(wall+1.46*radius),compress=rho*c*c/volume;
@@ -47,19 +50,22 @@ function system(input,sr=48000,modeLimit=96){
  plate.modes.forEach((v,j)=>{mass[j]=v.mass;stiffness[j]=v.stiffness;damping[j]=v.damping;bridge[j]=v.bridge;area[j]=v.effectiveArea;});mass[nb-1]=airMass;damping[nb-1]=holeDamping;area[nb-1]=holeArea;
  const affineMass=spec.mu*spec.L/3,affineStiffness=spec.p.tension/spec.L,M=new Float64Array(nb*nb),K=new Float64Array(nb*nb);
  for(let i=0;i<nb;i++)for(let j=0;j<nb;j++){M[i*nb+j]=(i===j?mass[i]:0)+affineMass*bridge[i]*bridge[j];K[i*nb+j]=(i===j?stiffness[i]:0)+affineStiffness*bridge[i]*bridge[j]+compress*area[i]*area[j];}
+ if(bridgeAddedMass)for(let j=0;j<M.length;j++)M[j]+=bridgeAddedMass[j];
  const inverseK=inverse(K,nb),modalK=new Float64Array(n),modalC=new Float64Array(n),g=new Float64Array(n),q=new Float64Array(n),v=new Float64Array(n),load=new Float64Array(n),shape0=1-spec.p.position/1000/spec.L,unit=multiply(inverseK,bridge);
  let compliance=shape0*shape0*dot(bridge,unit),schurFactor=affineMass;
  for(let i=0;i<n;i++){const mode=spec.modes[i];modalK[i]=spec.mass*mode.w**2;modalC[i]=2*spec.mass*mode.sigma;g[i]=spec.mu/mode.k*(mode.n%2?1:-1);load[i]=Math.sin(mode.k*(spec.L-spec.p.position/1000));compliance+=load[i]**2/modalK[i];schurFactor-=g[i]**2/spec.mass;}
  const force=spec.p.excitation==='displacement'?spec.p.pullMm/1000/compliance:spec.p.force,z=Float64Array.from(unit,v=>v*force*shape0),velocity=new Float64Array(nb);
  for(let i=0;i<n;i++)q[i]=force*load[i]/modalK[i];
  const schurM=new Float64Array(nb*nb);for(let i=0;i<nb;i++)for(let j=0;j<nb;j++)schurM[i*nb+j]=(i===j?mass[i]:0)+schurFactor*bridge[i]*bridge[j];
+ if(bridgeAddedMass)for(let j=0;j<schurM.length;j++)schurM[j]+=bridgeAddedMass[j];
  const inverseSchurM=inverse(schurM,nb);
- const s={spec,plate,nb,n,mass,stiffness,damping,bridge,area,affineMass,affineStiffness,compress,M,K,inverseK,inverseSchurM,modalK,modalC,g,q,v,z,velocity,air:{rho,c,volume,radius,wall,holeArea,mass:airMass,damping:holeDamping}};
+ const s={spec,plate,bridgeAddedMass,nb,n,mass,stiffness,damping,bridge,area,affineMass,affineStiffness,compress,M,K,inverseK,inverseSchurM,modalK,modalC,g,q,v,z,velocity,air:{rho,c,volume,radius,wall,holeArea,mass:airMass,damping:holeDamping}};
  spec.p.force=force;spec.displacement=force*compliance;spec.energy=energy(s);spec.modes.forEach((mode,i)=>{mode.q=q[i];mode.releasedQ=q[i];mode.releasedV=0;});return s;
 }
 function energy(s){
  let E=.5*s.affineMass*dot(s.bridge,s.velocity)**2+.5*s.affineStiffness*dot(s.bridge,s.z)**2+.5*s.compress*dot(s.area,s.z)**2;
  for(let j=0;j<s.nb;j++)E+=.5*(s.mass[j]*s.velocity[j]**2+s.stiffness[j]*s.z[j]**2);
+ if(s.bridgeAddedMass)E+=.5*dot(s.velocity,multiply(s.bridgeAddedMass,s.velocity));
  let cross=0;for(let i=0;i<s.n;i++){E+=.5*(s.spec.mass*s.v[i]**2+s.modalK[i]*s.q[i]**2);cross+=s.g[i]*s.v[i];}return E+dot(s.bridge,s.velocity)*cross;
 }
 function stepper(s,sr,oversample=8){
@@ -72,6 +78,7 @@ function stepper(s,sr,oversample=8){
   for(let i=0;i<s.n;i++){r[i]=R[i]*s.v[i]+s.g[i]*bv-h*s.modalK[i]*s.q[i];stringR+=s.g[i]*(s.v[i]-r[i]/A[i]);}
   const bridgeR=(s.affineMass-h2*s.affineStiffness)*bv-h*s.affineStiffness*bz+stringR,airR=-h2*s.compress*areaV-h*s.compress*areaZ;
   for(let j=0;j<s.nb;j++)rhs[j]=(s.mass[j]-h*s.damping[j]/2-h2*s.stiffness[j])*s.velocity[j]-h*s.stiffness[j]*s.z[j]+s.bridge[j]*bridgeR+s.area[j]*airR;
+  if(s.bridgeAddedMass)for(let j=0;j<s.nb;j++)for(let k=0;k<s.nb;k++)rhs[j]+=s.bridgeAddedMass[j*s.nb+k]*s.velocity[k];
   multiply(inv,rhs,next);const nextBridge=dot(s.bridge,next);let power=0;
   for(let i=0;i<s.n;i++){const nv=(r[i]-s.g[i]*nextBridge)/A[i],mid=(s.v[i]+nv)/2;s.q[i]+=h*mid;s.v[i]=nv;power+=s.modalC[i]*mid*mid;}
   for(let j=0;j<s.nb;j++){const mid=(s.velocity[j]+next[j])/2;s.z[j]+=h*mid;s.velocity[j]=next[j];power+=s.damping[j]*mid*mid;}return h*power;
