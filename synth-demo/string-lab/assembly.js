@@ -5,7 +5,12 @@ const A=root.StringAssemblyModel||(typeof require!=='undefined'?require('./assem
 function dataset(input,sr){
  const s=P.model({...input,supportEnabled:true,supportSide:'bridge'},sr,96),d=D.cases[A.dataKey(input,s.modes.length)];
  if(!d)throw Error('この音・サンプルレートの組立比較には対応していません');
- for(const [k,v] of Object.entries(d.config))if(k!=='bodyView'&&input[k]!==v)throw Error('組立比較の固定条件が異なります：'+k);
+ // Physical values are computed by each browser's math library. Accept only
+ // negligible floating-point rounding; strings and switches stay exact.
+ for(const [k,v] of Object.entries(d.config)){
+  if(k==='bodyView')continue;const actual=input[k],same=typeof v==='number'?Number.isFinite(actual)&&Math.abs(actual-v)<=1e-12*Math.max(1,Math.abs(v)):actual===v;
+  if(!same)throw Error('組立比較の固定条件が異なります：'+k+(typeof v==='number'?'（現在 '+actual+' / 基準 '+v+'）':''));
+ }
  if(s.modes.length!==d.reference.stringModes||Math.abs(s.mass/d.reference.mass-1)>1e-12||s.modes.some((m,j)=>Math.abs(m.w/(2*Math.PI)/d.reference.modalHz[j]-1)>1e-12))throw Error('この条件の組立計算には対応していません');
  const live=A.signature(A.build(input,D.back,sr));if(live.some((v,j)=>Math.abs(v-d.reference.signature[j])>1e-9*Math.max(1,Math.abs(v))))throw Error('組立データと現在の物理モデルが一致しません');return d;
 }
