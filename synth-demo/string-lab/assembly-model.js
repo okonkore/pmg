@@ -16,7 +16,7 @@ function config(back=false,neck=false,sides=false,view='sum',voice='wound-e3'){
  if(voice!=='wound-e3'){for(const k of ['construction','coreDiameter','wireDiameter','diameter'])if(choice[k]!==undefined)c[k]=choice[k];c.compareHz=choice.hz;c.tension=P.tensionAtPitch(c,choice.hz,0);c.assemblyVoice=voice;c.guidedPreset='assembly-'+voice;}
  return c;
 }
-function dataKey(c,n){return (!c.assemblyVoice||c.assemblyVoice==='wound-e3')?key(c):c.assemblyVoice+'-'+key(c)+'-m'+n;}
+function dataKey(c,n){const base=(!c.assemblyVoice||c.assemblyVoice==='wound-e3')?key(c):c.assemblyVoice+'-'+key(c)+'-m'+n;return (c.plateWood?'wood-'+c.plateWood+'-':'')+base;}
 function key(c){return [+!!c.assemblyBack,+!!c.assemblyNeck,+!!c.assemblySides].join('');}
 function build(input,backData,sr=48000,limit=96){
  const base=Plate.system(input,sr,limit),b=base.nb,n=base.n,nb=b+(input.assemblyBack?9:0)+(input.assemblyNeck?2:0)+(input.assemblySides?1:0),N=nb+n;

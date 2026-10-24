@@ -37,7 +37,8 @@ function system(input,sr=48000,modeLimit=96){
  if(input.plateGeometry&&!['rectangle','classical'].includes(input.plateGeometry))throw Error('Unknown plate geometry');
  if(input.plateBracing!==undefined&&!['none','fan7'].includes(input.plateBracing))throw Error('Unknown bracing pattern');
  if(input.plateBracing==='fan7'&&input.plateGeometry!=='classical')throw Error('Fan bracing requires the classical plate');
- const factory=input.plateBracing==='fan7'?(root.StringClassicalBracing||(typeof require!=='undefined'?require('./classical-bracing.js'):null)).plateModes:input.plateGeometry==='classical'?(root.StringClassicalPlate||(typeof require!=='undefined'?require('./classical-plate.js'):null)).plateModes:plateModes;
+ if(input.plateWood&&(input.plateGeometry!=='classical'||input.plateBracing!=='fan7'))throw Error('Soundboard wood comparison requires the braced classical plate');
+ const factory=input.plateWood?((parameters,count)=>(root.StringWoodPlate||(typeof require!=='undefined'?require('./wood-plate.js'):null)).plateModes(input.plateWood,parameters,count)):input.plateBracing==='fan7'?(root.StringClassicalBracing||(typeof require!=='undefined'?require('./classical-bracing.js'):null)).plateModes:input.plateGeometry==='classical'?(root.StringClassicalPlate||(typeof require!=='undefined'?require('./classical-plate.js'):null)).plateModes:plateModes;
  const reference=factory(input.plateParameters,input.plateModes),rp=reference.parameters;
  const plate=scale===1?reference:factory({...rp,youngX:rp.youngX*scale,youngY:rp.youngY*scale,shear:rp.shear*scale},input.plateModes);
  if(input.plateFixDamping){for(let j=0;j<plate.modes.length;j++){plate.modes[j].damping=reference.modes[j].damping;plate.modes[j].effectiveLossAngle=plate.modes[j].damping/(plate.modes[j].mass*plate.modes[j].w);}plate.dampingReference={law:'fixed modal viscous coefficients at reference material',parameters:{...rp},frequenciesHz:reference.modes.map(v=>v.hz)};}
