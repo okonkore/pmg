@@ -16,7 +16,7 @@ for(const [group,key,title,min,max,step,unit] of controls){
  for(const id of [key,key+'Number'])$(id).addEventListener('input',e=>{const v=Number(e.target.value);if(e.target.value===''||!Number.isFinite(v)||v<min||v>max){message('入力範囲を確認してください',true);return;}state[key]=v;sync();update();});
 }
 function sync(){for(const [,key]of controls){$(key).value=state[key];$(key+'Number').value=state[key];}$('air').checked=state.air;$('nonlinear').checked=state.nonlinear;$('supportEnabled').checked=state.supportEnabled;$('supportSide').value=state.supportSide;$('supportConstruction').value=state.construction;$('nlConstruction').value=state.construction;$('construction').value=state.construction;$('compareHz').value=state.compareHz;}
-function message(text,error=false){$('status').textContent=text;$('status').className=error?'warning':'';for(const id of ['attackStatus','massStatus','massFineStatus','bothMassStatus','positionStatus','fretStatus','tensionStatus','diameterStatus','diameterForceStatus','densityStatus','youngStatus','materialLossStatus','bendingStatus','windingStatus','contactStatus','airStatus','airDiameterStatus','pitchLengthStatus','sameNoteStatus','dynamicStatus','sequenceStatus','sympatheticStatus','bodyStatus','radiationStatus','plateStatus','plateAttackStatus','plateStartupStatus','plateLossStatus','plateStiffnessStatus','plateBandStatus','plateEigenStatus','platePositionStatus','classicalStatus','classicalAttackStatus','bridgeAttachmentStatus','bracingStatus','assemblyStatus']){const near=$(id);if(near){near.textContent=text;near.className=error?'warning':'muted';}}}
+function message(text,error=false){$('status').textContent=text;$('status').className=error?'warning':'';for(const id of ['attackStatus','massStatus','massFineStatus','bothMassStatus','positionStatus','fretStatus','tensionStatus','diameterStatus','diameterForceStatus','densityStatus','youngStatus','materialLossStatus','bendingStatus','windingStatus','contactStatus','airStatus','airDiameterStatus','pitchLengthStatus','sameNoteStatus','dynamicStatus','sequenceStatus','sympatheticStatus','bodyStatus','radiationStatus','plateStatus','plateAttackStatus','plateStartupStatus','plateLossStatus','plateStiffnessStatus','plateBandStatus','plateEigenStatus','platePositionStatus','classicalStatus','classicalAttackStatus','bridgeAttachmentStatus','bracingStatus','assemblyStatus','backRadiationStatus']){const near=$(id);if(near){near.textContent=text;near.className=error?'warning':'muted';}}}
 function graph(id,draw){const c=$(id),g=c.getContext('2d');g.clearRect(0,0,c.width,c.height);g.font='12px system-ui';draw(g,c.width,c.height);}
 function update(){
  $('supportResult').textContent='動く支持を再生すると、実際に計算したモードの減衰を表示します。';graph('supportDecay',()=>{});updateSupportParameters();
@@ -57,7 +57,7 @@ $('saveA').onclick=()=>{snapshot={...state};$('playA').disabled=false;$('compari
 $('playA').onclick=()=>play(snapshot,'A');$('air').onchange=e=>{state.air=e.target.checked;update();};
 $('reset').onclick=()=>{state=initialState();sync();update();};
 $('tune').onclick=()=>{try{const t=P.tune(state,Number($('target').value));if(t<5||t>150)throw Error('計算した張力が操作範囲5〜150 Nを外れます');state.tension=t;sync();update();}catch(e){message(e.message,true);}};
-$('settings').onclick=()=>download(new Blob([JSON.stringify({version:'string-v2-listen-55',current:state,A:snapshot,lastRendered:lastAudio?{conditions:lastAudio.spec.p,sampleRate:lastAudio.sampleRate,peak:lastAudio.peak,tail:lastAudio.tail,nonlinear:lastAudio.nonlinear||null,support:lastAudio.support||null,diagnostic:lastAudio.diagnostic||null,polyphony:lastAudio.polyphony||null,body:lastAudio.body||null,sympathetic:lastAudio.sympathetic||null}:null,reference:{action12mmApprox:2,bridgeToPluckCmApprox:8},comparison:{targetHz:state.compareHz,matched:comparisonConfigs(),assumptions:sensitivityConfigs()},scope:'plain or homogenized wound string, optional Kirchhoff-Carrier tension OR one/two passive movable endpoints, bridge force monitor'},null,2)],{type:'application/json'}),'string-conditions.json');
+$('settings').onclick=()=>download(new Blob([JSON.stringify({version:'string-v2-listen-56',current:state,A:snapshot,lastRendered:lastAudio?{conditions:lastAudio.spec.p,sampleRate:lastAudio.sampleRate,peak:lastAudio.peak,tail:lastAudio.tail,nonlinear:lastAudio.nonlinear||null,support:lastAudio.support||null,diagnostic:lastAudio.diagnostic||null,polyphony:lastAudio.polyphony||null,body:lastAudio.body||null,sympathetic:lastAudio.sympathetic||null}:null,reference:{action12mmApprox:2,bridgeToPluckCmApprox:8},comparison:{targetHz:state.compareHz,matched:comparisonConfigs(),assumptions:sensitivityConfigs()},scope:'plain or homogenized wound string, optional Kirchhoff-Carrier tension OR one/two passive movable endpoints, bridge force monitor'},null,2)],{type:'application/json'}),'string-conditions.json');
 function waveBlob(sound){const {samples,sampleRate}=sound,b=new ArrayBuffer(44+2*samples.length),v=new DataView(b),str=(o,s)=>{for(let i=0;i<s.length;i++)v.setUint8(o+i,s.charCodeAt(i));};str(0,'RIFF');v.setUint32(4,b.byteLength-8,true);str(8,'WAVEfmt ');v.setUint32(16,16,true);v.setUint16(20,1,true);v.setUint16(22,1,true);v.setUint32(24,sampleRate,true);v.setUint32(28,sampleRate*2,true);v.setUint16(32,2,true);v.setUint16(34,16,true);str(36,'data');v.setUint32(40,samples.length*2,true);samples.forEach((x,i)=>v.setInt16(44+2*i,Math.round(Math.max(-1,Math.min(1,x))*32767),true));return new Blob([b],{type:'audio/wav'});}
 $('wav').onclick=()=>{if(lastAudio)download(waveBlob(lastAudio),'string-v2.wav');};
 $('attackAudio').onplay=()=>{stop(true);message('音声プレーヤーで再生中 · 同じ波形と音量');};
@@ -112,7 +112,7 @@ function renderNonlinear(config,sampleRate){
  if(config.sympatheticId&&config.sympatheticId!=='independent'&&sympatheticCache.has(sympatheticKey(config,sampleRate)))return Promise.resolve(StringSympathetic.select(sympatheticCache.get(sympatheticKey(config,sampleRate)),config));
  if(config.sequenceId&&sequenceVoiceCache.has(sampleRate))return Promise.resolve(StringPolyphony.mix(config,sequenceVoiceCache.get(sampleRate),sampleRate));
  const key=JSON.stringify({config,sampleRate});if(nonlinearCache.has(key))return Promise.resolve(nonlinearCache.get(key));
- return new Promise((resolve,reject)=>{const worker=new Worker('render-worker.js?v=55');renderJob={worker,reject};
+ return new Promise((resolve,reject)=>{const worker=new Worker('render-worker.js?v=56');renderJob={worker,reject};
   worker.onmessage=e=>{worker.terminate();renderJob=null;if(e.data.error)reject(new Error(e.data.error));else{if(config.bodyView){bodyCache.set(bodyKey(config,sampleRate),e.data.result);if(bodyCache.size>8)bodyCache.delete(bodyCache.keys().next().value);}if(e.data.result.sympathetic?.shared)sympatheticCache.set(sympatheticKey(config,sampleRate),e.data.result);if(e.data.result.stems)sequenceVoiceCache.set(sampleRate,e.data.result.stems);nonlinearCache.set(key,e.data.result);if(nonlinearCache.size>12)nonlinearCache.delete(nonlinearCache.keys().next().value);resolve(e.data.result);}};
   worker.onerror=()=>{worker.terminate();renderJob=null;reject(new Error('物理計算を起動できませんでした。ページを再読み込みしてください。'));};
   worker.postMessage({config,sampleRate});
@@ -267,10 +267,21 @@ for(const item of StringClassicalBracing.cases){const b=document.createElement('
 
 // Independent assembly switches; each playback uses the visible selections.
 function assemblySelection(){return ['Back','Neck','Sides'].map(k=>$('assembly'+k).checked);}
-function assemblyLabel(){const a=assemblySelection();return ['裏板','ネック','側板'].map((k,j)=>k+(a[j]?'あり':'なし')).join('・');}
-function playAssembly(view='sum'){const a=assemblySelection(),label=assemblyLabel();$('assemblyCurrent').textContent=label;$('guidedCurrent').textContent='組立比較 / '+label;play(StringAssembly.config(...a,view),'組立 / '+label+(view==='sum'?'':' / '+{top:'前板',back:'裏板',sides:'側板',hole:'穴'}[view]),true);}
+function assemblyVoice(){return $('assemblyVoice').value;}
+function assemblyLabel(){const a=assemblySelection();return StringAssembly.voices.find(v=>v.id===assemblyVoice()).label+' / '+['裏板','ネック','側板'].map((k,j)=>k+(a[j]?'あり':'なし')).join('・');}
+function playAssembly(view='sum'){const a=assemblySelection(),label=assemblyLabel();$('assemblyCurrent').textContent=label;$('guidedCurrent').textContent='組立比較 / '+label;play(StringAssembly.config(...a,view,assemblyVoice()),'組立 / '+label+(view==='sum'?'':' / '+{top:'前板',back:'裏板',sides:'側板',hole:'穴'}[view]),true);}
 $('assemblyPlay').onclick=()=>playAssembly();
 for(const k of ['Back','Neck','Sides'])$('assembly'+k).onchange=()=>{$('assemblyCurrent').textContent=assemblyLabel()+'（次の再生に適用）';};
 for(const [id,a] of [['Baseline',[false,false,false]],['All',[true,true,true]]])$('assembly'+id).onclick=()=>{['Back','Neck','Sides'].forEach((k,j)=>$('assembly'+k).checked=a[j]);playAssembly();};
 for(const view of ['top','back','sides','hole'])$('assemblyPart'+view).onclick=()=>playAssembly(view);
+for(const name of ['assemblyVoice','backRadiationVoice']){
+ for(const v of StringAssembly.voices){const option=document.createElement('option');option.value=v.id;option.textContent=v.label;$(name).append(option);}
+ $(name).value='wound-e3';$(name).onchange=()=>{for(const other of ['assemblyVoice','backRadiationVoice'])$(other).value=$(name).value;$('assemblyCurrent').textContent=assemblyLabel()+'（次の再生に適用）';};
+}
+for(const [id,back,view] of [['Fixed',false,'sum'],['Muted',true,'without-back'],['Full',true,'sum'],['Only',true,'back']])$('backRadiation'+id).onclick=()=>{
+ $('assemblyBack').checked=back;$('assemblyNeck').checked=true;$('assemblySides').checked=true;
+ const label={Fixed:'A：裏板は固定',Muted:'B：裏板は動く・裏板の放射音なし',Full:'C：裏板は動く・全体の音',Only:'裏板の放射音だけ'}[id];
+ $('assemblyCurrent').textContent=assemblyLabel()+' / '+label;$('guidedCurrent').textContent=label;
+ play(StringAssembly.config(back,true,true,view,assemblyVoice()),StringAssembly.voices.find(v=>v.id===assemblyVoice()).label+' / '+label,true);
+};
 $('assemblyCurrent').textContent=assemblyLabel();

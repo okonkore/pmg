@@ -3,7 +3,20 @@
    All added terms come from positive kinetic/strain/air-volume energies. */
 (function(root){'use strict';
 const Plate=root.StringPlate||(typeof require!=='undefined'?require('./plate.js'):null),B=root.StringClassicalBracing||(typeof require!=='undefined'?require('./classical-bracing.js'):null);
-function config(back=false,neck=false,sides=false,view='sum'){return {...B.config('fan7'),assembly:true,assemblyBack:!!back,assemblyNeck:!!neck,assemblySides:!!sides,bodyView:view};}
+const P=root.StringPhysics||(typeof require!=='undefined'?require('./physics.js'):null);
+const voices=Object.freeze([
+ {id:'wound-e2',label:'巻弦 E2 · 82.41 Hz',hz:82.406889,construction:'wound',coreDiameter:.75,wireDiameter:.16},
+ {id:'wound-e3',label:'巻弦 E3 · 164.81 Hz（これまでの音）',hz:164.813778},
+ {id:'plain-g3',label:'ナイロン単線 G3 · 196 Hz',hz:196,construction:'plain',diameter:1.02},
+ {id:'plain-e4',label:'ナイロン単線 E4 · 329.63 Hz',hz:329.627557,construction:'plain',diameter:.7}
+].map(Object.freeze));
+function config(back=false,neck=false,sides=false,view='sum',voice='wound-e3'){
+ const choice=voices.find(v=>v.id===voice);if(!choice)throw Error('Unknown assembly voice');
+ const c={...B.config('fan7'),assembly:true,assemblyBack:!!back,assemblyNeck:!!neck,assemblySides:!!sides,bodyView:view};
+ if(voice!=='wound-e3'){for(const k of ['construction','coreDiameter','wireDiameter','diameter'])if(choice[k]!==undefined)c[k]=choice[k];c.compareHz=choice.hz;c.tension=P.tensionAtPitch(c,choice.hz,0);c.assemblyVoice=voice;c.guidedPreset='assembly-'+voice;}
+ return c;
+}
+function dataKey(c,n){return (!c.assemblyVoice||c.assemblyVoice==='wound-e3')?key(c):c.assemblyVoice+'-'+key(c)+'-m'+n;}
 function key(c){return [+!!c.assemblyBack,+!!c.assemblyNeck,+!!c.assemblySides].join('');}
 function build(input,backData,sr=48000,limit=96){
  const base=Plate.system(input,sr,limit),b=base.nb,n=base.n,nb=b+(input.assemblyBack?9:0)+(input.assemblyNeck?2:0)+(input.assemblySides?1:0),N=nb+n;
@@ -47,5 +60,5 @@ function build(input,backData,sr=48000,limit=96){
  return {N,nb,n,M,K,C,load,ports,bridge,nut,area,compress,base,metadata,air:{...base.air,volume},scope:'linear transverse reduced assembly; no fitted spectral weights; compact co-located radiation, no radiation loading'};
 }
 function signature(s){return ['M','K','C','load'].flatMap(k=>{const a=s[k];let sum=0,square=0,weighted=0;for(let i=0;i<a.length;i++){sum+=a[i];square+=a[i]*a[i];weighted+=(1+i%97)*a[i];}return [sum,square,weighted];});}
-const api={config,key,build,signature};root.StringAssemblyModel=api;if(typeof module!=='undefined')module.exports=api;
+const api={config,key,dataKey,voices,build,signature};root.StringAssemblyModel=api;if(typeof module!=='undefined')module.exports=api;
 })(globalThis);
