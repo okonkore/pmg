@@ -1,0 +1,229 @@
+{
+  "scope": "Three plate materials, same geometry/string/wood braces/bridge.\nFront-only diagnostic, isotropic representative metals, common loss prescription.\n",
+  "sampleRate": 48000,
+  "durationSeconds": 8,
+  "commonGainFSPerPa": 5.190730181740091,
+  "thicknessMm": 2.5,
+  "forceN": 1.5457651114447049,
+  "pluckPositionFromBridgeMm": 80,
+  "stringHz": 329.627557,
+  "records": [
+    {
+      "material": {
+        "id": "wood",
+        "name": "木（現在の前板材）",
+        "density": 420.0,
+        "Ex": 10000000000.0,
+        "Ey": 800000000.0,
+        "G": 600000000.0,
+        "nu": 0.3
+      },
+      "frontMassKg": 0.13292496188634936,
+      "braceMassKg": 0.032927629029862876,
+      "bridgeMassKg": 0.02,
+      "frontModes": 83,
+      "initialEnergyJ": 0.0010329966228661825,
+      "peakPa": 0.1348557862750128,
+      "rmsFirst30msPa": 0.06083284339873106,
+      "firstFrontHz": [
+        201.55669795854757,
+        304.3278235580079,
+        371.597530844833,
+        485.55807657371145,
+        531.7442382871178,
+        572.4808493847096,
+        701.3878146527815,
+        745.1818105418946,
+        795.8295557564333,
+        833.8377451754114,
+        863.1098550309812,
+        887.7390303506465
+      ],
+      "highToFinalFirst12MaxRelative": 0.032394381190699706,
+      "frequencyResponseRelativeError": 4.871038924031476e-11,
+      "passivityError": 6.414421144016233e-13,
+      "maxPoleReal": -1.968002662229594,
+      "tailBoundPa": 5.043824252109928e-09,
+      "dominantComponents": [
+        {
+          "hz": 199.9518248040739,
+          "amplitudePa": 0.09087753325096648,
+          "T60S": 0.5923435102273712
+        },
+        {
+          "hz": 329.8294943020092,
+          "amplitudePa": 0.03469733838939133,
+          "T60S": 3.510033503286112
+        },
+        {
+          "hz": 659.321833253196,
+          "amplitudePa": 0.015465336216555152,
+          "T60S": 2.106092578702162
+        },
+        {
+          "hz": 988.9399007853079,
+          "amplitudePa": 0.01057112097065399,
+          "T60S": 1.5023987576739113
+        },
+        {
+          "hz": 887.4844213676079,
+          "amplitudePa": 0.004116478311804358,
+          "T60S": 0.14952193859263277
+        },
+        {
+          "hz": 485.4745711500551,
+          "amplitudePa": 0.001906932825773588,
+          "T60S": 0.30784619039261285
+        }
+      ]
+    },
+    {
+      "material": {
+        "id": "aluminium",
+        "name": "アルミ（代表値）",
+        "density": 2700.0,
+        "Ex": 70000000000.0,
+        "Ey": 70000000000.0,
+        "G": 26315789473.684208,
+        "nu": 0.33
+      },
+      "frontMassKg": 0.8545176121265315,
+      "braceMassKg": 0.032927629029862876,
+      "bridgeMassKg": 0.02,
+      "frontModes": 38,
+      "initialEnergyJ": 0.0010257402961792886,
+      "peakPa": 0.046289399923050284,
+      "rmsFirst30msPa": 0.019649999591834395,
+      "firstFrontHz": [
+        266.3868458059247,
+        428.6204955667473,
+        531.2953681686686,
+        551.5961267411578,
+        758.3803545927104,
+        791.4421357012786,
+        896.6527589697762,
+        925.0240732579636,
+        1073.5854780002194,
+        1257.169604207734,
+        1353.1291766009938,
+        1387.077924314881
+      ],
+      "highToFinalFirst12MaxRelative": 0.005068674667852102,
+      "frequencyResponseRelativeError": 6.21938085813717e-13,
+      "passivityError": 6.414421144016233e-13,
+      "maxPoleReal": -1.945353805759055,
+      "tailBoundPa": 2.3855927197838105e-09,
+      "dominantComponents": [
+        {
+          "hz": 265.890339586021,
+          "amplitudePa": 0.0289272484365328,
+          "T60S": 0.47322452225481565
+        },
+        {
+          "hz": 329.7422048963381,
+          "amplitudePa": 0.013691302378590346,
+          "T60S": 3.5508992032875013
+        },
+        {
+          "hz": 988.9035059280114,
+          "amplitudePa": 0.00369346974973416,
+          "T60S": 1.5163311009060392
+        },
+        {
+          "hz": 659.2694015078574,
+          "amplitudePa": 0.003618302508168745,
+          "T60S": 2.1140321336272705
+        },
+        {
+          "hz": 428.4542795521892,
+          "amplitudePa": 0.0006781919638507569,
+          "T60S": 0.30484554856547125
+        },
+        {
+          "hz": 896.5923049063175,
+          "amplitudePa": 0.00019027194438847069,
+          "T60S": 0.14191388214498327
+        }
+      ]
+    },
+    {
+      "material": {
+        "id": "steel",
+        "name": "鋼（代表値）",
+        "density": 7850.0,
+        "Ex": 210000000000.0,
+        "Ey": 210000000000.0,
+        "G": 80459770114.94254,
+        "nu": 0.305
+      },
+      "frontMassKg": 2.484430835256768,
+      "braceMassKg": 0.032927629029862876,
+      "bridgeMassKg": 0.02,
+      "frontModes": 39,
+      "initialEnergyJ": 0.001024914365001457,
+      "peakPa": 0.01744355314257212,
+      "rmsFirst30msPa": 0.00700096288825512,
+      "firstFrontHz": [
+        245.07528086630634,
+        372.5614134791814,
+        488.54015683928606,
+        520.1888338599706,
+        694.8696812970047,
+        732.6843702318598,
+        845.6059917308993,
+        848.7551180469001,
+        1009.0154207008073,
+        1153.5603806971114,
+        1264.608925293838,
+        1267.4413114054416
+      ],
+      "highToFinalFirst12MaxRelative": 0.002112406910723452,
+      "frequencyResponseRelativeError": 1.717227459127684e-10,
+      "passivityError": 6.414421144016233e-13,
+      "maxPoleReal": -1.9223694315039666,
+      "tailBoundPa": 9.75092118761692e-10,
+      "dominantComponents": [
+        {
+          "hz": 244.8930057286406,
+          "amplitudePa": 0.010093418325287666,
+          "T60S": 0.48980206849289215
+        },
+        {
+          "hz": 329.65736561148265,
+          "amplitudePa": 0.004656273803083723,
+          "T60S": 3.5933547245275594
+        },
+        {
+          "hz": 988.8742665736372,
+          "amplitudePa": 0.0032613644343230047,
+          "T60S": 1.4856633473460454
+        },
+        {
+          "hz": 659.2502347227944,
+          "amplitudePa": 0.0014660514943348752,
+          "T60S": 2.106082015983542
+        },
+        {
+          "hz": 694.8583636134334,
+          "amplitudePa": 0.00019306547384567764,
+          "T60S": 0.17377139282663248
+        },
+        {
+          "hz": 845.5589792701866,
+          "amplitudePa": 7.588215496087686e-05,
+          "T60S": 0.14068568709335852
+        }
+      ]
+    }
+  ],
+  "limits": [
+    "Front-only model with fixed rim/nut; no cavity, back, sides or neck.",
+    "Wooden braces and wooden bridge retained for every plate.",
+    "Same loss prescription .02 for plate/brace reference energies, no measured metal damping claim.",
+    "Equivalent-sphere monopole radiation and reaction; no output string/body blending.",
+    "Representative material values; no claim to a manufactured metal guitar.",
+    "High-to-final basis convergence checked; finite basis and 3500 Hz front cutoff remain approximations.",
+    "Common playback gain chosen once across the three conditions; no per-case normalization.",
+    "Eight second files share end-only 100ms fade; no attack fade or EQ."
+  ]
+}
