@@ -1,0 +1,51 @@
+{
+  "purpose": "Perceptual meaning of the unwanted attack, not calibrated physical A/B or a sound-fitting target",
+  "sampleRate": 48000,
+  "durationS": 2.0,
+  "sourcePage": "https://theremin.music.uiowa.edu/MISguitar.html",
+  "usagePage": "https://theremin.music.uiowa.edu/MIS.html",
+  "recording": {
+    "instrument": "Raimundo118",
+    "dynamic": "mf",
+    "note": "firstE4,about325Hz",
+    "environment": "anechoic",
+    "distanceM": 1.524,
+    "actualInputFormat": "24bit96kHz monoAIFF",
+    "sourceSha256": "3c04d367aa3cdf9fa4c9cd6ba3591704de6da5917a714057b307699d1ed6128b"
+  },
+  "model": {
+    "variant": "distributed interior medium96",
+    "note": "E4,about330Hz",
+    "distanceFromCenterM": 0.35
+  },
+  "processing": {
+    "gain": "separate constant whole-clip gain to same peak; internal balances unchanged",
+    "endFadeS": 0.03,
+    "startFade": false,
+    "eq": false
+  },
+  "variants": [
+    {
+      "key": "model",
+      "inputPeakFS": 0.699981689453125,
+      "wholeClipGain": 1.000026158608362,
+      "firstSampleOverPeak": 0.0,
+      "outputPeakFS": 0.7000030518509476,
+      "sha256": "4f7d10c14b362c05ef0d8d555ec4c2b2d2938dfc0a0c2c5b1eb923316599cf43"
+    },
+    {
+      "key": "recording",
+      "inputPeakFS": 0.08006157384312984,
+      "wholeClipGain": 8.743270540391302,
+      "firstSampleOverPeak": 0.0003123570154325626,
+      "outputPeakFS": 0.7000030518509476,
+      "sha256": "44a8a5469eabb836844a9890088ecc27e90e00b1d8a34f6b2a016dbfab0bf91f"
+    }
+  ],
+  "limits": [
+    "Different instrument, pitch, force, position, direction, support and microphone distance.",
+    "No absolute sound-pressure calibration for the reference.",
+    "Recording contains performance noises; low-frequency content is not automatically body noise.",
+    "The reference is not a calibrated target and no coefficients are fitted to it."
+  ]
+}
