@@ -1,0 +1,86 @@
+{
+  "sampleRate": 48000,
+  "durationS": 6.0,
+  "commonGainFSPerPa": 0.8967799933693436,
+  "variants": [
+    {
+      "key": "uniform",
+      "peakPa": 0.7433898174533519,
+      "first30msRmsPa": 0.2885270285934354,
+      "tailPeakPa": 6.654054490886745e-07
+    },
+    {
+      "key": "distributed",
+      "peakPa": 0.7805704912862628,
+      "first30msRmsPa": 0.30453973332130035,
+      "tailPeakPa": 1.6408485418145408e-06
+    }
+  ],
+  "physicalConditions": {
+    "string": "plain E4",
+    "forceN": 1.5457651114447049,
+    "scaleM": 0.65,
+    "positionFromBridgeM": 0.08,
+    "observerM": [
+      0,
+      0.175,
+      0.3031088913245535
+    ],
+    "release": "instantaneous"
+  },
+  "first30msClassification": [
+    {
+      "key": "uniform",
+      "startS": 0,
+      "endS": 0.03,
+      "periodicRmsPa": 0.13893773943068968,
+      "bodyRmsPa": 0.24698083702789042,
+      "bodyOverPeriodicDb": 4.996860593468461
+    },
+    {
+      "key": "distributed",
+      "startS": 0,
+      "endS": 0.03,
+      "periodicRmsPa": 0.20579597450864348,
+      "bodyRmsPa": 0.23824783786753884,
+      "bodyOverPeriodicDb": 1.2718418518658354
+    }
+  ],
+  "numericalChecks": {
+    "internalModes": 96,
+    "internalNodes": 33213,
+    "internalModal48To96WaveDifference": 0.0072143678379811265,
+    "internalSpatialWaveDifference": 0.03711487075730683,
+    "newEnergyIntegralRelativeError": 7.87148124459236e-14,
+    "passivityMaxError": 3.725290298461914e-09,
+    "internalFullOrderCheckCount": 8,
+    "internalFullOrderPressureErrorMax": 0.007645173311749687,
+    "combinedUnreducedAirCheckHz": [
+      223.0,
+      330.0,
+      659.0
+    ],
+    "combinedUnreducedPressureErrorMax": 0.001137303424127484
+  },
+  "wavChecks": [
+    {
+      "key": "uniform",
+      "maxQuantizationErrorFS": 1.5259166581792537e-05,
+      "sha256": "4565923cfc7d72955738a9f2df664a7a61b8d729f885bf525eea6f81e9337b01"
+    },
+    {
+      "key": "distributed",
+      "maxQuantizationErrorFS": 1.5259096618846388e-05,
+      "sha256": "924f45aade5fce8e02f770028a6d3d0efa3775a7f713e86193e7c7bac7e9d5e3"
+    }
+  ],
+  "scope": "Both use same curved exterior and full body/string; uniform versus distributed passive interior air, no extra string/direct sound, no arbitrary tone adjustment.",
+  "limits": [
+    "Internal P2 modal reduction includes physical static residual inertia; not all spatial air modes are explicit.",
+    "Internal mesh waveform difference about 3.7%; exterior higher-frequency error remains.",
+    "Lossless cavity interior; actual internal bracing surfaces and air/wall losses not modeled.",
+    "First30ms group ratio is not a psychoacoustic SNR or a perceptual guarantee.",
+    "No EQ, startup fade, individual normalization, fitted partial gains, or selective transient removal.",
+    "Common 4x oversampled antialias conversion; end-only100ms fade after small tail."
+  ]
+}
