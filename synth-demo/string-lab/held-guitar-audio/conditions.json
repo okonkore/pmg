@@ -1,0 +1,144 @@
+{
+  "purpose": "Test whether physically transferred energy into a player reduces objectionable body ringing while retaining C strings",
+  "sampleRate": 48000,
+  "durationS": 2,
+  "modelGain": 0.874009795621089,
+  "modelVariantsUseSameGain": true,
+  "baselineCRelativeWaveError": 4.461577948724281e-16,
+  "variants": [
+    {
+      "label": "free",
+      "peakFS": 0.7000030518509476,
+      "sha256": "8370b4fc6388429688cc66869a47e07e4c71afdc37d53f26510b637ddfcd18a0"
+    },
+    {
+      "label": "both-contact",
+      "peakFS": 0.620166631061739,
+      "sha256": "8f976c304c42e37d5564729de659237813d0d06aa05d09cb5a705224041d1d93"
+    }
+  ],
+  "timeSummaries": [
+    {
+      "label": "free",
+      "peakPa": 0.8009063554059663,
+      "timeBins": [
+        {
+          "startS": 0,
+          "endS": 0.003,
+          "bodyRmsPa": 0.34910020622594695,
+          "periodicRmsPa": 0.21371706166948576
+        },
+        {
+          "startS": 0.003,
+          "endS": 0.01,
+          "bodyRmsPa": 0.2920903334692547,
+          "periodicRmsPa": 0.2117440152654529
+        },
+        {
+          "startS": 0.01,
+          "endS": 0.03,
+          "bodyRmsPa": 0.1923253973282344,
+          "periodicRmsPa": 0.20918197702522456
+        },
+        {
+          "startS": 0.03,
+          "endS": 0.1,
+          "bodyRmsPa": 0.07893306856378472,
+          "periodicRmsPa": 0.19763157626577552
+        },
+        {
+          "startS": 0.1,
+          "endS": 0.2,
+          "bodyRmsPa": 0.031095661029076505,
+          "periodicRmsPa": 0.17996514994947746
+        }
+      ]
+    },
+    {
+      "label": "both-contact",
+      "peakPa": 0.7095674929129939,
+      "timeBins": [
+        {
+          "startS": 0,
+          "endS": 0.003,
+          "bodyRmsPa": 0.33834430487088424,
+          "periodicRmsPa": 0.21082047109732072
+        },
+        {
+          "startS": 0.003,
+          "endS": 0.01,
+          "bodyRmsPa": 0.2726414494379813,
+          "periodicRmsPa": 0.20899416884919733
+        },
+        {
+          "startS": 0.01,
+          "endS": 0.03,
+          "bodyRmsPa": 0.08878010780184056,
+          "periodicRmsPa": 0.20613593457267818
+        },
+        {
+          "startS": 0.03,
+          "endS": 0.1,
+          "bodyRmsPa": 0.02051306187462647,
+          "periodicRmsPa": 0.19399269212335818
+        },
+        {
+          "startS": 0.1,
+          "endS": 0.2,
+          "bodyRmsPa": 0.004960011283940351,
+          "periodicRmsPa": 0.17565966041113495
+        }
+      ]
+    }
+  ],
+  "contacts": [
+    {
+      "name": "back",
+      "centerM": [
+        0.325,
+        0.0
+      ],
+      "radiusM": 0.04,
+      "referenceMassKg": 5.0,
+      "stiffnessNPerM": 8438.350326747453,
+      "dampingNsPerM": 49.73438022489031,
+      "localStaticStiffnessNPerM": 33753.401306989814,
+      "localEffectiveMassKg": 0.018320439426661086,
+      "freeContactFrequencyHz": 6.538285872821559
+    },
+    {
+      "name": "forearm",
+      "centerM": [
+        0.4,
+        0.125
+      ],
+      "radiusM": 0.025,
+      "referenceMassKg": 0.5,
+      "stiffnessNPerM": 18509.680850189554,
+      "dampingNsPerM": 30.307220825908164,
+      "localStaticStiffnessNPerM": 74038.72340075822,
+      "localEffectiveMassKg": 0.0031015109121295134,
+      "freeContactFrequencyHz": 30.6220735139141
+    }
+  ],
+  "processing": {
+    "eq": false,
+    "startFade": false,
+    "endFadeS": 0.03,
+    "perModelNormalization": false,
+    "recording": "Existing separate whole-clip normalized Iowa mf E4 reference; not absolute pressure calibrated"
+  },
+  "limits": [
+    "Diagnostic linear maintained contact, not measured human tissue or an identified playing posture.",
+    "Positive contact spring and damping selected from local mechanical scales, not fitted to the recording decay or desired frequency.",
+    "Finite contact masses0.5/5kg are transparent test assumptions; no contact resonance is tuned to224Hz.",
+    "External source geometry and player acoustic shadowing absent; only mechanical contact is tested.",
+    "Gravity/prestress/unilateral contact/sliding friction absent.",
+    "Existing fixed common rim assumption retained; this does not validate the full instrument support geometry.",
+    "C adopts zero unidentified additional string residual loss as a listening-supported research baseline, not a measured nylon material law.",
+    "Contact coefficients and positions are representative diagnostic assumptions fixed before the recording analysis; not identified tissue or playing posture.",
+    "Same initial pluck force, not matched total received sound energy.",
+    "Active string instantaneous release retained; no softened onset.",
+    "No acoustic scattering/shadow from player; only mechanical contact."
+  ]
+}
