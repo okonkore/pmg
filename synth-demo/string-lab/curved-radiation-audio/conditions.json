@@ -1,0 +1,46 @@
+{
+  "sampleRate": 48000,
+  "durationS": 6.0,
+  "distanceFromCenterM": 0.35,
+  "observerM": [
+    0,
+    0.175,
+    0.3031088913245535
+  ],
+  "string": "plain E4",
+  "forceN": 1.5457651114447049,
+  "positionFromBridgeMm": 80,
+  "commonGainFSPerPa": 0.9416324834768474,
+  "initialEnergyJ": 0.0010351147784943798,
+  "variants": [
+    {
+      "key": "sphere",
+      "peakPa": 0.5113172039035924,
+      "rmsFirst30msPa": 0.21632014166381766,
+      "tailPeakPa": 9.291945869229359e-07
+    },
+    {
+      "key": "curved",
+      "peakPa": 0.7433898174533519,
+      "rmsFirst30msPa": 0.2885270285934354,
+      "tailPeakPa": 6.654054490886745e-07
+    }
+  ],
+  "numericalChecks": {
+    "rom120To160ContinuousWaveRelativeDifference": 0.021620341332269904,
+    "maxFiveFrequencyFullOrderRelativeError": 0.015001521421370118,
+    "preArrivalRmsRatio": 0.006493027876025884,
+    "independentBasisSizes": [
+      118,
+      156
+    ]
+  },
+  "scope": "Current full string/body, old equivalent sphere versus curved P2 actual-shape exterior with reciprocal reaction. Same observer and readout; old external hole-end proxy removed only where external air explicitly resolved.",
+  "limits": [
+    "Spatial acoustic error remains about 7% at 659Hz on this coarse model; broad-band spatial convergence is unverified.",
+    "Only E4 and this observer; this is not a validated real guitar.",
+    "Old sphere readout is recomputed at this distance; not the old public one-metre file.",
+    "Common physical near-field output, 4x oversampling and same antialias resampling; no startup fade, EQ or per-case normalization.",
+    "End-only 100ms fade after tail below -60dB of peak."
+  ]
+}
