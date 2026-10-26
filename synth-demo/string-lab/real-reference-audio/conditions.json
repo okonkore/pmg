@@ -47,5 +47,19 @@
     "No absolute sound-pressure calibration for the reference.",
     "Recording contains performance noises; low-frequency content is not automatically body noise.",
     "The reference is not a calibrated target and no coefficients are fitted to it."
-  ]
+  ],
+  "lossDiagnostic": {
+    "key": "loss-test",
+    "sameAs": "model35cm",
+    "removed": "Only unidentified additional inverse-Q=.001 string loss; retain air and bending loss",
+    "wholeClipGain": 0.874009795621089,
+    "outputPeakFS": 0.7000030518509476,
+    "firstSampleOverPeak": 1.2225905005212387e-08,
+    "notDefault": true,
+    "limits": [
+      "Zero additional residual is a limiting diagnostic, not measured material physics.",
+      "Body attack is essentially unchanged; not a knock solution.",
+      "No recording-derived loss coefficients."
+    ]
+  }
 }
