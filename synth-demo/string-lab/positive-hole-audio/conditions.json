@@ -1,0 +1,35 @@
+{
+  "commonGain": 0.874009795621089,
+  "peakCorrectedFS": 0.5952403457483243,
+  "initialConditions": "Same1.545765N force,80mm position,650mm string,instantaneous release,C loss and finite-mass player contact",
+  "massBudget": {
+    "inheritedEndCorrectionRadii": 1.46,
+    "subtractedEndCorrectionRadii": 1.7,
+    "previousBareHoleMassKg": -5.10162566674405e-05,
+    "positiveBoreMassKg": 2.0911697339355094e-05,
+    "viscousTailMassKg": 8.284840585937696e-09,
+    "newBareHoleMassKg": 2.091998217994103e-05,
+    "massCorrectionKg": 7.193623884738153e-05,
+    "minBareMassEigenvalue": 2.091998217950574e-05,
+    "limits": [
+      "Air plug remains uniform through wall thickness; bore shape/edge thickness simplified.",
+      "Resolved inner/outer acoustic geometry and viscosity law unchanged.",
+      "Corrects an inconsistent negative bare inertia; does not establish full real-guitar accuracy or eliminate attack by itself."
+    ]
+  },
+  "processing": {
+    "eq": false,
+    "onsetFade": false,
+    "endFadeS": 0.03,
+    "separateModelGain": false
+  },
+  "files": {
+    "previous": "8f976c304c42e37d5564729de659237813d0d06aa05d09cb5a705224041d1d93",
+    "corrected": "2228837498d14b6963806fe175cf844acd3dd5c7199d93793a31987d16b41047"
+  },
+  "limits": [
+    "Fixes negative bare bore inertia; does not establish that the remaining attack will sound natural.",
+    "Same coarse acoustic meshes, structural and holding assumptions retained.",
+    "Old comparison audio is historical and retained only to assess the correction."
+  ]
+}
