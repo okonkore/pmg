@@ -1,0 +1,86 @@
+{
+  "scope": "Width/length integration controls, baseline reproduction and common-gain audio.",
+  "sameGain": 0.874009795621089,
+  "baselineReproductionRelativeError": 0.0,
+  "integrationControls": [
+    {
+      "control": "a64-q8",
+      "relativeTwoSecondWaveDifference": 0.00015026603277573203
+    },
+    {
+      "control": "a64-q16",
+      "relativeTwoSecondWaveDifference": 5.223279151468126e-05
+    }
+  ],
+  "independentProjectedFieldChecks": [
+    {
+      "field": "u",
+      "relativeError": 6.085795609968061e-16
+    },
+    {
+      "field": "v",
+      "relativeError": 7.932248288541164e-16
+    },
+    {
+      "field": "w",
+      "relativeError": 9.193337153703696e-15
+    },
+    {
+      "field": "wx",
+      "relativeError": 3.249830925749407e-11
+    },
+    {
+      "field": "wy",
+      "relativeError": 1.4910363212598726e-11
+    },
+    {
+      "field": "strain",
+      "relativeError": 9.669959168031909e-12
+    },
+    {
+      "field": "curvature",
+      "relativeError": 1.809809547023208e-07
+    }
+  ],
+  "relativeTwoSecondWaveChange": 0.3926946881780092,
+  "diagnosticFirst30msBodyOverStringChangeDb": 1.7522104063238648,
+  "oldFirst30ms": {
+    "startS": 0,
+    "endS": 0.03,
+    "periodicRmsPa": 0.20221909006489736,
+    "bodyRmsPa": 0.18245850178313414,
+    "bodyOverPeriodicDb": -0.8931609481973946
+  },
+  "newFirst30ms": {
+    "startS": 0,
+    "endS": 0.03,
+    "periodicRmsPa": 0.17339741245518103,
+    "bodyRmsPa": 0.19142342623520495,
+    "bodyOverPeriodicDb": 0.8590494581264703
+  },
+  "files": {
+    "centerline": {
+      "sha256": "2228837498d14b6963806fe175cf844acd3dd5c7199d93793a31987d16b41047",
+      "peakFS": 0.5952403457483243,
+      "rmsFirst30msFS": 0.2303445020091097
+    },
+    "finite-width": {
+      "sha256": "8e5f94cdc85791acd94b945818ea935b28c606e4612f6c3d00675c0d600feeec",
+      "peakFS": 0.6747524774009698,
+      "rmsFirst30msFS": 0.2244880697382002
+    }
+  },
+  "processing": {
+    "eq": false,
+    "onsetFade": false,
+    "individualGain": false,
+    "endFadeSeconds": 0.03
+  },
+  "limits": [
+    "The modal kinetic grouping is a diagnostic, not independent perceptual sound energies; interference remains.",
+    "Finite-width front braces only, inherited damping operator held fixed. Same force, string, air, body contact and pressure output.",
+    "Shared-shell model with preload and free rigid recoil is separate research and is not used in these audio files.",
+    "Numerical quadrature convergence in the retained old Ritz basis is not full spatial or real-guitar validation.",
+    "No predicted knock improvement: the diagnostic body/string ratio rises. Hearing comparison checks naturalness, not proof of a fix."
+  ]
+}
