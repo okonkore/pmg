@@ -1,0 +1,219 @@
+{
+  "independentRepresentationWaveRelativeDifference": 0.001501265850486642,
+  "independentRepresentationFirst30msRelativeDifference": 0.0015520779908266568,
+  "earlyBefore065msEnergyFraction": 2.4112492879343347e-09,
+  "gridComplete": true,
+  "frequencySamples": 129,
+  "maximumFrequencySpacingHz": 250.0,
+  "inverseLaplaceAlpha": 3.0,
+  "fftSamples": 262144,
+  "sampleRate": 48000,
+  "acceptedWaveReconstructionRelativeError": 0.0002671456749826978,
+  "commonGain": 0.874009795621089,
+  "previousPlaybackGain": 0.874009795621089,
+  "newPeakPa": 0.7234462679996387,
+  "oldPeakPa": 0.6808386991395329,
+  "waveRelativeDifference": 0.09490792368773096,
+  "radiationSpectrumEnergyFractionAbove8kHz": 7.505321842089953e-07,
+  "windows": [
+    {
+      "startS": 0,
+      "endS": 0.02,
+      "newRmsPa": 0.2942476903753812,
+      "oldRmsPa": 0.2864988861426015,
+      "periodicRmsPa": 0.20851915839750237,
+      "bodyRmsPa": 0.21670329338811656,
+      "bodyOverPeriodicDb": 0.3343909646820188
+    },
+    {
+      "startS": 0,
+      "endS": 0.03,
+      "newRmsPa": 0.2715900586742438,
+      "oldRmsPa": 0.2635158663756162,
+      "periodicRmsPa": 0.2070526219821139,
+      "bodyRmsPa": 0.18153311044143808,
+      "bodyOverPeriodicDb": -1.142497709129401
+    },
+    {
+      "startS": 0.03,
+      "endS": 0.1,
+      "newRmsPa": 0.19980530834266202,
+      "oldRmsPa": 0.19085211527205034,
+      "periodicRmsPa": 0.19815371476580107,
+      "bodyRmsPa": 0.02181410427426116,
+      "bodyOverPeriodicDb": -19.16529667257005
+    },
+    {
+      "startS": 0.1,
+      "endS": 0.2,
+      "newRmsPa": 0.17911209174425227,
+      "oldRmsPa": 0.17135400259811298,
+      "periodicRmsPa": 0.17907440905448874,
+      "bodyRmsPa": 0.005426456749645227,
+      "bodyOverPeriodicDb": -30.370343614961712
+    },
+    {
+      "startS": 0.2,
+      "endS": 1.0,
+      "newRmsPa": 0.11263992383833606,
+      "oldRmsPa": 0.10843214108751342,
+      "periodicRmsPa": 0.11263865465311149,
+      "bodyRmsPa": 0.00048005981789647713,
+      "bodyOverPeriodicDb": -47.40784197202235
+    }
+  ],
+  "files": {
+    "previous": "2228837498d14b6963806fe175cf844acd3dd5c7199d93793a31987d16b41047",
+    "radiation": "3fd1623ca6c10f39d876be124c33703a0ad5ede59c92a2c177319231a0d19a97"
+  },
+  "previousAudioByteIdenticalToAccepted": true,
+  "processing": {
+    "frozenPhysicalMotion": true,
+    "updatedBodyReaction": false,
+    "eq": false,
+    "onsetFade": false,
+    "separateGain": false,
+    "endFadeS": 0.03
+  },
+  "limits": [
+    "One-way radiation diagnostic; same accepted physical body/string motion, not an updated coupled guitar.",
+    "Radiation field discretization and frequency interpolation require separate checks.",
+    "Body/periodic modal grouping is an inherited diagnostic, not a measured SNR."
+  ],
+  "validation": {
+    "gridPoints": 129,
+    "maximumSpacingHz": 250.0,
+    "heldOutPoints": 14,
+    "heldOutPressureRelativeL2Error": 0.0001108728332595382,
+    "heldOut": [
+      {
+        "hz": 125.0,
+        "pressureComplexRelativeError": 3.8998548936349835e-05,
+        "absoluteErrorPaS": 2.4928568279012338e-08,
+        "truthAmplitudePaS": 0.0006392178416612028
+      },
+      {
+        "hz": 223.0,
+        "pressureComplexRelativeError": 3.65755039638086e-05,
+        "absoluteErrorPaS": 9.225498262037039e-08,
+        "truthAmplitudePaS": 0.002522316102921139
+      },
+      {
+        "hz": 291.0,
+        "pressureComplexRelativeError": 1.4551543233077872e-05,
+        "absoluteErrorPaS": 1.7206950364911287e-08,
+        "truthAmplitudePaS": 0.0011824828534885063
+      },
+      {
+        "hz": 325.0,
+        "pressureComplexRelativeError": 5.653859899096269e-05,
+        "absoluteErrorPaS": 2.3656502682704063e-07,
+        "truthAmplitudePaS": 0.004184133159451898
+      },
+      {
+        "hz": 330,
+        "pressureComplexRelativeError": 5.1686915953141194e-05,
+        "absoluteErrorPaS": 1.4508140568832636e-06,
+        "truthAmplitudePaS": 0.02806927111299417
+      },
+      {
+        "hz": 375.0,
+        "pressureComplexRelativeError": 6.325362325559225e-05,
+        "absoluteErrorPaS": 6.567424302221598e-10,
+        "truthAmplitudePaS": 1.0382684760498638e-05
+      },
+      {
+        "hz": 625.0,
+        "pressureComplexRelativeError": 1.0824647120035282e-05,
+        "absoluteErrorPaS": 3.1115825397920396e-09,
+        "truthAmplitudePaS": 0.00028745348511480137
+      },
+      {
+        "hz": 659.0,
+        "pressureComplexRelativeError": 1.6664156505479338e-06,
+        "absoluteErrorPaS": 2.2069984143392232e-08,
+        "truthAmplitudePaS": 0.013243985158285933
+      },
+      {
+        "hz": 990.0,
+        "pressureComplexRelativeError": 5.843770180919518e-07,
+        "absoluteErrorPaS": 4.110451562212689e-09,
+        "truthAmplitudePaS": 0.007033903515976238
+      },
+      {
+        "hz": 1320.0,
+        "pressureComplexRelativeError": 2.0758257345768202e-07,
+        "absoluteErrorPaS": 8.420660914170582e-10,
+        "truthAmplitudePaS": 0.004056535562647905
+      },
+      {
+        "hz": 1875.0,
+        "pressureComplexRelativeError": 3.0148797610635058e-05,
+        "absoluteErrorPaS": 3.823892030309351e-11,
+        "truthAmplitudePaS": 1.2683398123182413e-06
+      },
+      {
+        "hz": 3625.0,
+        "pressureComplexRelativeError": 0.02600276518233162,
+        "absoluteErrorPaS": 3.2859835735817363e-06,
+        "truthAmplitudePaS": 0.00012637054369181086
+      },
+      {
+        "hz": 6125.0,
+        "pressureComplexRelativeError": 0.00799358325028702,
+        "absoluteErrorPaS": 1.6159415901980136e-08,
+        "truthAmplitudePaS": 2.0215484590593225e-06
+      },
+      {
+        "hz": 10125.0,
+        "pressureComplexRelativeError": 0.1936325787869711,
+        "absoluteErrorPaS": 9.259733661125376e-09,
+        "truthAmplitudePaS": 4.782115550561698e-08
+      }
+    ],
+    "meshChecks": [
+      {
+        "hz": 330.0,
+        "pressureComplexRelativeDifference": 0.0011239002171303798,
+        "absoluteDifferencePaS": 3.158145975489271e-05,
+        "fineAmplitudePaS": 0.028099878684540773
+      },
+      {
+        "hz": 1000.0,
+        "pressureComplexRelativeDifference": 0.008023494978323381,
+        "absoluteDifferencePaS": 6.295300595970666e-06,
+        "fineAmplitudePaS": 0.000784608280179438
+      },
+      {
+        "hz": 2000.0,
+        "pressureComplexRelativeDifference": 0.006405686895781045,
+        "absoluteDifferencePaS": 1.6141434651142552e-06,
+        "fineAmplitudePaS": 0.0002519860073362894
+      },
+      {
+        "hz": 4000.0,
+        "pressureComplexRelativeDifference": 0.03120384261606894,
+        "absoluteDifferencePaS": 3.0887681759988773e-07,
+        "fineAmplitudePaS": 9.8986788710704e-06
+      },
+      {
+        "hz": 8000.0,
+        "pressureComplexRelativeDifference": 0.6364617556010509,
+        "absoluteDifferencePaS": 1.9776139284187207e-07,
+        "fineAmplitudePaS": 3.1071999393759887e-07
+      }
+    ],
+    "limits": [
+      "Pressure errors weighted by the accepted motion at independent test frequencies, not arbitrary-field uniform guarantees.",
+      "Waveform and causality checks remain separate."
+    ]
+  },
+  "sourceHashes": {
+    "symmetric-pressure-bem.py": "8f328d1fc9027fc7b038ed1ec18722283cdc6a25369c27a9167c92e97f5c7529",
+    "quality-acoustic-surface.py": "7be4b9119f2096bf17f5bc4f291b025743de3e597b1777f46217b7eb45cf4211",
+    "linear-pressure-bem.py": "232db7572c024f4ed8f8e712268dcec32554115832d67015f593182b527cb82b",
+    "sample-symmetric-radiation-readout.py": "150d0edfcd89ad6065e99fd38d1b66dca60cadf6a56e8cec07b096d788ecf5c2",
+    "render-symmetric-radiation-comparison.py": "38201eb7056e80991482369d3fbec457dfb28d4b812ae29df0690a404f2b06ae"
+  },
+  "acceptedStateSha256": "81426c7b73f926f52ef2c06f269642455c8e377c88d7987c550827da09351a0b"
+}
