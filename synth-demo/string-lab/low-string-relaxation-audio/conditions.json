@@ -1,0 +1,136 @@
+{
+  "scope": "Transfer E2-C's unchanged 1000Hz bending relaxation to F#2 and A2.\nSame material parameters/force/gain. Each section supplies its own EI limits.\nNo note-by-note fitting, no update to production application samples.\n",
+  "gain": 0.4286610858558977,
+  "signature": "53b246355f20310816382c80f03e8bd07542309aad01b88f5e389327c29bb347",
+  "rows": [
+    {
+      "midi": 42,
+      "string": 6,
+      "fret": 2,
+      "baselineFile": "42-a.wav",
+      "candidateFile": "42-c.wav",
+      "physics": {
+        "mu": 0.0053832863594252016,
+        "ei": 1.548006937407884e-08,
+        "tension": 61.78189499999999,
+        "outerDiameterM": 0.00107,
+        "estimatedCoreDiameterMm": 0.4395280271787974,
+        "estimatedWireDiameterMm": 0.3152359864106013,
+        "nominalTensionN": 61.78189499999999,
+        "tensionKgf": 6.3,
+        "speakingLengthM": 0.5790841672317125,
+        "fret": 2,
+        "string": 6,
+        "targetHz": 92.4986056779086,
+        "fixedEndHz": 92.4986056779086,
+        "tuningOffsetSemitones": 0,
+        "lowTension": false,
+        "pluckForceN": 1.5457651114447049,
+        "pullMm": 1.7272239200665582,
+        "forceLimited": false,
+        "totalMeanTensionN": 364.80738,
+        "bodyPreload": "standard tuning",
+        "relaxationCornerHz": 999.9999999999999,
+        "slipEI": 1.548006937407884e-08,
+        "bondedReferenceEI": 2.3815491344736677e-06,
+        "deltaEI": 2.366069065099589e-06,
+        "relaxationStates": 122,
+        "frequencyChecks": [
+          {
+            "hz": 98.0,
+            "stateVsSchurRelativeError": 4.0827390262687875e-12
+          },
+          {
+            "hz": 223.0,
+            "stateVsSchurRelativeError": 3.126343463095045e-12
+          },
+          {
+            "hz": 659.0,
+            "stateVsSchurRelativeError": 8.063361792786674e-13
+          },
+          {
+            "hz": 1500.0,
+            "stateVsSchurRelativeError": 8.176791581591622e-11
+          }
+        ],
+        "states": 3687,
+        "initialEnergyJ": 0.0013349412376458217,
+        "maxPoleReal": -0.007521507078727141,
+        "initialReconstructionRelativeError": 3.4187674344024294e-15,
+        "modalDerivativeRelativeError": 9.978302171093756e-13,
+        "seconds": 19.080058097839355
+      },
+      "render96To192kRelativeError": 3.115746123885829e-05,
+      "baselineSHA256": "e815ede7f274cc992bbc0a858d60c94dd5c29cb2bf9f5e3929785b08fc9b99fd",
+      "candidateSHA256": "092ef64ff7326fdb4d6ae15dba7b1b5591f4f2ebc365babf71ddafd945a5bc3c"
+    },
+    {
+      "midi": 45,
+      "string": 5,
+      "fret": 0,
+      "baselineFile": "45-a.wav",
+      "candidateFile": "45-c.wav",
+      "physics": {
+        "mu": 0.0030212673172557913,
+        "ei": 1.5862584187811448e-08,
+        "tension": 61.78189499999999,
+        "outerDiameterM": 0.00085,
+        "estimatedCoreDiameterMm": 0.44221842462127725,
+        "estimatedWireDiameterMm": 0.20389078768936136,
+        "nominalTensionN": 61.78189499999999,
+        "tensionKgf": 6.3,
+        "speakingLengthM": 0.6499999999999287,
+        "fret": 0,
+        "string": 5,
+        "targetHz": 110.0,
+        "fixedEndHz": 109.99999999999999,
+        "tuningOffsetSemitones": 0,
+        "lowTension": false,
+        "pluckForceN": 1.5457651114447049,
+        "pullMm": 1.7555651954215685,
+        "forceLimited": false,
+        "totalMeanTensionN": 364.80738,
+        "bodyPreload": "standard tuning",
+        "relaxationCornerHz": 999.9999999999999,
+        "slipEI": 1.5862584187811448e-08,
+        "bondedReferenceEI": 2.440397567355608e-06,
+        "deltaEI": 2.4245349831677966e-06,
+        "relaxationStates": 122,
+        "frequencyChecks": [
+          {
+            "hz": 98.0,
+            "stateVsSchurRelativeError": 2.611324531816947e-12
+          },
+          {
+            "hz": 223.0,
+            "stateVsSchurRelativeError": 2.0624169865845787e-12
+          },
+          {
+            "hz": 659.0,
+            "stateVsSchurRelativeError": 1.9815899332697733e-11
+          },
+          {
+            "hz": 1500.0,
+            "stateVsSchurRelativeError": 2.4671680588521297e-11
+          }
+        ],
+        "states": 3687,
+        "initialEnergyJ": 0.0013568457149746329,
+        "maxPoleReal": -0.007521507079852638,
+        "initialReconstructionRelativeError": 2.3984460935606303e-15,
+        "modalDerivativeRelativeError": 1.1259837564067277e-12,
+        "seconds": 19.47514843940735
+      },
+      "render96To192kRelativeError": 1.9942819654643708e-05,
+      "baselineSHA256": "9c2d91a28e67aa5ef301a06f76cf2746255c18c81fd89b7354b8c292f0eb3921",
+      "candidateSHA256": "1c7f6418a6120f539cc4ac2f1e5a809183b5475ce5663c54ba1e483ddb30a26c"
+    }
+  ],
+  "limits": [
+    "E2-C 1000Hz relaxation corner is a tentative listening choice, not a measured material property.",
+    "Same relaxation time across strings is a transfer hypothesis. Core EI scales from each estimated geometry.",
+    "Fretted length changes but nut-body endpoint location/contact loss remains inherited, not actual fret/finger mechanics.",
+    "Other body, air, radiation accuracy limits remain. Long-held initial displacement, zero branch stress.",
+    "No EQ, note-specific gain, added envelope, tuning to recordings or changes to the original application."
+  ]
+}
