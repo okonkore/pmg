@@ -1,0 +1,8 @@
+<!doctype html><html lang="ja"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>E2の減衰比較</title><style>body{max-width:680px;margin:30px auto;padding:20px;font:18px sans-serif;background:#faf8f1;color:#243e33}button{padding:18px;margin:8px;font:inherit}p{line-height:1.7}</style><h1>E2の減衰比較</h1><p>同じ弦・同じ弾く力・同じ再生ゲインです。押した後は3秒間、音量の落ち方を聴いてください。</p><button data-file="a">A：現在のE2</button><button data-file="b">B：弦の抵抗を追加・弱</button><button data-file="c">C：弦の抵抗を追加・強</button><p id="status" role="status">ボタンを押すと再生します。</p><p>B/Cは、未測定の損失を等価な抵抗として弦の振動方程式に追加した仮説です。巻線摩擦を正確に再現したと認定したものではありません。音声へのEQ・個別音量合わせはありません。元のアプリ音源は変更していません。</p><p>A/B/Cのうち、実機のE2に近い音量の落ち方はどれでしょうか。B/Cでもまだ伸びすぎる、または短すぎる、という感想でも大丈夫です。</p><a href="e2-decay-audio/conditions.json">計算条件</a><script type="module">
+let ctx,source;const cache=new Map(),status=document.querySelector('#status');
+for(const button of document.querySelectorAll('button'))button.onclick=async()=>{
+try{ctx??=new AudioContext();await ctx.resume();source?.stop();source=null;status.textContent='読み込み中…';
+const key=button.dataset.file;if(!cache.has(key)){const response=await fetch(`e2-decay-audio/${key}.wav`);if(!response.ok)throw Error(`HTTP ${response.status}`);cache.set(key,await ctx.decodeAudioData(await response.arrayBuffer()));}
+source=ctx.createBufferSource();source.buffer=cache.get(key);source.connect(ctx.destination);source.start();status.textContent=button.textContent+'：再生中';
+}catch(e){status.textContent=e.message;}};
+</script></html>
