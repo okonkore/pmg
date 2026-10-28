@@ -1,0 +1,85 @@
+{
+  "scope": "Equal-area solid circular core stiffness reference, not actual packed bonded core or calibrated Savarez model.",
+  "gain": 0.4286610858558977,
+  "render96To192kRelativeError": 3.5760120045811e-05,
+  "physics": {
+    "mu": 0.0053832863594252016,
+    "ei": 1.548006937407884e-06,
+    "tension": 61.78189499999999,
+    "outerDiameterM": 0.00107,
+    "estimatedCoreDiameterMm": 0.4395280271787974,
+    "estimatedWireDiameterMm": 0.3152359864106013,
+    "nominalTensionN": 61.78189499999999,
+    "tensionKgf": 6.3,
+    "speakingLengthM": 0.6500001883228187,
+    "fret": 0,
+    "string": 6,
+    "targetHz": 82.4068892282175,
+    "fixedEndHz": 82.4068892282175,
+    "tuningOffsetSemitones": 0,
+    "lowTension": false,
+    "pluckForceN": 1.5457651114447049,
+    "pullMm": 1.7555060595130527,
+    "forceLimited": false,
+    "totalMeanTensionN": 364.80738,
+    "bodyPreload": "standard tuning",
+    "frequencyChecks": [
+      {
+        "hz": 98.0,
+        "stateVsSchurRelativeError": 2.417399104812129e-12
+      },
+      {
+        "hz": 223.0,
+        "stateVsSchurRelativeError": 8.986450321010525e-13
+      },
+      {
+        "hz": 659.0,
+        "stateVsSchurRelativeError": 1.051899667584344e-10
+      }
+    ],
+    "states": 3565,
+    "initialEnergyJ": 0.0013568000098625242,
+    "maxPoleReal": -0.007521507076647617,
+    "initialReconstructionRelativeError": 1.795417393734478e-15,
+    "modalDerivativeRelativeError": 7.785831874700872e-13,
+    "seconds": 17.24571132659912
+  },
+  "changes": [
+    "Same inferred linear mass and tension. Solid circle with the same nylon area has 100 times the sliding-filament EI. Actual bundle packing is not retained by this stiffness reference.",
+    "Existing bending-loss law uses the same unchanged loss angle .02 and new EI.",
+    "Speaking length is solved to preserve target E2 as in the production generator."
+  ],
+  "limits": [
+    "Reference stiffness only. A uniformly filled bonded bundle would instead have 100/coreFill times the sliding EI; no actual bonding or copper bending law has been identified.",
+    "Copper winding bending participation remains zero. No inter-filament friction constitutive law added.",
+    "No spectrum fitting, equalization, sample normalization, or added frequency-independent resistance.",
+    "Inherited acoustic accuracy limitations remain."
+  ],
+  "measuredWaveformRelativeDifference": 0.16464432239893834,
+  "rmsWindows": [
+    {
+      "startS": 0.15,
+      "endS": 0.35,
+      "aDbFS": -20.501869517969364,
+      "bDbFS": -20.5036442865201
+    },
+    {
+      "startS": 0.65,
+      "endS": 0.85,
+      "aDbFS": -22.394528861891345,
+      "bDbFS": -22.401363857620776
+    },
+    {
+      "startS": 1.15,
+      "endS": 1.35,
+      "aDbFS": -24.10632413487341,
+      "bDbFS": -24.118960570784132
+    },
+    {
+      "startS": 2.15,
+      "endS": 2.35,
+      "aDbFS": -27.432237237934206,
+      "bDbFS": -27.455106931700648
+    }
+  ]
+}
