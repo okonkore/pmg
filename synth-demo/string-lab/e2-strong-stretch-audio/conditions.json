@@ -1,0 +1,125 @@
+{
+  "scope": "Validate strong-pluck stretching at two timesteps, without changing playback gain.",
+  "gain": 0.4286610858558977,
+  "basePreparation": {
+    "scope": "Reuse the full coupled C+axial tangent; solve new nonlinear equilibria at 2x/3x force.\nNo change of stiffness, loss, gain, release shape, or pitch-control curve.\n",
+    "baseModelSHA256": "8178f6e156e4bda785029d6f07f7a8ee9f0d1d1368f59b5c4741edadc04dcc3b",
+    "portComplianceRelativeAsymmetry": 7.969460005967737e-15,
+    "rows": [
+      {
+        "forceScale": 2,
+        "forceN": 3.0915302228894097,
+        "pullMm": 3.5097134644793337,
+        "initialDeltaT_N": 0.02562409227799767,
+        "initialAddedLengthM": 8.444140778222644e-05,
+        "initialEnergyJ": 0.005424085256424358,
+        "staticPortRelativeResidual": 7.797818333930423e-17,
+        "modalStaticRelativeResidual": 7.346028637158631e-14
+      },
+      {
+        "forceScale": 3,
+        "forceN": 4.637295334334114,
+        "pullMm": 5.261865113676358,
+        "initialDeltaT_N": 0.058043039610390486,
+        "initialAddedLengthM": 0.00019127452100496024,
+        "initialEnergyJ": 0.01219477332698042,
+        "staticPortRelativeResidual": 1.2631737112411871e-17,
+        "modalStaticRelativeResidual": 4.0592504364391675e-14
+      }
+    ],
+    "limits": [
+      "No fret collisions or buzz model. At the larger displacement a real guitar may contact frets.",
+      "Quasistatic uniform tension with core-only EA; winding axial stiffness and travelling longitudinal waves remain absent.",
+      "Same fully relaxed initial Maxwell branch assumption as E2-C."
+    ]
+  },
+  "rows": [
+    {
+      "forceScale": 2,
+      "forceN": 3.0915302228894097,
+      "pullMm": 3.5097134644793337,
+      "initialDeltaT_N": 0.02562409227799767,
+      "initialAddedLengthM": 8.444140778222644e-05,
+      "initialEnergyJ": 0.005424085256424358,
+      "staticPortRelativeResidual": 7.797818333930423e-17,
+      "modalStaticRelativeResidual": 7.346028637158631e-14,
+      "energyChecks": [
+        {
+          "fs": 48000,
+          "initialEnergyRelativeError": 4.440892098500626e-16,
+          "maximumEnergyGrowthRelative": 0.0,
+          "maximumSampledEnergyIncreaseRelative": -0.0008630218361368753,
+          "finalEnergyJ": 0.00031693522171345956,
+          "sampledDeltaT_min_N": 0.00029964033528302606,
+          "sampledDeltaT_max_N": 0.025624092277997678
+        },
+        {
+          "fs": 96000,
+          "initialEnergyRelativeError": 4.440892098500626e-16,
+          "maximumEnergyGrowthRelative": 0.0,
+          "maximumSampledEnergyIncreaseRelative": -0.0008636263284071184,
+          "finalEnergyJ": 0.00031693198148095283,
+          "sampledDeltaT_min_N": 0.0002996403501446825,
+          "sampledDeltaT_max_N": 0.025624092277997678
+        }
+      ],
+      "nonlinearCorrection48To96kRelativeError": 0.00022432469831575746,
+      "nonlinearVsLinearRelativeWaveformChange": 0.11013282589696469,
+      "peakFS": {
+        "off": 0.5253903006889391,
+        "on": 0.5254602418867323
+      }
+    },
+    {
+      "forceScale": 3,
+      "forceN": 4.637295334334114,
+      "pullMm": 5.261865113676358,
+      "initialDeltaT_N": 0.058043039610390486,
+      "initialAddedLengthM": 0.00019127452100496024,
+      "initialEnergyJ": 0.01219477332698042,
+      "staticPortRelativeResidual": 1.2631737112411871e-17,
+      "modalStaticRelativeResidual": 4.0592504364391675e-14,
+      "energyChecks": [
+        {
+          "fs": 48000,
+          "initialEnergyRelativeError": 8.881784197001252e-16,
+          "maximumEnergyGrowthRelative": 0.0,
+          "maximumSampledEnergyIncreaseRelative": -0.0008636825955308427,
+          "finalEnergyJ": 0.0007128965816069191,
+          "sampledDeltaT_min_N": 0.0006586626596228998,
+          "sampledDeltaT_max_N": 0.05804303961039049
+        },
+        {
+          "fs": 96000,
+          "initialEnergyRelativeError": 8.881784197001252e-16,
+          "maximumEnergyGrowthRelative": 0.0,
+          "maximumSampledEnergyIncreaseRelative": -0.0008642226171142736,
+          "finalEnergyJ": 0.000712890193288117,
+          "sampledDeltaT_min_N": 0.000658662868052842,
+          "sampledDeltaT_max_N": 0.05804303961039049
+        }
+      ],
+      "nonlinearCorrection48To96kRelativeError": 0.0002173421982570129,
+      "nonlinearVsLinearRelativeWaveformChange": 0.2455870148657314,
+      "peakFS": {
+        "off": 0.7880854510334083,
+        "on": 0.7884970494599568
+      }
+    }
+  ],
+  "files": {
+    "1x-on.wav": "24efcf751a55c04cdc4cb43435c83c1331b8cb522ce30d2fbfcf039bec0613dc",
+    "3x-off.wav": "970ddf6c2e4ffe17b586fa5c973af6f100291fba77e34fe7e3c2a592961226e6",
+    "2x-off.wav": "25272eea7eb1ed63f0c5bcf359e0d576faae2d1663da9b3189eefa771ec612c4",
+    "1x-off.wav": "f1e91b004d266855279bf81fbf938075178f8bbd71b4d60fb84af27e0c3b29e8",
+    "3x-on.wav": "cc29ccafa36f428b21d78df6c56fb7495c51d246435b616af06e8925cc2a8443",
+    "2x-on.wav": "d6260c3dc7c678fb8738afa56436fab583abd1f8af5c02872bf9c48d7f5d1d36"
+  },
+  "limits": [
+    "Same total force within each on/off pair; force changes across rows. Playback gain is unchanged across all six files.",
+    "Nonlinear static equilibrium is solved at the same applied force as its linear comparison; initial displacement is not artificially held equal.",
+    "No fret collisions or buzz. Larger displacements can exceed the clearance of an actual instrument.",
+    "Core-only axial stiffness and quasistatic uniform tension, not travelling longitudinal waves or measured winding rigidity.",
+    "Other C relaxation/body/acoustic limitations remain. No EQ, pitch envelope, artificial detuning or application sample update."
+  ]
+}
