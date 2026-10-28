@@ -1,0 +1,7 @@
+const fs=require('node:fs'),path=require('node:path');
+(async()=>{const root=path.join(process.cwd(),'synth-demo/instruments/physical-guitar'),key=process.argv[2]||'e2',out=path.join(process.cwd(),'experiments/string-v2/results/browser-physical-guitar');fs.mkdirSync(out,{recursive:true});const {PhysicalGuitarEngine:E}=await import('data:text/javascript;base64,'+Buffer.from(fs.readFileSync(root+'/engine.js')).toString('base64'));const raw=fs.readFileSync(root+'/'+key+'.bin'),bytes=raw.buffer.slice(raw.byteOffset,raw.byteOffset+raw.byteLength),kernel=fs.readFileSync(root+'/kernel.wasm');
+ const exact=await E.create(bytes,kernel,48000,{reference:true}),x=new Float32Array(960);exact.render(x);fs.writeFileSync(path.join(out,key+'-reference.f32'),Buffer.from(x.buffer));
+ const e=await E.create(bytes,kernel,48000,{block:4,sparseTolerance:.03,linearAfter:12}),wave=new Float32Array(50*48000),snapshots=[];const start=performance.now();snapshots.push(...e.z.data);
+ for(let k=0;k<100;k++){e.render(wave.subarray(k*24000,(k+1)*24000));snapshots.push(...e.z.data);}
+ fs.writeFileSync(path.join(out,key+'-browser.f32'),Buffer.from(wave.buffer));fs.writeFileSync(path.join(out,key+'-states.f64'),Buffer.from(new Float64Array(snapshots).buffer));console.log(JSON.stringify({key,wallMs:performance.now()-start,finite:wave.every(Number.isFinite),modes:e.n,nonlinearPorts:e.d,nonzeroComplexQ:e.qs.nonzeros,nonzeroRealB:e.bs.nonzeros}));
+})().catch(e=>{console.error(String(e));process.exitCode=1;});

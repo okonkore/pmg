@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="ja"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>物理ギター・ブラウザ計算</title>
+<style>
+:root{font:17px/1.65 system-ui,sans-serif;color:#243e33;background:#faf8f1}body{max-width:760px;padding:24px;margin:auto}h1{font-size:1.65rem}button,select,input{font:inherit}button{cursor:pointer;min-height:54px;padding:12px 18px;border:1px solid #9aada1;border-radius:12px;background:#fff;color:inherit}button:disabled{opacity:.5;cursor:wait}.notes{display:grid;gap:12px;margin:22px 0}.notes button{text-align:left}.notes small{display:block;color:#64786c}.panel{padding:20px;background:#eff1e9;border-radius:16px}label{display:block;margin:14px 0}input[type=range]{width:100%}select{max-width:100%;padding:8px}#status{min-height:3em}progress{width:100%;height:18px}dialog{max-width:min(440px,80vw);border:1px solid #c2cbbf;border-radius:18px;padding:26px}dialog::backdrop{background:#203c326b}details{margin:24px 0}a{color:#286451}.badge{display:inline-block;background:#dce9db;border-radius:8px;padding:4px 12px}
+</style>
+<h1>物理ギター・ブラウザ計算</h1>
+<p>弦・ボディ・空気の振動を、この端末で計算して鳴らします。音声ファイルの読み込みや移調は使いません。</p>
+<div class="panel"><label>再生方法 <select id="mode"><option value="auto">自動（端末の速度を確認）</option><option value="realtime">リアルタイム計算（単音）</option><option value="buffered">ブラウザで計算してから再生</option></select></label><label>最初の引く量 <output id="scaleOut">1.00 倍</output><input id="scale" type="range" min=".5" max="2" step=".1" value="1"></label><small>リアルタイムで音が途切れる場合は「自動」または「計算してから再生」を選んでください。</small><br><small>倍率は弦と支持部の初期変位に掛けます。力を指定する設定とは異なります。</small></div>
+<div class="notes"><button data-model="e2">6弦・開放 E2 <small>約82.41 Hz</small></button><button data-model="sixth-fret10">6弦・10フレット相当 D3 <small>目標146.83 Hz</small></button><button data-model="fourth-open">4弦・開放 D3 <small>目標146.83 Hz</small></button></div>
+<button id="stop">停止・計算を中止</button> <span id="route" class="badge">未起動</span>
+<p id="status" role="status" aria-live="polite">音のボタンを押してください。初回はモデルの読み込みと処理速度の確認を行います。</p><progress id="timeline" value="0" max="50" aria-label="再生位置"></progress><p id="clock">0:00 / 0:50</p>
+<p>自然な減衰を50秒まで再生します。同じ条件をもう一度聴くときは、端末内で計算済みの結果を再利用します。</p>
+<details><summary>この移植の範囲</summary><p>現在のC緩和＋張力変化モデルを移植しています。全モードと線形のボディ・空気結合は残し、微小な非線形結合を数値許容値で疎化しています。倍精度WASMを使用し、元の計算との波形差を検算しています。後半は12秒の状態から線形自由減衰へ継続します。音量の個別補正・EQ・音色用の減衰追加はありません。</p><p>速い端末ではAudioWorkletが発音中に計算します。処理速度に余裕がない場合は、Workerで計算してから再生します。計算中も画面操作と中止ができます。サーバーでの計算は不要です。</p><p>今回はE2と2種類のD3に対応する単音版です。楽器の行列組み立てと固有モードの準備は従来のPythonで行い、ブラウザはその係数から振動を時間積分します。任意音高の行列生成、全鍵盤・和音への統合は含みません。押弦は弦長を短くする近似で、指の損失は未実装です。</p><a href="README.md">組み込み方法・検算条件</a> · <a href="validation.json">数値検証結果</a></details>
+<dialog id="busy" aria-labelledby="busyTitle"><h2 id="busyTitle">音を準備しています</h2><p id="busyText">モデルを読み込み中…</p><progress id="calculation" max="1"></progress><p id="elapsed">経過 0秒</p><button id="cancel">中止</button></dialog>
+<script type="module">
+import {loadPhysicalGuitar} from './instrument.js';
+const $=id=>document.getElementById(id);let context,instrument,activeMode,serial=0,started=0,calculatingSince=0,playing=false;
+function closeBusy(){if($('busy').open)$('busy').close();}
+function waiting(text,fraction){if(!$('busy').open){calculatingSince=performance.now();$('busy').showModal();}$('busyText').textContent=text;if(fraction===undefined)$('calculation').removeAttribute('value');else $('calculation').value=fraction;}
+function status(data){switch(data.type){
+ case 'loading':waiting(data.label+' のモデルを読み込み中…');break;
+ case 'benchmark':waiting('この端末の計算速度を確認中…');break;
+ case 'ready':$('route').textContent=data.model.realtime?'リアルタイム計算':'ブラウザ内で事前計算';closeBusy();break;
+ case 'calculating':waiting('弦とボディの振動を計算中…');break;
+ case 'progress':waiting('音を計算中… '+Math.floor(data.fraction*100)+'%',data.fraction);break;
+ case 'playing':closeBusy();playing=true;started=context.currentTime;$('status').textContent=data.realtime?'発音中に物理計算しています。':'この端末で計算した音を再生しています。';break;
+ case 'ended':playing=false;$('status').textContent='再生が終了しました。';break;
+ case 'error':playing=false;closeBusy();$('status').textContent='再生できませんでした：'+data.message;break;
+}}
+function stop(){serial++;instrument?.stop();playing=false;closeBusy();$('timeline').value=0;$('clock').textContent='0:00 / 0:50';$('status').textContent='停止しました。';}
+$('stop').onclick=stop;$('cancel').onclick=stop;$('busy').addEventListener('cancel',e=>{e.preventDefault();stop();});$('mode').onchange=()=>{stop();instrument?.dispose();instrument=null;};$('scale').oninput=()=>{$('scaleOut').textContent=Number($('scale').value).toFixed(2)+' 倍';};
+for(const button of document.querySelectorAll('[data-model]'))button.onclick=async()=>{const token=++serial;try{instrument?.stop();playing=false;context??=new AudioContext({latencyHint:'interactive',sampleRate:48000});await context.resume();if(token!==serial)return;
+ if(!instrument){activeMode=$('mode').value;waiting('計算エンジンを読み込み中…');const created=await loadPhysicalGuitar(context,{onStatus:status,mode:activeMode});if(token!==serial){created.dispose();return;}instrument=created;}
+ if(instrument.model?.id!==button.dataset.model)await instrument.prepare(button.dataset.model);if(token!==serial)return;
+ await instrument.play({scale:+$('scale').value});
+ }catch(e){if(token===serial&&e.name!=='AbortError')status({type:'error',message:e.message});}};
+setInterval(()=>{if($('busy').open)$('elapsed').textContent='経過 '+Math.floor((performance.now()-calculatingSince)/1000)+'秒';if(playing){const t=Math.min(50,context.currentTime-started);$('timeline').value=t;$('clock').textContent=`${Math.floor(t/60)}:${String(Math.floor(t%60)).padStart(2,'0')} / 0:50`;}},100);
+window.addEventListener('pagehide',()=>instrument?.dispose());
+</script></html>

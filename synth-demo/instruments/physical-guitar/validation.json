@@ -1,0 +1,44 @@
+{
+  "method": "All exported modes and linear couplings retained; Float64 SIMD; exponential midpoint each four output samples; paired Q/B sparsity tolerance 0.03; nonlinear force disabled after 12 s; same common gain.",
+  "sampleRate": 48000,
+  "seconds": 50,
+  "scope": "These three standard initial states. No generic accuracy bound for arbitrary models, rates or strong displacement.",
+  "rows": [
+    {
+      "id": "e2",
+      "modes": 1948,
+      "nonlinearPorts": 125,
+      "reference20msRelativeWaveError": 3.521438499826757e-08,
+      "first15sRelativeWaveError": 0.00028912531377558125,
+      "nonlinearCorrectionRelativeError": 0.010868802386154595,
+      "maximumSampledEnergyGrowth": 0.0,
+      "maximumSampledEnergyIncrease": -1.4463221300885697e-09,
+      "terminalModalPressureBoundDbFS": -121.25192668960368,
+      "last2sPeakDbFS": -119.8240271427055
+    },
+    {
+      "id": "sixth-fret10",
+      "modes": 1948,
+      "nonlinearPorts": 125,
+      "reference20msRelativeWaveError": 3.658958024242078e-08,
+      "first15sRelativeWaveError": 0.0005104688126150799,
+      "nonlinearCorrectionRelativeError": 0.012390552378125485,
+      "maximumSampledEnergyGrowth": 0.0,
+      "maximumSampledEnergyIncrease": -6.278730813342289e-12,
+      "terminalModalPressureBoundDbFS": -134.06968060618183,
+      "last2sPeakDbFS": -130.59886022544651
+    },
+    {
+      "id": "fourth-open",
+      "modes": 1948,
+      "nonlinearPorts": 125,
+      "reference20msRelativeWaveError": 3.4514461945505734e-08,
+      "first15sRelativeWaveError": 0.000733972642852215,
+      "nonlinearCorrectionRelativeError": 0.022460936087536937,
+      "maximumSampledEnergyGrowth": 0.0,
+      "maximumSampledEnergyIncrease": -1.622148463196456e-14,
+      "terminalModalPressureBoundDbFS": -158.2080342437602,
+      "last2sPeakDbFS": -153.08275610860915
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "version": 1,
+  "models": [
+    {
+      "id": "e2",
+      "label": "6弦・開放 E2",
+      "midi": 40,
+      "file": "e2.bin",
+      "bytes": 8042688,
+      "sha256": "5464af6391fa8a582d9e72d60a21192db5e3a553007d80d1a2bfa3727e651f3a"
+    },
+    {
+      "id": "sixth-fret10",
+      "label": "6弦・10フレット相当 D3",
+      "midi": 50,
+      "file": "sixth-fret10.bin",
+      "bytes": 8042688,
+      "sha256": "aeede91ace0fea4cd0bd0ac7d5a5d9bde6da57d5ae6cf0663d649e168a4f2b21"
+    },
+    {
+      "id": "fourth-open",
+      "label": "4弦・開放 D3",
+      "midi": 50,
+      "file": "fourth-open.bin",
+      "bytes": 8042688,
+      "sha256": "5b4ba11e2e0f9231a42e30378b36dc860d7549b014f3377bf392636c8fde938a"
+    }
+  ],
+  "gain": 0.4286610858558977,
+  "source": "Full coupled C relaxation + geometric stretching; all modes and ports retained. No WAV inputs.",
+  "limits": [
+    "Model assembly and eigenbasis are prepared offline; browser integrates all exported states.",
+    "Fret contact, winding axial rigidity and high-frequency acoustic limitations remain."
+  ]
+}
