@@ -1,0 +1,156 @@
+{
+  "scope": "Passive core-bundle bending relaxation hypothesis, not identified 520R physics.\nA Maxwell branch interpolates free-slip EI0 and uniformly-filled bonded EIinf.\nBoth storage stiffness and dissipation follow the same internal state.\nRelaxation frequencies 200/1000Hz are unmeasured exploratory values, not a fit.\n",
+  "gain": 0.4286610858558977,
+  "rows": [
+    {
+      "file": "b.wav",
+      "physics": {
+        "mu": 0.0053832863594252016,
+        "ei": 1.548006937407884e-08,
+        "tension": 61.78189499999999,
+        "outerDiameterM": 0.00107,
+        "estimatedCoreDiameterMm": 0.4395280271787974,
+        "estimatedWireDiameterMm": 0.3152359864106013,
+        "nominalTensionN": 61.78189499999999,
+        "tensionKgf": 6.3,
+        "speakingLengthM": 0.65,
+        "fret": 0,
+        "string": 6,
+        "targetHz": 82.4068892282175,
+        "fixedEndHz": 82.4068892282175,
+        "tuningOffsetSemitones": 0,
+        "lowTension": false,
+        "pluckForceN": 1.5457651114447049,
+        "pullMm": 1.7555652102110515,
+        "forceLimited": false,
+        "totalMeanTensionN": 364.80738,
+        "bodyPreload": "standard tuning",
+        "relaxationCornerHz": 200.0,
+        "slipEI": 1.548006937407884e-08,
+        "bondedReferenceEI": 2.3815491344736677e-06,
+        "deltaEI": 2.366069065099589e-06,
+        "relaxationStates": 122,
+        "frequencyChecks": [
+          {
+            "hz": 98.0,
+            "stateVsSchurRelativeError": 7.293920369330407e-12
+          },
+          {
+            "hz": 223.0,
+            "stateVsSchurRelativeError": 2.1858682817459728e-13
+          },
+          {
+            "hz": 659.0,
+            "stateVsSchurRelativeError": 6.279179486501297e-11
+          },
+          {
+            "hz": 1500.0,
+            "stateVsSchurRelativeError": 3.05286361723648e-11
+          }
+        ],
+        "states": 3687,
+        "initialEnergyJ": 0.0013568457264051662,
+        "maxPoleReal": -0.0075215070760715555,
+        "initialReconstructionRelativeError": 1.9804495460284566e-15,
+        "modalDerivativeRelativeError": 1.017106822607764e-12,
+        "seconds": 19.20471954345703
+      },
+      "render96To192kRelativeError": 3.13995413782106e-05,
+      "peakFS": 0.2630928419365618,
+      "sha256": "a0500eb1dbee026b2c780d825da452b88f86f40684096bbfed59cc184dd02010"
+    },
+    {
+      "file": "c.wav",
+      "physics": {
+        "mu": 0.0053832863594252016,
+        "ei": 1.548006937407884e-08,
+        "tension": 61.78189499999999,
+        "outerDiameterM": 0.00107,
+        "estimatedCoreDiameterMm": 0.4395280271787974,
+        "estimatedWireDiameterMm": 0.3152359864106013,
+        "nominalTensionN": 61.78189499999999,
+        "tensionKgf": 6.3,
+        "speakingLengthM": 0.65,
+        "fret": 0,
+        "string": 6,
+        "targetHz": 82.4068892282175,
+        "fixedEndHz": 82.4068892282175,
+        "tuningOffsetSemitones": 0,
+        "lowTension": false,
+        "pluckForceN": 1.5457651114447049,
+        "pullMm": 1.7555652102110515,
+        "forceLimited": false,
+        "totalMeanTensionN": 364.80738,
+        "bodyPreload": "standard tuning",
+        "relaxationCornerHz": 999.9999999999999,
+        "slipEI": 1.548006937407884e-08,
+        "bondedReferenceEI": 2.3815491344736677e-06,
+        "deltaEI": 2.366069065099589e-06,
+        "relaxationStates": 122,
+        "frequencyChecks": [
+          {
+            "hz": 98.0,
+            "stateVsSchurRelativeError": 3.992057680384652e-12
+          },
+          {
+            "hz": 223.0,
+            "stateVsSchurRelativeError": 1.3907911726952152e-12
+          },
+          {
+            "hz": 659.0,
+            "stateVsSchurRelativeError": 4.67207045075466e-12
+          },
+          {
+            "hz": 1500.0,
+            "stateVsSchurRelativeError": 5.953288937116556e-11
+          }
+        ],
+        "states": 3687,
+        "initialEnergyJ": 0.0013568457264051662,
+        "maxPoleReal": -0.007521507071232458,
+        "initialReconstructionRelativeError": 1.8607636727063163e-15,
+        "modalDerivativeRelativeError": 1.2305706395912952e-12,
+        "seconds": 18.884111881256104
+      },
+      "render96To192kRelativeError": 2.5856319759595373e-05,
+      "peakFS": 0.2627006530383663,
+      "sha256": "597ff31b050f288c8fbe3a4412b0e7e8862f7762ae84ce852fbc8543b13ab93c"
+    }
+  ],
+  "limits": [
+    "Homogenized bending relaxation is a hypothesis for bundle slip, not a derived contact-friction law or actual nylon relaxation measurement.",
+    "Upper EI uses uniform filling; packing, winding pressure, axial coupling and multiple relaxation times are not identified.",
+    "Initial pluck is held long enough for branch to relax: zero internal branch stress at release.",
+    "No frequency-independent damping, per-harmonic tuning, EQ, sample gain normalization or onset fade.",
+    "Original body/air/acoustic reduction limits persist. Existing application samples unchanged."
+  ],
+  "spectralAudit": [
+    {
+      "file": "a",
+      "highLowRatioDb": [
+        -15.03740472768265,
+        -14.562726720303836,
+        -13.914908737128751
+      ],
+      "change03to23S": 1.1224959905538991
+    },
+    {
+      "file": "b",
+      "highLowRatioDb": [
+        -15.559039461340223,
+        -16.188925536225195,
+        -16.962482934602665
+      ],
+      "change03to23S": -1.403443473262442
+    },
+    {
+      "file": "c",
+      "highLowRatioDb": [
+        -16.86105915480829,
+        -18.68093062073097,
+        -20.509889139023652
+      ],
+      "change03to23S": -3.648829984215361
+    }
+  ]
+}
