@@ -1,0 +1,23 @@
+{
+  "relativeWaveformError": 2.9098519153108063e-10,
+  "frequencyChecks": [
+    {
+      "hz": 98.0,
+      "stateVsSchurRelativeError": 3.817309294714291e-12
+    },
+    {
+      "hz": 223.0,
+      "stateVsSchurRelativeError": 4.9159898515319396e-12
+    },
+    {
+      "hz": 659.0,
+      "stateVsSchurRelativeError": 3.667132524376431e-11
+    }
+  ],
+  "states": 3565,
+  "initialEnergyJ": 0.001044977732286636,
+  "maxPoleReal": -0.007521507074481072,
+  "initialReconstructionRelativeError": 1.6515839304610432e-15,
+  "modalDerivativeRelativeError": 9.749381466920372e-14,
+  "seconds": 16.48195457458496
+}

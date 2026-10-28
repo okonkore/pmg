@@ -1,0 +1,23 @@
+{
+  "id": "520r-spruce",
+  "label": "520R · ナイロン／巻弦 · スプルース",
+  "source": "User-supplied photograph of Savarez 520 R packaging; not a manufacturer-certified reconstruction",
+  "scaleMm": 650,
+  "soundboard": {"material": "spruce", "thicknessMm": 2.5, "densityKgM3": 420, "youngLongitudinalPa": 10000000000, "youngTransversePa": 800000000, "shearPa": 600000000, "poisson": 0.3, "lossAngle": 0.02, "source": "Inherited generic spruce assumption of the latest whole-shell model, not identified species or measured board"},
+  "strings": [
+    {"number": 1, "openMidi": 64, "construction": "plain", "material": "nylon", "outerDiameterMm": 0.70, "nominalTensionKgf": 6.9},
+    {"number": 2, "openMidi": 59, "construction": "plain", "material": "nylon", "outerDiameterMm": 0.82, "nominalTensionKgf": 5.4},
+    {"number": 3, "openMidi": 55, "construction": "plain", "material": "nylon", "outerDiameterMm": 1.02, "nominalTensionKgf": 5.4},
+    {"number": 4, "openMidi": 50, "construction": "wound", "material": "nylon-core-copper-winding-assumption", "outerDiameterMm": 0.74, "nominalTensionKgf": 6.9},
+    {"number": 5, "openMidi": 45, "construction": "wound", "material": "nylon-core-copper-winding-assumption", "outerDiameterMm": 0.85, "nominalTensionKgf": 6.3},
+    {"number": 6, "openMidi": 40, "construction": "wound", "material": "nylon-core-copper-winding-assumption", "outerDiameterMm": 1.07, "nominalTensionKgf": 6.3}
+  ],
+  "assumptions": {"nylonYoungPa": 2000000000, "nylonReferenceDensityKgM3": 1140, "coreFill": 0.65, "filaments": 100, "coreCoupling": 0, "wireDensityKgM3": 8900, "wireYoungPa": 110000000000, "windingParticipation": 0, "pitchRatio": 1, "stringLossAngle": 0.02, "pluckDistanceMm": 80, "pluckForceN": 1.5457651114447049},
+  "limits": [
+    "Diameter and nominal kgf tension are transcribed from the photograph. Nominal tension is interpreted at 650 mm and standard tuning, which the photograph does not independently confirm.",
+    "Plain-string effective linear mass is inferred from nominal tension and target frequency with assumed bending stiffness; it is not a measured nylon bulk density.",
+    "Wound core/wire diameters are inferred from outer diameter and nominal tension using a single close-packed round copper winding and freely sliding nylon filaments. These internal dimensions are not product specifications.",
+    "One active string per generated note; five other strings contribute mean preload. Polyphony mixes independently calculated voices, without dynamic sympathetic coupling among six strings.",
+    "Inherited whole-shell acoustic high-frequency accuracy limits still apply. No claim of reproducing a real 520R set or a specific guitar."
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "id": "guitar-whole-shell-r600-listening-b",
+  "version": 1,
+  "sourceCommit": "3827d65",
+  "sample": "e4.wav",
+  "referenceMidi": 64,
+  "nominalNote": "E4",
+  "sha256": "5061357dd2b80674f836d1d78ffe91598ee2e45e214144b9f23cd838e6b382ba",
+  "audio": {
+    "sampleRate": 48000,
+    "channels": 1,
+    "sampleWidthBytes": 2,
+    "frames": 96000,
+    "durationSeconds": 2.0
+  },
+  "status": "experimental; string tone approved by listening; attack knock unresolved",
+  "renderConditions": "conditions.json",
+  "pitchShiftMethod": "playbackRate; also shifts body resonances and duration; not physical resynthesis"
+}

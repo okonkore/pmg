@@ -1,0 +1,2043 @@
+{
+  "id": "520r-spruce",
+  "label": "520R · ナイロン／巻弦 · スプルース",
+  "sampleRate": 48000,
+  "durationSeconds": 3,
+  "gain": 0.4286610858558977,
+  "polyphony": "independent single-active-string whole-shell voices",
+  "notes": [
+    {
+      "midi": 40,
+      "string": 6,
+      "fret": 0,
+      "file": "40.wav",
+      "sha256": "93ba703238fbf5963d9367069296d091758f08f194b882a62943f45d399d39fc",
+      "peakFS": 0.26415353986785206,
+      "physics": {
+        "mu": 0.0053832863594252016,
+        "ei": 1.548006937407884e-08,
+        "tension": 61.78189499999999,
+        "outerDiameterM": 0.00107,
+        "estimatedCoreDiameterMm": 0.4395280271787974,
+        "estimatedWireDiameterMm": 0.3152359864106013,
+        "speakingLengthM": 0.65,
+        "fret": 0,
+        "string": 6,
+        "targetHz": 82.4068892282175,
+        "fixedEndHz": 82.4068892282175,
+        "frequencyChecks": [
+          {
+            "hz": 98.0,
+            "stateVsSchurRelativeError": 3.657399708216852e-12
+          },
+          {
+            "hz": 223.0,
+            "stateVsSchurRelativeError": 5.746181943218398e-13
+          },
+          {
+            "hz": 659.0,
+            "stateVsSchurRelativeError": 8.836522481982936e-11
+          }
+        ],
+        "states": 3565,
+        "initialEnergyJ": 0.0013568457264051662,
+        "maxPoleReal": -0.007521507074657568,
+        "initialReconstructionRelativeError": 1.8817602477964886e-15,
+        "modalDerivativeRelativeError": 1.1111000079887336e-12,
+        "seconds": 31.327746629714966,
+        "render96To192kRelativeError": 3.7998936257123334e-05
+      }
+    },
+    {
+      "midi": 41,
+      "string": 6,
+      "fret": 1,
+      "file": "41.wav",
+      "sha256": "3745a6ad0218e0c5b1341baa44731015e5777a1153fe6ad86a6308d1b5ede78c",
+      "peakFS": 0.2767174922935624,
+      "physics": {
+        "mu": 0.0053832863594252016,
+        "ei": 1.548006937407884e-08,
+        "tension": 61.78189499999999,
+        "outerDiameterM": 0.00107,
+        "estimatedCoreDiameterMm": 0.4395280271787974,
+        "estimatedWireDiameterMm": 0.3152359864106013,
+        "speakingLengthM": 0.61351830346298,
+        "fret": 1,
+        "string": 6,
+        "targetHz": 87.30705785825097,
+        "fixedEndHz": 87.30705785825096,
+        "frequencyChecks": [
+          {
+            "hz": 98.0,
+            "stateVsSchurRelativeError": 1.7925824690382316e-11
+          },
+          {
+            "hz": 223.0,
+            "stateVsSchurRelativeError": 1.0813281076778318e-12
+          },
+          {
+            "hz": 659.0,
+            "stateVsSchurRelativeError": 2.6153083606765162e-12
+          }
+        ],
+        "states": 3565,
+        "initialEnergyJ": 0.001346161294065358,
+        "maxPoleReal": -0.0075215070743059375,
+        "initialReconstructionRelativeError": 4.286197927997537e-15,
+        "modalDerivativeRelativeError": 8.237712934664537e-13,
+        "seconds": 31.421586990356445,
+        "render96To192kRelativeError": 3.480287118580535e-05
+      }
+    },
+    {
+      "midi": 42,
+      "string": 6,
+      "fret": 2,
+      "file": "42.wav",
+      "sha256": "e815ede7f274cc992bbc0a858d60c94dd5c29cb2bf9f5e3929785b08fc9b99fd",
+      "peakFS": 0.31968395867358107,
+      "physics": {
+        "mu": 0.0053832863594252016,
+        "ei": 1.548006937407884e-08,
+        "tension": 61.78189499999999,
+        "outerDiameterM": 0.00107,
+        "estimatedCoreDiameterMm": 0.4395280271787974,
+        "estimatedWireDiameterMm": 0.3152359864106013,
+        "speakingLengthM": 0.5790841672317125,
+        "fret": 2,
+        "string": 6,
+        "targetHz": 92.4986056779086,
+        "fixedEndHz": 92.4986056779086,
+        "frequencyChecks": [
+          {
+            "hz": 98.0,
+            "stateVsSchurRelativeError": 7.2494984280942166e-12
+          },
+          {
+            "hz": 223.0,
+            "stateVsSchurRelativeError": 5.8884934888158255e-12
+          },
+          {
+            "hz": 659.0,
+            "stateVsSchurRelativeError": 2.263235555946036e-12
+          }
+        ],
+        "states": 3565,
+        "initialEnergyJ": 0.0013349412376458217,
+        "maxPoleReal": -0.007521507075403366,
+        "initialReconstructionRelativeError": 3.435336904596989e-15,
+        "modalDerivativeRelativeError": 1.3583507053173615e-12,
+        "seconds": 31.42809772491455,
+        "render96To192kRelativeError": 3.841738184735001e-05
+      }
+    },
+    {
+      "midi": 43,
+      "string": 6,
+      "fret": 3,
+      "file": "43.wav",
+      "sha256": "994252abd0475b9a60608f0d67926cc3d1b1fa8c90ef88784cc0b6bd0e63aa6e",
+      "peakFS": 0.5027116632160437,
+      "physics": {
+        "mu": 0.0053832863594252016,
+        "ei": 1.548006937407884e-08,
+        "tension": 61.78189499999999,
+        "outerDiameterM": 0.00107,
+        "estimatedCoreDiameterMm": 0.4395280271787974,
+        "estimatedWireDiameterMm": 0.3152359864106013,
+        "speakingLengthM": 0.5465826705774893,
+        "fret": 3,
+        "string": 6,
+        "targetHz": 97.99885899543733,
+        "fixedEndHz": 97.99885899543733,
+        "frequencyChecks": [
+          {
+            "hz": 98.0,
+            "stateVsSchurRelativeError": 1.7184451105695704e-11
+          },
+          {
+            "hz": 223.0,
+            "stateVsSchurRelativeError": 4.629467436905485e-12
+          },
+          {
+            "hz": 659.0,
+            "stateVsSchurRelativeError": 3.5645832291920573e-13
+          }
+        ],
+        "states": 3565,
+        "initialEnergyJ": 0.0013229476577947144,
+        "maxPoleReal": -0.007521507074663202,
+        "initialReconstructionRelativeError": 2.9154902062643787e-15,
+        "modalDerivativeRelativeError": 4.2486227537345116e-13,
+        "seconds": 31.043331146240234,
+        "render96To192kRelativeError": 3.2904911000830046e-05
+      }
+    },
+    {
+      "midi": 44,
+      "string": 6,
+      "fret": 4,
+      "file": "44.wav",
+      "sha256": "42e110aaa53b401ea740ee8f3b892cc2eed9a7420b83fb37d28eafb0f61cf57c",
+      "peakFS": 0.8,
+      "physics": {
+        "mu": 0.0053832863594252016,
+        "ei": 1.548006937407884e-08,
+        "tension": 61.78189499999999,
+        "outerDiameterM": 0.00107,
+        "estimatedCoreDiameterMm": 0.4395280271787974,
+        "estimatedWireDiameterMm": 0.3152359864106013,
+        "speakingLengthM": 0.515905342776534,
+        "fret": 4,
+        "string": 6,
+        "targetHz": 103.82617439498628,
+        "fixedEndHz": 103.82617439498627,
+        "frequencyChecks": [
+          {
+            "hz": 98.0,
+            "stateVsSchurRelativeError": 8.637255028911234e-13
+          },
+          {
+            "hz": 223.0,
+            "stateVsSchurRelativeError": 2.2712025476658414e-12
+          },
+          {
+            "hz": 659.0,
+            "stateVsSchurRelativeError": 8.039301339148773e-13
+          }
+        ],
+        "states": 3565,
+        "initialEnergyJ": 0.0013101452431295217,
+        "maxPoleReal": -0.0075215070762107315,
+        "initialReconstructionRelativeError": 4.170549674496249e-15,
+        "modalDerivativeRelativeError": 1.33697187447517e-12,
+        "seconds": 31.021216869354248,
+        "render96To192kRelativeError": 2.679373861736633e-05
+      }
+    },
+    {
+      "midi": 45,
+      "string": 5,
+      "fret": 0,
+      "file": "45.wav",
+      "sha256": "9c2d91a28e67aa5ef301a06f76cf2746255c18c81fd89b7354b8c292f0eb3921",
+      "peakFS": 0.5052298626692376,
+      "physics": {
+        "mu": 0.0030212673172557913,
+        "ei": 1.5862584187811448e-08,
+        "tension": 61.78189499999999,
+        "outerDiameterM": 0.00085,
+        "estimatedCoreDiameterMm": 0.44221842462127725,
+        "estimatedWireDiameterMm": 0.20389078768936136,
+        "speakingLengthM": 0.6499999999999287,
+        "fret": 0,
+        "string": 5,
+        "targetHz": 110.0,
+        "fixedEndHz": 109.99999999999999,
+        "frequencyChecks": [
+          {
+            "hz": 98.0,
+            "stateVsSchurRelativeError": 1.7045614054390291e-12
+          },
+          {
+            "hz": 223.0,
+            "stateVsSchurRelativeError": 4.027449917436387e-12
+          },
+          {
+            "hz": 659.0,
+            "stateVsSchurRelativeError": 3.867057328178514e-11
+          }
+        ],
+        "states": 3565,
+        "initialEnergyJ": 0.0013568457149746329,
+        "maxPoleReal": -0.007521507075662416,
+        "initialReconstructionRelativeError": 2.39000668813673e-15,
+        "modalDerivativeRelativeError": 3.257592932156268e-13,
+        "seconds": 31.251665592193604,
+        "render96To192kRelativeError": 2.7792634413825876e-05
+      }
+    },
+    {
+      "midi": 46,
+      "string": 5,
+      "fret": 1,
+      "file": "46.wav",
+      "sha256": "5b4d68a60b3aa3111d9b6c3136d27eb9ffc578fa3270747611a3d43c0a227fc3",
+      "peakFS": 0.384012437851242,
+      "physics": {
+        "mu": 0.0030212673172557913,
+        "ei": 1.5862584187811448e-08,
+        "tension": 61.78189499999999,
+        "outerDiameterM": 0.00085,
+        "estimatedCoreDiameterMm": 0.44221842462127725,
+        "estimatedWireDiameterMm": 0.20389078768936136,
+        "speakingLengthM": 0.6135183034683457,
+        "fret": 1,
+        "string": 5,
+        "targetHz": 116.54094037952248,
+        "fixedEndHz": 116.54094037952248,
+        "frequencyChecks": [
+          {
+            "hz": 98.0,
+            "stateVsSchurRelativeError": 5.071417422753678e-13
+          },
+          {
+            "hz": 223.0,
+            "stateVsSchurRelativeError": 1.3514765608064594e-12
+          },
+          {
+            "hz": 659.0,
+            "stateVsSchurRelativeError": 1.9713195977516907e-11
+          }
+        ],
+        "states": 3565,
+        "initialEnergyJ": 0.0013461612820956821,
+        "maxPoleReal": -0.007521507076539019,
+        "initialReconstructionRelativeError": 1.909853266459507e-15,
+        "modalDerivativeRelativeError": 9.496037036311087e-13,
+        "seconds": 30.16683840751648,
+        "render96To192kRelativeError": 3.1576192064107617e-05
+      }
+    },
+    {
+      "midi": 47,
+      "string": 5,
+      "fret": 2,
+      "file": "47.wav",
+      "sha256": "b3e4de7abaa239465eff6cb36225dcfcfde63bd326f1ac7d2e5f50bec822de4d",
+      "peakFS": 0.35390449734288293,
+      "physics": {
+        "mu": 0.0030212673172557913,
+        "ei": 1.5862584187811448e-08,
+        "tension": 61.78189499999999,
+        "outerDiameterM": 0.00085,
+        "estimatedCoreDiameterMm": 0.44221842462127725,
+        "estimatedWireDiameterMm": 0.20389078768936136,
+        "speakingLengthM": 0.5790841672425334,
+        "fret": 2,
+        "string": 5,
+        "targetHz": 123.47082531403103,
+        "fixedEndHz": 123.47082531403103,
+        "frequencyChecks": [
+          {
+            "hz": 98.0,
+            "stateVsSchurRelativeError": 9.086707971537378e-13
+          },
+          {
+            "hz": 223.0,
+            "stateVsSchurRelativeError": 9.516613725711217e-13
+          },
+          {
+            "hz": 659.0,
+            "stateVsSchurRelativeError": 3.191268206498218e-12
+          }
+        ],
+        "states": 3565,
+        "initialEnergyJ": 0.0013349412249403774,
+        "maxPoleReal": -0.007521507075127051,
+        "initialReconstructionRelativeError": 1.677616433848746e-15,
+        "modalDerivativeRelativeError": 1.1676942006088369e-12,
+        "seconds": 30.29889464378357,
+        "render96To192kRelativeError": 4.285519866926615e-05
+      }
+    },
+    {
+      "midi": 48,
+      "string": 5,
+      "fret": 3,
+      "file": "48.wav",
+      "sha256": "6eb27a156e99434ea3de50be8eee861f3e5b61cee4d627d5daa8fd000868eacf",
+      "peakFS": 0.29264151619380707,
+      "physics": {
+        "mu": 0.0030212673172557913,
+        "ei": 1.5862584187811448e-08,
+        "tension": 61.78189499999999,
+        "outerDiameterM": 0.00085,
+        "estimatedCoreDiameterMm": 0.44221842462127725,
+        "estimatedWireDiameterMm": 0.20389078768936136,
+        "speakingLengthM": 0.5465826705938016,
+        "fret": 3,
+        "string": 5,
+        "targetHz": 130.8127826502993,
+        "fixedEndHz": 130.81278265029928,
+        "frequencyChecks": [
+          {
+            "hz": 98.0,
+            "stateVsSchurRelativeError": 2.4223956748841087e-13
+          },
+          {
+            "hz": 223.0,
+            "stateVsSchurRelativeError": 8.600242948991766e-13
+          },
+          {
+            "hz": 659.0,
+            "stateVsSchurRelativeError": 4.005936841805528e-12
+          }
+        ],
+        "states": 3565,
+        "initialEnergyJ": 0.001322947644333035,
+        "maxPoleReal": -0.007521507077687041,
+        "initialReconstructionRelativeError": 1.6818250141834269e-15,
+        "modalDerivativeRelativeError": 5.318725979558529e-13,
+        "seconds": 30.260683059692383,
+        "render96To192kRelativeError": 4.633456442412777e-05
+      }
+    },
+    {
+      "midi": 49,
+      "string": 5,
+      "fret": 4,
+      "file": "49.wav",
+      "sha256": "f3d8b2b965bfbe9a05767b2df40d2622ff13fd777996153fd52e56bf47fe798c",
+      "peakFS": 0.28389223835808514,
+      "physics": {
+        "mu": 0.0030212673172557913,
+        "ei": 1.5862584187811448e-08,
+        "tension": 61.78189499999999,
+        "outerDiameterM": 0.00085,
+        "estimatedCoreDiameterMm": 0.44221842462127725,
+        "estimatedWireDiameterMm": 0.20389078768936136,
+        "speakingLengthM": 0.5159053427983918,
+        "fret": 4,
+        "string": 5,
+        "targetHz": 138.59131548843604,
+        "fixedEndHz": 138.59131548843607,
+        "frequencyChecks": [
+          {
+            "hz": 98.0,
+            "stateVsSchurRelativeError": 1.5189411243911313e-12
+          },
+          {
+            "hz": 223.0,
+            "stateVsSchurRelativeError": 1.54489886245752e-12
+          },
+          {
+            "hz": 659.0,
+            "stateVsSchurRelativeError": 1.2702431403249115e-10
+          }
+        ],
+        "states": 3565,
+        "initialEnergyJ": 0.0013101452288102476,
+        "maxPoleReal": -0.007521507074835824,
+        "initialReconstructionRelativeError": 1.5952381787064484e-15,
+        "modalDerivativeRelativeError": 1.7723353807058689e-12,
+        "seconds": 29.995295524597168,
+        "render96To192kRelativeError": 4.435770497210992e-05
+      }
+    },
+    {
+      "midi": 50,
+      "string": 4,
+      "fret": 0,
+      "file": "50.wav",
+      "sha256": "a60ad3a580d12638b34cd4698c2c73bc2f1e27dae9fd16dfd7917c6ecc752e05",
+      "peakFS": 0.26476342287570614,
+      "physics": {
+        "mu": 0.0018571174257412779,
+        "ei": 2.2890300624190833e-08,
+        "tension": 67.665885,
+        "outerDiameterM": 0.00074,
+        "estimatedCoreDiameterMm": 0.4846812532558528,
+        "estimatedWireDiameterMm": 0.1276593733720736,
+        "speakingLengthM": 0.6499999999999999,
+        "fret": 0,
+        "string": 4,
+        "targetHz": 146.8323839587038,
+        "fixedEndHz": 146.8323839587038,
+        "frequencyChecks": [
+          {
+            "hz": 98.0,
+            "stateVsSchurRelativeError": 6.619600910979446e-13
+          },
+          {
+            "hz": 223.0,
+            "stateVsSchurRelativeError": 1.8524999440763044e-12
+          },
+          {
+            "hz": 659.0,
+            "stateVsSchurRelativeError": 1.9736668371787212e-11
+          }
+        ],
+        "states": 3565,
+        "initialEnergyJ": 0.001240667356719983,
+        "maxPoleReal": -0.007521507076086206,
+        "initialReconstructionRelativeError": 1.6279815638889653e-15,
+        "modalDerivativeRelativeError": 4.899782820162542e-13,
+        "seconds": 30.173715114593506,
+        "render96To192kRelativeError": 5.445929478232249e-05
+      }
+    },
+    {
+      "midi": 51,
+      "string": 4,
+      "fret": 1,
+      "file": "51.wav",
+      "sha256": "3525dd05e6443997210b62a2d03707b3e2c73e8571967b1710651f010b9bf8aa",
+      "peakFS": 0.2344567566987591,
+      "physics": {
+        "mu": 0.0018571174257412779,
+        "ei": 2.2890300624190833e-08,
+        "tension": 67.665885,
+        "outerDiameterM": 0.00074,
+        "estimatedCoreDiameterMm": 0.4846812532558528,
+        "estimatedWireDiameterMm": 0.1276593733720736,
+        "speakingLengthM": 0.6135183035399622,
+        "fret": 1,
+        "string": 4,
+        "targetHz": 155.56349186104046,
+        "fixedEndHz": 155.56349186104043,
+        "frequencyChecks": [
+          {
+            "hz": 98.0,
+            "stateVsSchurRelativeError": 1.3085067555931287e-12
+          },
+          {
+            "hz": 223.0,
+            "stateVsSchurRelativeError": 3.1185506945808626e-12
+          },
+          {
+            "hz": 659.0,
+            "stateVsSchurRelativeError": 3.233423636897145e-12
+          }
+        ],
+        "states": 3565,
+        "initialEnergyJ": 0.0012308841763972445,
+        "maxPoleReal": -0.00752150707597047,
+        "initialReconstructionRelativeError": 1.2992808789445192e-15,
+        "modalDerivativeRelativeError": 7.937240967866444e-13,
+        "seconds": 30.162861347198486,
+        "render96To192kRelativeError": 4.139801389931343e-05
+      }
+    },
+    {
+      "midi": 52,
+      "string": 4,
+      "fret": 2,
+      "file": "52.wav",
+      "sha256": "70b9949315ec662d2a9cb5537d15326714a645e43ad81807fab5db2f99f39526",
+      "peakFS": 0.2550308282224936,
+      "physics": {
+        "mu": 0.0018571174257412779,
+        "ei": 2.2890300624190833e-08,
+        "tension": 67.665885,
+        "outerDiameterM": 0.00074,
+        "estimatedCoreDiameterMm": 0.4846812532558528,
+        "estimatedWireDiameterMm": 0.1276593733720736,
+        "speakingLengthM": 0.5790841673859342,
+        "fret": 2,
+        "string": 4,
+        "targetHz": 164.81377845643496,
+        "fixedEndHz": 164.81377845643496,
+        "frequencyChecks": [
+          {
+            "hz": 98.0,
+            "stateVsSchurRelativeError": 1.5134066729435684e-12
+          },
+          {
+            "hz": 223.0,
+            "stateVsSchurRelativeError": 2.4761181864510743e-12
+          },
+          {
+            "hz": 659.0,
+            "stateVsSchurRelativeError": 2.9982533860743806e-11
+          }
+        ],
+        "states": 3565,
+        "initialEnergyJ": 0.0012206106745064197,
+        "maxPoleReal": -0.007521507076155187,
+        "initialReconstructionRelativeError": 1.3151878220585716e-15,
+        "modalDerivativeRelativeError": 3.100298145799788e-13,
+        "seconds": 29.429402351379395,
+        "render96To192kRelativeError": 3.165799812915227e-05
+      }
+    },
+    {
+      "midi": 53,
+      "string": 4,
+      "fret": 3,
+      "file": "53.wav",
+      "sha256": "aad2192186e3b07a59f9428f24bbe5edbc45b14568195b9247f772163e17dbff",
+      "peakFS": 0.23959256755049127,
+      "physics": {
+        "mu": 0.0018571174257412779,
+        "ei": 2.2890300624190833e-08,
+        "tension": 67.665885,
+        "outerDiameterM": 0.00074,
+        "estimatedCoreDiameterMm": 0.4846812532558528,
+        "estimatedWireDiameterMm": 0.1276593733720736,
+        "speakingLengthM": 0.5465826708094651,
+        "fret": 3,
+        "string": 4,
+        "targetHz": 174.61411571650194,
+        "fixedEndHz": 174.6141157165019,
+        "frequencyChecks": [
+          {
+            "hz": 98.0,
+            "stateVsSchurRelativeError": 5.874916381593586e-13
+          },
+          {
+            "hz": 223.0,
+            "stateVsSchurRelativeError": 1.87197823556612e-12
+          },
+          {
+            "hz": 659.0,
+            "stateVsSchurRelativeError": 7.572383843224852e-12
+          }
+        ],
+        "states": 3565,
+        "initialEnergyJ": 0.0012096296122565441,
+        "maxPoleReal": -0.007521507072465939,
+        "initialReconstructionRelativeError": 1.6776739888069835e-15,
+        "modalDerivativeRelativeError": 3.962431863940027e-13,
+        "seconds": 29.831435680389404,
+        "render96To192kRelativeError": 2.9917629552092666e-05
+      }
+    },
+    {
+      "midi": 54,
+      "string": 4,
+      "fret": 4,
+      "file": "54.wav",
+      "sha256": "45c634360c7a32d25f8c7bd4f34247cd45b8f7bba65503a7eb447190e47ef3e7",
+      "peakFS": 0.3459722604515275,
+      "physics": {
+        "mu": 0.0018571174257412779,
+        "ei": 2.2890300624190833e-08,
+        "tension": 67.665885,
+        "outerDiameterM": 0.00074,
+        "estimatedCoreDiameterMm": 0.4846812532558528,
+        "estimatedWireDiameterMm": 0.1276593733720736,
+        "speakingLengthM": 0.515905343087038,
+        "fret": 4,
+        "string": 4,
+        "targetHz": 184.9972113558172,
+        "fixedEndHz": 184.99721135581714,
+        "frequencyChecks": [
+          {
+            "hz": 98.0,
+            "stateVsSchurRelativeError": 5.877631090109275e-13
+          },
+          {
+            "hz": 223.0,
+            "stateVsSchurRelativeError": 4.750779085711754e-12
+          },
+          {
+            "hz": 659.0,
+            "stateVsSchurRelativeError": 1.378535456721635e-10
+          }
+        ],
+        "states": 3565,
+        "initialEnergyJ": 0.0011979087232036729,
+        "maxPoleReal": -0.0075215070756995935,
+        "initialReconstructionRelativeError": 1.628380321587779e-15,
+        "modalDerivativeRelativeError": 2.533728139796225e-13,
+        "seconds": 29.753793239593506,
+        "render96To192kRelativeError": 3.0125280901678746e-05
+      }
+    },
+    {
+      "midi": 55,
+      "string": 3,
+      "fret": 0,
+      "file": "55.wav",
+      "sha256": "0a167728b7c3544d5f473a3e36832285bee5fc34d2e3ccbb30c2d9dfae0bb39a",
+      "peakFS": 0.4202190435340489,
+      "physics": {
+        "mu": 0.0008157292944237192,
+        "ei": 0.00010626752880829165,
+        "tension": 52.95591,
+        "outerDiameterM": 0.00102,
+        "effectiveDensityKgM3": 998.2879618023757,
+        "speakingLengthM": 0.6500000000000001,
+        "fret": 0,
+        "string": 3,
+        "targetHz": 195.99771799087463,
+        "fixedEndHz": 195.99771799087463,
+        "frequencyChecks": [
+          {
+            "hz": 98.0,
+            "stateVsSchurRelativeError": 4.3886388952380817e-13
+          },
+          {
+            "hz": 223.0,
+            "stateVsSchurRelativeError": 6.043977434139283e-11
+          },
+          {
+            "hz": 659.0,
+            "stateVsSchurRelativeError": 4.108579466441426e-11
+          }
+        ],
+        "states": 3565,
+        "initialEnergyJ": 0.0015754343516811093,
+        "maxPoleReal": -0.0075215070750169625,
+        "initialReconstructionRelativeError": 1.7347422902265437e-15,
+        "modalDerivativeRelativeError": 1.54990581634696e-13,
+        "seconds": 29.551738262176514,
+        "render96To192kRelativeError": 1.9450826791297737e-05
+      }
+    },
+    {
+      "midi": 56,
+      "string": 3,
+      "fret": 1,
+      "file": "56.wav",
+      "sha256": "eec5d223627e2a65369ec745970fd8786298e8e57d38263d2d14a86a5f19f779",
+      "peakFS": 0.7273894469421587,
+      "physics": {
+        "mu": 0.0008157292944237192,
+        "ei": 0.00010626752880829165,
+        "tension": 52.95591,
+        "outerDiameterM": 0.00102,
+        "effectiveDensityKgM3": 998.2879618023757,
+        "speakingLengthM": 0.6135200640607982,
+        "fret": 1,
+        "string": 3,
+        "targetHz": 207.65234878997256,
+        "fixedEndHz": 207.65234878997254,
+        "frequencyChecks": [
+          {
+            "hz": 98.0,
+            "stateVsSchurRelativeError": 2.0466780732079439e-13
+          },
+          {
+            "hz": 223.0,
+            "stateVsSchurRelativeError": 1.5913077284433654e-12
+          },
+          {
+            "hz": 659.0,
+            "stateVsSchurRelativeError": 1.9214633913072462e-11
+          }
+        ],
+        "states": 3565,
+        "initialEnergyJ": 0.0015628503362452412,
+        "maxPoleReal": -0.007521507077039231,
+        "initialReconstructionRelativeError": 3.870789276696306e-15,
+        "modalDerivativeRelativeError": 3.265048100365271e-13,
+        "seconds": 30.096860885620117,
+        "render96To192kRelativeError": 2.1392300714394745e-05
+      }
+    },
+    {
+      "midi": 57,
+      "string": 3,
+      "fret": 2,
+      "file": "57.wav",
+      "sha256": "f75e29106e625b2c025115918fb71d402513102f8bcba0710d755c4bab9a4bff",
+      "peakFS": 0.48026985613905215,
+      "physics": {
+        "mu": 0.0008157292944237192,
+        "ei": 0.00010626752880829165,
+        "tension": 52.95591,
+        "outerDiameterM": 0.00102,
+        "effectiveDensityKgM3": 998.2879618023757,
+        "speakingLengthM": 0.5790876942747724,
+        "fret": 2,
+        "string": 3,
+        "targetHz": 220.0,
+        "fixedEndHz": 220.00000000000006,
+        "frequencyChecks": [
+          {
+            "hz": 98.0,
+            "stateVsSchurRelativeError": 3.4062698510425647e-12
+          },
+          {
+            "hz": 223.0,
+            "stateVsSchurRelativeError": 3.415874925017792e-13
+          },
+          {
+            "hz": 659.0,
+            "stateVsSchurRelativeError": 1.2002529697512234e-11
+          }
+        ],
+        "states": 3565,
+        "initialEnergyJ": 0.0015495873173394328,
+        "maxPoleReal": -0.007521507075837648,
+        "initialReconstructionRelativeError": 1.9846851034674866e-15,
+        "modalDerivativeRelativeError": 2.2500301079382922e-13,
+        "seconds": 30.089467525482178,
+        "render96To192kRelativeError": 1.9312396059646265e-05
+      }
+    },
+    {
+      "midi": 58,
+      "string": 3,
+      "fret": 3,
+      "file": "58.wav",
+      "sha256": "27b88a48a981da74748bcde07897f7b8dd39847000a95e6e8505b34405b5531e",
+      "peakFS": 0.46908352218193067,
+      "physics": {
+        "mu": 0.0008157292944237192,
+        "ei": 0.00010626752880829165,
+        "tension": 52.95591,
+        "outerDiameterM": 0.00102,
+        "effectiveDensityKgM3": 998.2879618023757,
+        "speakingLengthM": 0.5465879758031877,
+        "fret": 3,
+        "string": 3,
+        "targetHz": 233.08188075904496,
+        "fixedEndHz": 233.08188075904502,
+        "frequencyChecks": [
+          {
+            "hz": 98.0,
+            "stateVsSchurRelativeError": 1.2609070767176971e-12
+          },
+          {
+            "hz": 223.0,
+            "stateVsSchurRelativeError": 9.224553629513929e-13
+          },
+          {
+            "hz": 659.0,
+            "stateVsSchurRelativeError": 5.931665644755423e-12
+          }
+        ],
+        "states": 3565,
+        "initialEnergyJ": 0.0015354210865989476,
+        "maxPoleReal": -0.007521507075376897,
+        "initialReconstructionRelativeError": 1.608866208726006e-15,
+        "modalDerivativeRelativeError": 1.5966077646154665e-13,
+        "seconds": 28.654749393463135,
+        "render96To192kRelativeError": 2.4827963286386243e-05
+      }
+    },
+    {
+      "midi": 59,
+      "string": 2,
+      "fret": 0,
+      "file": "59.wav",
+      "sha256": "86c58ccd1bcd15a975a2085efff4ea5d0bbac3953de11cc6ed76c151106c72ca",
+      "peakFS": 0.43251573887232836,
+      "physics": {
+        "mu": 0.0005138632279434423,
+        "ei": 4.438694999200274e-05,
+        "tension": 52.95591,
+        "outerDiameterM": 0.00082,
+        "effectiveDensityKgM3": 973.0383438471887,
+        "speakingLengthM": 0.65,
+        "fret": 0,
+        "string": 2,
+        "targetHz": 246.94165062806206,
+        "fixedEndHz": 246.94165062806206,
+        "frequencyChecks": [
+          {
+            "hz": 98.0,
+            "stateVsSchurRelativeError": 2.1523569493036458e-12
+          },
+          {
+            "hz": 223.0,
+            "stateVsSchurRelativeError": 4.882727875068083e-13
+          },
+          {
+            "hz": 659.0,
+            "stateVsSchurRelativeError": 4.896537803030224e-12
+          }
+        ],
+        "states": 3565,
+        "initialEnergyJ": 0.0015777593017164066,
+        "maxPoleReal": -0.007521507076460674,
+        "initialReconstructionRelativeError": 1.3547389698356814e-15,
+        "modalDerivativeRelativeError": 1.0620007909557283e-13,
+        "seconds": 29.50412893295288,
+        "render96To192kRelativeError": 3.571616386520833e-05
+      }
+    },
+    {
+      "midi": 60,
+      "string": 2,
+      "fret": 1,
+      "file": "60.wav",
+      "sha256": "0983aecc532dbd0a476711dda2576e0e3acdace78d8602ef2d49e5efdffe20de",
+      "peakFS": 0.3797467598150597,
+      "physics": {
+        "mu": 0.0005138632279434423,
+        "ei": 4.438694999200274e-05,
+        "tension": 52.95591,
+        "outerDiameterM": 0.00082,
+        "effectiveDensityKgM3": 973.0383438471887,
+        "speakingLengthM": 0.6135190387633601,
+        "fret": 1,
+        "string": 2,
+        "targetHz": 261.6255653005986,
+        "fixedEndHz": 261.6255653005986,
+        "frequencyChecks": [
+          {
+            "hz": 98.0,
+            "stateVsSchurRelativeError": 4.925674009866965e-12
+          },
+          {
+            "hz": 223.0,
+            "stateVsSchurRelativeError": 2.1742151219300904e-12
+          },
+          {
+            "hz": 659.0,
+            "stateVsSchurRelativeError": 2.363913072724083e-12
+          }
+        ],
+        "states": 3565,
+        "initialEnergyJ": 0.0015652683994358879,
+        "maxPoleReal": -0.007521507074221699,
+        "initialReconstructionRelativeError": 1.363736771891194e-15,
+        "modalDerivativeRelativeError": 9.09763435627041e-14,
+        "seconds": 29.563259840011597,
+        "render96To192kRelativeError": 3.473776629607803e-05
+      }
+    },
+    {
+      "midi": 61,
+      "string": 2,
+      "fret": 2,
+      "file": "61.wav",
+      "sha256": "2c7169b7b8dc5fd7bf664e788ebef19151d59cb86d25cb0fbefca864fb857a0d",
+      "peakFS": 0.3196949526684657,
+      "physics": {
+        "mu": 0.0005138632279434423,
+        "ei": 4.438694999200274e-05,
+        "tension": 52.95591,
+        "outerDiameterM": 0.00082,
+        "effectiveDensityKgM3": 973.0383438471887,
+        "speakingLengthM": 0.5790856402815128,
+        "fret": 2,
+        "string": 2,
+        "targetHz": 277.1826309768721,
+        "fixedEndHz": 277.182630976872,
+        "frequencyChecks": [
+          {
+            "hz": 98.0,
+            "stateVsSchurRelativeError": 2.5293860760037257e-12
+          },
+          {
+            "hz": 223.0,
+            "stateVsSchurRelativeError": 2.3768117642463185e-12
+          },
+          {
+            "hz": 659.0,
+            "stateVsSchurRelativeError": 2.1062587963784957e-11
+          }
+        ],
+        "states": 3565,
+        "initialEnergyJ": 0.0015521275410288044,
+        "maxPoleReal": -0.007521507076872049,
+        "initialReconstructionRelativeError": 1.3055719508707595e-15,
+        "modalDerivativeRelativeError": 1.0926771751544318e-13,
+        "seconds": 27.407624006271362,
+        "render96To192kRelativeError": 3.1647182732478085e-05
+      }
+    },
+    {
+      "midi": 62,
+      "string": 2,
+      "fret": 3,
+      "file": "62.wav",
+      "sha256": "e01ba29c2246e7d19b45e65d4ae179eecb6f27cacb40c2b581f869750c8becfb",
+      "peakFS": 0.30275395995059884,
+      "physics": {
+        "mu": 0.0005138632279434423,
+        "ei": 4.438694999200274e-05,
+        "tension": 52.95591,
+        "outerDiameterM": 0.00082,
+        "effectiveDensityKgM3": 973.0383438471887,
+        "speakingLengthM": 0.5465848862869814,
+        "fret": 3,
+        "string": 2,
+        "targetHz": 293.6647679174076,
+        "fixedEndHz": 293.6647679174076,
+        "frequencyChecks": [
+          {
+            "hz": 98.0,
+            "stateVsSchurRelativeError": 6.707183013062279e-12
+          },
+          {
+            "hz": 223.0,
+            "stateVsSchurRelativeError": 2.5448167766944506e-12
+          },
+          {
+            "hz": 659.0,
+            "stateVsSchurRelativeError": 1.2094220144998149e-11
+          }
+        ],
+        "states": 3565,
+        "initialEnergyJ": 0.0015380844430358887,
+        "maxPoleReal": -0.007521507075154942,
+        "initialReconstructionRelativeError": 1.160179555223331e-15,
+        "modalDerivativeRelativeError": 1.233798386279798e-13,
+        "seconds": 27.927822828292847,
+        "render96To192kRelativeError": 3.832759379842705e-05
+      }
+    },
+    {
+      "midi": 63,
+      "string": 2,
+      "fret": 4,
+      "file": "63.wav",
+      "sha256": "165a47d9e1b7fd6424195320b1c487efe840af1a9657f07ce2c53d0212a90250",
+      "peakFS": 0.3086676911690796,
+      "physics": {
+        "mu": 0.0005138632279434423,
+        "ei": 4.438694999200274e-05,
+        "tension": 52.95591,
+        "outerDiameterM": 0.00082,
+        "effectiveDensityKgM3": 973.0383438471887,
+        "speakingLengthM": 0.5159083085334326,
+        "fret": 4,
+        "string": 2,
+        "targetHz": 311.1269837220809,
+        "fixedEndHz": 311.1269837220809,
+        "frequencyChecks": [
+          {
+            "hz": 98.0,
+            "stateVsSchurRelativeError": 4.29476142980947e-12
+          },
+          {
+            "hz": 223.0,
+            "stateVsSchurRelativeError": 1.167579116854053e-11
+          },
+          {
+            "hz": 659.0,
+            "stateVsSchurRelativeError": 1.0844885367978238e-11
+          }
+        ],
+        "states": 3565,
+        "initialEnergyJ": 0.001523087522788908,
+        "maxPoleReal": -0.007521507073673489,
+        "initialReconstructionRelativeError": 1.5219914640429264e-15,
+        "modalDerivativeRelativeError": 5.182680817148038e-14,
+        "seconds": 28.149815797805786,
+        "render96To192kRelativeError": 4.3683247943677405e-05
+      }
+    },
+    {
+      "midi": 64,
+      "string": 1,
+      "fret": 0,
+      "file": "64.wav",
+      "sha256": "780701ef84436303264d12601ab61c58f1798cb717a92de9c2ae765466601c95",
+      "peakFS": 0.315158703394192,
+      "physics": {
+        "mu": 0.0003685017651828074,
+        "ei": 2.3571762378965918e-05,
+        "tension": 67.665885,
+        "outerDiameterM": 0.0007,
+        "effectiveDensityKgM3": 957.5326933376766,
+        "speakingLengthM": 0.65,
+        "fret": 0,
+        "string": 1,
+        "targetHz": 329.6275569128699,
+        "fixedEndHz": 329.6275569128699,
+        "frequencyChecks": [
+          {
+            "hz": 98.0,
+            "stateVsSchurRelativeError": 5.72273583290467e-12
+          },
+          {
+            "hz": 223.0,
+            "stateVsSchurRelativeError": 2.756284969847747e-12
+          },
+          {
+            "hz": 659.0,
+            "stateVsSchurRelativeError": 2.977677427962652e-11
+          }
+        ],
+        "states": 3565,
+        "initialEnergyJ": 0.0012400867421576602,
+        "maxPoleReal": -0.007521507073949569,
+        "initialReconstructionRelativeError": 1.4720242694244232e-15,
+        "modalDerivativeRelativeError": 5.874844299648829e-14,
+        "seconds": 26.25063729286194,
+        "render96To192kRelativeError": 3.810096100231179e-05
+      }
+    },
+    {
+      "midi": 65,
+      "string": 1,
+      "fret": 1,
+      "file": "65.wav",
+      "sha256": "6e3b42643bef4c06164c8e71cc5a2e17e35a81648f64c69ec30f0d52277cdd7e",
+      "peakFS": 0.3512510433506922,
+      "physics": {
+        "mu": 0.0003685017651828074,
+        "ei": 2.3571762378965918e-05,
+        "tension": 67.665885,
+        "outerDiameterM": 0.0007,
+        "effectiveDensityKgM3": 957.5326933376766,
+        "speakingLengthM": 0.6135186089369907,
+        "fret": 1,
+        "string": 1,
+        "targetHz": 349.2282314330039,
+        "fixedEndHz": 349.2282314330038,
+        "frequencyChecks": [
+          {
+            "hz": 98.0,
+            "stateVsSchurRelativeError": 1.3468957650989044e-11
+          },
+          {
+            "hz": 223.0,
+            "stateVsSchurRelativeError": 5.335499048696286e-12
+          },
+          {
+            "hz": 659.0,
+            "stateVsSchurRelativeError": 5.705628270333377e-12
+          }
+        ],
+        "states": 3565,
+        "initialEnergyJ": 0.0012302767480688874,
+        "maxPoleReal": -0.007521507074422341,
+        "initialReconstructionRelativeError": 1.3207402201503484e-15,
+        "modalDerivativeRelativeError": 7.50407914660249e-14,
+        "seconds": 27.277920961380005,
+        "render96To192kRelativeError": 4.3436763066194584e-05
+      }
+    },
+    {
+      "midi": 66,
+      "string": 1,
+      "fret": 2,
+      "file": "66.wav",
+      "sha256": "73b1e3f46785deb1f5d6137f7e5a62e8242e0db967b6462637b465587a2c7435",
+      "peakFS": 0.3365167840808295,
+      "physics": {
+        "mu": 0.0003685017651828074,
+        "ei": 2.3571762378965918e-05,
+        "tension": 67.665885,
+        "outerDiameterM": 0.0007,
+        "effectiveDensityKgM3": 957.5326933376766,
+        "speakingLengthM": 0.5790847791983691,
+        "fret": 2,
+        "string": 1,
+        "targetHz": 369.9944227116344,
+        "fixedEndHz": 369.9944227116344,
+        "frequencyChecks": [
+          {
+            "hz": 98.0,
+            "stateVsSchurRelativeError": 8.697054621852959e-12
+          },
+          {
+            "hz": 223.0,
+            "stateVsSchurRelativeError": 1.541457008487951e-11
+          },
+          {
+            "hz": 659.0,
+            "stateVsSchurRelativeError": 3.5226138939016807e-12
+          }
+        ],
+        "states": 3565,
+        "initialEnergyJ": 0.001219966850685718,
+        "maxPoleReal": -0.0075215070756267785,
+        "initialReconstructionRelativeError": 1.3525384613314625e-15,
+        "modalDerivativeRelativeError": 1.0574135600148909e-13,
+        "seconds": 27.04673981666565,
+        "render96To192kRelativeError": 5.2720133204562936e-05
+      }
+    },
+    {
+      "midi": 67,
+      "string": 1,
+      "fret": 3,
+      "file": "67.wav",
+      "sha256": "fb5e642c17975faf738b8b415cd896a674aee756d2d6d5e8b9d03e8bd8b7483a",
+      "peakFS": 0.334039905506411,
+      "physics": {
+        "mu": 0.0003685017651828074,
+        "ei": 2.3571762378965918e-05,
+        "tension": 67.665885,
+        "outerDiameterM": 0.0007,
+        "effectiveDensityKgM3": 957.5326933376766,
+        "speakingLengthM": 0.5465835910781552,
+        "fret": 3,
+        "string": 1,
+        "targetHz": 391.99543598174927,
+        "fixedEndHz": 391.99543598174927,
+        "frequencyChecks": [
+          {
+            "hz": 98.0,
+            "stateVsSchurRelativeError": 9.843148964056179e-12
+          },
+          {
+            "hz": 223.0,
+            "stateVsSchurRelativeError": 1.1850624770304717e-11
+          },
+          {
+            "hz": 659.0,
+            "stateVsSchurRelativeError": 4.365581175693256e-12
+          }
+        ],
+        "states": 3565,
+        "initialEnergyJ": 0.0012089484822001189,
+        "maxPoleReal": -0.007521507077718879,
+        "initialReconstructionRelativeError": 1.2750361101499053e-15,
+        "modalDerivativeRelativeError": 5.862102501307402e-14,
+        "seconds": 26.056867837905884,
+        "render96To192kRelativeError": 5.718077725195552e-05
+      }
+    },
+    {
+      "midi": 68,
+      "string": 1,
+      "fret": 4,
+      "file": "68.wav",
+      "sha256": "be93c83392963c3c345e9fdacae5527db0cd2ce9b63fe6e9f93801ac2595c725",
+      "peakFS": 0.34535811154900053,
+      "physics": {
+        "mu": 0.0003685017651828074,
+        "ei": 2.3571762378965918e-05,
+        "tension": 67.665885,
+        "outerDiameterM": 0.0007,
+        "effectiveDensityKgM3": 957.5326933376766,
+        "speakingLengthM": 0.5159065748820837,
+        "fret": 4,
+        "string": 1,
+        "targetHz": 415.3046975799451,
+        "fixedEndHz": 415.30469757994496,
+        "frequencyChecks": [
+          {
+            "hz": 98.0,
+            "stateVsSchurRelativeError": 1.1046695699276455e-11
+          },
+          {
+            "hz": 223.0,
+            "stateVsSchurRelativeError": 1.7306496080051182e-11
+          },
+          {
+            "hz": 659.0,
+            "stateVsSchurRelativeError": 1.2749838970928153e-11
+          }
+        ],
+        "states": 3565,
+        "initialEnergyJ": 0.0011971855694540294,
+        "maxPoleReal": -0.007521507076150191,
+        "initialReconstructionRelativeError": 1.3366282710013164e-15,
+        "modalDerivativeRelativeError": 7.585150013207622e-14,
+        "seconds": 26.48143458366394,
+        "render96To192kRelativeError": 4.334006441423862e-05
+      }
+    },
+    {
+      "midi": 69,
+      "string": 1,
+      "fret": 5,
+      "file": "69.wav",
+      "sha256": "9f907550ba5a3c265a5ece5ba18c6c493267806330dd236f9892331c6b682473",
+      "peakFS": 0.3249571359375326,
+      "physics": {
+        "mu": 0.0003685017651828074,
+        "ei": 2.3571762378965918e-05,
+        "tension": 67.665885,
+        "outerDiameterM": 0.0007,
+        "effectiveDensityKgM3": 957.5326933376766,
+        "speakingLengthM": 0.4869513489200758,
+        "fret": 5,
+        "string": 1,
+        "targetHz": 440.0,
+        "fixedEndHz": 439.99999999999994,
+        "frequencyChecks": [
+          {
+            "hz": 98.0,
+            "stateVsSchurRelativeError": 2.4275587692524373e-11
+          },
+          {
+            "hz": 223.0,
+            "stateVsSchurRelativeError": 9.438273298694729e-12
+          },
+          {
+            "hz": 659.0,
+            "stateVsSchurRelativeError": 1.2095448916439716e-11
+          }
+        ],
+        "states": 3565,
+        "initialEnergyJ": 0.0011844049095266485,
+        "maxPoleReal": -0.007521507075830764,
+        "initialReconstructionRelativeError": 1.739349209314695e-15,
+        "modalDerivativeRelativeError": 4.633554232722589e-14,
+        "seconds": 26.354629278182983,
+        "render96To192kRelativeError": 6.605485184941455e-05
+      }
+    },
+    {
+      "midi": 70,
+      "string": 1,
+      "fret": 6,
+      "file": "70.wav",
+      "sha256": "039a60f6dfd361f685f8267297dc785d72fcdae2c7f2847b4faf45c7f12e090e",
+      "peakFS": 0.3340201005911237,
+      "physics": {
+        "mu": 0.0003685017651828074,
+        "ei": 2.3571762378965918e-05,
+        "tension": 67.665885,
+        "outerDiameterM": 0.0007,
+        "effectiveDensityKgM3": 957.5326933376766,
+        "speakingLengthM": 0.45962127781686035,
+        "fret": 6,
+        "string": 1,
+        "targetHz": 466.1637615180899,
+        "fixedEndHz": 466.1637615180899,
+        "frequencyChecks": [
+          {
+            "hz": 98.0,
+            "stateVsSchurRelativeError": 2.8377912225244965e-12
+          },
+          {
+            "hz": 223.0,
+            "stateVsSchurRelativeError": 5.457961027603926e-12
+          },
+          {
+            "hz": 659.0,
+            "stateVsSchurRelativeError": 1.746377859363237e-11
+          }
+        ],
+        "states": 3565,
+        "initialEnergyJ": 0.00117127795784759,
+        "maxPoleReal": -0.007521507075372397,
+        "initialReconstructionRelativeError": 1.298427679405786e-15,
+        "modalDerivativeRelativeError": 8.577940711634007e-14,
+        "seconds": 25.49140429496765,
+        "render96To192kRelativeError": 5.558547301112079e-05
+      }
+    },
+    {
+      "midi": 71,
+      "string": 1,
+      "fret": 7,
+      "file": "71.wav",
+      "sha256": "8fc6b09bff95a94cc560556baf787773adcb18105b78afcb8ffade1334b91278",
+      "peakFS": 0.3414677202723941,
+      "physics": {
+        "mu": 0.0003685017651828074,
+        "ei": 2.3571762378965918e-05,
+        "tension": 67.665885,
+        "outerDiameterM": 0.0007,
+        "effectiveDensityKgM3": 957.5326933376766,
+        "speakingLengthM": 0.43382515000038274,
+        "fret": 7,
+        "string": 1,
+        "targetHz": 493.8833012561241,
+        "fixedEndHz": 493.8833012561241,
+        "frequencyChecks": [
+          {
+            "hz": 98.0,
+            "stateVsSchurRelativeError": 4.0929699800502285e-12
+          },
+          {
+            "hz": 223.0,
+            "stateVsSchurRelativeError": 7.053487547485488e-12
+          },
+          {
+            "hz": 659.0,
+            "stateVsSchurRelativeError": 3.085644575876806e-11
+          }
+        ],
+        "states": 3565,
+        "initialEnergyJ": 0.0011566154058228668,
+        "maxPoleReal": -0.00752150707534748,
+        "initialReconstructionRelativeError": 1.1450253424315565e-15,
+        "modalDerivativeRelativeError": 4.043506089502641e-14,
+        "seconds": 26.370606899261475,
+        "render96To192kRelativeError": 5.894707855919516e-05
+      }
+    },
+    {
+      "midi": 72,
+      "string": 1,
+      "fret": 8,
+      "file": "72.wav",
+      "sha256": "ecc1a60432e9fc35f755678871fae70204cfc898db386ebde95e5e4a8d240139",
+      "peakFS": 0.34580790314182636,
+      "physics": {
+        "mu": 0.0003685017651828074,
+        "ei": 2.3571762378965918e-05,
+        "tension": 67.665885,
+        "outerDiameterM": 0.0007,
+        "effectiveDensityKgM3": 957.5326933376766,
+        "speakingLengthM": 0.40947687329165267,
+        "fret": 8,
+        "string": 1,
+        "targetHz": 523.2511306011972,
+        "fixedEndHz": 523.2511306011972,
+        "frequencyChecks": [
+          {
+            "hz": 98.0,
+            "stateVsSchurRelativeError": 1.0519691827084287e-11
+          },
+          {
+            "hz": 223.0,
+            "stateVsSchurRelativeError": 2.2213480841924696e-11
+          },
+          {
+            "hz": 659.0,
+            "stateVsSchurRelativeError": 1.1240214565231724e-10
+          }
+        ],
+        "states": 3565,
+        "initialEnergyJ": 0.001141498938277455,
+        "maxPoleReal": -0.007521507073788275,
+        "initialReconstructionRelativeError": 1.0014349977886e-15,
+        "modalDerivativeRelativeError": 4.228337111520752e-14,
+        "seconds": 26.112029314041138,
+        "render96To192kRelativeError": 7.601695920844473e-05
+      }
+    },
+    {
+      "midi": 73,
+      "string": 1,
+      "fret": 9,
+      "file": "73.wav",
+      "sha256": "666a99d51d3073208e339dc48ea5d08c0192c8ef93d48d6a5766df00fe741219",
+      "peakFS": 0.325637357261544,
+      "physics": {
+        "mu": 0.0003685017651828074,
+        "ei": 2.3571762378965918e-05,
+        "tension": 67.665885,
+        "outerDiameterM": 0.0007,
+        "effectiveDensityKgM3": 957.5326933376766,
+        "speakingLengthM": 0.38649518758008833,
+        "fret": 9,
+        "string": 1,
+        "targetHz": 554.3652619537442,
+        "fixedEndHz": 554.3652619537442,
+        "frequencyChecks": [
+          {
+            "hz": 98.0,
+            "stateVsSchurRelativeError": 1.227637388757898e-11
+          },
+          {
+            "hz": 223.0,
+            "stateVsSchurRelativeError": 3.887795551230276e-12
+          },
+          {
+            "hz": 659.0,
+            "stateVsSchurRelativeError": 3.9223057405053526e-11
+          }
+        ],
+        "states": 3565,
+        "initialEnergyJ": 0.0011254136701882341,
+        "maxPoleReal": -0.007521507075800039,
+        "initialReconstructionRelativeError": 1.3014255342382993e-15,
+        "modalDerivativeRelativeError": 5.5781462728926667e-14,
+        "seconds": 25.048083782196045,
+        "render96To192kRelativeError": 6.844725106227952e-05
+      }
+    },
+    {
+      "midi": 74,
+      "string": 1,
+      "fret": 10,
+      "file": "74.wav",
+      "sha256": "68e8ef7a03a33bdeb29c7b731911437441c6edd32d1eb0a77f2ebfa4be8741a6",
+      "peakFS": 0.31591794545777707,
+      "physics": {
+        "mu": 0.0003685017651828074,
+        "ei": 2.3571762378965918e-05,
+        "tension": 67.665885,
+        "outerDiameterM": 0.0007,
+        "effectiveDensityKgM3": 957.5326933376766,
+        "speakingLengthM": 0.36480339362543723,
+        "fret": 10,
+        "string": 1,
+        "targetHz": 587.3295358348151,
+        "fixedEndHz": 587.3295358348151,
+        "frequencyChecks": [
+          {
+            "hz": 98.0,
+            "stateVsSchurRelativeError": 2.5236948533943257e-11
+          },
+          {
+            "hz": 223.0,
+            "stateVsSchurRelativeError": 2.5244758225419113e-11
+          },
+          {
+            "hz": 659.0,
+            "stateVsSchurRelativeError": 6.9586197109845045e-12
+          }
+        ],
+        "states": 3565,
+        "initialEnergyJ": 0.0011079989527641339,
+        "maxPoleReal": -0.0075215070767165005,
+        "initialReconstructionRelativeError": 1.2519919852819743e-15,
+        "modalDerivativeRelativeError": 5.421967276195765e-14,
+        "seconds": 25.346214771270752,
+        "render96To192kRelativeError": 8.691566718792694e-05
+      }
+    },
+    {
+      "midi": 75,
+      "string": 1,
+      "fret": 11,
+      "file": "75.wav",
+      "sha256": "41c6a3274302abcafc8ac1eb291e3cddf058eb17b1c4097ae7f261b0829289e8",
+      "peakFS": 0.2870109840259372,
+      "physics": {
+        "mu": 0.0003685017651828074,
+        "ei": 2.3571762378965918e-05,
+        "tension": 67.665885,
+        "outerDiameterM": 0.0007,
+        "effectiveDensityKgM3": 957.5326933376766,
+        "speakingLengthM": 0.34432909708117565,
+        "fret": 11,
+        "string": 1,
+        "targetHz": 622.2539674441618,
+        "fixedEndHz": 622.2539674441618,
+        "frequencyChecks": [
+          {
+            "hz": 98.0,
+            "stateVsSchurRelativeError": 2.3705022215070944e-11
+          },
+          {
+            "hz": 223.0,
+            "stateVsSchurRelativeError": 1.1590925864174e-11
+          },
+          {
+            "hz": 659.0,
+            "stateVsSchurRelativeError": 7.650881033588842e-12
+          }
+        ],
+        "states": 3565,
+        "initialEnergyJ": 0.0010895536800200221,
+        "maxPoleReal": -0.007521507075429578,
+        "initialReconstructionRelativeError": 1.7663398488784986e-15,
+        "modalDerivativeRelativeError": 4.628271016746278e-14,
+        "seconds": 25.394583702087402,
+        "render96To192kRelativeError": 5.429344723438628e-05
+      }
+    },
+    {
+      "midi": 76,
+      "string": 1,
+      "fret": 12,
+      "file": "76.wav",
+      "sha256": "3da5c59434f2f033e234de3f379146d12c0c6dd00de9db7ea64421e105b2bbe2",
+      "peakFS": 0.2781251740910891,
+      "physics": {
+        "mu": 0.0003685017651828074,
+        "ei": 2.3571762378965918e-05,
+        "tension": 67.665885,
+        "outerDiameterM": 0.0007,
+        "effectiveDensityKgM3": 957.5326933376766,
+        "speakingLengthM": 0.3250039668850869,
+        "fret": 12,
+        "string": 1,
+        "targetHz": 659.2551138257398,
+        "fixedEndHz": 659.2551138257398,
+        "frequencyChecks": [
+          {
+            "hz": 98.0,
+            "stateVsSchurRelativeError": 2.8979048902534132e-11
+          },
+          {
+            "hz": 223.0,
+            "stateVsSchurRelativeError": 2.6472165687701375e-11
+          },
+          {
+            "hz": 659.0,
+            "stateVsSchurRelativeError": 2.1724851391657637e-11
+          }
+        ],
+        "states": 3565,
+        "initialEnergyJ": 0.0010700911357080867,
+        "maxPoleReal": -0.007521507076795506,
+        "initialReconstructionRelativeError": 1.517427837810765e-15,
+        "modalDerivativeRelativeError": 3.5824681217936875e-14,
+        "seconds": 24.862242698669434,
+        "render96To192kRelativeError": 7.506400620041247e-05
+      }
+    },
+    {
+      "midi": 77,
+      "string": 1,
+      "fret": 13,
+      "file": "77.wav",
+      "sha256": "6ac6456d77fc24beaf9c1068da1118aa41ca547a0cf89d8dbb16a9c8b7bd55dd",
+      "peakFS": 0.2735926757344882,
+      "physics": {
+        "mu": 0.0003685017651828074,
+        "ei": 2.3571762378965918e-05,
+        "tension": 67.665885,
+        "outerDiameterM": 0.0007,
+        "effectiveDensityKgM3": 957.5326933376766,
+        "speakingLengthM": 0.30676350721067047,
+        "fret": 13,
+        "string": 1,
+        "targetHz": 698.4564628660078,
+        "fixedEndHz": 698.4564628660075,
+        "frequencyChecks": [
+          {
+            "hz": 98.0,
+            "stateVsSchurRelativeError": 5.001019088955869e-11
+          },
+          {
+            "hz": 223.0,
+            "stateVsSchurRelativeError": 1.7402929980470987e-11
+          },
+          {
+            "hz": 659.0,
+            "stateVsSchurRelativeError": 7.501001896513081e-12
+          }
+        ],
+        "states": 3565,
+        "initialEnergyJ": 0.0010494414407331027,
+        "maxPoleReal": -0.007521507074635885,
+        "initialReconstructionRelativeError": 1.6106786300629332e-15,
+        "modalDerivativeRelativeError": 2.2259266248838146e-14,
+        "seconds": 25.277674198150635,
+        "render96To192kRelativeError": 7.31429043205318e-05
+      }
+    },
+    {
+      "midi": 78,
+      "string": 1,
+      "fret": 14,
+      "file": "78.wav",
+      "sha256": "9dd8759394c29e1ef7570c91d797d746c80d7d2df23958698fa25cd34cfd5d0f",
+      "peakFS": 0.303076708495668,
+      "physics": {
+        "mu": 0.0003685017651828074,
+        "ei": 2.3571762378965918e-05,
+        "tension": 67.665885,
+        "outerDiameterM": 0.0007,
+        "effectiveDensityKgM3": 957.5326933376766,
+        "speakingLengthM": 0.2895468422182883,
+        "fret": 14,
+        "string": 1,
+        "targetHz": 739.9888454232688,
+        "fixedEndHz": 739.9888454232688,
+        "frequencyChecks": [
+          {
+            "hz": 98.0,
+            "stateVsSchurRelativeError": 8.511758925508112e-11
+          },
+          {
+            "hz": 223.0,
+            "stateVsSchurRelativeError": 3.5349737216775407e-11
+          },
+          {
+            "hz": 659.0,
+            "stateVsSchurRelativeError": 4.421297293338573e-12
+          }
+        ],
+        "states": 3565,
+        "initialEnergyJ": 0.0010274882652255063,
+        "maxPoleReal": -0.007521507077066444,
+        "initialReconstructionRelativeError": 1.1067194491125162e-15,
+        "modalDerivativeRelativeError": 4.690060208554475e-14,
+        "seconds": 24.87978959083557,
+        "render96To192kRelativeError": 7.614243885237179e-05
+      }
+    },
+    {
+      "midi": 79,
+      "string": 1,
+      "fret": 15,
+      "file": "79.wav",
+      "sha256": "a725fff1f3ce6c299d1e3047a4d76ac26056236032ce1d0a249cb89d42d67773",
+      "peakFS": 0.250234996594016,
+      "physics": {
+        "mu": 0.0003685017651828074,
+        "ei": 2.3571762378965918e-05,
+        "tension": 67.665885,
+        "outerDiameterM": 0.0007,
+        "effectiveDensityKgM3": 957.5326933376766,
+        "speakingLengthM": 0.2732965128876769,
+        "fret": 15,
+        "string": 1,
+        "targetHz": 783.9908719634985,
+        "fixedEndHz": 783.9908719634986,
+        "frequencyChecks": [
+          {
+            "hz": 98.0,
+            "stateVsSchurRelativeError": 4.010646381233141e-11
+          },
+          {
+            "hz": 223.0,
+            "stateVsSchurRelativeError": 2.828914279435616e-11
+          },
+          {
+            "hz": 659.0,
+            "stateVsSchurRelativeError": 2.1915473564251385e-11
+          }
+        ],
+        "states": 3565,
+        "initialEnergyJ": 0.0010041617299249466,
+        "maxPoleReal": -0.007521507073836992,
+        "initialReconstructionRelativeError": 1.2711132445123586e-15,
+        "modalDerivativeRelativeError": 6.379504185702574e-14,
+        "seconds": 24.86017084121704,
+        "render96To192kRelativeError": 0.0001144113432449169
+      }
+    },
+    {
+      "midi": 80,
+      "string": 1,
+      "fret": 16,
+      "file": "80.wav",
+      "sha256": "d17f13879dee0896d6ca6fc0cb34b06d458b962f4835b42fd404e54766747cee",
+      "peakFS": 0.22731285973354198,
+      "physics": {
+        "mu": 0.0003685017651828074,
+        "ei": 2.3571762378965918e-05,
+        "tension": 67.665885,
+        "outerDiameterM": 0.0007,
+        "effectiveDensityKgM3": 957.5326933376766,
+        "speakingLengthM": 0.2579582852537694,
+        "fret": 16,
+        "string": 1,
+        "targetHz": 830.6093951598903,
+        "fixedEndHz": 830.6093951598904,
+        "frequencyChecks": [
+          {
+            "hz": 98.0,
+            "stateVsSchurRelativeError": 1.118565193872718e-10
+          },
+          {
+            "hz": 223.0,
+            "stateVsSchurRelativeError": 7.747920418456447e-11
+          },
+          {
+            "hz": 659.0,
+            "stateVsSchurRelativeError": 3.2837702355598184e-11
+          }
+        ],
+        "states": 3565,
+        "initialEnergyJ": 0.0009793961001663576,
+        "maxPoleReal": -0.0075215070749374575,
+        "initialReconstructionRelativeError": 1.1740515181304917e-15,
+        "modalDerivativeRelativeError": 5.556815699402087e-14,
+        "seconds": 25.071889400482178,
+        "render96To192kRelativeError": 7.00004540646675e-05
+      }
+    },
+    {
+      "midi": 81,
+      "string": 1,
+      "fret": 17,
+      "file": "81.wav",
+      "sha256": "18ea12b8710bf866b41187155d6383b9263f0493b3d6eb60fb6b1424eda7f02e",
+      "peakFS": 0.19625804932771918,
+      "physics": {
+        "mu": 0.0003685017651828074,
+        "ei": 2.3571762378965918e-05,
+        "tension": 67.665885,
+        "outerDiameterM": 0.0007,
+        "effectiveDensityKgM3": 957.5326933376766,
+        "speakingLengthM": 0.2434809694058318,
+        "fret": 17,
+        "string": 1,
+        "targetHz": 880.0,
+        "fixedEndHz": 880.0,
+        "frequencyChecks": [
+          {
+            "hz": 98.0,
+            "stateVsSchurRelativeError": 9.40157519658615e-11
+          },
+          {
+            "hz": 223.0,
+            "stateVsSchurRelativeError": 2.9298528004822665e-11
+          },
+          {
+            "hz": 659.0,
+            "stateVsSchurRelativeError": 3.2829092089674324e-11
+          }
+        ],
+        "states": 3565,
+        "initialEnergyJ": 0.0009531345775919667,
+        "maxPoleReal": -0.007521507075742627,
+        "initialReconstructionRelativeError": 1.2199789021221105e-15,
+        "modalDerivativeRelativeError": 3.3091700886959745e-14,
+        "seconds": 25.09394073486328,
+        "render96To192kRelativeError": 8.038866263334062e-05
+      }
+    },
+    {
+      "midi": 82,
+      "string": 1,
+      "fret": 18,
+      "file": "82.wav",
+      "sha256": "d6626b0b8a7ec44ce5fa65f9604cb15efecd8eb101b7869cf71823b692a7eac3",
+      "peakFS": 0.22122376987376935,
+      "physics": {
+        "mu": 0.0003685017651828074,
+        "ei": 2.3571762378965918e-05,
+        "tension": 67.665885,
+        "outerDiameterM": 0.0007,
+        "effectiveDensityKgM3": 957.5326933376766,
+        "speakingLengthM": 0.22981624864584002,
+        "fret": 18,
+        "string": 1,
+        "targetHz": 932.3275230361799,
+        "fixedEndHz": 932.3275230361799,
+        "frequencyChecks": [
+          {
+            "hz": 98.0,
+            "stateVsSchurRelativeError": 8.589780269252664e-11
+          },
+          {
+            "hz": 223.0,
+            "stateVsSchurRelativeError": 5.907092529439514e-11
+          },
+          {
+            "hz": 659.0,
+            "stateVsSchurRelativeError": 4.051323484688374e-11
+          }
+        ],
+        "states": 3565,
+        "initialEnergyJ": 0.0009253461723376941,
+        "maxPoleReal": -0.007521507074483152,
+        "initialReconstructionRelativeError": 1.0579885514748284e-15,
+        "modalDerivativeRelativeError": 2.2381042659412043e-14,
+        "seconds": 25.044121980667114,
+        "render96To192kRelativeError": 9.56460651791241e-05
+      }
+    },
+    {
+      "midi": 83,
+      "string": 1,
+      "fret": 19,
+      "file": "83.wav",
+      "sha256": "ea74e19c884ed5fb5d328c9d288bef6c08b52e60c2ba594544b3cd9e3fad0e8a",
+      "peakFS": 0.2566596673471814,
+      "physics": {
+        "mu": 0.0003685017651828074,
+        "ei": 2.3571762378965918e-05,
+        "tension": 67.665885,
+        "outerDiameterM": 0.0007,
+        "effectiveDensityKgM3": 957.5326933376766,
+        "speakingLengthM": 0.2169185182359259,
+        "fret": 19,
+        "string": 1,
+        "targetHz": 987.7666025122483,
+        "fixedEndHz": 987.7666025122483,
+        "frequencyChecks": [
+          {
+            "hz": 98.0,
+            "stateVsSchurRelativeError": 1.19001515433953e-10
+          },
+          {
+            "hz": 223.0,
+            "stateVsSchurRelativeError": 2.261200417140702e-11
+          },
+          {
+            "hz": 659.0,
+            "stateVsSchurRelativeError": 3.006942022753502e-11
+          }
+        ],
+        "states": 3565,
+        "initialEnergyJ": 0.0008959325674248476,
+        "maxPoleReal": -0.0075215070752141615,
+        "initialReconstructionRelativeError": 1.2541170434986412e-15,
+        "modalDerivativeRelativeError": 3.9199176782362714e-14,
+        "seconds": 24.446702003479004,
+        "render96To192kRelativeError": 8.861244295053768e-05
+      }
+    },
+    {
+      "midi": 84,
+      "string": 1,
+      "fret": 20,
+      "file": "84.wav",
+      "sha256": "bbf2154942b3aa197e6eba5637fdda380e3a186bfd97a228a70b36c19d44f1fb",
+      "peakFS": 0.25616516221481916,
+      "physics": {
+        "mu": 0.0003685017651828074,
+        "ei": 2.3571762378965918e-05,
+        "tension": 67.665885,
+        "outerDiameterM": 0.0007,
+        "effectiveDensityKgM3": 957.5326933376766,
+        "speakingLengthM": 0.20474473319667363,
+        "fret": 20,
+        "string": 1,
+        "targetHz": 1046.5022612023945,
+        "fixedEndHz": 1046.502261202662,
+        "frequencyChecks": [
+          {
+            "hz": 98.0,
+            "stateVsSchurRelativeError": 1.7665460563720279e-10
+          },
+          {
+            "hz": 223.0,
+            "stateVsSchurRelativeError": 1.0341455893744302e-10
+          },
+          {
+            "hz": 659.0,
+            "stateVsSchurRelativeError": 3.6192116680264986e-11
+          }
+        ],
+        "states": 3565,
+        "initialEnergyJ": 0.0008646467790813087,
+        "maxPoleReal": -0.007521507075486151,
+        "initialReconstructionRelativeError": 1.585400982004356e-15,
+        "modalDerivativeRelativeError": 3.0344281058135066e-14,
+        "seconds": 24.306403636932373,
+        "render96To192kRelativeError": 0.00013328629720256785
+      }
+    },
+    {
+      "midi": 85,
+      "string": 1,
+      "fret": 21,
+      "file": "85.wav",
+      "sha256": "7308f801bddc1531facf461053e23615906a80712f297b2fb8753fe8f077dc67",
+      "peakFS": 0.23554247383527677,
+      "physics": {
+        "mu": 0.0003685017651828074,
+        "ei": 2.3571762378965918e-05,
+        "tension": 67.665885,
+        "outerDiameterM": 0.0007,
+        "effectiveDensityKgM3": 957.5326933376766,
+        "speakingLengthM": 0.19325426464856646,
+        "fret": 21,
+        "string": 1,
+        "targetHz": 1108.7305239074883,
+        "fixedEndHz": 1108.7305239080938,
+        "frequencyChecks": [
+          {
+            "hz": 98.0,
+            "stateVsSchurRelativeError": 1.3672613054144042e-11
+          },
+          {
+            "hz": 223.0,
+            "stateVsSchurRelativeError": 1.921154311750655e-10
+          },
+          {
+            "hz": 659.0,
+            "stateVsSchurRelativeError": 3.702953578503662e-11
+          }
+        ],
+        "states": 3565,
+        "initialEnergyJ": 0.0008315494086674886,
+        "maxPoleReal": -0.0075215070748038395,
+        "initialReconstructionRelativeError": 1.4751000278079124e-15,
+        "modalDerivativeRelativeError": 3.1350313288750525e-14,
+        "seconds": 24.863033533096313,
+        "render96To192kRelativeError": 0.00016169056176773027
+      }
+    },
+    {
+      "midi": 86,
+      "string": 1,
+      "fret": 22,
+      "file": "86.wav",
+      "sha256": "f5e0ca74901850e4013472ed3d15bd8faa9333784a5f5fbe396c0eb80b760038",
+      "peakFS": 0.22990215442314035,
+      "physics": {
+        "mu": 0.0003685017651828074,
+        "ei": 2.3571762378965918e-05,
+        "tension": 67.665885,
+        "outerDiameterM": 0.0007,
+        "effectiveDensityKgM3": 957.5326933376766,
+        "speakingLengthM": 0.18240876421661575,
+        "fret": 22,
+        "string": 1,
+        "targetHz": 1174.6590716696303,
+        "fixedEndHz": 1174.6590716706326,
+        "frequencyChecks": [
+          {
+            "hz": 98.0,
+            "stateVsSchurRelativeError": 3.7972871165625524e-10
+          },
+          {
+            "hz": 223.0,
+            "stateVsSchurRelativeError": 2.3125024910985252e-10
+          },
+          {
+            "hz": 659.0,
+            "stateVsSchurRelativeError": 9.057919058047013e-11
+          }
+        ],
+        "states": 3565,
+        "initialEnergyJ": 0.0007965099953820066,
+        "maxPoleReal": -0.007521507076312875,
+        "initialReconstructionRelativeError": 1.2803797290196299e-15,
+        "modalDerivativeRelativeError": 2.7535931669271295e-14,
+        "seconds": 24.378416299819946,
+        "render96To192kRelativeError": 0.00011700769741027627
+      }
+    },
+    {
+      "midi": 87,
+      "string": 1,
+      "fret": 23,
+      "file": "87.wav",
+      "sha256": "029f51f3583f900ee38b48a389f0d5b29b99a3ae2fc49cd128f1b55a2f8900cc",
+      "peakFS": 0.19422679936944184,
+      "physics": {
+        "mu": 0.0003685017651828074,
+        "ei": 2.3571762378965918e-05,
+        "tension": 67.665885,
+        "outerDiameterM": 0.0007,
+        "effectiveDensityKgM3": 957.5326933376766,
+        "speakingLengthM": 0.17217203604613765,
+        "fret": 23,
+        "string": 1,
+        "targetHz": 1244.5079348883237,
+        "fixedEndHz": 1244.5079348897912,
+        "frequencyChecks": [
+          {
+            "hz": 98.0,
+            "stateVsSchurRelativeError": 1.7495824527824758e-10
+          },
+          {
+            "hz": 223.0,
+            "stateVsSchurRelativeError": 2.8754088281318125e-10
+          },
+          {
+            "hz": 659.0,
+            "stateVsSchurRelativeError": 6.601435336640137e-11
+          }
+        ],
+        "states": 3565,
+        "initialEnergyJ": 0.0007593957617259301,
+        "maxPoleReal": -0.007521507074608453,
+        "initialReconstructionRelativeError": 1.1236884809212621e-15,
+        "modalDerivativeRelativeError": 2.1468939675122723e-14,
+        "seconds": 24.402440547943115,
+        "render96To192kRelativeError": 0.00012234684150471686
+      }
+    },
+    {
+      "midi": 88,
+      "string": 1,
+      "fret": 24,
+      "file": "88.wav",
+      "sha256": "b3a7683f691e78ab661c1b1627666e9c372452d4d68e27e2d5f50508f086158e",
+      "peakFS": 0.18715009125640028,
+      "physics": {
+        "mu": 0.0003685017651828074,
+        "ei": 2.3571762378965918e-05,
+        "tension": 67.665885,
+        "outerDiameterM": 0.0007,
+        "effectiveDensityKgM3": 957.5326933376766,
+        "speakingLengthM": 0.16250991600230083,
+        "fret": 24,
+        "string": 1,
+        "targetHz": 1318.5102276514797,
+        "fixedEndHz": 1318.510227653489,
+        "frequencyChecks": [
+          {
+            "hz": 98.0,
+            "stateVsSchurRelativeError": 1.2456166475448675e-10
+          },
+          {
+            "hz": 223.0,
+            "stateVsSchurRelativeError": 2.284593509449473e-10
+          },
+          {
+            "hz": 659.0,
+            "stateVsSchurRelativeError": 4.11457525210386e-11
+          }
+        ],
+        "states": 3565,
+        "initialEnergyJ": 0.0007200537872220805,
+        "maxPoleReal": -0.007521507076139748,
+        "initialReconstructionRelativeError": 1.421911416932427e-15,
+        "modalDerivativeRelativeError": 3.385750651416909e-14,
+        "seconds": 16.579914569854736,
+        "render96To192kRelativeError": 0.00011837397414334557
+      }
+    }
+  ],
+  "limits": [
+    "Diameter and nominal kgf tension are transcribed from the photograph. Nominal tension is interpreted at 650 mm and standard tuning, which the photograph does not independently confirm.",
+    "Plain-string effective linear mass is inferred from nominal tension and target frequency with assumed bending stiffness; it is not a measured nylon bulk density.",
+    "Wound core/wire diameters are inferred from outer diameter and nominal tension using a single close-packed round copper winding and freely sliding nylon filaments. These internal dimensions are not product specifications.",
+    "One active string per generated note; five other strings contribute mean preload. Polyphony mixes independently calculated voices, without dynamic sympathetic coupling among six strings.",
+    "Inherited whole-shell acoustic high-frequency accuracy limits still apply. No claim of reproducing a real 520R set or a specific guitar.",
+    "Fretted notes shorten the active speaking length with the inherited nut-body port; finger damping and a spatially moved fret contact are not modeled.",
+    "High-frequency acoustic reduction is inherited from latest B, including its unresolved 3500 Hz error. State/Schur agreement verifies assembly, not continuum accuracy."
+  ]
+}
