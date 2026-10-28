@@ -31,7 +31,19 @@ export async function loadGuitar(context, { destination = context.destination, o
       source.playbackRate.value = 2 ** ((midi - reference) / 12);
       volume.gain.value = gain;
       source.connect(volume).connect(destination);
-      source.onended = () => { source.disconnect(); volume.disconnect(); };
+      let ended = false, releaseAt = Infinity;
+      source.onended = () => { ended = true; source.disconnect(); volume.disconnect(); };
+      // Note-off follows the transport clock; a short fade prevents clicks.
+      source.release = (at = context.currentTime) => {
+        if (!Number.isFinite(at)) throw new TypeError('Invalid guitar release time');
+        at = Math.max(at, context.currentTime);
+        if (ended || at >= releaseAt) return;
+        releaseAt = at;
+        volume.gain.cancelScheduledValues(at);
+        volume.gain.setValueAtTime(gain, at);
+        volume.gain.linearRampToValueAtTime(0, at + 0.012);
+        source.stop(at + 0.012);
+      };
       source.start(Math.max(when, context.currentTime));
       return source;
     },

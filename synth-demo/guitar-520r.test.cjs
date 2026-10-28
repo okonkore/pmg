@@ -3,7 +3,7 @@ const folder=path.join(__dirname,'instruments/guitar-520r-spruce');
 function setup(fail){
  const sources=[],progress=[],destination={},buffers=new Map();let requests=0;
  const notes=[21,40,50,64].map(midi=>({midi,file:midi+'.wav'}));
- const context={currentTime:2,destination,async decodeAudioData(data){const buffer={midi:new Uint8Array(data)[0]};buffers.set(buffer.midi,buffer);return buffer},createBufferSource(){const s={playbackRate:{},connect(n){return n},disconnect(){this.disconnected=true},start(at){this.at=at}};sources.push(s);return s},createGain(){return {gain:{},connect(){},disconnect(){}}}};
+ const context={currentTime:2,destination,async decodeAudioData(data){const buffer={midi:new Uint8Array(data)[0]};buffers.set(buffer.midi,buffer);return buffer},createBufferSource(){const s={playbackRate:{},connect(n){this.volume=n;return n},disconnect(){this.disconnected=true},start(at){this.at=at},stop(at){(this.stops??=[]).push(at)}};sources.push(s);return s},createGain(){const events=[];return {events,gain:{cancelScheduledValues(at){events.push(['cancel',at])},setValueAtTime(value,at){events.push(['set',value,at])},linearRampToValueAtTime(value,at){events.push(['ramp',value,at])}},connect(){},disconnect(){}}}};
  const sandbox={URL,fetch:async url=>{requests++;const file=new URL(url).pathname.split('/').pop();return {ok:!fail,status:503,json:async()=>({notes}),arrayBuffer:async()=>Uint8Array.of(parseInt(file)).buffer}}};
  vm.createContext(sandbox);const code=fs.readFileSync(folder+'/instrument.js','utf8').replace('export async function','async function').replaceAll('import.meta.url',"'https://example.test/instrument.js'");vm.runInContext(code+';this.loadGuitar=loadGuitar',sandbox);
  return {sandbox,context,sources,progress,buffers,get requests(){return requests}};
@@ -23,4 +23,16 @@ test('photo specification, complete sample bank, WAV hashes and physical conditi
  const reference=manifest.notes.find(n=>n.midi===40).physics;
  for(const note of low){const p=note.physics;assert.equal(note.string,6);assert.equal(note.fret,0);assert.equal(p.speakingLengthM,.65);assert.equal(p.lowTension,true);assert.equal(p.mu,reference.mu);assert.equal(p.ei,reference.ei);assert.ok(p.tension>0&&p.tension<reference.tension);assert.ok(p.pullMm<=5.00000001);assert.equal(p.tuningOffsetSemitones,note.midi-40);}
  assert.equal(strings.size,6);
+});
+
+test('note-off fades and stops on the audio clock, can be brought forward, and never revives an ended note',async()=>{
+ const s=setup(),guitar=await s.sandbox.loadGuitar(s.context);
+ const source=guitar.play({midi:40,gain:.7,when:5});source.release(5.25);
+ assert.equal(source.stops[0],5.262);assert.deepEqual(source.volume.events,[['cancel',5.25],['set',.7,5.25],['ramp',0,5.262]]);
+ source.release(5.1);assert.ok(Math.abs(source.stops.at(-1)-5.112)<1e-12);const count=source.stops.length;
+ source.release(5.2);assert.equal(source.stops.length,count);
+ source.onended();source.release(3);assert.equal(source.stops.length,count);
+ const immediate=guitar.play({midi:21});immediate.release(0);assert.equal(immediate.stops[0],2.012);
+ const cancelled=guitar.play({midi:64,when:10});cancelled.release(3);assert.ok(cancelled.stops[0]<cancelled.at,'release before onset cancels a scheduled note');
+ assert.throws(()=>immediate.release(NaN));
 });

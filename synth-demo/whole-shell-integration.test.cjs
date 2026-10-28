@@ -33,3 +33,13 @@ test('app voice preserves natural decay and stops/cleans up explicitly',()=>{
  assert.match(html,/await ensureWholeShell\(\)/);
  assert.match(fs.readFileSync(__dirname+'/../.github/workflows/pages.yml','utf8'),/cp -R synth-demo\/instruments _site\//);
 });
+
+
+test('app voice forwards scheduled note-off to a sample with release support',()=>{
+ const html=fs.readFileSync(__dirname+'/index.html','utf8');
+ const code=html.slice(html.indexOf('function playWholeShell('),html.indexOf('function presetsName('));
+ let released,cleaned=0;const source={onended(){cleaned++},release(at){released=at},stop(){}};
+ const sandbox={ctx:{currentTime:3},wholeShellInstrument:{play(){return source}},voices:new Map(),allVoices:new Set(),refreshKeys(){},$:()=>({}),noteName:String,presetsName:()=> 'sample'};
+ vm.createContext(sandbox);vm.runInContext(code,sandbox);const voice=sandbox.playWholeShell('a',64,5,1);
+ voice.release(5.2);assert.equal(released,5.2);voice.kill();voice.release(6);assert.equal(released,5.2);assert.equal(cleaned,1);
+});

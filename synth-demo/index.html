@@ -34,7 +34,7 @@
  <tr><th scope="row">6 · E2</th><td>ナイロン芯＋巻線</td><td>1.07 mm</td><td>6.3 kgf</td></tr>
  </tbody></table></div>
  <p class="hint">前板：スプルースの仮定物性 · 厚さ2.5 mm ／ 弦長650 mm ／ 標準調弦</p>
- <p class="hint">巻線は銅を仮定し、芯径・巻線径は外径と公称張力から推定しています。製品の内部構造の実測値ではありません。<br>A0〜E6の68音は各音程を計算した約3秒の自然減衰音です。E6より高い20音のみ簡易移調します。離鍵では消音せず、停止ボタンで止められます。<br>和音は独立した発音の合成で、6本の弦の共鳴は含みません。</p>
+ <p class="hint">巻線は銅を仮定し、芯径・巻線径は外径と公称張力から推定しています。製品の内部構造の実測値ではありません。<br>A0〜E6の68音は各音程を計算した約3秒の自然減衰音です。E6より高い20音のみ簡易移調します。鍵盤を離すか音符が終わると、約12 msで消音します。<br>和音は独立した発音の合成で、6本の弦の共鳴は含みません。</p>
  <p class="hint" id="guitar-520r-note-info" aria-live="polite">低音拡張 A0〜D♯2：6弦の太さと650 mmの弦長を保ち、張力を約0.70〜5.61 kgfに下げて計算しています。</p>
  <p class="hint"><a href="instruments/guitar-520r-spruce/README.md" target="_blank" rel="noopener">計算条件と推定値について</a></p>
 </details>
@@ -343,7 +343,7 @@ async function ensure520R(){
  if(!guitar520rLoading){
   const generation=guitarGeneration;
   $('status').textContent='520Rの音源を読み込み中…';
-  guitar520rLoading=import('./instruments/guitar-520r-spruce/instrument.js?v=low-tension-1').then(({loadGuitar})=>loadGuitar(ctx,{destination:bus,onProgress:(done,total)=>{if(is520R()&&generation===guitarGeneration)$('status').textContent='520Rの音源を読み込み中… '+done+' / '+total;}})).then(instrument=>guitar520rInstrument=instrument).finally(()=>{guitar520rLoading=undefined});
+  guitar520rLoading=import('./instruments/guitar-520r-spruce/instrument.js?v=note-off-1').then(({loadGuitar})=>loadGuitar(ctx,{destination:bus,onProgress:(done,total)=>{if(is520R()&&generation===guitarGeneration)$('status').textContent='520Rの音源を読み込み中… '+done+' / '+total;}})).then(instrument=>guitar520rInstrument=instrument).finally(()=>{guitar520rLoading=undefined});
  }
  return guitar520rLoading;
 }
@@ -362,7 +362,7 @@ function playWholeShell(id,midi,when,velocity,instrument=wholeShellInstrument){
  const source=instrument.play({midi,when,gain:velocity});
  const cleanup=source.onended;
  let cleaned=false;
- const voice={id,midi,release(){/* Preserve the recorded natural decay. */},kill(){
+ const voice={id,midi,release(at=ctx.currentTime){if(!cleaned)source.release?.(at)},kill(){
   if(cleaned)return;cleaned=true;try{source.stop()}catch{}cleanup();
   allVoices.delete(voice);if(voices.get(id)===voice)voices.delete(id);refreshKeys();
  }};
