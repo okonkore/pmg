@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="ja">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ギター全体の構造をつなぎ直した比較</title>
+<style>
+:root{font-family:system-ui,sans-serif;color:#203c32;background:#f2f5ef}body{max-width:720px;margin:auto;padding:24px 18px 60px;line-height:1.8}h1{font-size:1.6rem}section{background:#fffdf7;border:1px solid #ccd6cb;border-radius:16px;padding:20px;margin:18px 0}button{display:block;width:100%;padding:20px 12px;margin:12px 0;font:inherit;font-weight:700;color:#173d2e;background:#e4eee1;border:1px solid #8ba18a;border-radius:12px;cursor:pointer}button:focus-visible{outline:3px solid #47785c;outline-offset:3px}audio{width:100%}small{display:block;color:#526558}#status{min-height:1.8em}a{color:#216442}
+</style>
+<h1>ギター全体の構造をつなぎ直した比較</h1>
+<p>単線 E4 を、同じ力・位置で弾きます。A → B の順で聴いてください。</p>
+<p><small>高い帯域の数値精度には課題が残る試作です。今回は、出だしの低い打撃音が自然になったかを中心に聴いてください。</small></p>
+<section aria-label="比較音">
+<button type="button" data-file="whole-shell-audio/previous.wav">▶ A：前回の音（実際の幅の力木）</button>
+<button type="button" data-file="whole-shell-audio/candidate.wav">▶ B：全体の構造と音場をつなぎ直した音</button>
+<p id="status" role="status" aria-live="polite">ボタンを押すと2秒の音が鳴ります。</p>
+<audio id="player" controls preload="none" aria-label="比較音の再生"></audio>
+<small>AとBは同じ音量設定です。再生中に別のボタンを押すと、先頭から切り替わります。</small>
+</section>
+<section>
+<p><strong>聴いてほしいところ</strong><br>出だしの「コッ」は、AよりBで自然になっていますか。あわせて、弦の響きが痩せたり不自然になったりしていないかを聴いてください。</p>
+<p>Bは、前板・力木・裏板・側板・ネックを含む新しい構造に、弦と内外の空気を接続した試作です。弦の常時張力で生じるボディの変形も計算しています。Aから一つの要素だけを変えた比較ではありません。</p>
+<small>Bのネック根元は理想固定です。木材損失などには代理の物性値があり、特定の実機を再現したものではありません。EQ、出だしの加工、個別の音量補正はありません。末尾30msだけ共通のフェードがあります。</small>
+<p><a href="whole-shell-audio/conditions.json">計算条件と検証結果</a></p>
+</section>
+<section>
+<p>実際のギターの参考音です。楽器・弾き方・録音距離が異なるので、A/Bとの音量比較には使えません。</p>
+<button type="button" data-file="real-reference-audio/recording.wav">▶ 実際のギター E4（参考）</button>
+<small>University of Iowa Musical Instrument Samples / Raimundo 118, mf。<a href="https://theremin.music.uiowa.edu/MISguitar.html">録音の出典</a>・<a href="https://theremin.music.uiowa.edu/MIS.html">使用条件</a></small>
+</section>
+<script>
+const player=document.getElementById('player');
+const status=document.getElementById('status');
+let request=0;
+for(const button of document.querySelectorAll('[data-file]'))button.addEventListener('click',async()=>{
+ const id=++request;player.pause();const label=button.textContent.replace('▶ ','');
+ status.textContent=label+'：読み込み中…';player.src=button.dataset.file+'?v=1';
+ try{await player.play();if(id===request)status.textContent=label+'：再生中';}
+ catch(error){if(id===request)status.textContent='再生できませんでした。もう一度ボタンを押してください。';}
+});
+player.addEventListener('ended',()=>{status.textContent='再生が終わりました。もう一方と聴き比べてください。';});
+player.addEventListener('error',()=>{status.textContent='音声を読み込めませんでした。通信を確認してください。';});
+</script>
+</html>

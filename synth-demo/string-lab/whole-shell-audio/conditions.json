@@ -1,0 +1,404 @@
+{
+  "scope": "Prepare a common-gain whole-shell comparison after explicit numeric checks.\nWrites only research/listen; public app updates are a separate step.\n",
+  "sameGain": 0.874009795621089,
+  "previousPublicGain": 0.874009795621089,
+  "commonGainScale": 1.0,
+  "request": 600,
+  "trainingHz": [
+    659.0,
+    900.0,
+    1320.0,
+    2000.0,
+    3000.0,
+    3960.0,
+    4500.0
+  ],
+  "independentCheckCount": 5,
+  "files": {
+    "previous": {
+      "sha256": "8e5f94cdc85791acd94b945818ea935b28c606e4612f6c3d00675c0d600feeec",
+      "peakFS": 0.6747524774009698,
+      "rmsFirst30msFS": 0.2244880697382002
+    },
+    "candidate": {
+      "sha256": "5061357dd2b80674f836d1d78ffe91598ee2e45e214144b9f23cd838e6b382ba",
+      "peakFS": 0.6426981574974351,
+      "rmsFirst30msFS": 0.23455485931953562
+    }
+  },
+  "previousPublicMaximumPcmDifference": 0,
+  "acousticRomChecks": [
+    {
+      "hz": 98.0,
+      "independent": true,
+      "s": [
+        3.0,
+        615.7521601035994
+      ],
+      "relativePressureError": 0.00022457598423071106,
+      "absolutePressureError": 0.00010632418422672847,
+      "referencePressureMagnitude": 0.47344414226140324,
+      "forceResidual": 4.536297781001251e-15,
+      "powerBalanceRelativeError": 3.774758283725532e-15,
+      "pressure": [
+        -0.4149240081883139,
+        0.22820760369978643
+      ]
+    },
+    {
+      "hz": 223.0,
+      "independent": true,
+      "s": [
+        3.0,
+        1401.1503235010478
+      ],
+      "relativePressureError": 0.0005980894722975595,
+      "absolutePressureError": 0.0012581694092375934,
+      "referencePressureMagnitude": 2.103647476696695,
+      "forceResidual": 3.0199411575021647e-15,
+      "powerBalanceRelativeError": 3.885780586188048e-15,
+      "pressure": [
+        1.5706322208108703,
+        -1.4005139612208106
+      ]
+    },
+    {
+      "hz": 329.0,
+      "independent": true,
+      "s": [
+        3.0,
+        2067.167966062084
+      ],
+      "relativePressureError": 0.00020019578197209153,
+      "absolutePressureError": 0.007584796269611529,
+      "referencePressureMagnitude": 37.886893494445815,
+      "forceResidual": 4.814006989771566e-14,
+      "powerBalanceRelativeError": 3.3306690738754696e-16,
+      "pressure": [
+        -17.950770762644876,
+        -33.372531639498035
+      ]
+    },
+    {
+      "hz": 659.0,
+      "independent": false,
+      "s": [
+        3.0,
+        4140.619117431347
+      ],
+      "relativePressureError": 1.4948984769883963e-11,
+      "absolutePressureError": 3.913486012031177e-10,
+      "referencePressureMagnitude": 26.179007037844535,
+      "forceResidual": 7.896024398482968e-14,
+      "powerBalanceRelativeError": 7.771561172376096e-16,
+      "pressure": [
+        10.217267410904887,
+        24.102859916357687
+      ]
+    },
+    {
+      "hz": 1320.0,
+      "independent": false,
+      "s": [
+        3.0,
+        8293.804605477053
+      ],
+      "relativePressureError": 8.113030097833024e-12,
+      "absolutePressureError": 2.2184264988177575e-10,
+      "referencePressureMagnitude": 27.3442264772401,
+      "forceResidual": 6.59280805435458e-14,
+      "powerBalanceRelativeError": 8.881784197001252e-16,
+      "pressure": [
+        -20.301884861982387,
+        18.31775621336194
+      ]
+    },
+    {
+      "hz": 1980.0,
+      "independent": true,
+      "s": [
+        3.0,
+        12440.706908215581
+      ],
+      "relativePressureError": 0.008035558962967405,
+      "absolutePressureError": 0.0671804896829939,
+      "referencePressureMagnitude": 8.360400314726096,
+      "forceResidual": 2.2487489672447564e-14,
+      "powerBalanceRelativeError": 9.992007221626409e-16,
+      "pressure": [
+        3.58058214592192,
+        -7.617258267717548
+      ]
+    },
+    {
+      "hz": 3500.0,
+      "independent": true,
+      "s": [
+        3.0,
+        21991.14857512855
+      ],
+      "relativePressureError": 1.4208382061950675,
+      "absolutePressureError": 0.09063369996039067,
+      "referencePressureMagnitude": 0.06378889557249666,
+      "forceResidual": 1.4110542094203225e-15,
+      "powerBalanceRelativeError": 6.661338147750939e-16,
+      "pressure": [
+        0.03681713956260549,
+        0.14982653243115707
+      ]
+    },
+    {
+      "hz": 3960.0,
+      "independent": false,
+      "s": [
+        3.0,
+        24881.413816431163
+      ],
+      "relativePressureError": 4.257879088360387e-12,
+      "absolutePressureError": 9.354324278459812e-11,
+      "referencePressureMagnitude": 21.969822608517564,
+      "forceResidual": 6.464282451539111e-14,
+      "powerBalanceRelativeError": 3.3306690738754696e-16,
+      "pressure": [
+        7.427818602470377,
+        20.6760880309225
+      ]
+    }
+  ],
+  "releaseResponseChecks": [
+    {
+      "hz": 98.0,
+      "independent": true,
+      "absoluteReleaseTransformErrorPaS": 1.7267161890069888e-07,
+      "relativeToSubfundamentalReference": 0.0001150095022677934
+    },
+    {
+      "hz": 223.0,
+      "independent": true,
+      "absoluteReleaseTransformErrorPaS": 8.97952563855258e-07,
+      "relativeToSubfundamentalReference": 0.0005980894722975473
+    },
+    {
+      "hz": 329.0,
+      "independent": true,
+      "absoluteReleaseTransformErrorPaS": 3.6691688371520304e-06,
+      "relativeToSubfundamentalReference": 0.002443883276151095
+    },
+    {
+      "hz": 659.0,
+      "independent": false,
+      "absoluteReleaseTransformErrorPaS": 9.451448862751886e-14,
+      "relativeToSubfundamentalReference": 6.295223478733463e-11
+    },
+    {
+      "hz": 1320.0,
+      "independent": false,
+      "absoluteReleaseTransformErrorPaS": 2.6747993945085087e-14,
+      "relativeToSubfundamentalReference": 1.781574464796853e-11
+    },
+    {
+      "hz": 1980.0,
+      "independent": true,
+      "absoluteReleaseTransformErrorPaS": 5.400053889650325e-06,
+      "relativeToSubfundamentalReference": 0.0035967550082744485
+    },
+    {
+      "hz": 3500.0,
+      "independent": true,
+      "absoluteReleaseTransformErrorPaS": 4.121371778623149e-06,
+      "relativeToSubfundamentalReference": 0.0027450771582362248
+    },
+    {
+      "hz": 3960.0,
+      "independent": false,
+      "absoluteReleaseTransformErrorPaS": 3.75956297318111e-15,
+      "relativeToSubfundamentalReference": 2.5040911126144247e-12
+    }
+  ],
+  "releaseNormalizationPaS": 0.0015013682825845325,
+  "comparisonScope": "Preliminary low-frequency attack comparison, not full high-band numerical validation",
+  "comparisonAcceptance": {
+    "requiredIndependentHz": [
+      98,
+      223,
+      329,
+      1980
+    ],
+    "maximumRequiredRelativePressureError": 0.02,
+    "maximumIndependentReleaseErrorRelativeToSubfundamentalReference": 0.02
+  },
+  "independenceDefinition": "The full coupled PDE reference at s=3+i2pi*f was not inserted as a field. The inherited basis includes other sources and complex shifts near harmonics.",
+  "waveformControls": [
+    {
+      "label": "previous",
+      "inputSHA256": "df5d0e683eeb277ce4a053d19fcbc3b99cb130665ad95c2c0cd25dbc61fe42e9",
+      "initialPressurePa": [
+        -6.210310043996969e-16,
+        -1.326716514427062e-14
+      ],
+      "maximumPoleFrequencyHz": 26414.44544252142,
+      "checks": [
+        {
+          "sampleRate": 96000,
+          "relativeTwoSecondError": 5.3111322169162076e-05,
+          "relativeFirst30msError": 4.363988007027441e-05,
+          "maximumAbsoluteErrorPa": 0.00041555750030791705
+        },
+        {
+          "sampleRate": 192000,
+          "relativeTwoSecondError": 1.0365184345913067e-05,
+          "relativeFirst30msError": 8.507331710511804e-06,
+          "maximumAbsoluteErrorPa": 8.210408912505407e-05
+        }
+      ],
+      "passes192k": true,
+      "peakPa": 0.7720226070080698,
+      "rmsFirst30msPa": 0.2568495036513105
+    },
+    {
+      "label": "candidate",
+      "inputSHA256": "483b4853f700988a606202fdecb9b34b0b1d541f7558b56476782ead47b69219",
+      "initialPressurePa": [
+        -3.041317198082538e-14,
+        4.0549161250957866e-14
+      ],
+      "maximumPoleFrequencyHz": 22298.126206475088,
+      "checks": [
+        {
+          "sampleRate": 96000,
+          "relativeTwoSecondError": 4.8736709926735415e-05,
+          "relativeFirst30msError": 4.794185612741148e-05,
+          "maximumAbsoluteErrorPa": 0.00011494301652156726
+        },
+        {
+          "sampleRate": 192000,
+          "relativeTwoSecondError": 9.501209724918719e-06,
+          "relativeFirst30msError": 9.345785876147935e-06,
+          "maximumAbsoluteErrorPa": 2.2711121179143888e-05
+        }
+      ],
+      "passes192k": true,
+      "peakPa": 0.7353510960335311,
+      "rmsFirst30msPa": 0.2683676210944144
+    }
+  ],
+  "directRadialMeshChecks": [
+    {
+      "hz": 98.0,
+      "complexPressureRelativeDifference": 0.03094561767720122,
+      "coarseMagnitudeDbRelativeToFine": 0.1572807099107793,
+      "coarsePhaseDegreesRelativeToFine": 1.4180950026329595,
+      "coarsePressurePa": [
+        -0.42801901075598797,
+        0.22184562697531252
+      ],
+      "finePressurePa": [
+        -0.4148179249994745,
+        0.22820044903717032
+      ],
+      "coarseForceResidual": 1.8271579212312712e-11,
+      "fineForceResidual": 1.8863158355310647e-11
+    },
+    {
+      "hz": 223.0,
+      "complexPressureRelativeDifference": 0.01394360160019428,
+      "coarseMagnitudeDbRelativeToFine": 0.11888378413802572,
+      "coarsePhaseDegreesRelativeToFine": -0.12078597461477643,
+      "coarsePressurePa": [
+        1.589445215629188,
+        -1.4219032832242824
+      ],
+      "finePressurePa": [
+        1.570791977245516,
+        -1.3992659755863057
+      ],
+      "coarseForceResidual": 4.359461965651685e-10,
+      "fineForceResidual": 4.626997899248865e-10
+    },
+    {
+      "hz": 329.0,
+      "complexPressureRelativeDifference": 0.0022117109290573137,
+      "coarseMagnitudeDbRelativeToFine": -0.004229277356015785,
+      "coarsePhaseDegreesRelativeToFine": 0.12364430054549826,
+      "coarsePressurePa": [
+        -17.86896217577398,
+        -33.38741862064556
+      ],
+      "finePressurePa": [
+        -17.94970839533272,
+        -33.365021612191455
+      ],
+      "coarseForceResidual": 5.609207407297137e-10,
+      "fineForceResidual": 6.187539300183257e-10
+    },
+    {
+      "hz": 659.0,
+      "complexPressureRelativeDifference": 0.00792627162247165,
+      "coarseMagnitudeDbRelativeToFine": -0.0575607730879884,
+      "coarsePhaseDegreesRelativeToFine": -0.2518877180608688,
+      "coarsePressurePa": [
+        10.254946535487361,
+        23.89880764223985
+      ],
+      "finePressurePa": [
+        10.21726741051567,
+        24.102859916398472
+      ],
+      "coarseForceResidual": 7.191117199974608e-10,
+      "fineForceResidual": 2.678897686034597e-10
+    },
+    {
+      "hz": 1320.0,
+      "complexPressureRelativeDifference": 0.08633973598459814,
+      "coarseMagnitudeDbRelativeToFine": -0.17321169510131448,
+      "coarsePhaseDegreesRelativeToFine": 4.865537042036393,
+      "coarsePressurePa": [
+        -21.352319030113552,
+        16.20342293625303
+      ],
+      "finePressurePa": [
+        -20.3018848618003,
+        18.31775621348866
+      ],
+      "coarseForceResidual": 2.4441050471181566e-10,
+      "fineForceResidual": 3.9851565337291993e-10
+    },
+    {
+      "hz": 3960.0,
+      "complexPressureRelativeDifference": 1.3446783859048244,
+      "coarseMagnitudeDbRelativeToFine": 0.5954189987032529,
+      "coarsePhaseDegreesRelativeToFine": -80.89937484141709,
+      "coarsePressurePa": [
+        23.122619930796827,
+        -4.352363679938349
+      ],
+      "finePressurePa": [
+        7.427818602414488,
+        20.676088030847488
+      ],
+      "coarseForceResidual": 3.940657897751026e-10,
+      "fineForceResidual": 5.164549759986046e-10
+    }
+  ],
+  "wholeSystemChecks": {
+    "states": 3565,
+    "initialEnergyJ": 0.001044977732286636,
+    "passivityMaxError": 3.725290298461914e-09,
+    "energyIntegralRelativeError": 2.9665159217984183e-13,
+    "maxPoleReal": -0.007521507074389728
+  },
+  "processing": {
+    "eq": false,
+    "onsetFade": false,
+    "individualGain": false,
+    "endFadeSeconds": 0.03
+  },
+  "limits": [
+    "Candidate changes shared shell, prestress, support, structural basis and current acoustic geometry together; not a one-parameter intervention.",
+    "One active E4 string; five strings supply mean tension only. Held neck block, generic material damping and side properties. Small motion about mean-load equilibrium; transient nonlinear axial stretching is not included.",
+    "High-band relative errors, including the weak 3500Hz cancellation point, remain unresolved and are reported without filtering the audio. This is a preliminary low-frequency attack comparison; it does not certify full-band or continuum accuracy.",
+    "Different real-recorded instrument/microphone conditions; reference is not an absolute pressure calibration or parameter-fitting target.",
+    "Pressure readout is volume-FEM point interpolation; the independent Green representation audit is not applied to these sounds.",
+    "No predicted perceptual knock improvement."
+  ]
+}
