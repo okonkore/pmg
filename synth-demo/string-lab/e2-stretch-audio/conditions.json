@@ -1,0 +1,138 @@
+{
+  "scope": "Validate full coupled nonlinear stretching and create an isolated comparison.",
+  "physics": {
+    "mu": 0.0053832863594252016,
+    "ei": 1.548006937407884e-08,
+    "tension": 61.78189499999999,
+    "outerDiameterM": 0.00107,
+    "estimatedCoreDiameterMm": 0.4395280271787974,
+    "estimatedWireDiameterMm": 0.3152359864106013,
+    "nominalTensionN": 61.78189499999999,
+    "tensionKgf": 6.3,
+    "speakingLengthM": 0.65,
+    "fret": 0,
+    "string": 6,
+    "targetHz": 82.4068892282175,
+    "fixedEndHz": 82.4068892282175,
+    "tuningOffsetSemitones": 0,
+    "lowTension": false,
+    "pluckForceN": 1.5457651114447049,
+    "pullMm": 1.7555652102110515,
+    "forceLimited": false,
+    "totalMeanTensionN": 364.80738,
+    "bodyPreload": "standard tuning",
+    "coreAxialEA_N": 197.24517174859602,
+    "axialSpringNPerM": 303.4541103824554,
+    "relaxationCornerHz": 999.9999999999999,
+    "slipEI": 1.548006937407884e-08,
+    "bondedReferenceEI": 2.3815491344736677e-06,
+    "deltaEI": 2.366069065099589e-06,
+    "relaxationStates": 122,
+    "frequencyChecks": [
+      {
+        "hz": 98.0,
+        "stateVsSchurRelativeError": 3.6243655024054013e-12
+      },
+      {
+        "hz": 223.0,
+        "stateVsSchurRelativeError": 1.5538403471332072e-12
+      },
+      {
+        "hz": 659.0,
+        "stateVsSchurRelativeError": 1.6145966205987187e-11
+      },
+      {
+        "hz": 1500.0,
+        "stateVsSchurRelativeError": 7.141339201373519e-11
+      }
+    ],
+    "states": 3687,
+    "initialEnergyJ": 0.0013568455776457188,
+    "maxPoleReal": -0.007521507072252466,
+    "initialReconstructionRelativeError": 1.6420552670766818e-15,
+    "modalDerivativeRelativeError": 1.6143972402487645e-12,
+    "seconds": 18.655850887298584,
+    "initialNonlinearStaticResidual": 5.999416617369519e-16,
+    "initialNonlinearDeltaT_N": 0.0062599059625912425,
+    "initialNonlinearAddedLengthM": 2.0628838919669375e-05,
+    "nonlinearInitialEnergyJ": 0.0013566457892866524,
+    "forcePositionError": 6.301589747192635e-17,
+    "forceOutputError": 3.9653617106680445e-10
+  },
+  "gain": 0.4286610858558977,
+  "energyChecks": [
+    {
+      "kind": "linear",
+      "sampleRate": 48000,
+      "maximumEnergyGrowthRelative": 0.0,
+      "maximumSampledEnergyIncreaseRelative": -0.0008620968179787548,
+      "initialEnergyRelativeError": 1.3455903058456897e-13,
+      "finalEnergyJ": 7.925344552335606e-05,
+      "sampledDeltaT_min_N": -0.0004274982619015271,
+      "sampledDeltaT_max_N": 0.000615055688832429
+    },
+    {
+      "kind": "nonlinear",
+      "sampleRate": 48000,
+      "maximumEnergyGrowthRelative": 0.0,
+      "maximumSampledEnergyIncreaseRelative": -0.000862359333197522,
+      "initialEnergyRelativeError": 1.3378187446733136e-13,
+      "finalEnergyJ": 7.924827449327606e-05,
+      "sampledDeltaT_min_N": 9.361460238841033e-05,
+      "sampledDeltaT_max_N": 0.006259905962591238
+    },
+    {
+      "kind": "linear",
+      "sampleRate": 96000,
+      "maximumEnergyGrowthRelative": 0.0,
+      "maximumSampledEnergyIncreaseRelative": -0.0008627325035585792,
+      "initialEnergyRelativeError": 1.3455903058456897e-13,
+      "finalEnergyJ": 7.925258299544996e-05,
+      "sampledDeltaT_min_N": -0.00042749826190155893,
+      "sampledDeltaT_max_N": 0.0006150556888324709
+    },
+    {
+      "kind": "nonlinear",
+      "sampleRate": 96000,
+      "maximumEnergyGrowthRelative": 0.0,
+      "maximumSampledEnergyIncreaseRelative": -0.0008629890424528048,
+      "initialEnergyRelativeError": 1.3378187446733136e-13,
+      "finalEnergyJ": 7.924742255457202e-05,
+      "sampledDeltaT_min_N": 9.361459353711773e-05,
+      "sampledDeltaT_max_N": 0.006259905962591238
+    }
+  ],
+  "nonlinearCorrection48To96kRelativeError": 0.00022589534041790935,
+  "nonlinearWave48To96kRelativeError": 8.758592887307493e-05,
+  "nonlinearVsLinearRelativeWaveformChange": 0.027608976717139046,
+  "files": [
+    {
+      "file": "b.wav",
+      "sha256": "f1e91b004d266855279bf81fbf938075178f8bbd71b4d60fb84af27e0c3b29e8"
+    },
+    {
+      "file": "c.wav",
+      "sha256": "24efcf751a55c04cdc4cb43435c83c1331b8cb522ce30d2fbfcf039bec0613dc"
+    }
+  ],
+  "limits": [
+    "Quasistatic uniform added tension, core-only EA. No travelling longitudinal waves or copper winding axial rigidity.",
+    "Small-slope geometric extension includes both moving endpoint difference and 61 sine modes in two polarizations.",
+    "Initial nonlinear equilibrium solved at the same force; initial branch stresses fully relaxed.",
+    "Comparison A is old C. B adds linear axial endpoint stiffness; C additionally includes conservative geometric stretching. B/C is the clean nonlinear comparison.",
+    "Native exact linear modal propagation plus symmetric nonlinear velocity kicks is not an unconditionally energy-stable method; timestep and sampled physical energy checks apply to this condition only.",
+    "No extra detuning, pitch envelope, gain normalization, EQ or change to application samples.",
+    "C relaxation and body/acoustic accuracy remain tentative."
+  ],
+  "independentGeometryAudit": {
+    "extensionQuadratureM": 2.0628838919670016e-05,
+    "extensionAnalyticM": 2.0628838919669375e-05,
+    "absoluteDifferenceM": 6.403569081242511e-19,
+    "oldCToAxialLinearRelativeWaveformChange": 0.00015359601870978612
+  },
+  "allFileSHA256": {
+    "a.wav": "597ff31b050f288c8fbe3a4412b0e7e8862f7762ae84ce852fbc8543b13ab93c",
+    "b.wav": "f1e91b004d266855279bf81fbf938075178f8bbd71b4d60fb84af27e0c3b29e8",
+    "c.wav": "24efcf751a55c04cdc4cb43435c83c1331b8cb522ce30d2fbfcf039bec0613dc"
+  }
+}
