@@ -58,7 +58,7 @@ class Model:
         self.baseK[self.start:self.start+122,self.start:self.start+122]=0
         self.baseC=self.physical['C'].copy();self.baseC[self.start:self.start+122,self.start:self.start+122]=0
 
-    def matrices(self,string=None,fret=0):
+    def matrices(self,string=None,fret=0,midi=None):
         if string is None:  # Exact legacy reference, before changing any string properties.
             M=self.physical['M'].copy();M[:513,:513]+=self.airRemainder
             K=self.physical['K'].copy();K[:513,:513]+=self.air['uniformStiffness']
@@ -66,10 +66,25 @@ class Model:
         sec=section(string);L=CONFIG['scaleMm']/1000*2**(-fret/12);T=sec['tension'];mu=sec['mu'];ei=sec['ei']
         # Match the target stiff-string fundamental by shortening the speaking length.
         # Open nominal tensions and measured/inferred mass stay fixed for every fret.
-        target=440*2**((string['openMidi']+fret-69)/12)
-        L=brentq(lambda x:(T*(np.pi/x)**2+ei*(np.pi/x)**4)/mu-(2*np.pi*target)**2,L*.95,L*1.05)
+        noteMidi=string['openMidi']+fret if midi is None else midi
+        lowTension=noteMidi<string['openMidi']
+        target=440*2**((noteMidi-69)/12)
+        if lowTension:
+            if string['number']!=6 or fret!=0 or not 21<=noteMidi<40:raise ValueError('Low tuning requires open sixth string A0..D#2')
+            # Hold material, section, mass and 650 mm speaking length fixed.
+            L=CONFIG['scaleMm']/1000;k0=np.pi/L
+            T=(mu*(2*np.pi*target)**2-ei*k0**4)/(k0*k0)
+            if T<=0:raise ValueError('Target is below the bending-only fundamental')
+        else:
+            L=brentq(lambda x:(T*(np.pi/x)**2+ei*(np.pi/x)**4)/mu-(2*np.pi*target)**2,L*.95,L*1.05)
         M=self.baseM.copy();K=self.baseK.copy();C=self.baseC.copy();F=np.zeros(self.ns)
         PB=self.ends[:3];PN=self.ends[3:];mass=mu*L;n=np.arange(1,62);start=self.start
+        if lowTension:
+            # Update mean chord geometric stiffness at the inherited equilibrium.
+            # Wood prestress and geometry remain the standard-tuning linearization.
+            direction=self.ports['bridgePosition']-self.ports['nutPosition'];chordLength=np.linalg.norm(direction);direction/=chordLength
+            endDifference=PB-PN;perp=np.eye(3)-np.outer(direction,direction)
+            K[:512,:512]+=(T-sec['tension'])/chordLength*(endDifference.T@perp@endDifference)
         M[:512,:512]+=mass/6*(2*PN.T@PN+PN.T@PB+PB.T@PN+2*PB.T@PB)
         cross=np.concatenate([mass/(j*np.pi)*(PN+(-1)**(j+1)*PB).T@self.basis for j in n],axis=1)
         M[:512,start:start+122]=cross;M[start:start+122,:512]=cross.T;M[start:start+122,start:start+122]=np.eye(122)*mass/2
@@ -80,10 +95,15 @@ class Model:
         force=CONFIG['assumptions']['pluckForceN'];fraction=CONFIG['assumptions']['pluckDistanceMm']/1000/L
         F[:512]=force*((1-fraction)*PB+fraction*PN).T@self.basis[:,1]
         F[start:start+122]=np.stack([np.zeros(61),force*np.sin(n*np.pi*(1-fraction))],axis=1).ravel()
-        return M,K,C,F,dict(**sec,speakingLengthM=L,fret=fret,string=string['number'],targetHz=target,fixedEndHz=float(omega[0]/(2*np.pi)))
+        pull=float(F@solve(K,F,assume_a='pos',check_finite=False)/force);forceLimited=False
+        if lowTension and pull>.005:
+            factor=.005/pull;F*=factor;force*=factor;pull=.005;forceLimited=True
+        meta=dict(sec);meta['tension']=T
+        meta.update(nominalTensionN=sec['tension'],tensionKgf=T/9.80665,speakingLengthM=L,fret=fret,string=string['number'],targetHz=target,fixedEndHz=float(omega[0]/(2*np.pi)),tuningOffsetSemitones=noteMidi-string['openMidi'] if lowTension else 0,lowTension=lowTension,pluckForceN=force,pullMm=pull*1000,forceLimited=forceLimited,totalMeanTensionN=364.80738+T-sec['tension'] if lowTension else 364.80738,bodyPreload='standard-tuning wood tangent; updated mean-chord geometric stiffness' if lowTension else 'standard tuning')
+        return M,K,C,F,meta
 
-    def solve(self,string=None,fret=0):
-        began=time.time();M,K,C,F,meta=self.matrices(string,fret)
+    def solve(self,string=None,fret=0,midi=None):
+        began=time.time();M,K,C,F,meta=self.matrices(string,fret,midi)
         ev,P=eigh(K,M,check_finite=False);assert ev.min()>0;w=np.sqrt(ev);ns=self.ns;ne=self.ne;ni=self.ni
         size=2*ns+ne+2*ni+len(self.lam);A=np.zeros((size,size));vs=slice(ns,2*ns);xe=slice(2*ns,2*ns+ne);xi=slice(2*ns+ne,2*ns+ne+ni);vi=slice(2*ns+ne+ni,2*ns+ne+2*ni);hs=slice(size-len(self.lam),size)
         A[:ns,vs]=np.diag(w);A[vs,:ns]=-np.diag(w);Ct=P.T@C@P;A[vs,vs]=-Ct;A[xe,xe]=self.E
@@ -133,20 +153,20 @@ def build_note(midi,duration):
 def compute_note(model,midi,duration):
     signature=hashlib.sha256((json.dumps(CONFIG,sort_keys=True)+Path(__file__).read_text()+str(duration)).encode()).hexdigest()
     cache=RESEARCH/'guitar-520r-cache'/signature[:20];cache.mkdir(parents=True,exist_ok=True)
-    string=next((s for s in CONFIG['strings'] if s['openMidi']<=midi<=s['openMidi']+24),None)
+    string=CONFIG['strings'][-1] if 21<=midi<40 else next((s for s in CONFIG['strings'] if s['openMidi']<=midi<=s['openMidi']+24),None)
     if string is None:raise ValueError('Outside six-string range: '+str(midi))
-    fret=midi-string['openMidi'];path=cache/f'{midi}.npz'
+    fret=max(0,midi-string['openMidi']);path=cache/f'{midi}.npz'
     if path.exists():
         z=np.load(path);meta=json.loads(str(z['metadata']));assert str(z['signature'])==signature,'Stale render cache'
         y=z['samples']
     else:
-        poles,res,meta=model.solve(string,fret);y=render(poles,res,duration=duration)
+        poles,res,meta=model.solve(string,fret,midi);y=render(poles,res,duration=duration)
         low=render(poles,res,fs=96000,duration=duration);err=float(np.linalg.norm(y-low)/max(np.linalg.norm(y),1e-30));assert err<.005,err;meta['render96To192kRelativeError']=err
         np.savez_compressed(path,samples=y,metadata=json.dumps(meta),signature=signature)
     assert np.isfinite(y).all();return midi,string,fret,y,meta
 
 def main():
-    parser=argparse.ArgumentParser();parser.add_argument('--reference',action='store_true');parser.add_argument('--midis',default=','.join(map(str,range(40,89))));parser.add_argument('--workers',type=int,default=1);parser.add_argument('--duration',type=float,default=3);args=parser.parse_args()
+    parser=argparse.ArgumentParser();parser.add_argument('--reference',action='store_true');parser.add_argument('--append',action='store_true');parser.add_argument('--midis',default=','.join(map(str,range(21,89))));parser.add_argument('--workers',type=int,default=1);parser.add_argument('--duration',type=float,default=3);args=parser.parse_args()
     cache=RESEARCH/'guitar-520r-cache';cache.mkdir(exist_ok=True);model=Model()
     if args.reference:
         poles,res,meta=model.solve();y=render(poles,res,duration=2)
@@ -160,11 +180,20 @@ def main():
             records=list(pool.map(build_note,midis,[args.duration]*len(midis)))
     else:
         records=[compute_note(model,midi,args.duration) for midi in midis]
-    peak=max(float(np.max(abs(r[3]))) for r in records);gain=min(.874009795621089,.80/peak)
+    existing=json.loads((OUT/'manifest.json').read_text(encoding='utf8')) if args.append else None
+    if existing:
+        assert existing['durationSeconds']==args.duration
+        assert not ({r[0] for r in records}&{n['midi'] for n in existing['notes']}),'Append must not replace existing notes'
+        for note in existing['notes']:assert hashlib.sha256((OUT/note['file']).read_bytes()).hexdigest()==note['sha256']
+    peak=max(float(np.max(abs(r[3]))) for r in records);gain=existing['gain'] if existing else min(.874009795621089,.80/peak)
+    assert peak*gain<.95,('Common gain would clip extension',peak*gain)
     manifest=dict(id=CONFIG['id'],label=CONFIG['label'],sampleRate=48000,durationSeconds=args.duration,gain=gain,polyphony='independent single-active-string whole-shell voices',notes=[],limits=CONFIG['limits']+['Fretted notes shorten the active speaking length with the inherited nut-body port; finger damping and a spatially moved fret contact are not modeled.','High-frequency acoustic reduction is inherited from latest B, including its unresolved 3500 Hz error. State/Schur agreement verifies assembly, not continuum accuracy.'])
+    if existing:manifest['notes']=existing['notes']
     for midi,string,fret,y,meta in records:
         y=y*gain;y[-1440:]*=np.linspace(1,0,1440);pcm=np.rint(y*32767).astype('<i2');path=OUT/f'{midi}.wav'
         with wave.open(str(path),'wb') as f:f.setnchannels(1);f.setsampwidth(2);f.setframerate(48000);f.writeframes(pcm.tobytes())
         manifest['notes'].append(dict(midi=midi,string=string['number'],fret=fret,file=path.name,sha256=hashlib.sha256(path.read_bytes()).hexdigest(),peakFS=float(max(abs(y))),physics=meta))
-    (OUT/'manifest.json').write_text(json.dumps(manifest,ensure_ascii=False,indent=2),encoding='utf8');print('DONE',len(records),'gain',gain,flush=True)
+    manifest['notes'].sort(key=lambda n:n['midi'])
+    if any(n['midi']<40 for n in manifest['notes']):manifest['limits']+=['Below E2, the open sixth string keeps the same mass, section and 650 mm length; tension is solved from the stiff-string fundamental. Pluck force is limited to 5 mm static deflection.','Low-tuned notes update mean-chord geometric stiffness at the standard-tuning equilibrium. Wood prestress and shell/acoustic bases are not rebuilt; slack-string contact, fret buzz and nonlinear axial stretching are absent.']
+    (OUT/'manifest.json').write_text(json.dumps(manifest,ensure_ascii=False,indent=2),encoding='utf8',newline='\n');print('DONE',len(records),'gain',gain,flush=True)
 if __name__=='__main__':main()

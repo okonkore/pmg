@@ -34,7 +34,8 @@
  <tr><th scope="row">6 · E2</th><td>ナイロン芯＋巻線</td><td>1.07 mm</td><td>6.3 kgf</td></tr>
  </tbody></table></div>
  <p class="hint">前板：スプルースの仮定物性 · 厚さ2.5 mm ／ 弦長650 mm ／ 標準調弦</p>
- <p class="hint">巻線は銅を仮定し、芯径・巻線径は外径と公称張力から推定しています。製品の内部構造の実測値ではありません。<br>E2〜E6は各音程を計算した約3秒の自然減衰音です。範囲外は端の音源を簡易移調します。離鍵では消音せず、停止ボタンで止められます。<br>和音は独立した発音の合成で、6本の弦の共鳴は含みません。</p>
+ <p class="hint">巻線は銅を仮定し、芯径・巻線径は外径と公称張力から推定しています。製品の内部構造の実測値ではありません。<br>A0〜E6の68音は各音程を計算した約3秒の自然減衰音です。E6より高い20音のみ簡易移調します。離鍵では消音せず、停止ボタンで止められます。<br>和音は独立した発音の合成で、6本の弦の共鳴は含みません。</p>
+ <p class="hint" id="guitar-520r-note-info" aria-live="polite">低音拡張 A0〜D♯2：6弦の太さと650 mmの弦長を保ち、張力を約0.70〜5.61 kgfに下げて計算しています。</p>
  <p class="hint"><a href="instruments/guitar-520r-spruce/README.md" target="_blank" rel="noopener">計算条件と推定値について</a></p>
 </details>
 <div id="guitar-controls" class="guitar-controls" hidden>
@@ -115,7 +116,7 @@ const presets={
  harpsichord:{label:'Harpsichord（チェンバロ）',description:'以前のNylon Guitarの音をそのまま保存。明るく歯切れのよい、チェンバロ風の響き。',engine:'string',cutoff:4200,release:.45,space:.1,body:190,bodyGain:3,length:3.2,feedback:.996,pick:.22},
  warmstring:{label:'Warm String Synth',description:'倍音がゆっくりほどける、温かい弦風シンセ。これまでのNylon Guitarの合成音です。',engine:'string',excitation:'nylon',cutoff:6400,release:.38,space:.035,body:230,bodyGain:.8,length:3.4},
  physical:{label:'Physical String Ver2（物理弦）',description:'実験室の弦モデルを鍵盤で演奏。材料・張力・引く力から音を計算します。共鳴や録音に合わせた音色補正は使いません。',engine:'physical',cutoff:8000,release:.22,space:0},
- guitar520r:{label:'Guitar 520R · Spruce',description:'1〜3弦はナイロン、4〜6弦はナイロン芯の巻弦。スプルース前板・650 mm。E2〜E6は音程ごとに物理計算した音源を再生します。',engine:'520r',cutoff:8000,release:.05,space:0},
+ guitar520r:{label:'Guitar 520R · Spruce',description:'1〜3弦はナイロン、4〜6弦はナイロン芯の巻弦。スプルース前板・650 mm。A0〜E6の68音を個別計算。E2より低い音は6弦の張力を下げています。',engine:'520r',cutoff:8000,release:.05,space:0},
  wholeShell:{label:'Guitar Whole Shell（最新B）',description:'物理モデルから生成したE4の凍結音源。約2秒で自然減衰します。E4以外は簡易移調で、胴の響きや減衰時間も変わります。低音・巻弦の再現には対応していません。',engine:'whole-shell',cutoff:8000,release:0,space:0},
  nylon:{label:'Nylon Guitar',description:'弦から胴へ、胴から弦へ振動を伝える合成音。相互作用をオフにして聴き比べられます。',engine:'string',excitation:'guitar',cutoff:8500,release:.42,space:.02,body:230,bodyGain:0},
  ukulele:{label:'Ukulele',description:'軽くコロッと鳴る、小さな弦楽器の響き。C4〜C5付近で短い和音に。',engine:'string',cutoff:6500,release:.19,space:.045,body:560,bodyGain:4,length:1.8,feedback:.989,pick:.31},
@@ -342,7 +343,7 @@ async function ensure520R(){
  if(!guitar520rLoading){
   const generation=guitarGeneration;
   $('status').textContent='520Rの音源を読み込み中…';
-  guitar520rLoading=import('./instruments/guitar-520r-spruce/instrument.js').then(({loadGuitar})=>loadGuitar(ctx,{destination:bus,onProgress:(done,total)=>{if(is520R()&&generation===guitarGeneration)$('status').textContent='520Rの音源を読み込み中… '+done+' / '+total;}})).then(instrument=>guitar520rInstrument=instrument).finally(()=>{guitar520rLoading=undefined});
+  guitar520rLoading=import('./instruments/guitar-520r-spruce/instrument.js?v=low-tension-1').then(({loadGuitar})=>loadGuitar(ctx,{destination:bus,onProgress:(done,total)=>{if(is520R()&&generation===guitarGeneration)$('status').textContent='520Rの音源を読み込み中… '+done+' / '+total;}})).then(instrument=>guitar520rInstrument=instrument).finally(()=>{guitar520rLoading=undefined});
  }
  return guitar520rLoading;
 }
@@ -366,7 +367,12 @@ function playWholeShell(id,midi,when,velocity,instrument=wholeShellInstrument){
   allVoices.delete(voice);if(voices.get(id)===voice)voices.delete(id);refreshKeys();
  }};
  source.onended=()=>voice.kill();voices.set(id,voice);allVoices.add(voice);refreshKeys();
- $('note').textContent=noteName(midi)+' / '+presetsName();return voice;
+ $('note').textContent=noteName(midi)+' / '+presetsName();
+ if(instrument.manifest?.id==='520r-spruce'){
+  const data=instrument.manifest.notes.find(note=>note.midi===midi);
+  $('guitar-520r-note-info').textContent=data?noteName(midi)+' · '+data.string+'弦 · 張力 '+(data.physics.tension/9.80665).toFixed(2)+' kgf · 振動長 '+(data.physics.speakingLengthM*1000).toFixed(1)+' mm'+(data.physics.lowTension?'（低張力）':''):noteName(midi)+' · E6音源から簡易移調';
+ }
+ return voice;
 }
 function presetsName(){return presets[preset].label.toUpperCase()}
 function refreshKeys(){for(const [m,b]of keyEls)b.classList.toggle('active',[...voices.values()].some(v=>v.midi===shiftedMidi(m)))}

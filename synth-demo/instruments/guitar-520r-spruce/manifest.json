@@ -7,6 +7,975 @@
   "polyphony": "independent single-active-string whole-shell voices",
   "notes": [
     {
+      "midi": 21,
+      "string": 6,
+      "fret": 0,
+      "file": "21.wav",
+      "sha256": "deb5dac82796ce43221feb53a1262fe7234ccf201183d51dd9eade5b1c816205",
+      "peakFS": 0.07562888191705054,
+      "physics": {
+        "mu": 0.0053832863594252016,
+        "ei": 1.548006937407884e-08,
+        "tension": 6.880176061128291,
+        "outerDiameterM": 0.00107,
+        "estimatedCoreDiameterMm": 0.4395280271787974,
+        "estimatedWireDiameterMm": 0.3152359864106013,
+        "nominalTensionN": 61.78189499999999,
+        "tensionKgf": 0.7015827077675141,
+        "speakingLengthM": 0.65,
+        "fret": 0,
+        "string": 6,
+        "targetHz": 27.5,
+        "fixedEndHz": 27.499999999999996,
+        "tuningOffsetSemitones": -19,
+        "lowTension": true,
+        "pluckForceN": 0.4970391233526349,
+        "pullMm": 5.0,
+        "forceLimited": true,
+        "totalMeanTensionN": 309.9056610611283,
+        "bodyPreload": "standard-tuning wood tangent; updated mean-chord geometric stiffness",
+        "frequencyChecks": [
+          {
+            "hz": 98.0,
+            "stateVsSchurRelativeError": 3.921681762570479e-11
+          },
+          {
+            "hz": 223.0,
+            "stateVsSchurRelativeError": 3.118200019134559e-12
+          },
+          {
+            "hz": 659.0,
+            "stateVsSchurRelativeError": 7.786060535297983e-11
+          }
+        ],
+        "states": 3565,
+        "initialEnergyJ": 0.0012425978083815874,
+        "maxPoleReal": -0.007521507075063191,
+        "initialReconstructionRelativeError": 9.54967089802329e-16,
+        "modalDerivativeRelativeError": 6.285877217604074e-12,
+        "seconds": 30.433939933776855,
+        "render96To192kRelativeError": 3.1663975697356525e-05
+      }
+    },
+    {
+      "midi": 22,
+      "string": 6,
+      "fret": 0,
+      "file": "22.wav",
+      "sha256": "f5b5a22940bfe4eb9a49df4c30d3ca346e69e9d1239ac13535e933a9178a6b23",
+      "peakFS": 0.09807067474016934,
+      "physics": {
+        "mu": 0.0053832863594252016,
+        "ei": 1.548006937407884e-08,
+        "tension": 7.722736558587238,
+        "outerDiameterM": 0.00107,
+        "estimatedCoreDiameterMm": 0.4395280271787974,
+        "estimatedWireDiameterMm": 0.3152359864106013,
+        "nominalTensionN": 61.78189499999999,
+        "tensionKgf": 0.7874999677348777,
+        "speakingLengthM": 0.65,
+        "fret": 0,
+        "string": 6,
+        "targetHz": 29.13523509488062,
+        "fixedEndHz": 29.13523509488062,
+        "tuningOffsetSemitones": -18,
+        "lowTension": true,
+        "pluckForceN": 0.5577889990459519,
+        "pullMm": 5.0,
+        "forceLimited": true,
+        "totalMeanTensionN": 310.74822155858726,
+        "bodyPreload": "standard-tuning wood tangent; updated mean-chord geometric stiffness",
+        "frequencyChecks": [
+          {
+            "hz": 98.0,
+            "stateVsSchurRelativeError": 1.9850167815956816e-11
+          },
+          {
+            "hz": 223.0,
+            "stateVsSchurRelativeError": 2.565626623530668e-12
+          },
+          {
+            "hz": 659.0,
+            "stateVsSchurRelativeError": 1.0798622591225947e-11
+          }
+        ],
+        "states": 3565,
+        "initialEnergyJ": 0.00139447249761488,
+        "maxPoleReal": -0.007521507075665812,
+        "initialReconstructionRelativeError": 2.1065209668097128e-15,
+        "modalDerivativeRelativeError": 7.72352322695995e-12,
+        "seconds": 30.690377712249756,
+        "render96To192kRelativeError": 3.658669482871909e-05
+      }
+    },
+    {
+      "midi": 23,
+      "string": 6,
+      "fret": 0,
+      "file": "23.wav",
+      "sha256": "e1be4e7a81f4c9e5dd7075890e74c2b73eeba3078861ca1df66fd07d6a96d0c6",
+      "peakFS": 0.09822093267353985,
+      "physics": {
+        "mu": 0.0053832863594252016,
+        "ei": 1.548006937407884e-08,
+        "tension": 8.668478740389569,
+        "outerDiameterM": 0.00107,
+        "estimatedCoreDiameterMm": 0.4395280271787974,
+        "estimatedWireDiameterMm": 0.3152359864106013,
+        "nominalTensionN": 61.78189499999999,
+        "tensionKgf": 0.8839388313429734,
+        "speakingLengthM": 0.65,
+        "fret": 0,
+        "string": 6,
+        "targetHz": 30.86770632850775,
+        "fixedEndHz": 30.867706328507747,
+        "tuningOffsetSemitones": -17,
+        "lowTension": true,
+        "pluckForceN": 0.6259477380037823,
+        "pullMm": 5.0,
+        "forceLimited": true,
+        "totalMeanTensionN": 311.69396374038956,
+        "bodyPreload": "standard-tuning wood tangent; updated mean-chord geometric stiffness",
+        "frequencyChecks": [
+          {
+            "hz": 98.0,
+            "stateVsSchurRelativeError": 1.407801180450257e-11
+          },
+          {
+            "hz": 223.0,
+            "stateVsSchurRelativeError": 1.815304132503346e-12
+          },
+          {
+            "hz": 659.0,
+            "stateVsSchurRelativeError": 1.8991428127176632e-11
+          }
+        ],
+        "states": 3565,
+        "initialEnergyJ": 0.0015648693450094559,
+        "maxPoleReal": -0.00752150707558107,
+        "initialReconstructionRelativeError": 1.0312615849389363e-15,
+        "modalDerivativeRelativeError": 3.4531240440560942e-12,
+        "seconds": 30.693887948989868,
+        "render96To192kRelativeError": 3.9439556364585844e-05
+      }
+    },
+    {
+      "midi": 24,
+      "string": 6,
+      "fret": 0,
+      "file": "24.wav",
+      "sha256": "15943d1eb1d31c65398ffed3ad9e95298e3a634ad678586a9eb2c446ec13c910",
+      "peakFS": 0.1359313574965521,
+      "physics": {
+        "mu": 0.0053832863594252016,
+        "ei": 1.548006937407884e-08,
+        "tension": 9.730038446947994,
+        "outerDiameterM": 0.00107,
+        "estimatedCoreDiameterMm": 0.4395280271787974,
+        "estimatedWireDiameterMm": 0.3152359864106013,
+        "nominalTensionN": 61.78189499999999,
+        "tensionKgf": 0.9921877957251451,
+        "speakingLengthM": 0.65,
+        "fret": 0,
+        "string": 6,
+        "targetHz": 32.70319566257483,
+        "fixedEndHz": 32.70319566257483,
+        "tuningOffsetSemitones": -16,
+        "lowTension": true,
+        "pluckForceN": 0.7024146986190132,
+        "pullMm": 5.0,
+        "forceLimited": true,
+        "totalMeanTensionN": 312.755523446948,
+        "bodyPreload": "standard-tuning wood tangent; updated mean-chord geometric stiffness",
+        "frequencyChecks": [
+          {
+            "hz": 98.0,
+            "stateVsSchurRelativeError": 6.161340190680038e-12
+          },
+          {
+            "hz": 223.0,
+            "stateVsSchurRelativeError": 1.0140103326083951e-11
+          },
+          {
+            "hz": 659.0,
+            "stateVsSchurRelativeError": 2.6096287149586212e-12
+          }
+        ],
+        "states": 3565,
+        "initialEnergyJ": 0.0017560367465475333,
+        "maxPoleReal": -0.007521507075183915,
+        "initialReconstructionRelativeError": 9.031425381367408e-16,
+        "modalDerivativeRelativeError": 5.820150146239369e-12,
+        "seconds": 30.44830060005188,
+        "render96To192kRelativeError": 3.7390682798494204e-05
+      }
+    },
+    {
+      "midi": 25,
+      "string": 6,
+      "fret": 0,
+      "file": "25.wav",
+      "sha256": "4dd561683a31e93e70dcf1800934147ad8d0d6c1aa716f1ff9b794b01d4231ef",
+      "peakFS": 0.1833285458930998,
+      "physics": {
+        "mu": 0.0053832863594252016,
+        "ei": 1.548006937407884e-08,
+        "tension": 10.921598929574257,
+        "outerDiameterM": 0.00107,
+        "estimatedCoreDiameterMm": 0.4395280271787974,
+        "estimatedWireDiameterMm": 0.3152359864106013,
+        "nominalTensionN": 61.78189499999999,
+        "tensionKgf": 1.1136931500129257,
+        "speakingLengthM": 0.65,
+        "fret": 0,
+        "string": 6,
+        "targetHz": 34.64782887210901,
+        "fixedEndHz": 34.64782887210901,
+        "tuningOffsetSemitones": -15,
+        "lowTension": true,
+        "pluckForceN": 0.788197323985038,
+        "pullMm": 5.0,
+        "forceLimited": true,
+        "totalMeanTensionN": 313.9470839295743,
+        "bodyPreload": "standard-tuning wood tangent; updated mean-chord geometric stiffness",
+        "frequencyChecks": [
+          {
+            "hz": 98.0,
+            "stateVsSchurRelativeError": 5.929884537523865e-12
+          },
+          {
+            "hz": 223.0,
+            "stateVsSchurRelativeError": 4.099588812356776e-12
+          },
+          {
+            "hz": 659.0,
+            "stateVsSchurRelativeError": 2.2151514548037433e-11
+          }
+        ],
+        "states": 3565,
+        "initialEnergyJ": 0.0019704933099625953,
+        "maxPoleReal": -0.007521507075410986,
+        "initialReconstructionRelativeError": 1.2058654842464669e-15,
+        "modalDerivativeRelativeError": 3.3191316956558918e-12,
+        "seconds": 30.9966983795166,
+        "render96To192kRelativeError": 1.8108607187014386e-05
+      }
+    },
+    {
+      "midi": 26,
+      "string": 6,
+      "fret": 0,
+      "file": "26.wav",
+      "sha256": "c0be45ddeec4683027818b017351ef2557ff549289bd63081d50b605f29bbc16",
+      "peakFS": 0.1049839696027419,
+      "physics": {
+        "mu": 0.0053832863594252016,
+        "ei": 1.548006937407884e-08,
+        "tension": 12.259080349587437,
+        "outerDiameterM": 0.00107,
+        "estimatedCoreDiameterMm": 0.4395280271787974,
+        "estimatedWireDiameterMm": 0.3152359864106013,
+        "nominalTensionN": 61.78189499999999,
+        "tensionKgf": 1.2500782988673438,
+        "speakingLengthM": 0.65,
+        "fret": 0,
+        "string": 6,
+        "targetHz": 36.70809598967594,
+        "fixedEndHz": 36.70809598967594,
+        "tuningOffsetSemitones": -14,
+        "lowTension": true,
+        "pluckForceN": 0.8844238499393846,
+        "pullMm": 5.0,
+        "forceLimited": true,
+        "totalMeanTensionN": 315.2845653495875,
+        "bodyPreload": "standard-tuning wood tangent; updated mean-chord geometric stiffness",
+        "frequencyChecks": [
+          {
+            "hz": 98.0,
+            "stateVsSchurRelativeError": 4.1263584670209085e-12
+          },
+          {
+            "hz": 223.0,
+            "stateVsSchurRelativeError": 1.3240511244540778e-12
+          },
+          {
+            "hz": 659.0,
+            "stateVsSchurRelativeError": 9.459741230784515e-12
+          }
+        ],
+        "states": 3565,
+        "initialEnergyJ": 0.002211059624848462,
+        "maxPoleReal": -0.007521507074957631,
+        "initialReconstructionRelativeError": 1.0276993792843484e-15,
+        "modalDerivativeRelativeError": 1.915394757181585e-12,
+        "seconds": 30.971359491348267,
+        "render96To192kRelativeError": 4.584644166347662e-05
+      }
+    },
+    {
+      "midi": 27,
+      "string": 6,
+      "fret": 0,
+      "file": "27.wav",
+      "sha256": "87e3a7e52e4a1d1b689d899054d8df71dfe4f9feace684cede61374be08030c5",
+      "peakFS": 0.1853311485965573,
+      "physics": {
+        "mu": 0.0053832863594252016,
+        "ei": 1.548006937407884e-08,
+        "tension": 13.760352483871165,
+        "outerDiameterM": 0.00107,
+        "estimatedCoreDiameterMm": 0.4395280271787974,
+        "estimatedWireDiameterMm": 0.3152359864106013,
+        "nominalTensionN": 61.78189499999999,
+        "tensionKgf": 1.4031654524094532,
+        "speakingLengthM": 0.65,
+        "fret": 0,
+        "string": 6,
+        "targetHz": 38.890872965260115,
+        "fixedEndHz": 38.890872965260115,
+        "tuningOffsetSemitones": -13,
+        "lowTension": true,
+        "pluckForceN": 0.9923574342304684,
+        "pullMm": 5.0,
+        "forceLimited": true,
+        "totalMeanTensionN": 316.7858374838712,
+        "bodyPreload": "standard-tuning wood tangent; updated mean-chord geometric stiffness",
+        "frequencyChecks": [
+          {
+            "hz": 98.0,
+            "stateVsSchurRelativeError": 5.04045375737179e-12
+          },
+          {
+            "hz": 223.0,
+            "stateVsSchurRelativeError": 3.949435082174952e-11
+          },
+          {
+            "hz": 659.0,
+            "stateVsSchurRelativeError": 2.3047388320093214e-11
+          }
+        ],
+        "states": 3565,
+        "initialEnergyJ": 0.0024808935855761714,
+        "maxPoleReal": -0.007521507075409652,
+        "initialReconstructionRelativeError": 7.636939150433847e-16,
+        "modalDerivativeRelativeError": 2.2305729274825955e-12,
+        "seconds": 28.668405055999756,
+        "render96To192kRelativeError": 2.8593677188365038e-05
+      }
+    },
+    {
+      "midi": 28,
+      "string": 6,
+      "fret": 0,
+      "file": "28.wav",
+      "sha256": "8de0a8acaa7b8b240ab0756128a8db8e97152cffa73735d7ad5b676dc2c99ff9",
+      "peakFS": 0.3357145896076067,
+      "physics": {
+        "mu": 0.0053832863594252016,
+        "ei": 1.548006937407884e-08,
+        "tension": 15.445473478789062,
+        "outerDiameterM": 0.00107,
+        "estimatedCoreDiameterMm": 0.4395280271787974,
+        "estimatedWireDiameterMm": 0.3152359864106013,
+        "nominalTensionN": 61.78189499999999,
+        "tensionKgf": 1.574999972344181,
+        "speakingLengthM": 0.65,
+        "fret": 0,
+        "string": 6,
+        "targetHz": 41.20344461410875,
+        "fixedEndHz": 41.20344461410875,
+        "tuningOffsetSemitones": -12,
+        "lowTension": true,
+        "pluckForceN": 1.113411846606086,
+        "pullMm": 5.0,
+        "forceLimited": true,
+        "totalMeanTensionN": 318.47095847878904,
+        "bodyPreload": "standard-tuning wood tangent; updated mean-chord geometric stiffness",
+        "frequencyChecks": [
+          {
+            "hz": 98.0,
+            "stateVsSchurRelativeError": 1.4233406139962968e-11
+          },
+          {
+            "hz": 223.0,
+            "stateVsSchurRelativeError": 7.373148864254701e-12
+          },
+          {
+            "hz": 659.0,
+            "stateVsSchurRelativeError": 1.1420952449199159e-10
+          }
+        ],
+        "states": 3565,
+        "initialEnergyJ": 0.002783529616515214,
+        "maxPoleReal": -0.007521507075944058,
+        "initialReconstructionRelativeError": 3.1764326638844423e-15,
+        "modalDerivativeRelativeError": 1.4503637281507344e-12,
+        "seconds": 29.127410888671875,
+        "render96To192kRelativeError": 3.589036051671776e-05
+      }
+    },
+    {
+      "midi": 29,
+      "string": 6,
+      "fret": 0,
+      "file": "29.wav",
+      "sha256": "f0c566e30ce500a27fa40d0bbc9e0275be4ac78eac7a663d620e7dcf0ef1f2d5",
+      "peakFS": 0.20464671543750385,
+      "physics": {
+        "mu": 0.0053832863594252016,
+        "ei": 1.548006937407884e-08,
+        "tension": 17.33695784239372,
+        "outerDiameterM": 0.00107,
+        "estimatedCoreDiameterMm": 0.4395280271787974,
+        "estimatedWireDiameterMm": 0.3152359864106013,
+        "nominalTensionN": 61.78189499999999,
+        "tensionKgf": 1.7678776995603718,
+        "speakingLengthM": 0.65,
+        "fret": 0,
+        "string": 6,
+        "targetHz": 43.653528929125486,
+        "fixedEndHz": 43.65352892912547,
+        "tuningOffsetSemitones": -11,
+        "lowTension": true,
+        "pluckForceN": 1.2491688682059168,
+        "pullMm": 5.0,
+        "forceLimited": true,
+        "totalMeanTensionN": 320.36244284239376,
+        "bodyPreload": "standard-tuning wood tangent; updated mean-chord geometric stiffness",
+        "frequencyChecks": [
+          {
+            "hz": 98.0,
+            "stateVsSchurRelativeError": 3.0930971901400635e-11
+          },
+          {
+            "hz": 223.0,
+            "stateVsSchurRelativeError": 2.143716953068891e-12
+          },
+          {
+            "hz": 659.0,
+            "stateVsSchurRelativeError": 8.42258988730691e-12
+          }
+        ],
+        "states": 3565,
+        "initialEnergyJ": 0.003122922170514792,
+        "maxPoleReal": -0.007521507074292906,
+        "initialReconstructionRelativeError": 4.341632748717229e-15,
+        "modalDerivativeRelativeError": 1.5837566556689906e-12,
+        "seconds": 29.363356590270996,
+        "render96To192kRelativeError": 4.393500891588074e-05
+      }
+    },
+    {
+      "midi": 30,
+      "string": 6,
+      "fret": 0,
+      "file": "30.wav",
+      "sha256": "9c9e2b84b289171904fa60e41d8f9e8d31b67715a19bbfc100a23c4fbc324197",
+      "peakFS": 0.2743740078342671,
+      "physics": {
+        "mu": 0.0053832863594252016,
+        "ei": 1.548006937407884e-08,
+        "tension": 19.460077255510566,
+        "outerDiameterM": 0.00107,
+        "estimatedCoreDiameterMm": 0.4395280271787974,
+        "estimatedWireDiameterMm": 0.3152359864106013,
+        "nominalTensionN": 61.78189499999999,
+        "tensionKgf": 1.9843756283247151,
+        "speakingLengthM": 0.65,
+        "fret": 0,
+        "string": 6,
+        "targetHz": 46.2493028389543,
+        "fixedEndHz": 46.2493028389543,
+        "tuningOffsetSemitones": -10,
+        "lowTension": true,
+        "pluckForceN": 1.4013975562028762,
+        "pullMm": 5.0,
+        "forceLimited": true,
+        "totalMeanTensionN": 322.48556225551056,
+        "bodyPreload": "standard-tuning wood tangent; updated mean-chord geometric stiffness",
+        "frequencyChecks": [
+          {
+            "hz": 98.0,
+            "stateVsSchurRelativeError": 9.445926189007435e-12
+          },
+          {
+            "hz": 223.0,
+            "stateVsSchurRelativeError": 1.361548622025845e-12
+          },
+          {
+            "hz": 659.0,
+            "stateVsSchurRelativeError": 8.516629278297864e-12
+          }
+        ],
+        "states": 3565,
+        "initialEnergyJ": 0.0035034938905071896,
+        "maxPoleReal": -0.007521507075518329,
+        "initialReconstructionRelativeError": 2.0198941412509415e-15,
+        "modalDerivativeRelativeError": 2.986630155048558e-12,
+        "seconds": 28.679331302642822,
+        "render96To192kRelativeError": 2.2591584951517082e-05
+      }
+    },
+    {
+      "midi": 31,
+      "string": 6,
+      "fret": 0,
+      "file": "31.wav",
+      "sha256": "57fc81b854b768a7caeec779250cbae9e1e1164aeeb3e182da52c31f451f05a8",
+      "peakFS": 0.4082746815417332,
+      "physics": {
+        "mu": 0.0053832863594252016,
+        "ei": 1.548006937407884e-08,
+        "tension": 21.843198220763103,
+        "outerDiameterM": 0.00107,
+        "estimatedCoreDiameterMm": 0.4395280271787974,
+        "estimatedWireDiameterMm": 0.3152359864106013,
+        "nominalTensionN": 61.78189499999999,
+        "tensionKgf": 2.227386336900277,
+        "speakingLengthM": 0.65,
+        "fret": 0,
+        "string": 6,
+        "targetHz": 48.999429497718666,
+        "fixedEndHz": 48.999429497718666,
+        "tuningOffsetSemitones": -9,
+        "lowTension": true,
+        "pluckForceN": 1.5457651114447049,
+        "pullMm": 4.916319465780251,
+        "forceLimited": false,
+        "totalMeanTensionN": 324.86868322076316,
+        "bodyPreload": "standard-tuning wood tangent; updated mean-chord geometric stiffness",
+        "frequencyChecks": [
+          {
+            "hz": 98.0,
+            "stateVsSchurRelativeError": 1.4081937351679957e-11
+          },
+          {
+            "hz": 223.0,
+            "stateVsSchurRelativeError": 7.044175940360227e-11
+          },
+          {
+            "hz": 659.0,
+            "stateVsSchurRelativeError": 3.792688835559825e-12
+          }
+        ],
+        "states": 3565,
+        "initialEnergyJ": 0.003799737553459791,
+        "maxPoleReal": -0.0075215070751144045,
+        "initialReconstructionRelativeError": 1.6917601773679467e-15,
+        "modalDerivativeRelativeError": 1.1928560901734403e-12,
+        "seconds": 29.16524052619934,
+        "render96To192kRelativeError": 3.188987874818516e-05
+      }
+    },
+    {
+      "midi": 32,
+      "string": 6,
+      "fret": 0,
+      "file": "32.wav",
+      "sha256": "3793c5a4e7e0a7a8f1b6e0b6151211c925a8ab5973ad563958a279fe13faa340",
+      "peakFS": 0.6184281177306791,
+      "physics": {
+        "mu": 0.0053832863594252016,
+        "ei": 1.548006937407884e-08,
+        "tension": 24.518161060789456,
+        "outerDiameterM": 0.00107,
+        "estimatedCoreDiameterMm": 0.4395280271787974,
+        "estimatedWireDiameterMm": 0.3152359864106013,
+        "nominalTensionN": 61.78189499999999,
+        "tensionKgf": 2.500156634609113,
+        "speakingLengthM": 0.65,
+        "fret": 0,
+        "string": 6,
+        "targetHz": 51.91308719749314,
+        "fixedEndHz": 51.913087197493134,
+        "tuningOffsetSemitones": -8,
+        "lowTension": true,
+        "pluckForceN": 1.5457651114447049,
+        "pullMm": 4.382880142846913,
+        "forceLimited": false,
+        "totalMeanTensionN": 327.54364606078946,
+        "bodyPreload": "standard-tuning wood tangent; updated mean-chord geometric stiffness",
+        "frequencyChecks": [
+          {
+            "hz": 98.0,
+            "stateVsSchurRelativeError": 1.6663139073493679e-12
+          },
+          {
+            "hz": 223.0,
+            "stateVsSchurRelativeError": 2.2588200386244938e-12
+          },
+          {
+            "hz": 659.0,
+            "stateVsSchurRelativeError": 2.772766382113963e-11
+          }
+        ],
+        "states": 3565,
+        "initialEnergyJ": 0.003387451606228271,
+        "maxPoleReal": -0.007521507076248897,
+        "initialReconstructionRelativeError": 2.5289551203228737e-15,
+        "modalDerivativeRelativeError": 3.531858765476724e-12,
+        "seconds": 29.18293809890747,
+        "render96To192kRelativeError": 2.8816205286660534e-05
+      }
+    },
+    {
+      "midi": 33,
+      "string": 6,
+      "fret": 0,
+      "file": "33.wav",
+      "sha256": "8a5edf0fb09d32ed4b0dcfe450d02cac5e1249884bfa18552d561a2b0b27163f",
+      "peakFS": 0.3778471819585775,
+      "physics": {
+        "mu": 0.0053832863594252016,
+        "ei": 1.548006937407884e-08,
+        "tension": 27.52070532935691,
+        "outerDiameterM": 0.00107,
+        "estimatedCoreDiameterMm": 0.4395280271787974,
+        "estimatedWireDiameterMm": 0.3152359864106013,
+        "nominalTensionN": 61.78189499999999,
+        "tensionKgf": 2.8063309416933317,
+        "speakingLengthM": 0.65,
+        "fret": 0,
+        "string": 6,
+        "targetHz": 55.0,
+        "fixedEndHz": 54.99999999999999,
+        "tuningOffsetSemitones": -7,
+        "lowTension": true,
+        "pluckForceN": 1.5457651114447049,
+        "pullMm": 3.907639138748818,
+        "forceLimited": false,
+        "totalMeanTensionN": 330.54619032935693,
+        "bodyPreload": "standard-tuning wood tangent; updated mean-chord geometric stiffness",
+        "frequencyChecks": [
+          {
+            "hz": 98.0,
+            "stateVsSchurRelativeError": 2.4643070446802423e-12
+          },
+          {
+            "hz": 223.0,
+            "stateVsSchurRelativeError": 1.4672401783109784e-12
+          },
+          {
+            "hz": 659.0,
+            "stateVsSchurRelativeError": 4.823938740380277e-11
+          }
+        ],
+        "states": 3565,
+        "initialEnergyJ": 0.0030201461243968787,
+        "maxPoleReal": -0.007521507074106502,
+        "initialReconstructionRelativeError": 1.410670682537906e-15,
+        "modalDerivativeRelativeError": 1.1741004686936526e-12,
+        "seconds": 27.405171155929565,
+        "render96To192kRelativeError": 6.519884775161498e-05
+      }
+    },
+    {
+      "midi": 34,
+      "string": 6,
+      "fret": 0,
+      "file": "34.wav",
+      "sha256": "ebf140d7fece38fda14481a8ceb79c75955db1eda5e9b5184f960b187d0f5056",
+      "peakFS": 0.2749181667145488,
+      "physics": {
+        "mu": 0.0053832863594252016,
+        "ei": 1.548006937407884e-08,
+        "tension": 30.890947319192698,
+        "outerDiameterM": 0.00107,
+        "estimatedCoreDiameterMm": 0.4395280271787974,
+        "estimatedWireDiameterMm": 0.3152359864106013,
+        "nominalTensionN": 61.78189499999999,
+        "tensionKgf": 3.1499999815627864,
+        "speakingLengthM": 0.65,
+        "fret": 0,
+        "string": 6,
+        "targetHz": 58.27047018976124,
+        "fixedEndHz": 58.27047018976124,
+        "tuningOffsetSemitones": -6,
+        "lowTension": true,
+        "pluckForceN": 1.5457651114447049,
+        "pullMm": 3.484246900699877,
+        "forceLimited": false,
+        "totalMeanTensionN": 333.9164323191927,
+        "bodyPreload": "standard-tuning wood tangent; updated mean-chord geometric stiffness",
+        "frequencyChecks": [
+          {
+            "hz": 98.0,
+            "stateVsSchurRelativeError": 2.495890370836581e-12
+          },
+          {
+            "hz": 223.0,
+            "stateVsSchurRelativeError": 3.244837871317646e-12
+          },
+          {
+            "hz": 659.0,
+            "stateVsSchurRelativeError": 8.64827820919395e-12
+          }
+        ],
+        "states": 3565,
+        "initialEnergyJ": 0.0026929136493806065,
+        "maxPoleReal": -0.007521507074632303,
+        "initialReconstructionRelativeError": 9.330639296729175e-16,
+        "modalDerivativeRelativeError": 2.328987973548575e-12,
+        "seconds": 28.165170669555664,
+        "render96To192kRelativeError": 5.6820649474803895e-05
+      }
+    },
+    {
+      "midi": 35,
+      "string": 6,
+      "fret": 0,
+      "file": "35.wav",
+      "sha256": "ee627caf740403197cd4e1ebe349b914f8d20e88832025012d9771f162857b96",
+      "peakFS": 0.271886749996424,
+      "physics": {
+        "mu": 0.0053832863594252016,
+        "ei": 1.548006937407884e-08,
+        "tension": 34.67391604640202,
+        "outerDiameterM": 0.00107,
+        "estimatedCoreDiameterMm": 0.4395280271787974,
+        "estimatedWireDiameterMm": 0.3152359864106013,
+        "nominalTensionN": 61.78189499999999,
+        "tensionKgf": 3.535755435995169,
+        "speakingLengthM": 0.65,
+        "fret": 0,
+        "string": 6,
+        "targetHz": 61.7354126570155,
+        "fixedEndHz": 61.735412657015495,
+        "tuningOffsetSemitones": -5,
+        "lowTension": true,
+        "pluckForceN": 1.5457651114447049,
+        "pullMm": 3.1070466088308493,
+        "forceLimited": false,
+        "totalMeanTensionN": 337.69940104640204,
+        "bodyPreload": "standard-tuning wood tangent; updated mean-chord geometric stiffness",
+        "frequencyChecks": [
+          {
+            "hz": 98.0,
+            "stateVsSchurRelativeError": 2.6198807820960214e-12
+          },
+          {
+            "hz": 223.0,
+            "stateVsSchurRelativeError": 2.5282301764205976e-12
+          },
+          {
+            "hz": 659.0,
+            "stateVsSchurRelativeError": 5.922946487736529e-12
+          }
+        ],
+        "states": 3565,
+        "initialEnergyJ": 0.002401382123781655,
+        "maxPoleReal": -0.00752150707349506,
+        "initialReconstructionRelativeError": 1.5463952305732837e-15,
+        "modalDerivativeRelativeError": 1.378038559966471e-12,
+        "seconds": 28.010596752166748,
+        "render96To192kRelativeError": 2.9864304967280278e-05
+      }
+    },
+    {
+      "midi": 36,
+      "string": 6,
+      "fret": 0,
+      "file": "36.wav",
+      "sha256": "fd7c6489d1c81967020d04f8380b0f35d28b91c4d158d2a17b54e812eef81dec",
+      "peakFS": 0.3902797788723575,
+      "physics": {
+        "mu": 0.0053832863594252016,
+        "ei": 1.548006937407884e-08,
+        "tension": 38.92015487263572,
+        "outerDiameterM": 0.00107,
+        "estimatedCoreDiameterMm": 0.4395280271787974,
+        "estimatedWireDiameterMm": 0.3152359864106013,
+        "nominalTensionN": 61.78189499999999,
+        "tensionKgf": 3.968751293523856,
+        "speakingLengthM": 0.65,
+        "fret": 0,
+        "string": 6,
+        "targetHz": 65.40639132514966,
+        "fixedEndHz": 65.40639132514966,
+        "tuningOffsetSemitones": -4,
+        "lowTension": true,
+        "pluckForceN": 1.5457651114447049,
+        "pullMm": 2.7709985980773126,
+        "forceLimited": false,
+        "totalMeanTensionN": 341.94563987263575,
+        "bodyPreload": "standard-tuning wood tangent; updated mean-chord geometric stiffness",
+        "frequencyChecks": [
+          {
+            "hz": 98.0,
+            "stateVsSchurRelativeError": 2.45729306089491e-12
+          },
+          {
+            "hz": 223.0,
+            "stateVsSchurRelativeError": 1.9058748471073466e-11
+          },
+          {
+            "hz": 659.0,
+            "stateVsSchurRelativeError": 1.1821040992670242e-11
+          }
+        ],
+        "states": 3565,
+        "initialEnergyJ": 0.002141656478385049,
+        "maxPoleReal": -0.007521507075732864,
+        "initialReconstructionRelativeError": 1.7636588876552399e-15,
+        "modalDerivativeRelativeError": 7.672276114798044e-13,
+        "seconds": 27.328460693359375,
+        "render96To192kRelativeError": 2.2075676185776488e-05
+      }
+    },
+    {
+      "midi": 37,
+      "string": 6,
+      "fret": 0,
+      "file": "37.wav",
+      "sha256": "7ebf8d0d1340eeceb58ea17cf11f74665fc7a66437ba42088b56461c625e8ebf",
+      "peakFS": 0.6377461745533948,
+      "physics": {
+        "mu": 0.0053832863594252016,
+        "ei": 1.548006937407884e-08,
+        "tension": 43.686396803140774,
+        "outerDiameterM": 0.00107,
+        "estimatedCoreDiameterMm": 0.4395280271787974,
+        "estimatedWireDiameterMm": 0.3152359864106013,
+        "nominalTensionN": 61.78189499999999,
+        "tensionKgf": 4.454772710674979,
+        "speakingLengthM": 0.65,
+        "fret": 0,
+        "string": 6,
+        "targetHz": 69.29565774421802,
+        "fixedEndHz": 69.29565774421802,
+        "tuningOffsetSemitones": -3,
+        "lowTension": true,
+        "pluckForceN": 1.5457651114447049,
+        "pullMm": 2.4716130254607376,
+        "forceLimited": false,
+        "totalMeanTensionN": 346.71188180314084,
+        "bodyPreload": "standard-tuning wood tangent; updated mean-chord geometric stiffness",
+        "frequencyChecks": [
+          {
+            "hz": 98.0,
+            "stateVsSchurRelativeError": 4.7438443748436885e-12
+          },
+          {
+            "hz": 223.0,
+            "stateVsSchurRelativeError": 2.915136714134475e-12
+          },
+          {
+            "hz": 659.0,
+            "stateVsSchurRelativeError": 4.71191059707854e-12
+          }
+        ],
+        "states": 3565,
+        "initialEnergyJ": 0.0019102665918747503,
+        "maxPoleReal": -0.007521507074061593,
+        "initialReconstructionRelativeError": 3.2025756314077638e-15,
+        "modalDerivativeRelativeError": 1.570862022942715e-12,
+        "seconds": 27.959925174713135,
+        "render96To192kRelativeError": 2.378752449947092e-05
+      }
+    },
+    {
+      "midi": 38,
+      "string": 6,
+      "fret": 0,
+      "file": "38.wav",
+      "sha256": "4acdad770de55e4663a165c5fc6538297e499c6aec65b802023a36da42752192",
+      "peakFS": 0.42753735727092657,
+      "physics": {
+        "mu": 0.0053832863594252016,
+        "ei": 1.548006937407884e-08,
+        "tension": 49.036322483193494,
+        "outerDiameterM": 0.00107,
+        "estimatedCoreDiameterMm": 0.4395280271787974,
+        "estimatedWireDiameterMm": 0.3152359864106013,
+        "nominalTensionN": 61.78189499999999,
+        "tensionKgf": 5.000313306092651,
+        "speakingLengthM": 0.65,
+        "fret": 0,
+        "string": 6,
+        "targetHz": 73.41619197935188,
+        "fixedEndHz": 73.41619197935188,
+        "tuningOffsetSemitones": -2,
+        "lowTension": true,
+        "pluckForceN": 1.5457651114447049,
+        "pullMm": 2.2048898832031663,
+        "forceLimited": false,
+        "totalMeanTensionN": 352.06180748319355,
+        "bodyPreload": "standard-tuning wood tangent; updated mean-chord geometric stiffness",
+        "frequencyChecks": [
+          {
+            "hz": 98.0,
+            "stateVsSchurRelativeError": 1.919737311884253e-12
+          },
+          {
+            "hz": 223.0,
+            "stateVsSchurRelativeError": 2.9840468074930234e-12
+          },
+          {
+            "hz": 659.0,
+            "stateVsSchurRelativeError": 2.2505079935453085e-11
+          }
+        ],
+        "states": 3565,
+        "initialEnergyJ": 0.0017041209280164221,
+        "maxPoleReal": -0.00752150707634738,
+        "initialReconstructionRelativeError": 1.3355723488168823e-15,
+        "modalDerivativeRelativeError": 9.303179772394282e-13,
+        "seconds": 27.927875518798828,
+        "render96To192kRelativeError": 3.796254701134555e-05
+      }
+    },
+    {
+      "midi": 39,
+      "string": 6,
+      "fret": 0,
+      "file": "39.wav",
+      "sha256": "429d54e8dd3b5b342b13c62d3a7e89b4827c460816865de38e6557122451ccd8",
+      "peakFS": 0.32840842173844037,
+      "physics": {
+        "mu": 0.0053832863594252016,
+        "ei": 1.548006937407884e-08,
+        "tension": 55.041411020328404,
+        "outerDiameterM": 0.00107,
+        "estimatedCoreDiameterMm": 0.4395280271787974,
+        "estimatedWireDiameterMm": 0.3152359864106013,
+        "nominalTensionN": 61.78189499999999,
+        "tensionKgf": 5.612661920261089,
+        "speakingLengthM": 0.65,
+        "fret": 0,
+        "string": 6,
+        "targetHz": 77.78174593052023,
+        "fixedEndHz": 77.78174593052022,
+        "tuningOffsetSemitones": -1,
+        "lowTension": true,
+        "pluckForceN": 1.5457651114447049,
+        "pullMm": 1.9672655562507895,
+        "forceLimited": false,
+        "totalMeanTensionN": 358.0668960203284,
+        "bodyPreload": "standard-tuning wood tangent; updated mean-chord geometric stiffness",
+        "frequencyChecks": [
+          {
+            "hz": 98.0,
+            "stateVsSchurRelativeError": 2.9800633488604457e-12
+          },
+          {
+            "hz": 223.0,
+            "stateVsSchurRelativeError": 2.584564966105977e-12
+          },
+          {
+            "hz": 659.0,
+            "stateVsSchurRelativeError": 3.8431475290281555e-12
+          }
+        ],
+        "states": 3565,
+        "initialEnergyJ": 0.0015204652308996656,
+        "maxPoleReal": -0.007521507073635407,
+        "initialReconstructionRelativeError": 1.1912394163877108e-15,
+        "modalDerivativeRelativeError": 1.0944438282933183e-12,
+        "seconds": 16.631062030792236,
+        "render96To192kRelativeError": 3.9011881236749313e-05
+      }
+    },
+    {
       "midi": 40,
       "string": 6,
       "fret": 0,
@@ -2038,6 +3007,8 @@
     "One active string per generated note; five other strings contribute mean preload. Polyphony mixes independently calculated voices, without dynamic sympathetic coupling among six strings.",
     "Inherited whole-shell acoustic high-frequency accuracy limits still apply. No claim of reproducing a real 520R set or a specific guitar.",
     "Fretted notes shorten the active speaking length with the inherited nut-body port; finger damping and a spatially moved fret contact are not modeled.",
-    "High-frequency acoustic reduction is inherited from latest B, including its unresolved 3500 Hz error. State/Schur agreement verifies assembly, not continuum accuracy."
+    "High-frequency acoustic reduction is inherited from latest B, including its unresolved 3500 Hz error. State/Schur agreement verifies assembly, not continuum accuracy.",
+    "Below E2, the open sixth string keeps the same mass, section and 650 mm length; tension is solved from the stiff-string fundamental. Pluck force is limited to 5 mm static deflection.",
+    "Low-tuned notes update mean-chord geometric stiffness at the standard-tuning equilibrium. Wood prestress and shell/acoustic bases are not rebuilt; slack-string contact, fret buzz and nonlinear axial stretching are absent."
   ]
 }

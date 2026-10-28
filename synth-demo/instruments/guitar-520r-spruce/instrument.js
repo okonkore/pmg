@@ -1,6 +1,6 @@
 /** Fixed photo-derived 520R strings; independent whole-shell renders per note. */
 export async function loadGuitar(context, { destination = context.destination, onProgress = () => {} } = {}) {
-  const response = await fetch(new URL('./manifest.json', import.meta.url));
+  const response = await fetch(new URL('./manifest.json?v=low-tension-1', import.meta.url));
   if (!response.ok) throw new Error(`520R manifest: HTTP ${response.status}`);
   const manifest = await response.json();
   if (!Array.isArray(manifest.notes) || !manifest.notes.length) throw new Error('520R音源の一覧を読み込めませんでした');

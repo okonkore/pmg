@@ -1,13 +1,21 @@
 {
-  "notes": 49,
+  "notes": 68,
+  "individuallyCalculatedRange": "A0-E6",
+  "lowTensionNotes": 19,
+  "preservedOriginalNotes": 49,
   "peakFS": 0.8,
   "maximumRender96To192kRelativeError": 0.00016169056176773027,
   "maximumStateVsSchurRelativeError": 3.7972871165625524e-10,
-  "checks": [
-    "six string sections, preload and 18 positive mechanical systems",
-    "whole-shell reference waveform reproduction",
-    "49 PCM headers and SHA256 hashes",
-    "mobile Edge: 49 actual WAV decodes, audio output, song playback, voice cleanup, bank reuse, preset switching"
+  "lowTensionRangeKgf": [
+    0.7015827077675141,
+    5.612661920261089
   ],
-  "scope": "Finite reduced-model consistency and application behavior, not real-instrument fidelity or full-band continuum accuracy"
+  "checks": [
+    "six string sections and 18 standard-tuning positive mechanical systems",
+    "19 low tunings: constant sixth-string section/mass/length, decreasing tension, positive energy, pull at most 5 mm",
+    "original 49 note records and WAV SHA256 hashes unchanged",
+    "68 PCM headers and SHA256 hashes",
+    "mobile Edge: 68 actual WAV decodes, A0 playbackRate=1, A0 PC-keyboard operation, tension display, polyphony, song playback, stop and preset switching"
+  ],
+  "scope": "Finite reduced-model consistency and application behavior. Below E2, mean-chord geometric stiffness changes; wood equilibrium/prestress and acoustic bases remain standard-tuning approximations."
 }
