@@ -107,7 +107,18 @@
       }
     }
   ],
-  "files": {
+  "limits": [
+    "Same total force within each on/off pair; force changes across rows. Playback gain is unchanged across all six files.",
+    "Nonlinear static equilibrium is solved at the same applied force as its linear comparison; initial displacement is not artificially held equal.",
+    "No fret collisions or buzz. Larger displacements can exceed the clearance of an actual instrument.",
+    "Core-only axial stiffness and quasistatic uniform tension, not travelling longitudinal waves or measured winding rigidity.",
+    "Other C relaxation/body/acoustic limitations remain. No EQ, pitch envelope, artificial detuning or application sample update."
+  ],
+  "durationSeconds": 50,
+  "sampleRate": 48000,
+  "pcmBits": 24,
+  "endFade": false,
+  "previous3sFiles": {
     "1x-on.wav": "24efcf751a55c04cdc4cb43435c83c1331b8cb522ce30d2fbfcf039bec0613dc",
     "3x-off.wav": "970ddf6c2e4ffe17b586fa5c973af6f100291fba77e34fe7e3c2a592961226e6",
     "2x-off.wav": "25272eea7eb1ed63f0c5bcf359e0d576faae2d1663da9b3189eefa771ec612c4",
@@ -115,11 +126,143 @@
     "3x-on.wav": "cc29ccafa36f428b21d78df6c56fb7495c51d246435b616af06e8925cc2a8443",
     "2x-on.wav": "d6260c3dc7c678fb8738afa56436fab583abd1f8af5c02872bf9c48d7f5d1d36"
   },
-  "limits": [
-    "Same total force within each on/off pair; force changes across rows. Playback gain is unchanged across all six files.",
-    "Nonlinear static equilibrium is solved at the same applied force as its linear comparison; initial displacement is not artificially held equal.",
-    "No fret collisions or buzz. Larger displacements can exceed the clearance of an actual instrument.",
-    "Core-only axial stiffness and quasistatic uniform tension, not travelling longitudinal waves or measured winding rigidity.",
-    "Other C relaxation/body/acoustic limitations remain. No EQ, pitch envelope, artificial detuning or application sample update."
-  ]
+  "files": {
+    "1x-off.wav": "9eadf4f70b1e432e65c1c8baf01d254743a5f1a2d81eb06733e4917e20820609",
+    "1x-on.wav": "7974f2860a4d4e6dbc047e0d3fceab781bded2bc00fadecddab9edad924da1be",
+    "2x-off.wav": "e4b188b1450d701b92b0c86982fa3da069b972882911c46369889ef69183bcdc",
+    "2x-on.wav": "daa8ef1ec98e79da6a842a5188f216eec69cd6cd2b3c78fdf05529c6e9dc449a",
+    "3x-off.wav": "d9ad6ffef51e8965bad1a98ebf785030313e353eb4f8faac0541b3f6997c470d",
+    "3x-on.wav": "dc6c962f14189f0d7aa053c827256c98f6a797fcf6821a5ea111a0a41eaa2fd1"
+  },
+  "longTail": {
+    "seconds": 50,
+    "bits": 24,
+    "sampleRate": 48000,
+    "endFade": false,
+    "zeroPadding": false,
+    "rows": [
+      {
+        "file": "1x-off.wav",
+        "scale": 1,
+        "kind": "off",
+        "seconds": 50,
+        "bits": 24,
+        "peakFS": 0.2626739585401458,
+        "last2sRmsDbFS": -125.39580676555107,
+        "last2sPeakDbFS": -119.82523016364806,
+        "linearContinuation12to15sMaximumErrorDbFS": null,
+        "linearContinuation12to15sRmsErrorDbFS": null,
+        "terminalModalPressureBoundDbFS": null,
+        "sha256": "9eadf4f70b1e432e65c1c8baf01d254743a5f1a2d81eb06733e4917e20820609"
+      },
+      {
+        "file": "1x-on.wav",
+        "scale": 1,
+        "kind": "on",
+        "seconds": 50,
+        "bits": 24,
+        "peakFS": 0.2626959572552438,
+        "last2sRmsDbFS": -125.39533683758704,
+        "last2sPeakDbFS": -119.827019218018,
+        "linearContinuation12to15sMaximumErrorDbFS": -156.5823869568344,
+        "linearContinuation12to15sRmsErrorDbFS": -164.72934479649683,
+        "terminalModalPressureBoundDbFS": -121.25554648777026,
+        "sha256": "7974f2860a4d4e6dbc047e0d3fceab781bded2bc00fadecddab9edad924da1be"
+      },
+      {
+        "file": "2x-off.wav",
+        "scale": 2,
+        "kind": "off",
+        "seconds": 50,
+        "bits": 24,
+        "peakFS": 0.5253479170802916,
+        "last2sRmsDbFS": -119.37520685227145,
+        "last2sPeakDbFS": -113.80463025036843,
+        "linearContinuation12to15sMaximumErrorDbFS": null,
+        "linearContinuation12to15sRmsErrorDbFS": null,
+        "terminalModalPressureBoundDbFS": null,
+        "sha256": "e4b188b1450d701b92b0c86982fa3da069b972882911c46369889ef69183bcdc"
+      },
+      {
+        "file": "2x-on.wav",
+        "scale": 2,
+        "kind": "on",
+        "seconds": 50,
+        "bits": 24,
+        "peakFS": 0.5254174136018556,
+        "last2sRmsDbFS": -119.37538547481543,
+        "last2sPeakDbFS": -113.81395131387049,
+        "linearContinuation12to15sMaximumErrorDbFS": -138.97458501889906,
+        "linearContinuation12to15sRmsErrorDbFS": -147.21580141931096,
+        "terminalModalPressureBoundDbFS": -115.24209222884446,
+        "sha256": "daa8ef1ec98e79da6a842a5188f216eec69cd6cd2b3c78fdf05529c6e9dc449a"
+      },
+      {
+        "file": "3x-off.wav",
+        "scale": 3,
+        "kind": "off",
+        "seconds": 50,
+        "bits": 24,
+        "peakFS": 0.7880218756204374,
+        "last2sRmsDbFS": -115.85338167115782,
+        "last2sPeakDbFS": -110.2828050692548,
+        "linearContinuation12to15sMaximumErrorDbFS": null,
+        "linearContinuation12to15sRmsErrorDbFS": null,
+        "terminalModalPressureBoundDbFS": null,
+        "sha256": "d9ad6ffef51e8965bad1a98ebf785030313e353eb4f8faac0541b3f6997c470d"
+      },
+      {
+        "file": "3x-on.wav",
+        "scale": 3,
+        "kind": "on",
+        "seconds": 50,
+        "bits": 24,
+        "peakFS": 0.7884330293061022,
+        "last2sRmsDbFS": -115.85526694555456,
+        "last2sPeakDbFS": -110.30483459092045,
+        "linearContinuation12to15sMaximumErrorDbFS": -128.52703066419247,
+        "linearContinuation12to15sRmsErrorDbFS": -136.77191001951573,
+        "terminalModalPressureBoundDbFS": -111.73260636726624,
+        "sha256": "dc6c962f14189f0d7aa053c827256c98f6a797fcf6821a5ea111a0a41eaa2fd1"
+      }
+    ],
+    "preparation": {
+      "scope": "Audit 15s full nonlinear runs and export a late free-decay continuation state.\nThe continuation's approximation must be compared against full nonlinear 12..15s\nbefore it is published. It is not an arbitrary signal fade or added damping.\n",
+      "rows": [
+        {
+          "scale": 1,
+          "switchTimeS": 12,
+          "snapshotIndex": 24,
+          "physicalEnergyJAtSwitch": 1.6419926278298635e-07,
+          "sampledEnergyMaxGrowthRelative": 0.0,
+          "initialEnergyRelativeError": 1.3378187446733136e-13,
+          "prefix3sBitIdenticalToPrevious48k": true
+        },
+        {
+          "scale": 2,
+          "switchTimeS": 12,
+          "snapshotIndex": 24,
+          "physicalEnergyJAtSwitch": 6.564771415744281e-07,
+          "sampledEnergyMaxGrowthRelative": 0.0,
+          "initialEnergyRelativeError": 4.440892098500626e-16,
+          "prefix3sBitIdenticalToPrevious48k": true
+        },
+        {
+          "scale": 3,
+          "switchTimeS": 12,
+          "snapshotIndex": 24,
+          "physicalEnergyJAtSwitch": 1.4758127837972935e-06,
+          "sampledEnergyMaxGrowthRelative": 0.0,
+          "initialEnergyRelativeError": 8.881784197001252e-16,
+          "prefix3sBitIdenticalToPrevious48k": true
+        }
+      ]
+    },
+    "limits": [
+      "Full nonlinear integration to 15s at 48kHz; retained from 0..12s. From the saved state at exactly 12s, linear free decay of the full coupled system continues to 50s.",
+      "Late nonlinearity is numerically neglected after 12s only after comparing 12..15s against full nonlinear integration; this is not a global mathematical error bound. See measured overlap error.",
+      "Terminal modal bound applies to the linear continuation. Last-two-second output levels are measured for each file.",
+      "No physical parameters or playback gain changed. No end fade, signal normalization, padding or repeated audio."
+    ]
+  }
 }

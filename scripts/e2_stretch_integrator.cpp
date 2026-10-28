@@ -12,7 +12,7 @@ int main(int argc,char**argv){try{
  if(argc!=7)throw std::runtime_error("model.bin prefix sampleRate duration nonlinear[0/1] snapshotHz");
  std::ifstream in(argv[1],std::ios::binary);int32_t N=0,D=0;if(!in)throw std::runtime_error("Cannot open model");in.read((char*)&N,4);in.read((char*)&D,4);if(!in||N<1||N>10000||D!=125)throw std::runtime_error("Invalid dimensions");
  std::vector<C>p(N),z0(N),Q(N*D),B(N*D),out(N),zl(N);std::vector<double>a(D),H(D*D),ea(1);read(in,p);read(in,z0);read(in,Q);read(in,B);read(in,out);read(in,a);read(in,H);read(in,ea);read(in,zl);
- int fs=std::stoi(argv[3]),nonlinear=std::stoi(argv[5]),snapshotHz=std::stoi(argv[6]);double duration=std::stod(argv[4]);if(fs<8000||fs>384000||!std::isfinite(duration)||duration<=0||duration>10||snapshotHz<=0)throw std::runtime_error("Invalid integration options");int count=std::lround(fs*duration),snap=std::max(1,fs/snapshotHz);double dt=1./fs;
+ int fs=std::stoi(argv[3]),nonlinear=std::stoi(argv[5]),snapshotHz=std::stoi(argv[6]);double duration=std::stod(argv[4]);if(fs<8000||fs>384000||!std::isfinite(duration)||duration<=0||duration>120||snapshotHz<=0)throw std::runtime_error("Invalid integration options");int count=std::lround(fs*duration),snap=std::max(1,fs/snapshotHz);double dt=1./fs;
  if(fs<8000||count<1||nonlinear<0||nonlinear>1)throw std::runtime_error("Invalid integration options");
  std::vector<double>zr(N),zi(N),er(N),ei(N),qr(N*D),qi(N*D),br(N*D),bi(N*D),rr(D),hr(D),force(D);std::vector<C>state(N);
  for(int k=0;k<N;k++){C zz=nonlinear?z0[k]:zl[k];zr[k]=zz.real();zi[k]=zz.imag();C e=std::exp(p[k]*dt);er[k]=e.real();ei[k]=e.imag();}
