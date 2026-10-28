@@ -1,0 +1,327 @@
+{
+  "scope": "50s same-D3 comparison with common force, gain and checked late continuation.",
+  "sampleRate": 48000,
+  "seconds": 50,
+  "bits": 24,
+  "gain": 0.4286610858558977,
+  "pluckDistanceFromBridgeM": 0.08,
+  "pluckForceN": 1.5457651114447049,
+  "relaxationCornerHz": 1000.0,
+  "dynamicStretch": true,
+  "endFade": false,
+  "rows": [
+    {
+      "key": "sixth-fret10",
+      "file": "sixth-fret10.wav",
+      "string": 6,
+      "fret": 10,
+      "nominalMidi": 50,
+      "nominalHz": 146.8323839587038,
+      "physics": {
+        "mu": 0.0053832863594252016,
+        "ei": 1.548006937407884e-08,
+        "tension": 61.78189499999999,
+        "outerDiameterM": 0.00107,
+        "estimatedCoreDiameterMm": 0.4395280271787974,
+        "estimatedWireDiameterMm": 0.3152359864106013,
+        "nominalTensionN": 61.78189499999999,
+        "tensionKgf": 6.3,
+        "speakingLengthM": 0.3648001680223712,
+        "fret": 10,
+        "string": 6,
+        "targetHz": 146.8323839587038,
+        "fixedEndHz": 146.8323839587038,
+        "tuningOffsetSemitones": 0,
+        "lowTension": false,
+        "pluckForceN": 1.5457651114447049,
+        "pullMm": 1.5694594421641137,
+        "forceLimited": false,
+        "totalMeanTensionN": 364.80738,
+        "bodyPreload": "standard tuning",
+        "coreAxialEA_N": 197.24517174859602,
+        "axialSpringNPerM": 540.6937524669672,
+        "relaxationCornerHz": 999.9999999999999,
+        "slipEI": 1.548006937407884e-08,
+        "bondedReferenceEI": 2.3815491344736677e-06,
+        "deltaEI": 2.366069065099589e-06,
+        "relaxationStates": 122,
+        "frequencyChecks": [
+          {
+            "hz": 98.0,
+            "stateVsSchurRelativeError": 6.284250607156797e-13
+          },
+          {
+            "hz": 223.0,
+            "stateVsSchurRelativeError": 1.0946471505133104e-12
+          },
+          {
+            "hz": 659.0,
+            "stateVsSchurRelativeError": 3.159348577538404e-13
+          },
+          {
+            "hz": 1500.0,
+            "stateVsSchurRelativeError": 3.7762570791352284e-11
+          }
+        ],
+        "states": 3687,
+        "initialEnergyJ": 0.00121300753442573,
+        "maxPoleReal": -0.007521507077682951,
+        "initialReconstructionRelativeError": 1.5638721616074066e-15,
+        "modalDerivativeRelativeError": 5.344051863330225e-13,
+        "seconds": 18.64925742149353,
+        "initialNonlinearStaticResidual": 6.410217323536927e-16,
+        "initialNonlinearDeltaT_N": 0.009902410619617025,
+        "initialNonlinearAddedLengthM": 1.831426861219743e-05,
+        "nonlinearInitialEnergyJ": 0.0012127254409039178,
+        "forcePositionError": 2.885163624937598e-17,
+        "forceOutputError": 2.2966584793816127e-10
+      },
+      "validation": {
+        "key": "sixth-fret10",
+        "physics": {
+          "mu": 0.0053832863594252016,
+          "ei": 1.548006937407884e-08,
+          "tension": 61.78189499999999,
+          "outerDiameterM": 0.00107,
+          "estimatedCoreDiameterMm": 0.4395280271787974,
+          "estimatedWireDiameterMm": 0.3152359864106013,
+          "nominalTensionN": 61.78189499999999,
+          "tensionKgf": 6.3,
+          "speakingLengthM": 0.3648001680223712,
+          "fret": 10,
+          "string": 6,
+          "targetHz": 146.8323839587038,
+          "fixedEndHz": 146.8323839587038,
+          "tuningOffsetSemitones": 0,
+          "lowTension": false,
+          "pluckForceN": 1.5457651114447049,
+          "pullMm": 1.5694594421641137,
+          "forceLimited": false,
+          "totalMeanTensionN": 364.80738,
+          "bodyPreload": "standard tuning",
+          "coreAxialEA_N": 197.24517174859602,
+          "axialSpringNPerM": 540.6937524669672,
+          "relaxationCornerHz": 999.9999999999999,
+          "slipEI": 1.548006937407884e-08,
+          "bondedReferenceEI": 2.3815491344736677e-06,
+          "deltaEI": 2.366069065099589e-06,
+          "relaxationStates": 122,
+          "frequencyChecks": [
+            {
+              "hz": 98.0,
+              "stateVsSchurRelativeError": 6.284250607156797e-13
+            },
+            {
+              "hz": 223.0,
+              "stateVsSchurRelativeError": 1.0946471505133104e-12
+            },
+            {
+              "hz": 659.0,
+              "stateVsSchurRelativeError": 3.159348577538404e-13
+            },
+            {
+              "hz": 1500.0,
+              "stateVsSchurRelativeError": 3.7762570791352284e-11
+            }
+          ],
+          "states": 3687,
+          "initialEnergyJ": 0.00121300753442573,
+          "maxPoleReal": -0.007521507077682951,
+          "initialReconstructionRelativeError": 1.5638721616074066e-15,
+          "modalDerivativeRelativeError": 5.344051863330225e-13,
+          "seconds": 18.64925742149353,
+          "initialNonlinearStaticResidual": 6.410217323536927e-16,
+          "initialNonlinearDeltaT_N": 0.009902410619617025,
+          "initialNonlinearAddedLengthM": 1.831426861219743e-05,
+          "nonlinearInitialEnergyJ": 0.0012127254409039178,
+          "forcePositionError": 2.885163624937598e-17,
+          "forceOutputError": 2.2966584793816127e-10
+        },
+        "energyChecks": [
+          {
+            "fs": 48000,
+            "seconds": 15,
+            "initialEnergyRelativeError": 1.8762769116165146e-14,
+            "maximumEnergyGrowthRelative": 0.0,
+            "maximumSampledEnergyIncreaseRelative": -2.3776157238962228e-05
+          },
+          {
+            "fs": 96000,
+            "seconds": 3,
+            "initialEnergyRelativeError": 1.8762769116165146e-14,
+            "maximumEnergyGrowthRelative": 0.0,
+            "maximumSampledEnergyIncreaseRelative": -0.021804592752119514
+          }
+        ],
+        "nonlinearCorrection48To96kRelativeError": 0.0002663780257132919,
+        "wave48To96kRelativeError": 0.00014482450510294024,
+        "terminalLinearPressureBoundDbFS": -134.0747593174118
+      },
+      "continuation12to15sMaximumErrorDbFS": -134.44413007208422,
+      "peakFS": 0.26798722311563183,
+      "last2sPeakDbFS": -130.6022686135449,
+      "sha256": "670f6dce50976f726fabc4a585ad12192d3a445a419454d7ba154bcbbc935b72"
+    },
+    {
+      "key": "fourth-open",
+      "file": "fourth-open.wav",
+      "string": 4,
+      "fret": 0,
+      "nominalMidi": 50,
+      "nominalHz": 146.8323839587038,
+      "physics": {
+        "mu": 0.0018571174257412779,
+        "ei": 2.2890300624190833e-08,
+        "tension": 67.665885,
+        "outerDiameterM": 0.00074,
+        "estimatedCoreDiameterMm": 0.4846812532558528,
+        "estimatedWireDiameterMm": 0.1276593733720736,
+        "nominalTensionN": 67.665885,
+        "tensionKgf": 6.9,
+        "speakingLengthM": 0.6499999999999999,
+        "fret": 0,
+        "string": 4,
+        "targetHz": 146.8323839587038,
+        "fixedEndHz": 146.8323839587038,
+        "tuningOffsetSemitones": 0,
+        "lowTension": false,
+        "pluckForceN": 1.5457651114447049,
+        "pullMm": 1.6052469389226012,
+        "forceLimited": false,
+        "totalMeanTensionN": 364.80738,
+        "bodyPreload": "standard tuning",
+        "coreAxialEA_N": 239.8532889570952,
+        "axialSpringNPerM": 369.0050599339927,
+        "relaxationCornerHz": 999.9999999999999,
+        "slipEI": 2.2890300624190833e-08,
+        "bondedReferenceEI": 3.521584711413974e-06,
+        "deltaEI": 3.498694410789783e-06,
+        "relaxationStates": 122,
+        "frequencyChecks": [
+          {
+            "hz": 98.0,
+            "stateVsSchurRelativeError": 6.410337824806364e-13
+          },
+          {
+            "hz": 223.0,
+            "stateVsSchurRelativeError": 1.8402130968366174e-12
+          },
+          {
+            "hz": 659.0,
+            "stateVsSchurRelativeError": 1.3637718488547123e-11
+          },
+          {
+            "hz": 1500.0,
+            "stateVsSchurRelativeError": 1.8670655415391675e-11
+          }
+        ],
+        "states": 3687,
+        "initialEnergyJ": 0.0012406671758307035,
+        "maxPoleReal": -0.007521507076382889,
+        "initialReconstructionRelativeError": 1.854090141217919e-15,
+        "modalDerivativeRelativeError": 7.23415241298939e-13,
+        "seconds": 17.87616801261902,
+        "initialNonlinearStaticResidual": 6.183690220541854e-16,
+        "initialNonlinearDeltaT_N": 0.006285064788261755,
+        "initialNonlinearAddedLengthM": 1.703246234451642e-05,
+        "nonlinearInitialEnergyJ": 0.0012405005243897984,
+        "forcePositionError": 5.442590432965867e-17,
+        "forceOutputError": 4.3604468914007377e-10
+      },
+      "validation": {
+        "key": "fourth-open",
+        "physics": {
+          "mu": 0.0018571174257412779,
+          "ei": 2.2890300624190833e-08,
+          "tension": 67.665885,
+          "outerDiameterM": 0.00074,
+          "estimatedCoreDiameterMm": 0.4846812532558528,
+          "estimatedWireDiameterMm": 0.1276593733720736,
+          "nominalTensionN": 67.665885,
+          "tensionKgf": 6.9,
+          "speakingLengthM": 0.6499999999999999,
+          "fret": 0,
+          "string": 4,
+          "targetHz": 146.8323839587038,
+          "fixedEndHz": 146.8323839587038,
+          "tuningOffsetSemitones": 0,
+          "lowTension": false,
+          "pluckForceN": 1.5457651114447049,
+          "pullMm": 1.6052469389226012,
+          "forceLimited": false,
+          "totalMeanTensionN": 364.80738,
+          "bodyPreload": "standard tuning",
+          "coreAxialEA_N": 239.8532889570952,
+          "axialSpringNPerM": 369.0050599339927,
+          "relaxationCornerHz": 999.9999999999999,
+          "slipEI": 2.2890300624190833e-08,
+          "bondedReferenceEI": 3.521584711413974e-06,
+          "deltaEI": 3.498694410789783e-06,
+          "relaxationStates": 122,
+          "frequencyChecks": [
+            {
+              "hz": 98.0,
+              "stateVsSchurRelativeError": 6.410337824806364e-13
+            },
+            {
+              "hz": 223.0,
+              "stateVsSchurRelativeError": 1.8402130968366174e-12
+            },
+            {
+              "hz": 659.0,
+              "stateVsSchurRelativeError": 1.3637718488547123e-11
+            },
+            {
+              "hz": 1500.0,
+              "stateVsSchurRelativeError": 1.8670655415391675e-11
+            }
+          ],
+          "states": 3687,
+          "initialEnergyJ": 0.0012406671758307035,
+          "maxPoleReal": -0.007521507076382889,
+          "initialReconstructionRelativeError": 1.854090141217919e-15,
+          "modalDerivativeRelativeError": 7.23415241298939e-13,
+          "seconds": 17.87616801261902,
+          "initialNonlinearStaticResidual": 6.183690220541854e-16,
+          "initialNonlinearDeltaT_N": 0.006285064788261755,
+          "initialNonlinearAddedLengthM": 1.703246234451642e-05,
+          "nonlinearInitialEnergyJ": 0.0012405005243897984,
+          "forcePositionError": 5.442590432965867e-17,
+          "forceOutputError": 4.3604468914007377e-10
+        },
+        "energyChecks": [
+          {
+            "fs": 48000,
+            "seconds": 15,
+            "initialEnergyRelativeError": 2.2537527399890678e-14,
+            "maximumEnergyGrowthRelative": 0.0,
+            "maximumSampledEnergyIncreaseRelative": -6.80907412015078e-06
+          },
+          {
+            "fs": 96000,
+            "seconds": 3,
+            "initialEnergyRelativeError": 2.2537527399890678e-14,
+            "maximumEnergyGrowthRelative": 0.0,
+            "maximumSampledEnergyIncreaseRelative": -0.025309447306329756
+          }
+        ],
+        "nonlinearCorrection48To96kRelativeError": 0.00031850394204775576,
+        "wave48To96kRelativeError": 0.00017077939318970383,
+        "terminalLinearPressureBoundDbFS": -158.2081219387078
+      },
+      "continuation12to15sMaximumErrorDbFS": -149.19781985137638,
+      "peakFS": 0.2632505497174013,
+      "last2sPeakDbFS": -153.0829918514668,
+      "sha256": "a5343ac9ad0b893a32486cd11b2c3645218b6415d92f59b87adb13dbd6c73542"
+    }
+  ],
+  "limits": [
+    "Same nominal stiff-string pitch; coupled frequencies can differ because the same body interacts differently with each string. No correction to equalize coupled frequencies.",
+    "Fret10 is represented by shorter vibrating length. Actual finger/fret contact damping and the spatial movement of the neck contact point are absent.",
+    "The existing center bridge/nut ports are reused; individual lateral string positions are not separately modeled.",
+    "Core geometry and 1000Hz relaxation time are hypotheses, not identified Savarez material data.",
+    "Core-only EA, quasistatic uniform added tension, no longitudinal travelling waves, buzz or collisions.",
+    "Full nonlinear integration to 15s; waveform retains 0..12s and uses stored-state linear free decay to 50s, checked against full nonlinear 12..15s. Overlap error is not a rigorous global error bound.",
+    "Original body/air/acoustic numerical limits persist. No EQ, gain normalization, added envelope or updates to main application samples."
+  ]
+}
