@@ -1,0 +1,68 @@
+{
+  "scope": "Change physical pluck direction at fixed total force; no artificial detuning.\nAll poles remain those of the same linear coupled system. Stretching is absent.\n",
+  "gain": 0.4286610858558977,
+  "durationS": 4,
+  "controls": [
+    {
+      "label": "original",
+      "render96To192kRelativeError": 3.097289246803682e-05,
+      "sourceSha256": "33ef68f653b1cc6fc6795b1e678472de92f2802ee0addfd11c6d7a5f36aa6a91"
+    },
+    {
+      "label": "orthogonal",
+      "render96To192kRelativeError": 8.382977171466305e-05,
+      "sourceSha256": "32a474692a536d4b462d1f54b7442eac13a93d9d08a12542aea215ff7deea0ea"
+    }
+  ],
+  "baselineMaximumAbsoluteDifferenceFSBeforeEndFade": 2.2752889182464653e-05,
+  "rows": [
+    {
+      "file": "a.wav",
+      "angleDegreesFromCurrentPluck": 0,
+      "totalForceN": 1.5457651114447049,
+      "peakFS": 0.26415353986743967,
+      "rmsDbFS": [
+        -20.501601137612266,
+        -22.39428243405449,
+        -25.748603510813275,
+        -29.195545738090804,
+        -32.44749089134714
+      ],
+      "sha256": "75b892bf94250a21a0a9ae64b6c10a9f5f90cbe6ee56489b4211f56f004419bc"
+    },
+    {
+      "file": "b.wav",
+      "angleDegreesFromCurrentPluck": 45,
+      "totalForceN": 1.5457651114447049,
+      "peakFS": 0.1873437054268252,
+      "rmsDbFS": [
+        -23.489552009927863,
+        -25.302436595362057,
+        -28.365990844377098,
+        -31.777213303416364,
+        -36.14242894016356
+      ],
+      "sha256": "3867861ac6e070a51fcdb42a735a44b67eb1e83fe720a529fe10f45429622096"
+    },
+    {
+      "file": "c.wav",
+      "angleDegreesFromCurrentPluck": 80,
+      "totalForceN": 1.5457651114447049,
+      "peakFS": 0.06124537588745495,
+      "rmsDbFS": [
+        -34.32456426637854,
+        -35.76648798331777,
+        -37.65740509035469,
+        -40.50188231091448,
+        -46.34833249679691
+      ],
+      "sha256": "411046ab09e4edeff9a4bd6473c94ea3daf8aa7cff82b89befbb49378466d1a5"
+    }
+  ],
+  "limits": [
+    "Angles refer to the stored transverse basis, not a measured finger trajectory. Same total force, not same injected energy or same volume.",
+    "Linear superposition of two independently Schur-checked physical excitations. No crossfade or artificial modulation.",
+    "The same original waveform is extended to four seconds. Last 30ms common end fade only.",
+    "No dynamic stretching or real-guitar constitutive identification. Original acoustic spatial/ROM limitations remain."
+  ]
+}
