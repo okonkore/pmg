@@ -245,7 +245,7 @@ const ScoreEditor=(()=>{
    const shifts={arrowleft:[-(snap()||.25),0],arrowright:[snap()||.25,0],arrowup:[0,e.shiftKey?12:1],arrowdown:[0,e.shiftKey?-12:-1]};
    if(shifts[key]){e.preventDefault();shiftSelection(...shifts[key])}
   });
-  function transportBeat(){if(!transport)return cursor;const elapsed=Math.max(0,transport.clock()-transport.startTime)*transport.bpm/60,span=transport.endBeat-transport.fromBeat;return transport.loop?transport.fromBeat+(elapsed%span):Math.min(transport.endBeat,transport.fromBeat+elapsed)}
+  function transportBeat(){if(!transport)return cursor;const seconds=Math.max(0,transport.clock()-transport.startTime);if(transport.beatAt)return transport.beatAt(seconds);const elapsed=seconds*transport.bpm/60,span=transport.endBeat-transport.fromBeat;return transport.loop?transport.fromBeat+(elapsed%span):Math.min(transport.endBeat,transport.fromBeat+elapsed)}
   function frame(){if(!transport)return;setPosition(transportBeat());if(!panel.hidden&&!gesture&&!pinchTail){const x=cursor*px+GUTTER;if(x>scroll.scrollLeft+scroll.clientWidth-35)scroll.scrollLeft=x-scroll.clientWidth*.3;else if(x<scroll.scrollLeft+GUTTER)scroll.scrollLeft=Math.max(0,x-GUTTER-px)}raf=requestAnimationFrame(frame)}
   function transportStop(){if(transport)setPosition(transportBeat());transport=null;cancelAnimationFrame(raf);$('seq-play').textContent='▶ 再生'}
   window.addEventListener('pagehide',()=>{if(history&&!readonly())save()});

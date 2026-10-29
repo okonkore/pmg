@@ -63,6 +63,9 @@
    <div id="song-playback-settings" class="seq-toolbar" aria-label="再生設定">
     <div class="seq-tools"><span>曲の再生設定</span><label><input id="seq-strum" type="checkbox">ストラム</label><label>音の間隔 <input id="seq-strum-ms" type="range" min="5" max="100" step="5" value="20"><output id="seq-strum-out">20 ms</output></label><label>方向 <select id="seq-strum-direction"><option value="up">低音 → 高音</option><option value="down">高音 → 低音</option></select></label></div>
     <small>同時に置いた音を順番に鳴らします。短い音や次の音が近いときは間隔を自動調整します。</small>
+    <div class="seq-tools"><label><input id="song-rit-ending" type="checkbox">曲末をリタルダンド</label><label>小節ごとのリタルダンド <input id="song-rit-every" type="number" min="0" max="4096" step="1" value="0" aria-describedby="song-rit-help">小節ごと</label><label>指定小節 <input id="song-rit-bars" type="text" placeholder="例：4, 8, 12" aria-describedby="song-rit-help" style="width:140px;min-width:100px"></label></div>
+    <div class="seq-tools"><label>ゆっくりにする範囲 <select id="song-rit-beats"><option value="1">最後の1拍</option><option value="2" selected>最後の2拍</option><option value="4">最後の4拍</option></select></label><label>終点のテンポ <input id="song-rit-percent" type="range" min="25" max="95" step="5" value="65"><output id="song-rit-out">65%</output></label></div>
+    <small id="song-rit-help">小節ごとは0でオフ。指定小節はカンマ区切りで追加できます。各小節の終わりで徐々に遅くなり、次の小節で元のテンポに戻ります。「拍」は4分音符単位です。</small>
    </div>
 <div class="bottom"><div class="actions"><button id="demo">▶ 曲を再生</button><button id="stop">すべて止める</button></div><small>和音OK · 最大12音</small></div>
 <div class="hint">白鍵 A S D F G H J K ／ 黒鍵 W E T Y U<br>Z / X でオクターブ上下 · 対応音域 A0〜C8（88鍵）<br>鍵盤を押して演奏できます。弦楽器系は押し続けても自然に減衰します。スマホは画面の鍵盤で。</div>
@@ -83,8 +86,9 @@
 <script src="bach-solos.js"></script>
 <script src="bach-1012.js"></script>
 <script src="sequencer-model.js?v=strum-1"></script>
-<script src="sequencer.js?v=play-options-2"></script>
-<script src="song-playback-settings.js?v=1"></script>
+<script src="sequencer.js?v=rit-1"></script>
+<script src="playback-timing.js?v=1"></script>
+<script src="song-playback-settings.js?v=rit-1"></script>
 <script src="string-lab/physics.js?v=39"></script>
 <script src="physical-string-model.js?v=1"></script>
 <script src="physical-string-instrument.js?v=1"></script>
@@ -396,25 +400,29 @@ window.addEventListener('keyup',e=>releaseToken('k'+e.key.toLowerCase()));window
 async function startSong({fromBeat=0,loop=false}={}){
   stop();
   try {
-    const run=playbackRun;
+    const run=playbackRun,options=SongPlaybackSettings.get();
     await enable([]);
     if(run!==playbackRun)return;
-    const {score,label}=songs[$('song').value],beat=60/score.bpm;
+    const {score,label}=songs[$('song').value];
     const endBeat=score.events.reduce((end,[at,midi,duration])=>Math.max(end,at+duration),0);
     if(!endBeat){$('status').textContent='音符を追加してから再生してください';return}
     if(fromBeat>=endBeat)fromBeat=0;
-    const events=SequencerModel.playbackEvents(score.events,score.bpm,SongPlaybackSettings.get()).filter(([at,midi,duration])=>at+duration>fromBeat).map(([at,midi,duration,velocity=1])=>[Math.max(at,fromBeat),midi,at+duration-Math.max(at,fromBeat),velocity]);
+    const meter=scoreEditor.currentDocument().meter,barBeats=meter[0]*4/meter[1];
+    const timing=PlaybackTiming.create({bpm:score.bpm,endBeat,barBeats,...options.rit});
+    const fromTime=timing.timeAt(fromBeat);
+    const timedEvents=score.events.map(([at,midi,duration,velocity=1])=>[timing.timeAt(at),midi,timing.timeAt(at+duration)-timing.timeAt(at),velocity]);
+    const events=SequencerModel.playbackEvents(timedEvents,60,options).filter(([at,midi,duration])=>at+duration>fromTime).map(([at,midi,duration,velocity])=>[Math.max(at,fromTime)-fromTime,midi,at+duration-Math.max(at,fromTime),velocity]);
     if(isGuitar()&&!await prepareGuitar(events.map(e=>e[1])))return;
     if(run!==playbackRun)return;
-    const length=(endBeat-fromBeat)*beat;
+    const length=timing.duration-fromTime;
     let start=ctx.currentTime+.06,index=0,cycle=0;
     demoEnds=loop?Infinity:start+length;
-    scoreEditor?.transportStart({fromBeat,endBeat,bpm:score.bpm,startTime:start,loop,clock:()=>ctx.currentTime});
+    scoreEditor?.transportStart({fromBeat,endBeat,bpm:score.bpm,startTime:start,loop,clock:()=>ctx.currentTime,beatAt:elapsed=>timing.beatAt(fromTime+(loop?elapsed%length:Math.min(elapsed,length)))});
     function tick(){
       if(!demoEnds||run!==playbackRun)return;
-      while(index<events.length&&start+(events[index][0]-fromBeat)*beat<ctx.currentTime+.12){
-        const [at,midi,duration,velocity]=events[index],time=start+(at-fromBeat)*beat,id='d'+cycle+'-'+index;
-        const voice=play(id,midi,time,velocity),off=time+duration*beat*.88;
+      while(index<events.length&&start+events[index][0]<ctx.currentTime+.12){
+        const [at,midi,duration,velocity]=events[index],time=start+at,id='d'+cycle+'-'+index;
+        const voice=play(id,midi,time,velocity),off=time+duration*.88;
         voice.release(off);
         setTimeout(()=>{if(voices.get(id)===voice){voices.delete(id);refreshKeys()}},Math.max(0,(off-ctx.currentTime)*1000));
         index++;
