@@ -1,0 +1,72 @@
+[
+  {
+    "number": 1,
+    "midi": "https://www.mutopiaproject.org/ftp/SorF/O60/sor_op60-01/sor_op60-01.mid",
+    "source": {
+      "credit": "Fernando Sor / Fabrice De Volder / Mutopia",
+      "license": "CC BY-SA 2.5",
+      "url": "https://www.mutopiaproject.org/ftp/SorF/O60/sor_op60-01/sor_op60-01.ly"
+    },
+    "sha256": "154029102aa817e75a4f2ef0e68913931d1910fb95216db26b2825587796f31c",
+    "pitchShift": -12,
+    "notes": 63,
+    "beats": 63.0,
+    "bpm": 112
+  },
+  {
+    "number": 2,
+    "midi": "https://www.mutopiaproject.org/ftp/SorF/O60/sor_op60-02/sor_op60-02.mid",
+    "source": {
+      "credit": "Fernando Sor / Fabrice De Volder / Mutopia",
+      "license": "CC BY-SA 2.5",
+      "url": "https://www.mutopiaproject.org/ftp/SorF/O60/sor_op60-02/sor_op60-02.ly"
+    },
+    "sha256": "48b0cc6f707c571edd086e08d470e7454c3517406cffa9850fc26f72a0143d96",
+    "pitchShift": -12,
+    "notes": 135,
+    "beats": 119.0,
+    "bpm": 108
+  },
+  {
+    "number": 3,
+    "midi": "https://www.mutopiaproject.org/ftp/SorF/O60/sor_op60-03/sor_op60-03.mid",
+    "source": {
+      "credit": "Fernando Sor / Fabrice De Volder / Mutopia",
+      "license": "CC BY-SA 3.0",
+      "url": "https://www.mutopiaproject.org/ftp/SorF/O60/sor_op60-03/sor_op60-03.ly"
+    },
+    "sha256": "6f19e9fae019d365678ac39a2ced7433d47e79369d20a01d7f0433aa9242d1ee",
+    "pitchShift": 0,
+    "notes": 115,
+    "beats": 95.0,
+    "bpm": 112
+  },
+  {
+    "number": 4,
+    "midi": "https://www.mutopiaproject.org/ftp/SorF/O60/sor_op60-04/sor_op60-04.mid",
+    "source": {
+      "credit": "Fernando Sor / Fabrice De Volder / Mutopia",
+      "license": "CC BY-SA 2.5",
+      "url": "https://www.mutopiaproject.org/ftp/SorF/O60/sor_op60-04/sor_op60-04.ly"
+    },
+    "sha256": "9e3fd041074829eadec6f6db0f829eaf4b1d5155fcb6460a63184a9fd3e29bf9",
+    "pitchShift": 0,
+    "notes": 107,
+    "beats": 72.0,
+    "bpm": 108
+  },
+  {
+    "number": 5,
+    "midi": "https://www.mutopiaproject.org/ftp/SorF/O60/sor_op60-05/sor_op60-05.mid",
+    "source": {
+      "credit": "Fernando Sor / Fabrice De Volder / Mutopia",
+      "license": "CC BY-SA 3.0",
+      "url": "https://www.mutopiaproject.org/ftp/SorF/O60/sor_op60-05/sor_op60-05.ly"
+    },
+    "sha256": "b3b09e20d68a2401614afb5aceefd2eb7c1b6504ca572dbbedd92ff89696516c",
+    "pitchShift": 0,
+    "notes": 211,
+    "beats": 119.5,
+    "bpm": 80
+  }
+]

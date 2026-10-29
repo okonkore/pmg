@@ -73,7 +73,7 @@
 <header id="editor-header" hidden><div><div class="eyebrow">PIANO ROLL</div><h1>曲を編集する</h1><small id="editor-voice"></small><div id="editor-status-slot"></div></div><button id="back-performance">← 演奏画面へ</button></header>
 <div id="editor-song-slot" hidden></div>
 <section id="score-editor" class="sequencer" aria-label="曲のピアノロールエディター" hidden></section>
-<footer id="performance-footer">最初に「音を有効にする」を押してください。有線イヤホン・内蔵スピーカー推奨。<br>波形合成 → フィルター → 音量エンベロープ → ディレイ。Funky Clavは弦風の倍音と短い減衰、オートワウで音を作ります。最新Bは物理モデルで生成したE4のサンプル音源です。Nylon Guitarは弦の振動・爪や指の接触・胴の共鳴を計算しています。<br>BWV 1012：Mutopia / Hajo Dezelski（<a href="https://creativecommons.org/licenses/by-sa/3.0/" target="_blank" rel="noopener">CC BY-SA 3.0</a>）。音符データを変換し、テンポ・音の切り方を試聴用に調整。反復なし。出典：<a href="https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=1494" target="_blank" rel="noopener">Prélude</a> / <a href="https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=1503" target="_blank" rel="noopener">Allemande</a> / <a href="https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=1504" target="_blank" rel="noopener">Courante</a> / <a href="https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=1505" target="_blank" rel="noopener">Sarabande</a> / <a href="https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=1506" target="_blank" rel="noopener">Gavotte I</a> / <a href="https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=1507" target="_blank" rel="noopener">Gavotte II</a> / <a href="https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=1508" target="_blank" rel="noopener">Gigue</a>。<br>BWV 1007（Prélude / Allemande / Courante / Sarabande / Gigue）：<a href="https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=517" target="_blank" rel="noopener">Mutopia / Andreas Scherer</a>（Public Domain）。音符データを変換し、音の切り方を試聴用に調整。</footer>
+<footer id="performance-footer">最初に「音を有効にする」を押してください。有線イヤホン・内蔵スピーカー推奨。<br>波形合成 → フィルター → 音量エンベロープ → ディレイ。Funky Clavは弦風の倍音と短い減衰、オートワウで音を作ります。最新Bは物理モデルで生成したE4のサンプル音源です。Nylon Guitarは弦の振動・爪や指の接触・胴の共鳴を計算しています。<br>BWV 1012：Mutopia / Hajo Dezelski（<a href="https://creativecommons.org/licenses/by-sa/3.0/" target="_blank" rel="noopener">CC BY-SA 3.0</a>）。音符データを変換し、テンポ・音の切り方を試聴用に調整。反復なし。出典：<a href="https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=1494" target="_blank" rel="noopener">Prélude</a> / <a href="https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=1503" target="_blank" rel="noopener">Allemande</a> / <a href="https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=1504" target="_blank" rel="noopener">Courante</a> / <a href="https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=1505" target="_blank" rel="noopener">Sarabande</a> / <a href="https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=1506" target="_blank" rel="noopener">Gavotte I</a> / <a href="https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=1507" target="_blank" rel="noopener">Gavotte II</a> / <a href="https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=1508" target="_blank" rel="noopener">Gigue</a>。<br>BWV 1007（Prélude / Allemande / Courante / Sarabande / Gigue）：<a href="https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=517" target="_blank" rel="noopener">Mutopia / Andreas Scherer</a>（Public Domain）。音符データを変換し、音の切り方を試聴用に調整。<br>ソル Op.60 第1〜5番：<a href="https://www.mutopiaproject.org/ftp/SorF/O60/" target="_blank" rel="noopener">Mutopia / Fabrice De Volder</a>。第1・2・4番：<a href="https://creativecommons.org/licenses/by-sa/2.5/" target="_blank" rel="noopener">CC BY-SA 2.5</a>、第3・5番：<a href="https://creativecommons.org/licenses/by-sa/3.0/" target="_blank" rel="noopener">CC BY-SA 3.0</a>。音符を変換し、ギターの実音・試聴用テンポに調整。全曲・反復なし。</footer>
 </main>
 <dialog id="guitar-setup" aria-labelledby="guitar-setup-title"><form id="guitar-setup-form"><h2 id="guitar-setup-title">ナイロンギターの音色設定</h2><p class="hint">弾き方と響きを設定してから、音源を生成します。</p> <div class="controls">
  <label><span>爪の硬さ <output id="guitar-nail-out"></output></span><input id="guitar-nail" aria-label="爪の硬さ" type="range" min="0" max="1" value="0.38" step="0.01"></label>
@@ -85,7 +85,8 @@
 <script src="prelude.js"></script>
 <script src="bach-solos.js"></script>
 <script src="bach-1012.js"></script>
-<script src="sequencer-model.js?v=strum-1"></script>
+<script src="sor-op60.js"></script>
+<script src="sequencer-model.js?v=sor-1"></script>
 <script src="sequencer.js?v=rit-1"></script>
 <script src="playback-timing.js?v=1"></script>
 <script src="song-playback-settings.js?v=rit-1"></script>
@@ -105,9 +106,9 @@ const suite1012={
  gigue1012:bach1012Songs.gigue1012
 };
 const suite1007={prelude:{score:preludeScore,label:'Prélude',edition:'全曲',option:'Prélude（プレリュード）'},...bachSoloSongs};
-const songs={...suite1012,...suite1007};
+const songs={...suite1012,...suite1007,...sorSongs};
 let scoreEditor;
-for(const [label,collection] of [['BWV 1012 · 無伴奏チェロ組曲 第6番',suite1012],['BWV 1007 · 無伴奏チェロ組曲 第1番',suite1007]]){
+for(const [label,collection] of [['BWV 1012 · 無伴奏チェロ組曲 第6番',suite1012],['BWV 1007 · 無伴奏チェロ組曲 第1番',suite1007],['フェルナンド・ソル · 25の漸進的練習曲 Op.60',sorSongs]]){
  const group=document.createElement('optgroup');group.label=label;
  for(const [value,song] of Object.entries(collection)){const option=document.createElement('option');option.value=value;option.textContent=song.option;group.append(option)}
  $('song').append(group);

@@ -24,8 +24,8 @@ const SequencerModel=(()=>{
  }
  function fromSong(key,song){
   const is1012=key==='gavotte'||key==='gavotte2'||key.endsWith('1012');
-  const meter=key.startsWith('prelude')&&is1012?[12,8]:key.startsWith('gigue')?[6,8]:key.startsWith('sarabande')?(is1012?[3,2]:[3,4]):key.startsWith('courante')?[3,4]:key.startsWith('gavotte')?[2,2]:[4,4];
-  return normalize({id:key,title:song.score.title,bpm:song.score.bpm,meter,notes:song.score.events.map(([beat,pitch,duration,velocity],i)=>({id:'original-'+i,beat,pitch,duration,velocity:velocity??1})),source:{key,title:song.score.title,credit:is1012?'J. S. Bach / Hajo Dezelski / Mutopia':'J. S. Bach / Andreas Scherer / Mutopia',license:is1012?'CC BY-SA 3.0':'Public Domain',url:'https://www.mutopiaproject.org/cgibin/piece-info.cgi?id='+(is1012?({prelude1012:1494,allemande1012:1503,courante1012:1504,sarabande1012:1505,gavotte:1506,gavotte2:1507,gigue1012:1508}[key]||1506):517)}});
+  const meter=song.score.meter|| (key.startsWith('prelude')&&is1012?[12,8]:key.startsWith('gigue')?[6,8]:key.startsWith('sarabande')?(is1012?[3,2]:[3,4]):key.startsWith('courante')?[3,4]:key.startsWith('gavotte')?[2,2]:[4,4]);
+  return normalize({id:key,title:song.score.title,bpm:song.score.bpm,meter,notes:song.score.events.map(([beat,pitch,duration,velocity],i)=>({id:'original-'+i,beat,pitch,duration,velocity:velocity??1})),source:song.source?{...song.source,key,title:song.score.title}:{key,title:song.score.title,credit:is1012?'J. S. Bach / Hajo Dezelski / Mutopia':'J. S. Bach / Andreas Scherer / Mutopia',license:is1012?'CC BY-SA 3.0':'Public Domain',url:'https://www.mutopiaproject.org/cgibin/piece-info.cgi?id='+(is1012?({prelude1012:1494,allemande1012:1503,courante1012:1504,sarabande1012:1505,gavotte:1506,gavotte2:1507,gigue1012:1508}[key]||1506):517)}});
  }
  function toSong(document){const d=normalize(document);return {label:d.title,option:d.title,edition:'マイソング',score:{title:d.title,bpm:d.bpm,events:d.notes.map(n=>[n.beat,n.pitch,n.duration,n.velocity])}}}
  // Offset chord attacks only; keep their original ends and the loop length.
