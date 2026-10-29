@@ -20,6 +20,37 @@ Decoded AudioBuffers use an LRU cache capped at 64 MiB. Playback reuses the app'
 keyboard, transport and voice registry; preparation never runs on the audio thread.
 The first few song pitches are decoded before the transport clock starts.
 
+## Choose preparation concurrency and measure on your device
+
+The performance/setup screen offers **1–4 parallel preparation workers**. The
+initial value is 1 and the preference is saved separately from physical string
+settings. Changing it does not invalidate compatible prepared PCM. More workers
+increase memory use; on a phone compare 1 then 2 before trying higher values.
+Actual iPhone speed/memory has not been measured by the developer.
+
+**同じ4音で速度を測る** calculates E2/A2/D3/E4 afresh with the selected worker
+count, even when the notes already exist in IndexedDB. It does not change the
+active bank, performance settings, string sets or saved PCM. Each note is at
+most 15 seconds (the existing quiet-tail criterion may stop earlier). The latest
+elapsed calculation time for each worker count is stored/displayed locally.
+Comparisons reset when physical settings or the AudioContext sample rate differ.
+Timing includes worker/data initialization, coefficient preparation, rendering,
+PCM encoding and transfer; it excludes writing these benchmark notes to storage.
+
+Normal preparation uses the same selected concurrency and reuses cached notes.
+Only missing notes occupy workers; the actual count is limited by missing-note
+count. Progress shows all notes currently calculating. Cancellation or any lane
+failure terminates the entire pool. Completed saved notes survive, while the
+previous active bank is retained until a full preparation succeeds. Every
+worker retains its own common body/settings context while processing its lane.
+
+```js
+await guitar.prepare(settings, {midis: [40, 45, 50, 64], concurrency: 2});
+console.log(guitar.lastPreparation); // elapsedMs, generated, reused, workersUsed
+const result = await guitar.benchmark(settings, {concurrency: 2});
+console.log(result.elapsedMs); // always recalculates; does not replace active bank
+```
+
 ## Model and approximation
 
 The body/air geometry and coefficients come from the current Python model.
