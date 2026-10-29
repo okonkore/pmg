@@ -3,10 +3,11 @@ const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('n
 (async()=>{
  const root=path.join(__dirname,'instruments/configured-guitar'),url=source=>'data:text/javascript;base64,'+Buffer.from(source).toString('base64');
  const settingsURL=url(fs.readFileSync(path.join(root,'settings.js'),'utf8'));
- const {StringSetLibrary}=await import(url(fs.readFileSync(path.join(root,'string-sets.js'),'utf8').replace("'./settings.js'",JSON.stringify(settingsURL))));
+ const catalogURL=url(fs.readFileSync(path.join(root,'string-preset-catalog.js'),'utf8'));
+ const {StringSetLibrary}=await import(url(fs.readFileSync(path.join(root,'string-sets.js'),'utf8').replace("'./settings.js'",JSON.stringify(settingsURL)).replace("'./string-preset-catalog.js'",JSON.stringify(catalogURL))));
  const config=JSON.parse(fs.readFileSync(path.join(root,'default-settings.json'),'utf8')),clone=x=>JSON.parse(JSON.stringify(x));let raw=null,writes=0;
  const storage={getItem:()=>raw,setItem:(key,value)=>{writes++;raw=value}},lib=new StringSetLibrary(config,storage);
- assert.equal(lib.list().length,1);const strings=clone(config.strings);strings[0].diameterMm=.75;
+ assert.equal(lib.list().length,5);const strings=clone(config.strings);strings[0].diameterMm=.75;
  const a=lib.save('軽め',strings);assert.equal(lib.activeId,a.id);assert.equal(lib.get().strings[0].diameterMm,.75);
  strings[0].diameterMm=.9;assert.equal(lib.get().strings[0].diameterMm,.75,'saved sets are independent');
  const b=lib.save('複製',lib.get().strings);assert.notEqual(a.id,b.id);const changed=clone(b.strings);changed[1].youngGPa=3;lib.save('複製を調整',changed,b.id);
@@ -20,6 +21,17 @@ const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('n
  const legacy=clone(config);legacy.strings[0].diameterMm=.76;let migrated;
  const old=new StringSetLibrary(config,{getItem:()=>null,setItem:(k,v)=>migrated=v},legacy);assert.equal(old.get().name,'これまでの弦設定');assert.equal(old.get().strings[0].diameterMm,.76);assert(migrated);
  let blockedWrites=0;const corrupt=new StringSetLibrary(config,{getItem:()=>'{bad',setItem:()=>blockedWrites++},legacy);assert(corrupt.loadFailed);assert.throws(()=>corrupt.save('x',strings));assert.equal(blockedWrites,0);
- const broken=new StringSetLibrary(config,{getItem:()=>null,setItem:()=>{throw Error('quota')}});assert.throws(()=>broken.save('x',strings),/保存できません/);assert.equal(broken.list().length,1);assert.equal(broken.activeId,'default');
+ const broken=new StringSetLibrary(config,{getItem:()=>null,setItem:()=>{throw Error('quota')}});assert.throws(()=>broken.save('x',strings),/保存できません/);assert.equal(broken.list().length,5);assert.equal(broken.activeId,'default');
+ for(const preset of lib.builtins){
+  assert.equal(preset.strings.length,6);assert(Object.isFrozen(preset.strings));
+  assert.throws(()=>lib.save('overwrite',preset.strings,preset.id));assert.throws(()=>lib.remove(preset.id));
+  lib.select(preset.id);assert.equal(new StringSetLibrary(config,storage).activeId,preset.id);
+  assert.deepEqual(lib.apply(config).strings,preset.strings);
+ }
+ assert.deepEqual(lib.get('default').strings,config.strings);
+ const copied=lib.save('steel copy',lib.get('factory-steel-mono-v1').strings);assert(!copied.readonly);assert.equal(copied.strings[5].densityKgM3,7850);
+ const capped=new StringSetLibrary(config,{getItem:()=>null,setItem:()=>{}});for(let i=0;i<100;i++)capped.save('user '+i,config.strings);
+ assert.throws(()=>capped.save('101',config.strings),/100/);capped.select('factory-nylon-mono-v1');assert.equal(capped.list().length,105);
+ capped.save('edit at cap',config.strings,capped.users[0].id);
  console.log('String sets: create, clone, edit, selection/reload, independent performance settings, migration, validation and atomic storage failure passed.');
 })().catch(e=>{console.error(e);process.exitCode=1});

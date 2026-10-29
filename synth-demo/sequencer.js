@@ -256,6 +256,7 @@ const ScoreEditor=(()=>{
    transportStart(info){transportStop();transport=info;$('seq-play').textContent='■ 停止';cancelAnimationFrame(raf);frame()},
    transportStop,
    open,
+   importDocument(doc){save();const d=library.addSaved(doc);updateLibraryMenu();choose(d.id);return d.id},
    currentDocument(){return M.clone(history.current)}
   };
  }

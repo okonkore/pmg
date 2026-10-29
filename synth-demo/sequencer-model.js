@@ -66,6 +66,7 @@ const SequencerModel=(()=>{
   get(id){if(this.isBuiltin(id))return fromSong(id,this.songs[id]);if(!this.users.has(id))throw new Error('曲が見つかりません');return clone(this.users.get(id))}
   uniqueTitle(title){const names=new Set([...this.users.values()].map(d=>d.title));let result=title,i=2;while(names.has(result))result=title+' '+i++;return result}
   add(document){const doc=normalize({...clone(document),id:uid('user')});doc.title=this.uniqueTitle(doc.title);this.users.set(doc.id,doc);this.songs[doc.id]=toSong(doc);this.persist();return clone(doc)}
+  addSaved(document){const doc=this.add(document);if(this.error){this.users.delete(doc.id);delete this.songs[doc.id];throw new Error(this.error)}return doc}
   duplicate(id){const doc=this.get(id);doc.title=doc.title+' のコピー';doc.notes.forEach(n=>n.id=uid('note'));return this.add(doc)}
   create(){return this.add({title:'新しい曲',bpm:108,meter:[4,4],notes:[]})}
   save(document){const doc=normalize(document);if(this.isBuiltin(doc.id)||!this.users.has(doc.id))throw new Error('内蔵曲は上書きできません');this.users.set(doc.id,clone(doc));this.songs[doc.id]=toSong(doc);return this.persist()}

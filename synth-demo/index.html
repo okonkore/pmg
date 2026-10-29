@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="ja">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Little Red Synth</title>
 <link rel="stylesheet" href="configured-guitar.css?v=touch-fields-1">
 <link rel="stylesheet" href="sequencer.css?v=touch-fields-1">
@@ -14,6 +14,7 @@
 /* Native selects inherit 12px labels otherwise, inviting focus zoom on touch devices. */
 @media (any-pointer: coarse){#performance-screen select,#guitar-setup select{font-size:16px}}
 </style>
+<link rel="stylesheet" href="app-shell.css?v=1">
 </head>
 <body><main>
 <header id="performance-header"><div><div class="eyebrow">BROWSER INSTRUMENT / 01</div><h1>Little Red Synth</h1><small>波を重ねて、音をつくる。</small></div><button class="primary" id="power">音を有効にする</button></header>
@@ -90,6 +91,7 @@
 <script src="sor-op60.js?v=12"></script>
 <script src="sor-op6.js?v=1"></script>
 <script src="repertoire-batch1.js?v=1"></script>
+<script src="repertoire-batch2.js?v=1"></script>
 <script src="sequencer-model.js?v=repertoire-end-marker-1"></script>
 <script src="sequencer.js?v=repertoire-source-1"></script>
 <script src="playback-timing.js?v=1"></script>
@@ -110,10 +112,12 @@ const suite1012={
  gigue1012:bach1012Songs.gigue1012
 };
 const suite1007={prelude:{score:preludeScore,label:'Prélude',edition:'全曲',option:'Prélude（プレリュード）'},...bachSoloSongs,menuet1007:repertoireBatch1.menuet1007,menuet2_1007:repertoireBatch1.menuet2_1007};
-const sorOp35Songs={sor35_22:repertoireBatch1.sor35_22};
-const songs={...suite1012,...suite1007,...sorSongs,...sorOp6Songs,...sorOp35Songs};
+const sorOp35Songs={sor35_17:repertoireBatch2.sor35_17,sor35_22:repertoireBatch1.sor35_22};
+const sorOp6Collection={...sorOp6Songs,sor6_11:repertoireBatch2.sor6_11};
+const suite1009={bourree1009:repertoireBatch2.bourree1009};
+const songs={...suite1012,...suite1007,...sorSongs,...sorOp6Collection,...sorOp35Songs,...suite1009};
 let scoreEditor;
-for(const [label,collection] of [['BWV 1012 · 無伴奏チェロ組曲 第6番',suite1012],['BWV 1007 · 無伴奏チェロ組曲 第1番',suite1007],['フェルナンド・ソル · 25の漸進的練習曲 Op.60',sorSongs],['フェルナンド・ソル · 12の練習曲 Op.6',sorOp6Songs],['フェルナンド・ソル · 24の練習曲 Op.35',sorOp35Songs]]){
+for(const [label,collection] of [['BWV 1012 · 無伴奏チェロ組曲 第6番',suite1012],['BWV 1007 · 無伴奏チェロ組曲 第1番',suite1007],['フェルナンド・ソル · 25の漸進的練習曲 Op.60',sorSongs],['フェルナンド・ソル · 12の練習曲 Op.6',sorOp6Collection],['フェルナンド・ソル · 24の練習曲 Op.35',sorOp35Songs],['BWV 1009 · 無伴奏チェロ組曲 第3番',suite1009]]){
  const group=document.createElement('optgroup');group.label=label;
  for(const [value,song] of Object.entries(collection)){const option=document.createElement('option');option.value=value;option.textContent=song.option;group.append(option)}
  $('song').append(group);
@@ -401,7 +405,7 @@ for(const [value,p] of Object.entries(presets)){const option=document.createElem
 function selectPreset(){const previous=preset;stop();preset=$('preset').value;for(const name of ['cutoff','release','space']){$(name).value=presets[preset][name];update(name)}$('preset-info').textContent=presets[preset].description;$('guitar-520r-spec').hidden=!is520R();$('guitar-controls').hidden=!isGuitar();$('physical-controls').hidden=!isPhysical();$('cutoff').disabled=isPhysical()||isWholeShell()||is520R();$('release').disabled=isWholeShell()||is520R();$('space').disabled=isPhysical()||isWholeShell()||is520R();$('note').textContent=presetsName();if(isGuitar())openGuitarSetup(previous);else if(ctx)$('status').textContent='演奏できます'}
 $('preset').onchange=selectPreset;
 $('preset-info').textContent=presets[preset].description;
-window.addEventListener('keydown',async e=>{if(e.defaultPrevented||$('guitar-setup').open||editorScreen||e.target.closest?.('#score-editor'))return;if(e.ctrlKey||e.metaKey||e.altKey||['INPUT','SELECT','TEXTAREA'].includes(e.target.tagName))return;if(e.key.toLowerCase()==='z'||e.key.toLowerCase()==='x'){e.preventDefault();if(!e.repeat)changeOctave(octaveOffset+(e.key.toLowerCase()==='z'?-1:1));return}const k=keys.find(k=>k[2]===e.key.toLowerCase());if(!k||e.repeat)return;e.preventDefault();const id='k'+k[2],midi=shiftedMidi(k[1]);if(!inPianoRange(midi))return;held.set(id,midi);try{await enable([midi]);if(held.has(id))play(id,midi)}catch(error){report(error)}});
+window.addEventListener('keydown',async e=>{if(e.defaultPrevented||document.querySelector('dialog[open]')||(window.AppShell&&AppShell.route!=='performance')||$('guitar-setup').open||editorScreen||e.target.closest?.('#score-editor'))return;if(e.ctrlKey||e.metaKey||e.altKey||['INPUT','SELECT','TEXTAREA'].includes(e.target.tagName))return;if(e.key.toLowerCase()==='z'||e.key.toLowerCase()==='x'){e.preventDefault();if(!e.repeat)changeOctave(octaveOffset+(e.key.toLowerCase()==='z'?-1:1));return}const k=keys.find(k=>k[2]===e.key.toLowerCase());if(!k||e.repeat)return;e.preventDefault();const id='k'+k[2],midi=shiftedMidi(k[1]);if(!inPianoRange(midi))return;held.set(id,midi);try{await enable([midi]);if(held.has(id))play(id,midi)}catch(error){report(error)}});
 window.addEventListener('keyup',e=>releaseToken('k'+e.key.toLowerCase()));window.addEventListener('blur',stop);document.addEventListener('visibilitychange',()=>{if(document.hidden)stop()});
 async function startSong({fromBeat=0,loop=false}={}){
   stop();
@@ -446,6 +450,7 @@ async function startSong({fromBeat=0,loop=false}={}){
 $('demo').onclick=()=>startSong();
 let editorScreen=false;
 function showEditorScreen(active,navigate=true){
+ if(window.AppShell){window.AppShell.navigate(active?'piano-roll':'performance');return}
  const changed=editorScreen!==active;editorScreen=active;
  for(const id of ['performance-header','performance-screen','performance-footer'])$(id).hidden=active;
  $('editor-header').hidden=!active;$('editor-song-slot').hidden=!active;$('score-editor').hidden=!active;
@@ -459,7 +464,7 @@ function showEditorScreen(active,navigate=true){
 }
 function closeEditorScreen(){scoreEditor?.save();showEditorScreen(false);$('open-editor').focus({preventScroll:true})}
 $('back-performance').onclick=closeEditorScreen;
-function syncEditorRoute(){if(location.hash==='#piano-roll')scoreEditor.open();else closeEditorScreen()}
+function syncEditorRoute(){if(window.AppShell){window.AppShell.sync();return}if(location.hash==='#piano-roll')scoreEditor.open();else closeEditorScreen()}
 window.addEventListener('popstate',syncEditorRoute);window.addEventListener('hashchange',syncEditorRoute);
 scoreEditor=ScoreEditor.mount({songs,updateSong,stop,showEditor:()=>showEditorScreen(true),closeEditor:closeEditorScreen,play:startSong,audition:async midi=>{
  const run=playbackRun;
@@ -470,5 +475,5 @@ if(['physical','wholeShell','guitar520r'].includes(requestedPreset)){$('preset')
 if(location.hash==='#piano-roll')scoreEditor.open();
 updateOctave();
 function draw(){const canvas=$('scope'),g=canvas.getContext('2d'),data=new Uint8Array(analyser.fftSize);let lastFrame=0;function frame(now=performance.now()){requestAnimationFrame(frame);if(document.hidden||$('performance-screen').hidden||now-lastFrame<30)return;lastFrame=now;const width=Math.round(canvas.clientWidth*devicePixelRatio),height=Math.round(canvas.clientHeight*devicePixelRatio);if(canvas.width!==width||canvas.height!==height){canvas.width=width;canvas.height=height}analyser.getByteTimeDomainData(data);g.clearRect(0,0,width,height);g.strokeStyle='#ffffff09';g.lineWidth=1;for(let x=0;x<width;x+=width/16){g.beginPath();g.moveTo(x,0);g.lineTo(x,height);g.stroke()}g.strokeStyle='#e6bf7c';g.lineWidth=1.5*devicePixelRatio;g.beginPath();for(let i=0;i<data.length;i++){const x=i/(data.length-1)*width,y=data[i]/255*height;i?g.lineTo(x,y):g.moveTo(x,y)}g.stroke()}frame()}
-</script><script type="module" src="configured-guitar-app.js?v=parallel-choice-1"></script>
+</script><script type="module" src="app-shell.js?v=1"></script>
 </body></html>

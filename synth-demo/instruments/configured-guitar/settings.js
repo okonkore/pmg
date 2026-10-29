@@ -28,6 +28,7 @@ export function section(s){
 /** Shared preparation context: validate and calculate each string section once. */
 export function prepareSettings(input){
  const config=validateSettings(input),sections=config.strings.map(section),opens=config.strings.map((s,i)=>{const sec=sections[i],L=config.scaleMm/1000,k=Math.PI/L,w=2*Math.PI*440*2**((s.openMidi-69)/12);return (sec.mu*w*w-sec.ei*k**4)/(k*k);});
+ if(sections.some(sec=>Object.values(sec).some(x=>!Number.isFinite(x)||x<=0))||opens.some(T=>!Number.isFinite(T)||T<=0))throw Error('この太さ・硬さでは標準調弦の張力が正の有限値になりません');
  const totalTensionN=opens.reduce((sum,T)=>sum+T,0);
  function conditions(midi,stringNumber){
   if(!Number.isInteger(midi)||midi<21||midi>108)throw Error('音域はA0〜C8です');
@@ -36,7 +37,7 @@ export function prepareSettings(input){
   const sec=sections[s.number-1],L0=config.scaleMm/1000,k0=Math.PI/L0,T0=opens[s.number-1],hz=440*2**((midi-69)/12);let length=L0,tension=T0;
   if(midi<s.openMidi)tension=(sec.mu*(2*Math.PI*hz)**2-sec.ei*k0**4)/(k0*k0);
   else {let lo=.01,hi=L0*1.01;for(let j=0;j<64;j++){const x=(lo+hi)/2,k=Math.PI/x,f=Math.sqrt((T0*k*k+sec.ei*k**4)/sec.mu)/(2*Math.PI);if(f>hz)lo=x;else hi=x;}length=(lo+hi)/2;}
-  if(!(tension>0))throw Error('この太さ・硬さでは指定した調弦の張力が正になりません');
+  if(!Number.isFinite(tension)||!(tension>0)||!Number.isFinite(length)||!(length>0))throw Error('この太さ・硬さでは指定した調弦の張力が正になりません');
   return {midi,string:s.number,fret:Math.max(0,midi-s.openMidi),hz,lengthM:length,tensionN:tension,section:sec,pluckPositionM:Math.min(config.pluckPositionMm/1000,length*.9),positionLimited:config.pluckPositionMm/1000>length*.9};
  }
  return {config,sections,totalTensionN,sixthTensionN:opens[5],conditions};

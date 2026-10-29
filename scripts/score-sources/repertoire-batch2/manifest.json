@@ -1,0 +1,124 @@
+[
+  {
+    "key": "sor35_17",
+    "file": "sorf_op35_no17",
+    "title": "Fernando Sor · Op.35 No.17",
+    "option": "Op.35 第17番",
+    "bpm": 96,
+    "meter": [
+      4,
+      4
+    ],
+    "beats": 129,
+    "bars": 32,
+    "pickup": 1,
+    "final": 4,
+    "sourceId": 1954,
+    "year": 2014,
+    "path": "SorF/O35/sorf_op35_no17/sorf_op35_no17.ly",
+    "source": {
+      "credit": "Fernando Sor / Glen Larsen / Mutopia (2014)",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "url": "https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=1954",
+      "modifications": "Official convert-ly syntax update; original guitar sounding pitch, no transposition; no sectional repeats in source. LilyPond 2.24.4 MIDI to quarter-note events; all voices retained. Pickup 1 beat(s); score ends at 129 beats, including rests. Fixed source tempo; app articulation separate.",
+      "pitch": "Original guitar sounding pitch; MIDI shift 0. Range does not establish fretboard playability.",
+      "terms": "Adapted score data: CC BY-SA 4.0; retain attribution, license and modification notice; share adaptations under the same license. Application code is separate."
+    },
+    "lilypondUrl": "https://raw.githubusercontent.com/MutopiaProject/MutopiaProject/master/ftp/SorF/O35/sorf_op35_no17/sorf_op35_no17.ly",
+    "sha256": {
+      "sorf_op35_no17.ly": "bdf53de336c46197d966f71a4803fcda256658f67902b74ee01499a308772da0",
+      "sorf_op35_no17.midi": "f57f0cbed653790046d925ebf37611287ef669d0d08465505749bc29251d47f9"
+    },
+    "notes": 265,
+    "noteEndBeats": 128.0,
+    "pitchRange": [
+      40,
+      69
+    ],
+    "belowE2": 0,
+    "midiPitchShift": 0
+  },
+  {
+    "key": "sor6_11",
+    "file": "sorf-op6n11",
+    "title": "Fernando Sor · Op.6 No.11",
+    "option": "Op.6 第11番",
+    "bpm": 74,
+    "meter": [
+      4,
+      4
+    ],
+    "beats": 348,
+    "bars": 87,
+    "pickup": 0,
+    "final": 4,
+    "sourceId": 2134,
+    "year": 2016,
+    "path": "SorF/O6/sorf-op6n11/sorf-op6n11.ly",
+    "source": {
+      "credit": "Fernando Sor / Glen Larsen / Mutopia (2016)",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "url": "https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=2134",
+      "modifications": "Official convert-ly syntax update; original guitar sounding pitch, no transposition; no sectional repeats in source. LilyPond 2.24.4 MIDI to quarter-note events; all voices retained. Pickup 0 beat(s); score ends at 348 beats, including rests. Fixed source tempo; app articulation separate.",
+      "pitch": "Original guitar sounding pitch; MIDI shift 0. Range does not establish fretboard playability.",
+      "terms": "Adapted score data: CC BY-SA 4.0; retain attribution, license and modification notice; share adaptations under the same license. Application code is separate."
+    },
+    "lilypondUrl": "https://raw.githubusercontent.com/MutopiaProject/MutopiaProject/master/ftp/SorF/O6/sorf-op6n11/sorf-op6n11.ly",
+    "sha256": {
+      "sorf-op6n11.ly": "93622d182c127a32da2dd138884f87b8e4b70d6ba67b2f3969c423bc0fc4a421",
+      "sorf-op6n11.midi": "2c2a827f2415cd4ab5b4872d4e947ec6fbaa16fcb5a62bc254b35410a37e5928"
+    },
+    "notes": 1066,
+    "noteEndBeats": 346.0,
+    "pitchRange": [
+      40,
+      72
+    ],
+    "belowE2": 0,
+    "midiPitchShift": 0
+  },
+  {
+    "key": "bourree1009",
+    "file": "bourree1009",
+    "title": "J. S. Bach · BWV 1009 — Bourrée I",
+    "option": "Bourrée I（ブーレ I）",
+    "bpm": 150,
+    "meter": [
+      2,
+      2
+    ],
+    "beats": 112,
+    "bars": 28,
+    "pickup": 1,
+    "final": 3,
+    "sourceId": 890,
+    "year": 2018,
+    "path": "BachJS/BWV1009/cellosuite3/cellosuite3-lys/cellosuite3_5_bourree.ly",
+    "source": {
+      "credit": "J. S. Bach / Stelios Samelis / Mutopia (2018)",
+      "license": "Public Domain",
+      "licenseUrl": "https://creativecommons.org/licenses/publicdomain/",
+      "url": "https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=890",
+      "modifications": "Complete Bourree I isolated at the I/II boundary; volta repeats and da capo omitted; original cello pitch, no transposition. LilyPond 2.24.4 MIDI to quarter-note events; all voices retained. Pickup 1 beat(s); score ends at 112 beats, including rests. Fixed source tempo; app articulation separate.",
+      "pitch": "Original cello range C2-F4; notes below standard guitar E2 retained; not a guitar arrangement.",
+      "terms": "Score edition placed in the public domain by the typesetter."
+    },
+    "lilypondUrl": "https://raw.githubusercontent.com/MutopiaProject/MutopiaProject/master/ftp/BachJS/BWV1009/cellosuite3/cellosuite3-lys/cellosuite3_5_bourree.ly",
+    "sha256": {
+      "header.ily": "a409d8133b17c315bae44daebe8851bf8618dafd49a9575206da3cbdb5328d3c",
+      "cellosuite3.ly": "bcd1ed3e5eec03a7f1a96a3749eb26c73a286e71a501d6f3111f6bd2578ed72a",
+      "cellosuite3_5_bourree.ly": "f6131634e562cf40048d173ffd8494501c4af7557016f21c3ee3079db8fd2f21",
+      "bourree1009.midi": "346dae8b1ac37919f3f1c0d5bb71a4bb4620c5fa57fbd0dd5c218464d5dd8892"
+    },
+    "notes": 191,
+    "noteEndBeats": 112.0,
+    "pitchRange": [
+      36,
+      65
+    ],
+    "belowE2": 2,
+    "midiPitchShift": 0
+  }
+]

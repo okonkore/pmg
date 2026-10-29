@@ -1,0 +1,29 @@
+const {chromium,launchOptions}=require('./playwright_runtime.cjs'),assert=require('node:assert/strict');
+(async()=>{const browser=await chromium.launch(launchOptions({headless:true}));try{
+ const probe=await browser.newPage({viewport:{width:390,height:320},isMobile:true,hasTouch:true});
+ await probe.goto('http://127.0.0.1:8766/synth-demo/#instrument');await probe.waitForSelector('.app-ready');assert.equal(await probe.evaluate(()=>AppShell.route),'instrument');
+ await probe.click('#nav-library');await probe.goBack();await probe.waitForFunction(()=>AppShell.route==='instrument');
+ await probe.selectOption('#preset','configuredGuitar');await probe.waitForSelector('#configured-setup[open]');await probe.click('#cg-manage');await probe.fill('#string-sets-name','Forward draft');
+ probe.once('dialog',d=>d.dismiss());await probe.goForward();await probe.waitForFunction(()=>location.hash==='#instrument'&&!history.state?.pmgPanel);assert.equal(await probe.inputValue('#string-sets-name'),'Forward draft');
+ probe.once('dialog',d=>d.accept());await probe.goForward();await probe.waitForFunction(()=>AppShell.route==='library');assert.equal(await probe.locator('dialog[open]').count(),0);
+ await probe.goBack();await probe.waitForFunction(()=>AppShell.route==='instrument');await probe.click('#nav-performance');assert.equal(await probe.evaluate(()=>AppShell.route),'performance');await probe.close();
+ const p=await browser.newPage({viewport:{width:390,height:430},isMobile:true,hasTouch:true}),errors=[];p.on('pageerror',e=>errors.push(e.message));
+ await p.goto(process.argv[2]||'http://127.0.0.1:8766/synth-demo/');await p.waitForSelector('.app-ready');
+ const open=async id=>{await p.evaluate(id=>AppShell.openPanel(id),id)};
+ const close=async()=>{await p.keyboard.press('Escape');await p.waitForFunction(()=>!history.state?.pmgPanel)};
+ await p.click('#nav-library');await p.click('#library-new');await p.fill('#seq-title','Focused reload title');const id=await p.inputValue('#song');
+ await p.reload();await p.waitForSelector('.app-ready');assert(await p.evaluate(id=>JSON.parse(localStorage.getItem('pmg.songs.v1')).songs.some(s=>s.id===id&&s.title==='Focused reload title'),id),'Focused title commits before reload');
+ await close();await p.selectOption('#song',id);await open('song-dialog');await p.fill('#seq-bpm','137');await p.reload();await p.waitForSelector('.app-ready');assert(await p.evaluate(id=>JSON.parse(localStorage.getItem('pmg.songs.v1')).songs.some(s=>s.id===id&&s.bpm===137),id),'Focused valid BPM commits before reload');await close();
+ await p.selectOption('#song',id);await open('song-dialog');await p.fill('#seq-bpm','');await p.reload();await p.waitForSelector('.app-ready');assert(await p.evaluate(id=>JSON.parse(localStorage.getItem('pmg.songs.v1')).songs.some(s=>s.id===id&&s.bpm===137),id),'An incomplete numeric edit must not replace saved tempo');await close();
+ // Tab and Shift+Tab remain inside the modal; closed panel controls must not receive focus.
+ await p.click('#app-menu');await p.click('#app-menu-dialog [data-panel="playback-dialog"]');
+ for(let i=0;i<18;i++){await p.keyboard.press(i%2?'Shift+Tab':'Tab');assert(await p.evaluate(()=>!!document.activeElement.closest('#playback-dialog')))}
+ const rect=await p.locator('#playback-dialog').boundingBox();assert(rect.y>=0&&rect.y+rect.height<=430);await p.locator('#song-rit-bars').fill('4, 8');await close();
+ assert.equal(await p.evaluate(()=>held.size),0,'Typing in dialogs must not play the instrument');
+ await p.click('#nav-instrument');await p.selectOption('#preset','configuredGuitar');await p.waitForSelector('#configured-setup[open]');await p.click('#cg-manage');await p.keyboard.press('Escape');assert.equal(await p.evaluate(()=>document.activeElement.id),'cg-manage');assert(await p.locator('#configured-setup').evaluate(e=>e.open));
+ await p.click('#cg-manage');await p.click('#string-sets-copy');await p.fill('#string-sets-name','Keep this draft');let prompted=false;p.once('dialog',async d=>{prompted=d.type()==='beforeunload';await d.dismiss()});await p.reload({timeout:2000}).catch(e=>{if(!prompted||(!e.message.includes('ERR_ABORTED')&&e.name!=='TimeoutError'))throw e});assert(prompted,'Reload warns about an unsaved string set');assert.equal(await p.inputValue('#string-sets-name'),'Keep this draft');
+ p.once('dialog',d=>d.accept());await p.click('#string-sets-close');await p.keyboard.press('Escape');await p.waitForFunction(()=>!document.querySelector('#configured-setup').open);
+ await p.click('#nav-piano-roll');const longest=await p.evaluate(()=>Object.entries(songs).filter(([id])=>!id.startsWith('user-')).sort((a,b)=>b[1].score.events.length-a[1].score.events.length)[0][0]);await p.selectOption('#song',longest);const expected=await p.evaluate(()=>scoreEditor.currentDocument().notes.length);assert.equal(await p.locator('.seq-note').count(),expected);assert(expected>1000,'Exercise a long built-in song');
+ for(const size of [{width:844,height:390},{width:390,height:320},{width:320,height:568}]){await p.setViewportSize(size);await p.locator('#seq-scroll').evaluate(e=>{e.scrollLeft=e.scrollWidth;e.scrollTop=700});const box=await p.locator('#seq-scroll').boundingBox();assert(box.width>0&&box.height>0);assert(await p.evaluate(()=>document.documentElement.scrollHeight<=innerHeight&&document.documentElement.scrollWidth<=innerWidth));await open('help-dialog');await p.locator('#help-dialog .app-dialog-body').evaluate(e=>{e.scrollTop=e.scrollHeight});await p.click('#help-dialog [data-dismiss]');await p.waitForFunction(()=>!history.state?.pmgPanel);}
+ assert.deepEqual(errors,[]);console.log('PASS: focused song edits survive reload; unsaved string-set reload guard; modal Tab/Escape focus; short/landscape scroll; longest score DOM and source sheet. Chromium emulation only.');
+}finally{await browser.close()}})().catch(e=>{console.error(e);process.exitCode=1});

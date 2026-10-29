@@ -1,7 +1,7 @@
 'use strict';
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),vm=require('node:vm');
 const scope=vm.createContext({});
-for(const file of ['gavotte.js','prelude.js','bach-solos.js','bach-1012.js','sor-op60.js','sor-op6.js','repertoire-batch1.js']){
+for(const file of ['gavotte.js','prelude.js','bach-solos.js','bach-1012.js','sor-op60.js','sor-op6.js','repertoire-batch1.js','repertoire-batch2.js']){
  vm.runInContext(fs.readFileSync(path.join(__dirname,file),'utf8'),scope,{filename:file});
 }
 const elements=new Map();
@@ -13,9 +13,9 @@ new vm.Script(inline); // Validate the rest of the app as well as the menu initi
 vm.runInContext(inline.slice(0,inline.indexOf('const presets=')),scope);
 const {songs,suite}=vm.runInContext('({songs,suite:suite1012})',scope);
 assert.deepEqual(Object.keys(suite),['prelude1012','allemande1012','courante1012','sarabande1012','gavotte','gavotte2','gigue1012']);
-assert.equal(Object.keys(songs).length,22,'19 existing selections plus two minuets and Sor Op.35 No.22');
+assert.equal(Object.keys(songs).length,25,'22 retained selections plus Sor Op.35 No.17, Op.6 No.11 and BWV1009 Bourree I');
 const groups=elements.get('song').children;
-assert.equal(groups.length,5);assert.equal(groups[0].children.length,7);assert.equal(groups[1].children.length,7);
+assert.equal(groups.length,6);assert.equal(groups[0].children.length,7);assert.equal(groups[1].children.length,7);
 assert.equal(elements.get('song').value,'gavotte');
 assert(elements.get('song-info').textContent.includes('63秒'));
 const expected={prelude1012:[1349,623.5],allemande1012:[541,80.25],courante1012:[639,216],sarabande1012:[301,192],gavotte:[258,114],gavotte2:[214,98],gigue1012:[655,204.5]};
@@ -62,7 +62,7 @@ assert(sor12.source.credit.includes('Hajo Dezelski'));assert.equal(sor12.source.
 assert(sor12.source.url.includes('sor_op60-12'));
 console.log('Sor Op.60 No.12: complete sequence, meter, tempo and credits passed');
 
-assert.equal(groups[3].children.length,1);assert.equal(groups[3].children[0].value,'sor6_8');
+assert.equal(groups[3].children.length,2);assert.equal(groups[3].children[0].value,'sor6_8');
 const sor6=model.fromSong('sor6_8',songs.sor6_8);
 assert.equal(sor6.notes.length,295);assert.deepEqual(sor6.meter,[3,4]);assert.equal(sor6.bpm,88);
 assert.equal(Math.max(...sor6.notes.map(n=>n.beat+n.duration)),117);
@@ -78,7 +78,7 @@ assert(elements.get('song-info').textContent.includes('♩ = 88'));
 assert(html.includes('https://creativecommons.org/licenses/by-sa/4.0/'));
 console.log('Sor Op.6 No.8: full score, chords, grace notes, meter, menu, duration and credits passed');
 
-assert.equal(groups[4].children[0].value,'sor35_22');
+assert.equal(groups[4].children[1].value,'sor35_22');
 const newKeys=['menuet1007','menuet2_1007','sor35_22'];
 for(const key of newKeys){
  const song=songs[key],doc=model.fromSong(key,song);
