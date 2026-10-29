@@ -12,6 +12,7 @@ string/body system with ml-matrix, then Float64 WebAssembly generates mono PCM.
 PCM24 is persisted with a reversible encoding scale (not listening normalization).
 Decoded AudioBuffers use an LRU cache capped at 64 MiB. Playback reuses the app's
 keyboard, transport and voice registry; preparation never runs on the audio thread.
+The first few song pitches are decoded before the transport clock starts.
 
 ## Model and approximation
 
