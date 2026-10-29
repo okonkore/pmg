@@ -68,5 +68,19 @@
     "notes": 211,
     "beats": 119.5,
     "bpm": 80
+  },
+  {
+    "number": 12,
+    "midi": "https://www.mutopiaproject.org/ftp/SorF/O60/sor_op60-12/sor_op60-12.mid",
+    "source": {
+      "credit": "Fernando Sor / Hajo Dezelski / Mutopia",
+      "license": "CC BY-SA 3.0",
+      "url": "https://www.mutopiaproject.org/ftp/SorF/O60/sor_op60-12/sor_op60-12.ly"
+    },
+    "sha256": "f04d46888a119737f6e31868390783320c07e6b8ffe38257826fb5769cbd16dd",
+    "pitchShift": 0,
+    "notes": 149,
+    "beats": 50.0,
+    "bpm": 80
   }
 ]
