@@ -5,7 +5,7 @@ const read=n=>fs.readFileSync(path.join(__dirname,n),'utf8');
  const source=read('configured-guitar-app.js'),enableCode=source.slice(source.indexOf('enable=async notes=>'),source.indexOf('\nplay=(id,'));
  for(const saved of [true,false]){
   const prepared=[],ensured=[],config={saved};let opened=0;
-  const scope=vm.createContext({baseEnable:async()=>{},selected:()=>true,preparing:false,bank:null,setup:{open:false},settings:saved?config:undefined,draft:undefined,loadDefaults:async()=>config,openSetup:()=>opened++,DOMException,prepare:async(c,midis)=>{prepared.push({c,midis});scope.bank={active:{},has:async()=>true,ensure:async n=>ensured.push(n)}},preparationNotes:()=>[60],songs:{song:{score:{events:[[0,60,1],[0,64,1],[1,67,1]]}}},$:()=>({value:'song'})});
+  const scope=vm.createContext({baseEnable:async()=>{},currentConfig:async()=>config,selected:()=>true,preparing:false,bank:null,setup:{open:false},settings:saved?config:undefined,draft:undefined,loadDefaults:async()=>config,openSetup:()=>opened++,DOMException,prepare:async(c,midis)=>{prepared.push({c,midis});scope.bank={active:{config:c},has:async()=>true,ensure:async n=>ensured.push(n)}},preparationNotes:()=>[60],songs:{song:{score:{events:[[0,60,1],[0,64,1],[1,67,1]]}}},$:()=>({value:'song'})});
   vm.runInContext(enableCode,scope);await scope.enable([]);
   assert.equal(opened,0);assert.equal(prepared.length,1);assert.equal(prepared[0].c,config);assert.deepEqual(Array.from(prepared[0].midis),[60,64,67]);assert.deepEqual(ensured,[60,64,67]);
   await scope.enable([72]);assert.equal(prepared.length,1);assert.equal(ensured.at(-1),72);
