@@ -30,3 +30,18 @@ const fullLibrary=new M.Library(repertoire,{getItem:()=>null,setItem(){}});
 for(const key of Object.keys(repertoire)){const doc=fullLibrary.get(key);assert(doc.notes.length>0);assert(doc.source.credit.includes('Mutopia'));}
 assert.deepEqual(fullLibrary.get('prelude1012').meter,[12,8]);assert.deepEqual(fullLibrary.get('sarabande1012').meter,[3,2]);
 console.log('All 12 built-in scores convert to read-only piano-roll documents, including short ornaments and compound meters.');
+
+// Playback offsets must preserve the score, note ends, and loop boundaries.
+const chordEvents=[[0,67,1,.6],[0,60,1,.8],[0,64,1,.7],[1,72,.5,1]],chordSnapshot=JSON.stringify(chordEvents);
+const strummed=M.playbackEvents(chordEvents,120,{enabled:true,intervalMs:20});
+assert.deepEqual(strummed.map(e=>e[1]),[60,64,67,72]);
+assert.deepEqual(strummed.map(e=>e[0]),[0,.04,.08,1]);
+for(const e of strummed){const source=chordEvents.find(n=>n[1]===e[1]);assert(Math.abs(e[0]+e[2]-source[0]-source[2])<1e-12);assert.equal(e[3],source[3]);}
+assert.equal(JSON.stringify(chordEvents),chordSnapshot);
+assert.deepEqual(M.playbackEvents(chordEvents,120),chordEvents);
+assert.deepEqual(M.playbackEvents(chordEvents,120,{enabled:true,direction:'down'}).map(e=>e[1]),[67,64,60,72]);
+const dense=M.playbackEvents([[0,60,.01],[0,64,.01],[0,67,.01],[.005,72,.01]],300,{enabled:true,intervalMs:100});
+assert(dense.slice(0,3).every(e=>e[0]<.005&&e[2]>0));
+assert.deepEqual(M.playbackEvents([],120,{enabled:true}),[]);
+assert.deepEqual(M.playbackEvents([[0,60,1]],120,{enabled:true}),[[0,60,1]]);
+console.log('Strum direction, timing, short chords, score immutability, and unchanged note ends passed.');

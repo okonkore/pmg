@@ -28,6 +28,22 @@ const SequencerModel=(()=>{
   return normalize({id:key,title:song.score.title,bpm:song.score.bpm,meter,notes:song.score.events.map(([beat,pitch,duration,velocity],i)=>({id:'original-'+i,beat,pitch,duration,velocity:velocity??1})),source:{key,title:song.score.title,credit:is1012?'J. S. Bach / Hajo Dezelski / Mutopia':'J. S. Bach / Andreas Scherer / Mutopia',license:is1012?'CC BY-SA 3.0':'Public Domain',url:'https://www.mutopiaproject.org/cgibin/piece-info.cgi?id='+(is1012?({prelude1012:1494,allemande1012:1503,courante1012:1504,sarabande1012:1505,gavotte:1506,gavotte2:1507,gigue1012:1508}[key]||1506):517)}});
  }
  function toSong(document){const d=normalize(document);return {label:d.title,option:d.title,edition:'マイソング',score:{title:d.title,bpm:d.bpm,events:d.notes.map(n=>[n.beat,n.pitch,n.duration,n.velocity])}}}
+ // Offset chord attacks only; keep their original ends and the loop length.
+ function playbackEvents(events,bpm,{enabled=false,intervalMs=20,direction='up'}={}){
+  const sorted=events.map(e=>[...e]).sort((a,b)=>a[0]-b[0]);
+  if(!enabled)return sorted;
+  const gap=Math.max(0,Math.min(100,Number(intervalMs)||0))*bpm/60000;
+  for(let i=0;i<sorted.length;){
+   let end=i+1;while(end<sorted.length&&sorted[end][0]===sorted[i][0])end++;
+   const chord=sorted.slice(i,end).sort((a,b)=>direction==='down'?b[1]-a[1]:a[1]-b[1]);
+   // Leave room for every note even in very short chords and dense passages.
+   const room=Math.min(...chord.map(e=>e[2]),end<sorted.length?sorted[end][0]-sorted[i][0]:Infinity)*.8;
+   const step=chord.length>1?Math.min(gap,room/(chord.length-1)):0;
+   chord.forEach((e,index)=>{const offset=index*step;e[0]+=offset;e[2]-=offset});
+   i=end;
+  }
+  return sorted.sort((a,b)=>a[0]-b[0]);
+ }
  class History{
   constructor(document,readonly=false){this.current=normalize(document);this.readonly=readonly;this.past=[];this.future=[]}
   commit(document){if(this.readonly)throw new Error('内蔵曲は編集できません。コピーを作成してください');const next=normalize(document);if(JSON.stringify(next)===JSON.stringify(this.current))return false;this.past.push(this.current);if(this.past.length>100)this.past.shift();this.current=next;this.future=[];return true}
@@ -58,6 +74,6 @@ const SequencerModel=(()=>{
   export(document){return JSON.stringify({format:'pmg-song',version:VERSION,song:normalize(document)},null,2)}
   import(text){const data=JSON.parse(text);if(data.format!=='pmg-song'||data.version!==VERSION)throw new Error('PMGの曲ファイルを選んでください');return this.add(data.song)}
  }
- return {MAX_BEATS,MAX_NOTES,MIN_LENGTH,clone,uid,normalize,fromSong,toSong,History,Library};
+ return {MAX_BEATS,MAX_NOTES,MIN_LENGTH,clone,uid,normalize,fromSong,toSong,playbackEvents,History,Library};
 })();
 if(typeof module!=='undefined')module.exports=SequencerModel;

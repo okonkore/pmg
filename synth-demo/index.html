@@ -78,8 +78,8 @@
 <script src="prelude.js"></script>
 <script src="bach-solos.js"></script>
 <script src="bach-1012.js"></script>
-<script src="sequencer-model.js"></script>
-<script src="sequencer.js?v=touch-editor-cursor-6"></script>
+<script src="sequencer-model.js?v=strum-1"></script>
+<script src="sequencer.js?v=strum-1"></script>
 <script src="string-lab/physics.js?v=39"></script>
 <script src="physical-string-model.js?v=1"></script>
 <script src="physical-string-instrument.js?v=1"></script>
@@ -398,7 +398,7 @@ async function startSong({fromBeat=0,loop=false}={}){
     const endBeat=score.events.reduce((end,[at,midi,duration])=>Math.max(end,at+duration),0);
     if(!endBeat){$('status').textContent='音符を追加してから再生してください';return}
     if(fromBeat>=endBeat)fromBeat=0;
-    const events=score.events.filter(([at,midi,duration])=>at+duration>fromBeat).map(([at,midi,duration,velocity=1])=>[Math.max(at,fromBeat),midi,at+duration-Math.max(at,fromBeat),velocity]).sort((a,b)=>a[0]-b[0]);
+    const events=SequencerModel.playbackEvents(score.events,score.bpm,scoreEditor?.playbackSettings()).filter(([at,midi,duration])=>at+duration>fromBeat).map(([at,midi,duration,velocity=1])=>[Math.max(at,fromBeat),midi,at+duration-Math.max(at,fromBeat),velocity]);
     if(isGuitar()&&!await prepareGuitar(events.map(e=>e[1])))return;
     if(run!==playbackRun)return;
     const length=(endBeat-fromBeat)*beat;
