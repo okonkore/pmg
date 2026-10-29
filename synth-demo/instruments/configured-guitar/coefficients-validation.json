@@ -1,0 +1,100 @@
+{
+  "compiler": "WASI SDK 34.0",
+  "language": "C++17",
+  "library": "Eigen 3.4.0",
+  "all88CoefficientBuilds": true,
+  "float": "Float64",
+  "statistics": {
+    "bodyInitializations": 1,
+    "settingsInitializations": 3,
+    "noteBuilds": 100,
+    "wasmMemoryBytes": 100007936
+  },
+  "cases": [
+    {
+      "midi": 40,
+      "stringNumber": 6,
+      "rate": 48000,
+      "referenceMs": 4233.1243130117655,
+      "wasmMs": 973.8316469937563,
+      "relativeL2": 0.0000057868306561843775,
+      "peak": 0.2627190053462982,
+      "initialDeltaT": 0.006259905962658417
+    },
+    {
+      "midi": 50,
+      "stringNumber": 4,
+      "rate": 48000,
+      "referenceMs": 5272.084782004356,
+      "wasmMs": 919.1966930031776,
+      "relativeL2": 6.211455414262681e-10,
+      "peak": 0.2632579803466797,
+      "initialDeltaT": 0.006285064788320848
+    },
+    {
+      "midi": 50,
+      "stringNumber": 6,
+      "rate": 48000,
+      "referenceMs": 4703.2898239940405,
+      "wasmMs": 905.3747270107269,
+      "relativeL2": 1.0112893517866658e-9,
+      "peak": 0.2677825093269348,
+      "initialDeltaT": 0.009902410620064897
+    },
+    {
+      "midi": 60,
+      "rate": 48000,
+      "referenceMs": 3237.2486429959536,
+      "wasmMs": 680.8921010047197,
+      "relativeL2": 0.00023184812694593976,
+      "peak": 0.3791193962097168,
+      "initialDeltaT": 0.04832827525048705
+    },
+    {
+      "midi": 64,
+      "rate": 48000,
+      "referenceMs": 3114.2306630015373,
+      "wasmMs": 575.934749007225,
+      "relativeL2": 5.337904711332723e-11,
+      "peak": 0.3147558271884918,
+      "initialDeltaT": 0.02013351455423008
+    },
+    {
+      "midi": 21,
+      "rate": 48000,
+      "referenceMs": 4769.655303001404,
+      "wasmMs": 858.1127970069647,
+      "relativeL2": 0.0004202252858515176,
+      "peak": 0.06858106702566147,
+      "initialDeltaT": 0.053762376757924925
+    },
+    {
+      "midi": 108,
+      "rate": 48000,
+      "referenceMs": 851.0702899992466,
+      "wasmMs": 138.3803060054779,
+      "relativeL2": 7.735990720558275e-12,
+      "peak": 0.03199855238199234,
+      "initialDeltaT": -0.006453294991213412
+    },
+    {
+      "midi": 40,
+      "stringNumber": 6,
+      "rate": 44100,
+      "referenceMs": 4838.277719989419,
+      "wasmMs": 878.5200069993734,
+      "relativeL2": 0.000005786034631055219,
+      "peak": 0.26276499032974243,
+      "initialDeltaT": 0.006259905962658417
+    },
+    {
+      "midi": 108,
+      "rate": 96000,
+      "referenceMs": 908.6623509973288,
+      "wasmMs": 146.38806200027466,
+      "relativeL2": 0.00012393928601152655,
+      "peak": 0.03234216943383217,
+      "initialDeltaT": -0.004824567470936144
+    }
+  ]
+}

@@ -8,8 +8,13 @@ Previously saved 50-second notes are truncated to 15 seconds without recalculati
 Completed notes survive cancellation/reload in IndexedDB; changing settings
 creates a separate bank. Browser storage may be evicted by the OS.
 
-No Python or compute server runs during use. A module Worker assembles the
-string/body system with ml-matrix, then Float64 WebAssembly generates mono PCM.
+No Python or compute server runs during use. A module Worker uses C++17/Eigen
+compiled to Float64 SIMD WebAssembly for matrix assembly, Cholesky/LU solves,
+nonlinear static initialization, real eigendecomposition, and pressure-observer
+composition. The existing Float64 waveform WASM then generates mono PCM.
+Body matrices, endpoint maps and body-mass products are initialized once per
+worker. Each configuration validates and computes six string sections/open
+tensions once; only pitch-dependent coupling is rebuilt for each note.
 PCM24 is persisted with a reversible encoding scale (not listening normalization).
 Decoded AudioBuffers use an LRU cache capped at 64 MiB. Playback reuses the app's
 keyboard, transport and voice registry; preparation never runs on the audio thread.
@@ -61,8 +66,12 @@ voice.release(audioContext.currentTime + 2);
 `settings.js` validates/normalizes the serializable settings schema.
 `default-settings.json` preserves the inferred original 520R string conditions;
 selecting a generic material uses explicit assumed properties instead.
-`buildModel(settings,midi,body,{sampleRate})` returns the integrator coefficient
-binary and physical metadata. `worker.js` renders and encodes one pitch at a time.
+`GuitarCoefficients.create(body,wasmBytes)` initializes the shared C++ body.
+Its `build(settings,midi,{sampleRate})` returns the integrator coefficient binary
+and physical metadata; the settings context is reused while inputs are unchanged.
+`worker.js` renders and encodes one pitch at a time. `prepare.js` and `observer.js`
+remain JavaScript reference implementations for regression tests, and are not
+loaded on the production preparation path.
 Preparation errors retain previously saved pitches and surface in the app.
 
 Reproduction scripts: `build_configurable_body_rom.py` extracts the full body
@@ -72,3 +81,32 @@ waveforms; `audit_configured_guitar_energy.py` checks reference error and physic
 energy decay. UI/integration/range tests are in `scripts/test_configured_guitar_*`.
 Vendored ml-matrix 6.12.1 is MIT licensed (license in `vendor/`). The existing
 physical-guitar `kernel.wasm` and `engine.js` are reused unchanged.
+
+## Coefficient WASM build and verification
+
+The implementation is C++ (not Rust), compiled using WASI SDK 34.0 and Eigen
+3.4.0. Build with external toolchain/header directories:
+
+```sh
+PMG_WASI_SDK=/path/to/wasi-sdk-34.0-x86_64-linux \
+PMG_EIGEN=/path/to/eigen-3.4.0 \
+bash scripts/build_guitar_coefficients_wasm.sh
+node scripts/test_guitar_wasm_coefficients.cjs
+```
+
+The compiler is only needed by developers. Clients download `coefficients.wasm`
+(about 272 KiB). No filesystem/network capabilities are exposed to the numerical
+module. The coefficient memory grows on demand up to a 256 MiB maximum; measured
+high-water usage is recorded in `coefficients-validation.json`. The waveform
+integrator has its separate memory. iPhone hardware performance is unmeasured.
+
+The JS-to-C++ comparison includes E2, D3 on two strings, plain-string notes,
+lowest/highest piano pitches, and 44.1/48/96 kHz. Modal basis and floating-point
+roundoff can differ; the preexisting 3% sparse nonlinear-port threshold is also
+basis-dependent. No new mode reduction, decay, EQ or model approximation is
+introduced. Cached PCM from the previous JS coefficient backend remains usable.
+See the numerical report for measured waveform error and coefficient timings;
+these timings do not include 15-second waveform rendering or storage.
+
+Eigen is used unmodified with `EIGEN_MPL2_ONLY`. Sources and notices for the
+compiled third-party components are listed in `vendor/COEFFICIENT-NOTICES.md`.

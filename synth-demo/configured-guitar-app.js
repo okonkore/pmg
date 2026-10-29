@@ -1,4 +1,4 @@
-import {createPreparedGuitar} from './instruments/configured-guitar/bank.js';
+import {createPreparedGuitar} from './instruments/configured-guitar/bank.js?v=coeff-cpp-1';
 import {validateSettings} from './instruments/configured-guitar/settings.js';
 // This module adds one instrument and reuses the application's transport/voice registry.
 const NAME='configuredGuitar',baseEnable=enable,basePlay=play,baseStop=stop;

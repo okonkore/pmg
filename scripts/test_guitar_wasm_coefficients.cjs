@@ -1,0 +1,17 @@
+const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict');
+(async()=>{
+ const {buildModel,GuitarCoefficients,PhysicalGuitarEngine,base,root}=await require('./configured_guitar_loader.cjs')();
+ const body=JSON.parse(fs.readFileSync(path.join(base,'body-library-256.json'))),config=JSON.parse(fs.readFileSync(path.join(base,'default-settings.json'))),wasm=fs.readFileSync(path.join(base,'coefficients.wasm')),kernel=fs.readFileSync(path.join(root,'physical-guitar/kernel.wasm'));
+ const engine=await GuitarCoefficients.create(body,wasm),cases=[];
+ for(const [midi,stringNumber,rate] of [[40,6,48000],[50,4,48000],[50,6,48000],[60,undefined,48000],[64,undefined,48000],[21,undefined,48000],[108,undefined,48000],[40,6,44100],[108,undefined,96000]]){
+  let t=performance.now();const reference=buildModel(config,midi,body,{stringNumber,sampleRate:rate}),referenceMs=performance.now()-t;t=performance.now();const actual=engine.build(config,midi,{stringNumber,sampleRate:rate}),wasmMs=performance.now()-t;
+  assert.ok(Math.abs(actual.physics.initialDeltaT-reference.physics.initialDeltaT)<1e-9);assert.ok(actual.physics.initialStaticResidual<1e-9);assert.equal(actual.physics.stringModes,reference.physics.stringModes);
+  const render=async model=>{const e=await PhysicalGuitarEngine.create(model.binary,kernel,rate,{block:4,sparseTolerance:.03,linearAfter:12}),wave=new Float32Array(Math.round(rate*(midi===40||midi===50?3:.2)));e.render(wave);return wave;};
+  const a=await render(actual),r=await render(reference);let err=0,power=0,peak=0;for(let j=0;j<a.length;j++){err+=(a[j]-r[j])**2;power+=r[j]**2;peak=Math.max(peak,Math.abs(a[j]));}const relativeL2=Math.sqrt(err/power);console.log(JSON.stringify({midi,stringNumber,rate,referenceMs,wasmMs,relativeL2,peak,memory:engine.statistics.wasmMemoryBytes}));assert.ok(relativeL2<.003,'wave mismatch '+relativeL2);cases.push({midi,stringNumber,rate,referenceMs,wasmMs,relativeL2,peak,initialDeltaT:actual.physics.initialDeltaT});
+ }
+ assert.equal(engine.statistics.bodyInitializations,1);assert.equal(engine.statistics.settingsInitializations,1);
+ const referenceMu=engine.build(config,40).physics.section.mu;const changed=structuredClone(config);changed.strings[5].diameterMm*=1.01;changed.strings[5].coreDiameterMm*=1.01;changed.strings[5].wireDiameterMm*=1.01;const updated=engine.build(changed,40);assert.notEqual(updated.physics.section.mu,referenceMu);assert.equal(engine.statistics.settingsInitializations,2);assert.equal(engine.statistics.bodyInitializations,1);
+ for(let midi=21;midi<=108;midi++){const model=engine.build(config,midi);assert.ok(model.physics.initialStaticResidual<1e-9);assert.ok(Number.isFinite(model.physics.initialDeltaT));if(midi%12===0)console.log('RANGE',midi,engine.statistics.wasmMemoryBytes);}
+ const repeated=engine.statistics.settingsInitializations;engine.build(config,60);assert.equal(engine.statistics.settingsInitializations,repeated);assert.equal(engine.statistics.bodyInitializations,1);
+ const report={compiler:'WASI SDK 34.0',language:'C++17',library:'Eigen 3.4.0',all88CoefficientBuilds:true,float:'Float64',statistics:engine.statistics,cases};fs.writeFileSync('experiments/string-v2/results/configured-body/wasm-coefficients-validation.json',JSON.stringify(report,null,2)+'\n');console.log('PASS',engine.statistics);
+})().catch(e=>{console.error(String(e),e.stack?.split('\n').slice(1,3).join('\n'));process.exitCode=1;});

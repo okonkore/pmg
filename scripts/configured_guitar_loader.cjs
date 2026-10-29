@@ -7,6 +7,8 @@ module.exports=async function load(){
  const source=fs.readFileSync(path.join(base,'prepare.js'),'utf8').replace("import './vendor/ml-matrix-6.12.1.js';",'').replace("'./settings.js'",JSON.stringify(settingsURL)).replace("'./observer.js'",JSON.stringify(observerURL));
  const {buildModel}=await import(data(source));
  const settings=await import(settingsURL);
+ const cppSource=fs.readFileSync(path.join(base,'coefficient-engine.js'),'utf8').replace("'./settings.js?v=coeff-cpp-1'",JSON.stringify(settingsURL));
+ const {GuitarCoefficients}=await import(data(cppSource));
  const {PhysicalGuitarEngine}=await import(data(fs.readFileSync(path.join(root,'physical-guitar/engine.js'))));
- return {buildModel,settings,PhysicalGuitarEngine,root,base};
+ return {buildModel,settings,GuitarCoefficients,PhysicalGuitarEngine,root,base};
 };
