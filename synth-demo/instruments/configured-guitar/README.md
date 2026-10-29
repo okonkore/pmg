@@ -4,6 +4,7 @@ Choose **Physical Guitar（弦を設定）** in the public synth app. Configure 
 strings, confirm, and keep the page open while it prepares. The default range is
 the visible keyboard plus the selected song; all 88 piano pitches are optional.
 New pitches are prepared when needed. Preparation can take minutes on a phone.
+Previously saved 50-second notes are truncated to 15 seconds without recalculation.
 Completed notes survive cancellation/reload in IndexedDB; changing settings
 creates a separate bank. Browser storage may be evicted by the OS.
 
@@ -40,7 +41,7 @@ wave, so it does not recompute nonlinear pluck strength; change force in setup
 for a different physical pluck. Initial displacement is limited to 5 mm, reported
 in per-note physics metadata. Pluck distance is clamped only if the speaking
 length is too short. String modes are limited to 61 per polarization and to
-45% of the AudioContext sample rate. Natural tails are generated up to 50 s;
+45% of the AudioContext sample rate. Natural tails are generated up to 15 s;
 a conservative modal bound can stop earlier below 1e-6. There is no end fade.
 The app's note-off is a separate 12 ms release action.
 
