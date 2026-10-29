@@ -1,0 +1,18 @@
+{
+  "key": "sor6_8",
+  "source": {
+    "credit": "Fernando Sor / Glen Larsen / Mutopia",
+    "license": "CC BY-SA 4.0",
+    "url": "https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=2128"
+  },
+  "midi": "https://www.mutopiaproject.org/ftp/SorF/O6/sorf-op6n08/sorf-op6n08.mid",
+  "sha256": "fb844401cba972199177492d58088489148c15e5fbc8a41c4b3c23204cea82a4",
+  "notes": 295,
+  "beats": 117.0,
+  "bpm": 88,
+  "meter": [
+    3,
+    4
+  ],
+  "pitchShift": 0
+}
