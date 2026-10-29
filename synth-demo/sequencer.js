@@ -20,10 +20,6 @@ const ScoreEditor=(()=>{
     <div class="seq-tools"><button id="seq-play" aria-label="カーソルから再生">▶ 再生</button><button id="seq-stop">■ 停止</button><button id="seq-rewind" aria-label="先頭へ戻る">|◀</button><output id="seq-position" class="seq-position">1.1.000</output><label><input id="seq-loop" type="checkbox">ループ</label></div>
     <div class="seq-tools seq-menu-item"><label>BPM <input id="seq-bpm" type="number" min="20" max="300" step="1"></label><label>拍子 <select id="seq-meter"><option value="4/4">4/4</option><option value="2/2">2/2</option><option value="3/4">3/4</option><option value="3/2">3/2</option><option value="6/8">6/8</option><option value="12/8">12/8</option></select></label></div>
    </div>
-   <div class="seq-toolbar seq-menu-item" aria-label="再生設定">
-    <div class="seq-tools"><span>再生設定</span><label><input id="seq-strum" type="checkbox">ストラム</label><label>音の間隔 <input id="seq-strum-ms" type="range" min="5" max="100" step="5" value="20"><output id="seq-strum-out">20 ms</output></label><label>方向 <select id="seq-strum-direction"><option value="up">低音 → 高音</option><option value="down">高音 → 低音</option></select></label></div>
-    <small>同時に置いた音を順番に鳴らします。短い音や次の音が近いときは間隔を自動調整します。</small>
-   </div>
    <div class="seq-toolbar seq-menu-item">
     <div class="seq-tools"><button id="seq-select" aria-pressed="true" title="選択・移動 (V)">↖ 選択</button><button id="seq-draw" aria-pressed="false" title="音符を描く (P)">✎ 鉛筆</button><button id="seq-pan" aria-pressed="false" title="画面を移動 (H)">✋ 移動</button><label>グリッド <select id="seq-snap"><option value="0.125">1/32</option><option value="0.25" selected>1/16</option><option value="0.5">1/8</option><option value="1">1/4</option><option value="0">オフ</option></select></label><label>音符長 <select id="seq-length"><option value="0.125">1/32</option><option value="0.25">1/16</option><option value="0.5">1/8</option><option value="1" selected>1/4</option><option value="2">1/2</option><option value="4">全音符</option></select></label></div>
     <div class="seq-tools"><button id="seq-undo" aria-label="元に戻す" title="元に戻す (Ctrl / ⌘ Z)">↶</button><button id="seq-redo" aria-label="やり直す" title="やり直す (Ctrl / ⌘ Shift Z)">↷</button><button id="seq-quantize">クオンタイズ</button><button id="seq-delete">音符を削除</button></div>
@@ -33,16 +29,6 @@ const ScoreEditor=(()=>{
    <div class="seq-inspector seq-menu-item"><span id="seq-selection-info" class="seq-selection-info">音符を選択</span><label>音程 <input id="seq-pitch" aria-label="選択音符の音程" placeholder="C4"></label><label>位置（拍）<input id="seq-at" type="number" min="0" max="4095" step="0.25"></label><label>長さ（拍）<input id="seq-duration" type="number" min="0.0078125" max="4096" step="0.25"></label><label>強さ <input id="seq-velocity" type="range" min="1" max="127" value="127"><output id="seq-velocity-out">127</output></label></div>
    <p id="seq-help" class="seq-help seq-menu-item">空白のドラッグでスクロール。小節番号の行をピンチで横方向、左の鍵盤列をピンチで縦方向に拡大・縮小。描画領域ではピンチは無効です。音符をダブルタップで削除。鉛筆モードでは空白をタップで音符を追加、ドラッグでスクロール。選択モードでは空白のダブルタップで追加。音符をドラッグで移動、右端で長さ変更。<kbd>Shift</kbd>＋クリック／Shift＋空白のドラッグで範囲選択。小節バーのカーソルをドラッグして再生位置を移動。<br><kbd>V</kbd> 選択 · <kbd>P</kbd> 鉛筆 · <kbd>Space</kbd> 再生／停止 · <kbd>Delete</kbd> 削除 · <kbd>Ctrl / ⌘ C・V</kbd> コピー／貼り付け · <kbd>Ctrl / ⌘ Z</kbd> Undo<span id="seq-origin" class="seq-origin"></span></p>`;
   const $=id=>document.getElementById(id),scroll=$('seq-scroll'),grid=$('seq-grid'),roll=$('seq-roll'),ruler=$('seq-ruler');
-  const playbackKey='pmg.playback.v1';
-  try{const saved=JSON.parse(storage?.getItem(playbackKey)||'null');if(saved){$('seq-strum').checked=saved.enabled===true;$('seq-strum-ms').value=clamp(Number(saved.intervalMs)||20,5,100);$('seq-strum-direction').value=saved.direction==='down'?'down':'up'}}catch{}
-  function playbackSettings(){return {enabled:$('seq-strum').checked,intervalMs:+$('seq-strum-ms').value,direction:$('seq-strum-direction').value}}
-  function updatePlaybackSettings(persist=false){
-   $('seq-strum-out').textContent=$('seq-strum-ms').value+' ms';
-   $('seq-strum-ms').disabled=$('seq-strum-direction').disabled=!$('seq-strum').checked;
-   if(persist){api.stop();try{storage?.setItem(playbackKey,JSON.stringify(playbackSettings()))}catch{}}
-  }
-  for(const id of ['seq-strum','seq-strum-ms','seq-strum-direction'])$(id).addEventListener('input',()=>updatePlaybackSettings(true));
-  updatePlaybackSettings();
   const readonly=()=>history?.readonly;
   const doc=()=>draft||history.current;
   const barBeats=()=>doc().meter[0]*4/doc().meter[1];
@@ -270,7 +256,6 @@ const ScoreEditor=(()=>{
    transportStart(info){transportStop();transport=info;$('seq-play').textContent='■ 停止';cancelAnimationFrame(raf);frame()},
    transportStop,
    open,
-   playbackSettings,
    currentDocument(){return M.clone(history.current)}
   };
  }
