@@ -1,0 +1,80 @@
+{
+  "version": 1,
+  "scaleMm": 650,
+  "pluckPositionMm": 80,
+  "forceN": 1.5457651114447049,
+  "strings": [
+    {
+      "number": 1,
+      "openMidi": 64,
+      "construction": "plain",
+      "diameterMm": 0.7,
+      "densityKgM3": 957.5326933376766,
+      "youngGPa": 2,
+      "lossAngle": 0.02
+    },
+    {
+      "number": 2,
+      "openMidi": 59,
+      "construction": "plain",
+      "diameterMm": 0.82,
+      "densityKgM3": 973.0383438471885,
+      "youngGPa": 2,
+      "lossAngle": 0.02
+    },
+    {
+      "number": 3,
+      "openMidi": 55,
+      "construction": "plain",
+      "diameterMm": 1.02,
+      "densityKgM3": 998.2879618023754,
+      "youngGPa": 2,
+      "lossAngle": 0.02
+    },
+    {
+      "number": 4,
+      "openMidi": 50,
+      "construction": "wound",
+      "diameterMm": 0.74,
+      "densityKgM3": 1140,
+      "youngGPa": 2,
+      "lossAngle": 0.02,
+      "coreDiameterMm": 0.4846812532558528,
+      "wireDiameterMm": 0.1276593733720736,
+      "wireDensityKgM3": 8900,
+      "wireYoungGPa": 110,
+      "coreFill": 0.65,
+      "filaments": 100
+    },
+    {
+      "number": 5,
+      "openMidi": 45,
+      "construction": "wound",
+      "diameterMm": 0.85,
+      "densityKgM3": 1140,
+      "youngGPa": 2,
+      "lossAngle": 0.02,
+      "coreDiameterMm": 0.44221842462127725,
+      "wireDiameterMm": 0.20389078768936136,
+      "wireDensityKgM3": 8900,
+      "wireYoungGPa": 110,
+      "coreFill": 0.65,
+      "filaments": 100
+    },
+    {
+      "number": 6,
+      "openMidi": 40,
+      "construction": "wound",
+      "diameterMm": 1.07,
+      "densityKgM3": 1140,
+      "youngGPa": 2,
+      "lossAngle": 0.02,
+      "coreDiameterMm": 0.4395280271787974,
+      "wireDiameterMm": 0.3152359864106013,
+      "wireDensityKgM3": 8900,
+      "wireYoungGPa": 110,
+      "coreFill": 0.65,
+      "filaments": 100
+    }
+  ]
+}

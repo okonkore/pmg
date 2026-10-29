@@ -1,0 +1,54 @@
+{
+  "bodyStates": 256,
+  "pressureModes": 1704,
+  "sampleRate": 48000,
+  "referenceSeconds": 3,
+  "cases": [
+    {
+      "key": "e2",
+      "waveRelativeL2": 0.021580979228019714,
+      "attack100msRelativeL2": 0.0012537759030237794,
+      "energyJ": [
+        0.001356645789286659,
+        0.000668249164179499,
+        0.0004058208294158013,
+        0.00026342636376546646,
+        0.0001751123583247691,
+        0.0001176533309676874,
+        7.95387809417678e-05
+      ],
+      "initialDeltaT": 0.006259905962658418
+    },
+    {
+      "key": "fourth-open",
+      "waveRelativeL2": 0.048331987112760544,
+      "attack100msRelativeL2": 0.002732004038989544,
+      "energyJ": [
+        0.001240500524389805,
+        0.000547351608138673,
+        0.0003327879057786714,
+        0.00021611573344049094,
+        0.00014394581206075545,
+        9.73943635503601e-05,
+        6.666823649761741e-05
+      ],
+      "initialDeltaT": 0.006285064788320848
+    },
+    {
+      "key": "sixth-fret10",
+      "waveRelativeL2": 0.09793366491794586,
+      "attack100msRelativeL2": 0.007610728032886982,
+      "energyJ": [
+        0.0012127254409038987,
+        0.00040680111008909554,
+        0.00026618220269736416,
+        0.00019010607522776816,
+        0.00013885313384864656,
+        0.00010262741368551428,
+        7.64740970556083e-05
+      ],
+      "initialDeltaT": 0.009902410620064883
+    }
+  ],
+  "scope": "Approximate passive body mobility; original pressure poles retained. L2 waveform errors include phase drift. No recording fit or arbitrary output EQ. Not hardware-tested on iPhone."
+}
