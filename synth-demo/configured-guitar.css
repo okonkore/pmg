@@ -5,3 +5,10 @@
 .configured-manager-header>button{flex-shrink:0;white-space:nowrap;min-width:64px}
 
 .configured-performance{border-top:1px solid #ffffff25;margin:18px 0;padding-top:14px}.configured-performance-controls{display:flex;gap:12px;align-items:flex-end;flex-wrap:wrap}.configured-performance-controls label{min-width:130px;flex:0 1 180px;gap:8px}.configured-performance-controls select{font:inherit;background:#211b15;color:#f5ead8;border:1px solid #ffffff40;border-radius:7px;padding:10px;min-height:42px;width:100%}.configured-performance-controls button{min-height:42px;white-space:normal}.configured-benchmark-result,#configured-stage{white-space:pre-line}@media(max-width:600px){.configured-performance-controls label{flex:1 1 120px}.configured-performance-controls button{flex:1 1 170px}}
+
+/* Labels are small, but editable fields must not inherit their 12px size on touch devices. */
+@media (any-pointer: coarse) {
+ #configured-setup input,#configured-setup select,
+ #configured-string-sets input,#configured-string-sets select,
+ #configured-string-sets .configured-row input {font-size:16px}
+}

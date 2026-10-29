@@ -12,3 +12,8 @@ __pycache__/
 
 # User-provided instrument references stay local.
 /reference-recordings/
+
+# Local test reports and optional Node dependencies.
+/test-results/
+/node_modules/
+/experiments/string-v2/results/instrument-ver2-audit.json

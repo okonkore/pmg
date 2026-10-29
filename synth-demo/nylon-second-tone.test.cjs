@@ -1,8 +1,9 @@
 'use strict';
+const history=require('./nylon-history-helper.cjs');
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),vm=require('node:vm'),crypto=require('node:crypto');const s=vm.createContext({});for(const f of ['nylon-contact.js','nylon-model.js','nylon-coupled-model.js','nylon-body-fit.js','nylon-bridge-model.js'])vm.runInContext(fs.readFileSync(path.join(__dirname,f),'utf8'),s);
 const model=vm.runInContext('NylonBridgeModel',s),fixture=JSON.parse(fs.readFileSync(path.join(__dirname,'nylon-plain-approved.json'))),settings={...fixture.settings,secondTone:1},hash=y=>crypto.createHash('sha256').update(Buffer.from(y.buffer)).digest('hex');
 for(const rate of [44100,48000]){
- for(const midi of [35,40,45,50,55,64,66,69])assert.equal(hash(model.render(rate,midi,settings)),fixture.approved[`${rate}:${midi}`],'Adopted first, third and wound strings remain exact');
+ for(const midi of [35,40,45,50,55,64,66,69])history.equal(model.render(rate,midi,settings),'plain',rate,midi,settings,'Adopted first, third and wound strings remain exact');
  for(const midi of [59,60,61,62,63]){const before={},after={},a=model.render(rate,midi,{...settings,secondTone:0},before),b=model.render(rate,midi,settings,after);assert.notEqual(hash(a),hash(b),'Second string uses interpolated model');assert(b.every(Number.isFinite));assert(Math.abs(after.initialEnergy-before.initialEnergy)<1e-10);assert(after.maxEnergy<=after.initialEnergy+1e-10);assert(after.radiatedEnergy+after.releaseRemainder<=after.initialEnergy-after.finalEnergy+1e-10)}
  for(const extra of [{referenceTone:0},{bodyFit:0}])assert.equal(hash(model.render(rate,59,{...settings,...extra})),hash(model.render(rate,59,{...settings,...extra,secondTone:0})),'Disabled path retained');
 }

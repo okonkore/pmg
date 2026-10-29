@@ -51,3 +51,10 @@
 .editor-view #seq-menu-toggle{position:fixed;right:max(16px,env(safe-area-inset-right));bottom:calc(16px + env(safe-area-inset-bottom));z-index:50;background:#e4c18a;color:#352417;border:1px solid #f4ddb5;box-shadow:0 4px 18px #0006;font-weight:700;padding:12px 16px;min-height:44px}
 
 .seq-piano .seq-piano-key{position:absolute;left:0}
+
+/* Keep focusable fields readable without iPhone focus zoom; retain native text selection. */
+@media (any-pointer: coarse) {
+ .seq-toolbar input[type=number],.seq-toolbar select,
+ .seq-inspector input:not([type=range]) {font-size:16px}
+ .seq-toolbar input[type=number] {width:80px}
+}

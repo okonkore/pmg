@@ -1,7 +1,7 @@
 'use strict';
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),vm=require('node:vm');
 const scope=vm.createContext({});
-for(const file of ['gavotte.js','prelude.js','bach-solos.js','bach-1012.js','sor-op60.js','sor-op6.js']){
+for(const file of ['gavotte.js','prelude.js','bach-solos.js','bach-1012.js','sor-op60.js','sor-op6.js','repertoire-batch1.js']){
  vm.runInContext(fs.readFileSync(path.join(__dirname,file),'utf8'),scope,{filename:file});
 }
 const elements=new Map();
@@ -13,9 +13,9 @@ new vm.Script(inline); // Validate the rest of the app as well as the menu initi
 vm.runInContext(inline.slice(0,inline.indexOf('const presets=')),scope);
 const {songs,suite}=vm.runInContext('({songs,suite:suite1012})',scope);
 assert.deepEqual(Object.keys(suite),['prelude1012','allemande1012','courante1012','sarabande1012','gavotte','gavotte2','gigue1012']);
-assert.equal(Object.keys(songs).length,19,'Keep the five existing BWV 1007 selections');
+assert.equal(Object.keys(songs).length,22,'19 existing selections plus two minuets and Sor Op.35 No.22');
 const groups=elements.get('song').children;
-assert.equal(groups.length,4);assert.equal(groups[0].children.length,7);assert.equal(groups[1].children.length,5);
+assert.equal(groups.length,5);assert.equal(groups[0].children.length,7);assert.equal(groups[1].children.length,7);
 assert.equal(elements.get('song').value,'gavotte');
 assert(elements.get('song-info').textContent.includes('63秒'));
 const expected={prelude1012:[1349,623.5],allemande1012:[541,80.25],courante1012:[639,216],sarabande1012:[301,192],gavotte:[258,114],gavotte2:[214,98],gigue1012:[655,204.5]};
@@ -77,3 +77,21 @@ assert(elements.get('song-info').textContent.includes('80秒'));
 assert(elements.get('song-info').textContent.includes('♩ = 88'));
 assert(html.includes('https://creativecommons.org/licenses/by-sa/4.0/'));
 console.log('Sor Op.6 No.8: full score, chords, grace notes, meter, menu, duration and credits passed');
+
+assert.equal(groups[4].children[0].value,'sor35_22');
+const newKeys=['menuet1007','menuet2_1007','sor35_22'];
+for(const key of newKeys){
+ const song=songs[key],doc=model.fromSong(key,song);
+ assert.deepEqual(doc.meter,[3,4]);assert.equal(doc.endBeat,key==='sor35_22'?144:72);
+ assert.equal(doc.notes.length,key==='sor35_22'?416:key==='menuet1007'?134:126);
+ for(const field of ['licenseUrl','modifications','pitch','terms'])assert.equal(doc.source[field],song.source[field]);
+ const library=new model.Library({[key]:song},{getItem:()=>null,setItem(){}});
+ const copy=library.duplicate(key),loaded=library.import(library.export(copy));
+ assert.deepEqual(loaded.source,copy.source);assert.equal(loaded.endBeat,copy.endBeat);
+ assert.deepEqual(model.toSong(loaded).source,copy.source);assert.deepEqual(model.toSong(loaded).score.meter,[3,4]);
+ assert.equal(model.toSong(loaded).score.endBeat,copy.endBeat);
+ elements.get('song').value=key;vm.runInContext('updateSong()',scope);
+ assert(elements.get('song-info').textContent.includes(key==='sor35_22'?'86秒':'36秒'));
+}
+assert.throws(()=>model.normalize({...model.fromSong('sor35_22',songs.sor35_22),endBeat:Infinity}));
+console.log('Three additions: menu, duration including final rest, all voices, source metadata and export/import roundtrip passed');

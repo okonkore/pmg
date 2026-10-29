@@ -1,0 +1,89 @@
+[
+  {
+    "key": "menuet1007",
+    "file": "bwv1007_menuet_i",
+    "source": {
+      "credit": "J. S. Bach / Andreas Scherer / Mutopia (2018)",
+      "license": "Public Domain",
+      "licenseUrl": "https://creativecommons.org/licenses/publicdomain/",
+      "url": "https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=517",
+      "modifications": "LilyPond 2.24.4 MIDI converted to quarter-note events; repeats omitted; all voices retained; fixed audition tempo; playback articulation is applied separately.",
+      "pitch": "Original cello sounding pitch; source wrapper transpose c c, applied once; MIDI shift 0. Includes notes below standard guitar E2; not a guitar arrangement.",
+      "terms": "Score edition placed in the public domain by the typesetter."
+    },
+    "lilypondUrl": "https://raw.githubusercontent.com/MutopiaProject/MutopiaProject/master/ftp/BachJS/BWV1007/bwv1007/bwv1007-lys/bwv1007_menuet_i.ly",
+    "sha256": {
+      ".ly": "adca3042dacb74b66a5aa326a64d900cd5f2ce0f5f4b97dba615dc72f65c8ab9",
+      ".midi": "fc1e7208754ba674f67bf9d469871fb26f1b28d8673dd82a42be6c50cd915e51"
+    },
+    "notes": 134,
+    "noteEndBeats": 72.0,
+    "scoreBars": 24,
+    "scoreBeats": 72,
+    "pitchRange": [
+      36,
+      64
+    ],
+    "belowE2": 4,
+    "midiPitchShift": 0,
+    "bpm": 120
+  },
+  {
+    "key": "menuet2_1007",
+    "file": "bwv1007_menuet_ii",
+    "source": {
+      "credit": "J. S. Bach / Andreas Scherer / Mutopia (2018)",
+      "license": "Public Domain",
+      "licenseUrl": "https://creativecommons.org/licenses/publicdomain/",
+      "url": "https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=517",
+      "modifications": "LilyPond 2.24.4 MIDI converted to quarter-note events; repeats omitted; all voices retained; fixed audition tempo; playback articulation is applied separately.",
+      "pitch": "Original cello sounding pitch; source wrapper transpose c c, applied once; MIDI shift 0. Includes notes below standard guitar E2; not a guitar arrangement.",
+      "terms": "Score edition placed in the public domain by the typesetter."
+    },
+    "lilypondUrl": "https://raw.githubusercontent.com/MutopiaProject/MutopiaProject/master/ftp/BachJS/BWV1007/bwv1007/bwv1007-lys/bwv1007_menuet_ii.ly",
+    "sha256": {
+      ".ly": "55a8faba065e307c0532dab796d1be0d8ba6c799b715530c95d86870d9dfc054",
+      ".midi": "fd7a87ad58d69b422f6d5d17fc4cbcb443637edf0ff1dfe2b14150a0798cbafb"
+    },
+    "notes": 126,
+    "noteEndBeats": 72.0,
+    "scoreBars": 24,
+    "scoreBeats": 72,
+    "pitchRange": [
+      38,
+      63
+    ],
+    "belowE2": 4,
+    "midiPitchShift": 0,
+    "bpm": 120
+  },
+  {
+    "key": "sor35_22",
+    "file": "sorf_op35_no22",
+    "source": {
+      "credit": "Fernando Sor / Glen Larsen / Mutopia (2013)",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "url": "https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=1850",
+      "modifications": "LilyPond 2.24.4 MIDI converted to quarter-note events; repeats omitted; all voices retained; fixed audition tempo; playback articulation is applied separately.",
+      "pitch": "Original guitar sounding pitch; MIDI shift 0.",
+      "terms": "Adapted score data: CC BY-SA 3.0; retain attribution and license; share adaptations under the same license. Application code is separate."
+    },
+    "lilypondUrl": "https://raw.githubusercontent.com/MutopiaProject/MutopiaProject/master/ftp/SorF/O35/sorf_op35_no22/sorf_op35_no22.ly",
+    "sha256": {
+      ".ly": "a2dfb39a40b2dd8b406cce4894af20dcd5e5312e815825170e2fbec40c5ca217",
+      ".midi": "7c813842d3596139a69a590e8d0887dd801fbfa649e048beb09378400227ca38"
+    },
+    "notes": 416,
+    "noteEndBeats": 143.0,
+    "scoreBars": 48,
+    "scoreBeats": 144,
+    "pitchRange": [
+      40,
+      71
+    ],
+    "belowE2": 0,
+    "midiPitchShift": 0,
+    "bpm": 100
+  }
+]

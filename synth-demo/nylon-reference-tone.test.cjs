@@ -1,16 +1,17 @@
 'use strict';
-const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),vm=require('node:vm'),crypto=require('node:crypto');
+const history=require('./nylon-history-helper.cjs');
+const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),vm=require('node:vm');
 const scope=vm.createContext({});let reply;
 scope.importScripts=(...names)=>names.forEach(n=>vm.runInContext(fs.readFileSync(path.join(__dirname,n),'utf8'),scope));
 scope.self={postMessage:value=>reply=value};vm.runInContext(fs.readFileSync(path.join(__dirname,'nylon-worker.js'),'utf8'),scope);
 const {model,previous,current}=vm.runInContext('({model:NylonBridgeModel,previous:NylonBodyFit,current:NylonReferenceFit})',scope);
-const hashes={"40": "c4664f7985f155c7da93292085b690f655f585bbf60c5d30127f05bdf495003e", "50": "a8ebd0ef4b3e1813fd1327c403315e4f6e12345eb70307523d467e41d2c839ba", "55": "efa8dd85971e91675ffc79b9bf11c373a55d1595a0fea8edb3a467191a812b88", "64": "40d66052b8dc26798c1f9ee97e12e12b8561582a0845f3e244c9450cdb0b95ea", "66": "07b52fcc631ea33d88befaee22bd52a89c4c867b69edc7a5c20521886bdb84e8", "69": "e62508e9d70db337d3c876a2cd08a6098bfb8370f972e4b75a5848b88bb4c151"};
+const referenceMidis=[40,50,55,64,66,69];
 assert.equal(current.pluckScale,previous.pluckScale);assert.equal(JSON.stringify(current.radiationPhases),JSON.stringify(previous.radiationPhases));
 assert(current.radiativeFractions.every(v=>Number.isFinite(v)&&v>=0&&v<=1));
-for(const [midi,hash] of Object.entries(hashes)){
+for(const midi of referenceMidis){
  const settings={bodyFit:1,attack:1,dropD:false},before={},after={};
  const off=model.render(48000,+midi,{...settings,referenceTone:0},before),on=model.render(48000,+midi,{...settings,referenceTone:1},after);
- assert.equal(crypto.createHash('sha256').update(Buffer.from(off.buffer)).digest('hex'),hash,'OFF preserves the exact accepted sound');
+ history.equal(off,'reference',48000,+midi,{...settings,referenceTone:0},'OFF preserves the exact released implementation');
  assert.notEqual(Buffer.compare(Buffer.from(off.buffer),Buffer.from(on.buffer)),0);
  if(+midi>=55)for(const key of ['initialEnergy','finalEnergy','releaseEnergy','releaseRemainder','maxEnergy','maxBodyEnergy'])assert.equal(after[key],before[key],'Plain-string mechanics retained: '+key);
  else assert(Math.abs(after.initialEnergy-before.initialEnergy)<1e-12,'Wound adjustment redistributes the same initial energy');

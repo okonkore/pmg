@@ -35,7 +35,7 @@ const ScoreEditor=(()=>{
   const snap=()=>+$('seq-snap').value;
   const quantize=beat=>snap()?Math.round(beat/snap())*snap():beat;
   const minLength=()=>snap()||M.MIN_LENGTH;
-  const endBeat=()=>Math.max(barBeats()*4,...doc().notes.map(n=>n.beat+n.duration));
+  const endBeat=()=>Math.max(barBeats()*4,doc().endBeat||0,...doc().notes.map(n=>n.beat+n.duration));
   function message(text,error=false){$('seq-save-state').textContent=text;$('seq-save-state').dataset.error=error}
   function updateLibraryMenu(){
    let group=$('my-song-group');
@@ -80,7 +80,7 @@ const ScoreEditor=(()=>{
    $('seq-copy').textContent=readonly()?'コピーして編集':'曲を複製';
    $('seq-notice').textContent=readonly()?'内蔵曲は変更できません。「コピーして編集」で自分の曲として編集できます。':'編集内容はこのブラウザに自動保存されます。別の端末へ移すときはJSONで書き出してください。';
    for(const id of ['seq-draw','seq-save','seq-remove'])$(id).disabled=readonly();
-   $('seq-origin').textContent=d.source?`コピー元：${d.source.title} · ${d.source.credit} · ${d.source.license}`:'';
+   $('seq-origin').textContent=d.source?`コピー元：${d.source.title} · ${d.source.credit} · ${d.source.license}${d.source.url?' · '+d.source.url:''}${d.source.licenseUrl?' · '+d.source.licenseUrl:''}${d.source.pitch?' · '+d.source.pitch:''}${d.source.modifications?' · '+d.source.modifications:''}${d.source.terms?' · '+d.source.terms:''}`:'';
    roll.style.width=GUTTER+width+'px';roll.style.height=RULER+88*rowHeight+'px';grid.style.width=width+'px';grid.style.height=88*rowHeight+'px';grid.style.setProperty('--row-height',rowHeight+'px');$('seq-piano').style.height=88*rowHeight+'px';for(const [row,key] of [...$('seq-piano').children].entries()){key.style.top=row*rowHeight+'px';key.style.height=rowHeight+'px';key.style.lineHeight=Math.max(1,rowHeight-1)+'px'}grid.style.setProperty('--bar-px',bar*px+'px');grid.style.setProperty('--step-px',(snap()||1)*px+'px');grid.dataset.tool=tool;grid.dataset.readonly=String(readonly());
    ruler.style.width=width+'px';ruler.replaceChildren();
    // Thin out measure labels at low zoom while retaining true bar positions.

@@ -1,7 +1,8 @@
 'use strict';
-const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm'),path=require('node:path'),crypto=require('node:crypto');
+const history=require('./nylon-history-helper.cjs');
+const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm'),path=require('node:path');
 const scope=vm.createContext({});for(const f of ['nylon-contact.js','nylon-model.js','nylon-coupled-model.js','nylon-body-fit.js','nylon-bridge-model.js'])vm.runInContext(fs.readFileSync(path.join(__dirname,f),'utf8'),scope);
-const model=vm.runInContext('NylonBridgeModel',scope),profile=vm.runInContext('NylonThirdExcitation',scope),fixture=JSON.parse(fs.readFileSync(path.join(__dirname,'nylon-wound-approved.json')));
+const model=vm.runInContext('NylonBridgeModel',scope),profile=vm.runInContext('NylonThirdExcitation',scope);
 assert(profile.stiffness>.00008&&profile.stiffness<.00013,'Measured G3 high-mode inharmonicity');
 assert.equal(profile.gainDb.length,48);
 assert(profile.lossPerSecond.every(x=>x>=0&&Number.isFinite(x)));
@@ -9,7 +10,7 @@ const settings={bodyFit:1,referenceTone:1,attack:1,stringTexture:1,highDecay:1};
 const partial=(y,rate,n)=>{const f=440*2**((55-69)/12)*n,start=Math.round(rate*.04),length=Math.round(rate*.1);let re=0,im=0;for(let i=0;i<length;i++){const v=y[start+i]*(.5-.5*Math.cos(2*Math.PI*i/(length-1))),p=2*Math.PI*f*(start+i)/rate;re+=v*Math.cos(p);im+=v*Math.sin(p)}return Math.hypot(re,im)};
 for(const rate of [44100,48000]){
  const before={},after={},a=model.render(rate,55,settings,before),b=model.render(rate,55,{...settings,thirdTone:1},after);
- assert.equal(crypto.createHash('sha256').update(Buffer.from(a.buffer)).digest('hex'),fixture.public[`${rate}:55`],'Unselected trial preserves original G3');
+ history.equal(a,'wound',rate,55,settings,'Unselected trial preserves original G3');
  let strongest={hz:0,amplitude:0};const nominal=440*2**((55-69)/12)*13;
  for(let hz=nominal+4;hz<nominal+36;hz+=1){let re=0,im=0;const length=Math.round(rate*.1),start=Math.round(rate*.04);for(let i=0;i<length;i++){const v=b[start+i]*(.5-.5*Math.cos(2*Math.PI*i/(length-1))),p=2*Math.PI*hz*(start+i)/rate;re+=v*Math.cos(p);im+=v*Math.sin(p)}const amplitude=Math.hypot(re,im);if(amplitude>strongest.amplitude)strongest={hz,amplitude}}
  assert(strongest.hz-nominal>=15&&strongest.hz-nominal<=30,'High partial peak follows measured frequency shift');

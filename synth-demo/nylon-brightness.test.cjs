@@ -1,6 +1,6 @@
 'use strict';
 const fs=require('fs'),path=require('path'),vm=require('vm'),assert=require('assert/strict');
-const shared=['nylon-contact.js','nylon-model.js','nylon-coupled-model.js'].map(file=>fs.readFileSync(path.join(__dirname,file),'utf8')).join('\n');
+const shared=['nylon-contact.js','nylon-model.js','nylon-coupled-model.js','nylon-body-fit.js'].map(file=>fs.readFileSync(path.join(__dirname,file),'utf8')).join('\n');
 const previous=vm.runInNewContext(shared+'\n'+fs.readFileSync(path.join(__dirname,'../analysis-1007/nylon-bridge-before-brightness.js'),'utf8')+'\nNylonBridgeModel');
 const current=vm.runInNewContext(shared+'\n'+fs.readFileSync(path.join(__dirname,'nylon-bridge-model.js'),'utf8')+'\nNylonBridgeModel');
 function partial(y,rate,midi,n){

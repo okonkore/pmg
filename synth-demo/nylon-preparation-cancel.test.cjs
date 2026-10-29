@@ -2,9 +2,9 @@
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),vm=require('node:vm');
 (async()=>{
  const workers=[],scope=vm.createContext({clearTimeout:()=>{},Worker:class{constructor(){workers.push(this);this.terminated=false}postMessage(data){this.request=data}terminate(){this.terminated=true}}});
- vm.runInContext('let guitarWorker,guitarJobId=0,guitarPrepareTimer,guitarGeneration=0;const guitarJobs=new Map(),guitarPending=new Map(),ctx={sampleRate:48000};',scope);
+ vm.runInContext('let guitarWorker,guitarJobId=0,guitarPrepareTimer,guitarGeneration=0,guitarPreparation={};const loadingCalls=[];function setGuitarLoading(active){loadingCalls.push(active)};const guitarJobs=new Map(),guitarPending=new Map(),ctx={sampleRate:48000};',scope);
  const source=fs.readFileSync(path.join(__dirname,'index.html'),'utf8');vm.runInContext(source.slice(source.indexOf('function renderGuitar('),source.indexOf('function trimGuitarCache(')),scope);
- const oldPromise=vm.runInContext('renderGuitar(40,{})',scope),old=workers[0];vm.runInContext('cancelGuitarWork()',scope);assert.equal(await oldPromise,null);assert(old.terminated);
+ const oldPromise=vm.runInContext('renderGuitar(40,{})',scope),old=workers[0];vm.runInContext('cancelGuitarWork()',scope);assert.equal(await oldPromise,null);assert(old.terminated);assert.equal(vm.runInContext('guitarPreparation',scope),undefined);assert.equal(vm.runInContext('loadingCalls.at(-1)',scope),false,'Cancellation clears loading UI');
  let prevented=0;const event={preventDefault(){prevented++}};old.onerror(event);assert.equal(vm.runInContext('guitarWorker',scope),undefined,'Late canceled errors are ignored');
  const nextPromise=vm.runInContext('renderGuitar(50,{})',scope),next=workers[1];old.onerror(event);assert(!next.terminated);assert.equal(vm.runInContext('guitarJobs.size',scope),1,'Stale worker cannot reject replacement jobs');
  const values=new Float32Array([.1,.2]);next.onmessage({data:{id:next.request.id,values}});assert.equal(await nextPromise,values);

@@ -45,3 +45,16 @@ assert(dense.slice(0,3).every(e=>e[0]<.005&&e[2]>0));
 assert.deepEqual(M.playbackEvents([],120,{enabled:true}),[]);
 assert.deepEqual(M.playbackEvents([[0,60,1]],120,{enabled:true}),[[0,60,1]]);
 console.log('Strum direction, timing, short chords, score immutability, and unchanged note ends passed.');
+
+// Explicit score-end marker must not ratchet when an editable note moves past it.
+const tail=M.normalize({id:'user-tail',title:'Final rest',bpm:100,meter:[3,4],endBeat:144,notes:[{id:'tail',beat:141,pitch:47,duration:2,velocity:1}]});
+const tailHistory=new M.History(tail),effectiveEnd=d=>Math.max(d.endBeat||0,...d.notes.map(n=>n.beat+n.duration));
+tailHistory.edit(d=>{d.notes[0].beat=200});
+assert.equal(tailHistory.current.endBeat,144,'Keep the explicit marker independently of edited note ends');
+assert.equal(effectiveEnd(tailHistory.current),202,'Playback includes a note beyond the marker');
+const farRoundtrip=library.import(library.export(tailHistory.current));assert.equal(farRoundtrip.endBeat,144);assert.equal(effectiveEnd(farRoundtrip),202);
+tailHistory.edit(d=>{d.notes[0].beat=141});assert.equal(effectiveEnd(tailHistory.current),144,'Moving back removes accidental silence');
+assert(tailHistory.undo());assert.equal(effectiveEnd(tailHistory.current),202);assert(tailHistory.redo());assert.equal(effectiveEnd(tailHistory.current),144);
+tailHistory.edit(d=>{d.notes=[]});assert.equal(effectiveEnd(tailHistory.current),144,'Deleting notes retains only the explicit score duration');
+const shortCopy=library.import(library.export(tailHistory.current));assert.equal(M.toSong(shortCopy).score.endBeat,144);
+console.log('Explicit end marker survives move-out/back, deletion, undo/redo and JSON without accumulating silence.');

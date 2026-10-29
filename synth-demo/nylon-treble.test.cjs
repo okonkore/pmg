@@ -1,6 +1,6 @@
 'use strict';
 const fs=require('fs'),path=require('path'),vm=require('vm'),assert=require('assert/strict');
-const shared=['nylon-contact.js','nylon-model.js','nylon-coupled-model.js'].map(name=>fs.readFileSync(path.join(__dirname,name),'utf8')).join('\n');
+const shared=['nylon-contact.js','nylon-model.js','nylon-coupled-model.js','nylon-body-fit.js'].map(name=>fs.readFileSync(path.join(__dirname,name),'utf8')).join('\n');
 const before=vm.runInNewContext(shared+'\n'+fs.readFileSync(path.join(__dirname,'../analysis-1007/nylon-bridge-before-treble.js'),'utf8')+'\nNylonBridgeModel');
 const after=vm.runInNewContext(shared+'\n'+fs.readFileSync(path.join(__dirname,'nylon-bridge-model.js'),'utf8')+'\nNylonBridgeModel');
 function amplitude(y,rate,f,from=.05,to=.19){
