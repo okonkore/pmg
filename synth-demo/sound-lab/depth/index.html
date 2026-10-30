@@ -1,0 +1,34 @@
+<!doctype html><html lang="ja"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ボディ深さの比較 · 独立試作</title>
+<style>
+:root{font-family:system-ui,sans-serif;color-scheme:dark;background:#181815;color:#f3eee3}body{max-width:720px;margin:auto;padding:24px 16px}h1{font-size:26px}p{line-height:1.65;color:#d2cab9}.cards{display:grid;gap:12px}.card{padding:18px;border:1px solid #696353;border-radius:12px;background:#26251e;display:flex;align-items:center;justify-content:space-between;gap:12px}.card p{margin:5px 0 0;font-size:14px}button{font:inherit;min-height:44px;padding:10px 16px;border:1px solid #ac9c77;border-radius:8px;background:#e3d1a5;color:#211e16;cursor:pointer}button:focus-visible{outline:3px solid #fff;outline-offset:3px}#stop{margin-top:16px;background:transparent;color:#eee}details{margin-top:24px;line-height:1.7}summary{cursor:pointer}small{color:#b6ae9b}#status{min-height:2em}button[aria-pressed=true]{background:#aee1c0}
+</style>
+<main><small>独立した仮想楽器 · 独立試作</small><h1>ボディの深さを聴き比べる</h1>
+<p>同じ弦・張力・弾く位置と力で、深さだけを変更。各音は1.5秒、音量倍率は共通です。</p>
+<div class="cards">
+<section class="card"><div><strong>外深さ 85 mm</strong><p>内深さ 80 mm · 容積 10.514 L</p></div><button data-depth="85" aria-label="85 mm を再生" aria-pressed="false">再生</button></section>
+<section class="card"><div><strong>外深さ 105 mm</strong><p>内深さ 100 mm · 容積 13.162 L</p></div><button data-depth="105" aria-label="105 mm を再生" aria-pressed="false">再生</button></section>
+<section class="card"><div><strong>外深さ 125 mm</strong><p>内深さ 120 mm · 容積 15.810 L</p></div><button data-depth="125" aria-label="125 mm を再生" aria-pressed="false">再生</button></section>
+</div>
+<button id="stop" type="button">停止</button><p id="status" role="status" aria-live="polite">再生ボタンを押すと音が出ます。</p>
+<details><summary>比較条件と限界</summary>
+<p>旧研究モデルの輪郭（490 × 370 mm）と力木を使用。表板2.5 mm、裏板2.5 mmを仮定し、裏板と側板は動かないモデルです。105 mmが旧データの空洞容積に対応します。現行PMG音源やGC12Sの再現ではありません。</p>
+<p>650 mmの仮想ナイロン単線：直径0.7 mm、張力67.666 N、撥弦力0.3 N、位置80 mm。深さごとの調弦や音量合わせは行いません。共通8 FS/Pa、末尾20 msのフェードのみ。EQ・ピーク正規化なし。</p>
+<p>表板と音孔の低周波放射を同じ位置から1 mで観測する近似です。方向性・放射による反作用・高域の正確さは未検証。低域成分の数値的な違いは確認しましたが、聴こえる差の大きさや実機音色との一致を保証するものではありません。スマートフォンのスピーカーでは低音が伝わりにくい場合があります。</p>
+<p>本体の音源・設定・キャッシュは使用しません。画面を離れると停止します。</p>
+</details><audio id="audio" preload="none"></audio></main>
+<script>
+const audio=document.getElementById('audio'),status=document.getElementById('status'),buttons=[...document.querySelectorAll('[data-depth]')];let generation=0;
+function clear(){for(const b of buttons){b.setAttribute('aria-pressed','false');b.textContent='再生'}}
+function stop(){generation++;audio.pause();audio.removeAttribute('src');audio.load();clear();status.textContent='停止しました。'}
+for(const button of buttons)button.onclick=async()=>{
+ const run=++generation;audio.pause();clear();audio.src='audio/depth-'+button.dataset.depth+'mm.wav';audio.currentTime=0;
+ status.textContent=button.dataset.depth+' mm を読み込み中…';
+ try{await audio.play();if(run!==generation)return;button.setAttribute('aria-pressed','true');button.textContent='再生中';status.textContent=button.dataset.depth+' mm を再生中';}
+ catch(e){if(run!==generation)return;clear();status.textContent='再生できませんでした。もう一度再生ボタンを押してください。';}
+};
+audio.onended=()=>{clear();status.textContent='再生が終わりました。'};
+document.getElementById('stop').onclick=stop;
+document.addEventListener('visibilitychange',()=>{if(document.hidden)stop()});
+window.addEventListener('pagehide',stop);
+</script></html>
