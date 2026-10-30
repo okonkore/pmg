@@ -1,0 +1,214 @@
+[
+  {
+    "key": "prelude1006a",
+    "file": "bwv-1006a_1g",
+    "name": "Preludio",
+    "japanese": "プレリュード",
+    "bpm": 100,
+    "meter": [
+      3,
+      4
+    ],
+    "writtenBars": 139,
+    "beats": 417,
+    "sourceId": 1485,
+    "form": [
+      [
+        0,
+        417
+      ]
+    ],
+    "formName": "Through-composed; no repeat signs.",
+    "ending": "139 full bars; final bass E lasts 3 beats; fermata not lengthened.",
+    "source": {
+      "credit": "J. S. Bach / guitar edition Hajo Dezelski / Mutopia (2008), after BGA 1879 vol.42",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "url": "https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=1485",
+      "modifications": "Complete individual BWV1006a guitar-edition movement. Through-composed; no repeat signs. convert-ly/LilyPond2.24.4; separate voices. All MIDI notes/holds retained, written pitches -12 for guitar real pitch. Fixed audition tempo; ornaments/dynamics/fermata not performed. MIDI program-name typo corrected for Gavotte only; source bytes unchanged.",
+      "pitch": "E major retained; written guitar register lowered12 semitones (notation correction, not reuse of BWV1006 violin data). Standard tuning range, but string/hand feasibility not guaranteed; see fingering audit. No notes removed to hide conflicts; no physical tuning changes. Conservative fret-span4 screen fails at beat111.75 (overlapping unisons).",
+      "terms": "Derived score data CC BY-SA 3.0; retain attribution, license and changes; share adaptations under the same license. Application code separate.",
+      "endingStatus": "139 full bars; final bass E lasts 3 beats; fermata not lengthened."
+    },
+    "rawNotes": 1731,
+    "notes": 1731,
+    "noteEndBeats": 417.0,
+    "pitchRange": [
+      40,
+      76
+    ],
+    "tempoBasis": "fixed audition choice, no source tempo",
+    "pitchShift": -12,
+    "lilypondUrl": "https://raw.githubusercontent.com/MutopiaProject/MutopiaProject/master/ftp/BachJS/BWV1006a/bwv-1006a_1g/bwv-1006a_1g.ly",
+    "sha256": {
+      "bwv-1006a_1g.ly": "187d857b7275d5029c8df59ad038e53577a6747f5ef8c00f1120d3fe16d2ef38",
+      "bwv-1006a_1g.midi": "456b038089b1d14533a295bbee0f52bd004a5e3b2bbc102dad3deafacb4b60e6",
+      "bwv-1006a_1g-full.midi": "456b038089b1d14533a295bbee0f52bd004a5e3b2bbc102dad3deafacb4b60e6"
+    }
+  },
+  {
+    "key": "loure1006a",
+    "file": "bwv-1006a_2g",
+    "name": "Loure",
+    "japanese": "ルール",
+    "bpm": 80,
+    "meter": [
+      6,
+      4
+    ],
+    "writtenBars": 24,
+    "beats": 294,
+    "sourceId": 1486,
+    "form": [
+      [
+        0,
+        67.5
+      ],
+      [
+        0,
+        67.5
+      ],
+      [
+        67.5,
+        147
+      ],
+      [
+        67.5,
+        147
+      ]
+    ],
+    "formName": "A A B B: 1.5-beat pickup + 11/13 full bars per section.",
+    "ending": "Edition closing 1.5-beat spacers retained in each section; final note ends292.5.",
+    "source": {
+      "credit": "J. S. Bach / guitar edition Hajo Dezelski / Mutopia (2008), after BGA 1879 vol.42",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "url": "https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=1486",
+      "modifications": "Complete individual BWV1006a guitar-edition movement. A A B B: 1.5-beat pickup + 11/13 full bars per section. convert-ly/LilyPond2.24.4; separate voices. All MIDI notes/holds retained, written pitches -12 for guitar real pitch. Fixed audition tempo; ornaments/dynamics/fermata not performed. MIDI program-name typo corrected for Gavotte only; source bytes unchanged.",
+      "pitch": "E major retained; written guitar register lowered12 semitones (notation correction, not reuse of BWV1006 violin data). Standard tuning range, but string/hand feasibility not guaranteed; see fingering audit. No notes removed to hide conflicts; no physical tuning changes. Conservative fret-span4 screen fails at beat24 (overlapping unisons).",
+      "terms": "Derived score data CC BY-SA 3.0; retain attribution, license and changes; share adaptations under the same license. Application code separate.",
+      "endingStatus": "Edition closing 1.5-beat spacers retained in each section; final note ends292.5."
+    },
+    "rawNotes": 329,
+    "notes": 658,
+    "noteEndBeats": 292.5,
+    "pitchRange": [
+      40,
+      73
+    ],
+    "tempoBasis": "fixed audition choice, no source tempo",
+    "pitchShift": -12,
+    "lilypondUrl": "https://raw.githubusercontent.com/MutopiaProject/MutopiaProject/master/ftp/BachJS/BWV1006a/bwv-1006a_2g/bwv-1006a_2g.ly",
+    "sha256": {
+      "bwv-1006a_2g.ly": "c8d7874315e484619e75407e4ad2aa21c141a6058414b8458226c98a0939fbcd",
+      "bwv-1006a_2g.midi": "2745c9fc09c54408cb399d8f326da5f12287bebc66be94107c53924c55508e48",
+      "bwv-1006a_2g-full.midi": "1ac3b4a6eabce8cdbfeaa095dbb1b4b1c91246489af13c46b87110c73b5c0d99"
+    }
+  },
+  {
+    "key": "gavotte1006a",
+    "file": "bwv-1006a_3g",
+    "name": "Gavotte en Rondeau",
+    "japanese": "ガヴォット・アン・ロンドー",
+    "bpm": 100,
+    "meter": [
+      4,
+      4
+    ],
+    "writtenBars": 100,
+    "beats": 402,
+    "sourceId": 1500,
+    "form": [
+      [
+        0,
+        402
+      ]
+    ],
+    "formName": "All written-out rondo returns; this edition has no initial repeat sign.",
+    "ending": "2-beat pickup + 100 full bars; final2-beat spacer retained.",
+    "source": {
+      "credit": "J. S. Bach / guitar edition Hajo Dezelski / Mutopia (2008), after BGA 1879 vol.42",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "url": "https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=1500",
+      "modifications": "Complete individual BWV1006a guitar-edition movement. All written-out rondo returns; this edition has no initial repeat sign. convert-ly/LilyPond2.24.4; separate voices. All MIDI notes/holds retained, written pitches -12 for guitar real pitch. Fixed audition tempo; ornaments/dynamics/fermata not performed. MIDI program-name typo corrected for Gavotte only; source bytes unchanged.",
+      "pitch": "E major retained; written guitar register lowered12 semitones (notation correction, not reuse of BWV1006 violin data). Standard tuning range, but string/hand feasibility not guaranteed; see fingering audit. No notes removed to hide conflicts; no physical tuning changes. Necessary string/span checks pass; fingers/barres/hand motion remain unverified.",
+      "terms": "Derived score data CC BY-SA 3.0; retain attribution, license and changes; share adaptations under the same license. Application code separate.",
+      "endingStatus": "2-beat pickup + 100 full bars; final2-beat spacer retained."
+    },
+    "rawNotes": 849,
+    "notes": 849,
+    "noteEndBeats": 400.0,
+    "pitchRange": [
+      40,
+      74
+    ],
+    "tempoBasis": "fixed audition choice, no source tempo",
+    "pitchShift": -12,
+    "lilypondUrl": "https://raw.githubusercontent.com/MutopiaProject/MutopiaProject/master/ftp/BachJS/BWV1006a/bwv-1006a_3g/bwv-1006a_3g.ly",
+    "sha256": {
+      "bwv-1006a_3g.ly": "2b88ce6817fa1cfb925b18929470c3e00167fac3d4364893e943df9b05db88a3",
+      "bwv-1006a_3g.midi": "fca7a8789ec5a0f43421169d921b050b06d1497c2cc1144b1d5afeb0b79d9303",
+      "bwv-1006a_3g-full.midi": "fca7a8789ec5a0f43421169d921b050b06d1497c2cc1144b1d5afeb0b79d9303"
+    }
+  },
+  {
+    "key": "gigue1006a",
+    "file": "bwv-1006a_7g",
+    "name": "Gigue",
+    "japanese": "ジーグ",
+    "bpm": 100,
+    "meter": [
+      6,
+      8
+    ],
+    "writtenBars": 32,
+    "beats": 194,
+    "sourceId": 1499,
+    "form": [
+      [
+        0,
+        48.5
+      ],
+      [
+        0,
+        48.5
+      ],
+      [
+        48.5,
+        97
+      ],
+      [
+        48.5,
+        97
+      ]
+    ],
+    "formName": "A A B B: 0.5-beat pickup + 16 full bars in each section.",
+    "ending": "Edition closing half-beat spacers retained in each section; final note ends193.5.",
+    "source": {
+      "credit": "J. S. Bach / guitar edition Hajo Dezelski / Mutopia (2008), after BGA 1879 vol.42",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "url": "https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=1499",
+      "modifications": "Complete individual BWV1006a guitar-edition movement. A A B B: 0.5-beat pickup + 16 full bars in each section. convert-ly/LilyPond2.24.4; separate voices. All MIDI notes/holds retained, written pitches -12 for guitar real pitch. Fixed audition tempo; ornaments/dynamics/fermata not performed. MIDI program-name typo corrected for Gavotte only; source bytes unchanged.",
+      "pitch": "E major retained; written guitar register lowered12 semitones (notation correction, not reuse of BWV1006 violin data). Standard tuning range, but string/hand feasibility not guaranteed; see fingering audit. No notes removed to hide conflicts; no physical tuning changes. Conservative fret-span4 screen fails at beat118.5 (overlapping unisons).",
+      "terms": "Derived score data CC BY-SA 3.0; retain attribution, license and changes; share adaptations under the same license. Application code separate.",
+      "endingStatus": "Edition closing half-beat spacers retained in each section; final note ends193.5."
+    },
+    "rawNotes": 431,
+    "notes": 862,
+    "noteEndBeats": 193.5,
+    "pitchRange": [
+      40,
+      71
+    ],
+    "tempoBasis": "fixed audition choice, no source tempo",
+    "pitchShift": -12,
+    "lilypondUrl": "https://raw.githubusercontent.com/MutopiaProject/MutopiaProject/master/ftp/BachJS/BWV1006a/bwv-1006a_7g/bwv-1006a_7g.ly",
+    "sha256": {
+      "bwv-1006a_7g.ly": "bf9b4edb8015e6e7b5439a1d53dfc14a1cc577ad5d0e60dd35d40f9b71d78b78",
+      "bwv-1006a_7g.midi": "e4f50569554a2e39939deae1e8513964b90aae00e94347e1a6061332b3d31558",
+      "bwv-1006a_7g-full.midi": "767d71dcd733e1b1fd60fb71111f40e1aeb88822f954681372e2ded5fb08c1ad"
+    }
+  }
+]

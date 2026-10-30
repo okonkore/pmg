@@ -1,0 +1,61 @@
+{
+  "assumptions": "Six standard strings, frets0-19; each distinct note event stays on its assigned string until its source duration ends. Unisons across voices are retained. Span4 is a conservative optional nonzero-fret spread constraint; neither test models fingers/barres/hand motion or proves a playable performance.",
+  "pieces": {
+    "prelude1006a": {
+      "maxSimultaneousNotes": 5,
+      "heldStringAssignment": {
+        "passNecessaryCheck": true,
+        "firstFailureBeat": null
+      },
+      "heldStringAssignmentSpan4": {
+        "passNecessaryCheck": false,
+        "firstFailureBeat": 111.75,
+        "activePitches": [
+          49,
+          49
+        ]
+      }
+    },
+    "loure1006a": {
+      "maxSimultaneousNotes": 5,
+      "heldStringAssignment": {
+        "passNecessaryCheck": true,
+        "firstFailureBeat": null
+      },
+      "heldStringAssignmentSpan4": {
+        "passNecessaryCheck": false,
+        "firstFailureBeat": 24.0,
+        "activePitches": [
+          52,
+          52
+        ]
+      }
+    },
+    "gavotte1006a": {
+      "maxSimultaneousNotes": 4,
+      "heldStringAssignment": {
+        "passNecessaryCheck": true,
+        "firstFailureBeat": null
+      },
+      "heldStringAssignmentSpan4": {
+        "passNecessaryCheck": true,
+        "firstFailureBeat": null
+      }
+    },
+    "gigue1006a": {
+      "maxSimultaneousNotes": 4,
+      "heldStringAssignment": {
+        "passNecessaryCheck": true,
+        "firstFailureBeat": null
+      },
+      "heldStringAssignmentSpan4": {
+        "passNecessaryCheck": false,
+        "firstFailureBeat": 118.5,
+        "activePitches": [
+          57,
+          57
+        ]
+      }
+    }
+  }
+}

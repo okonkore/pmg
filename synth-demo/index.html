@@ -100,6 +100,7 @@
 <script src="repertoire-batch5.js?v=1"></script>
 <script src="repertoire-batch6.js?v=1"></script>
 <script src="repertoire-batch7.js?v=1"></script>
+<script src="bwv1006a-complete.js?v=1"></script>
 <script src="catalog-quality.js?v=1"></script>
 <script src="sequencer-model.js?v=catalog-quality-1"></script>
 <script src="sequencer.js?v=distinct-transport-1"></script>
@@ -132,7 +133,7 @@ const giulianiSongs={giuliani50_18:repertoireBatch5.giuliani50_18};
 const carcassiSongs={carcassi60_2:repertoireBatch6.carcassi60_2,carcassi60_9:repertoireBatch5.carcassi60_9};
 const tarregaSongs={tarrega_adelita:repertoireBatch6.tarrega_adelita};
 const aguadoSongs={aguado3_1:repertoireBatch6.aguado3_1};
-const suite1006a={...repertoireBatch7};
+const suite1006a={prelude1006a:bwv1006aComplete.prelude1006a,loure1006a:bwv1006aComplete.loure1006a,gavotte1006a:bwv1006aComplete.gavotte1006a,...repertoireBatch7,gigue1006a:bwv1006aComplete.gigue1006a};
 const songs={...suite1012,...suite1007,...sorOp60Collection,...sorOp6Collection,...sorOp35Songs,...suite1009,...sorOp1Songs,...giulianiSongs,...carcassiSongs,...tarregaSongs,...aguadoSongs,...suite1006a};
 for(const [key,metadata] of Object.entries(catalogQuality)){
  const song=songs[key];song.source={...metadata.source,...song.source};

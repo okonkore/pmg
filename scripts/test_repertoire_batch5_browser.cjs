@@ -4,10 +4,10 @@ const {chromium}=require(process.env.PMG_PLAYWRIGHT_MODULE||'playwright'),assert
  try{
   const page=await browser.newPage(),errors=[];page.on('pageerror',e=>errors.push(e.message));
   await page.goto(process.argv[2]||'http://127.0.0.1:8770/synth-demo/');await page.waitForSelector('.app-ready');
-  assert.equal(await page.locator('#song optgroup:not(#my-song-group) option').count(),41);
+  assert.equal(await page.locator('#song optgroup:not(#my-song-group) option').count(),45);
   assert.equal(await page.locator('#song optgroup:not(#my-song-group)').count(),12);
   await page.click('#nav-library');
-  for(const [q,n] of [['',41],['Sor',17],['Bach',19],['Giuliani',1],['ジュリアーニ',1],['Carcassi',2],['カルカッシ',2],['Op.35',3],['グラツィオーソ',1],['存在しない曲xyz',0]]){
+  for(const [q,n] of [['',45],['Sor',17],['Bach',23],['Giuliani',1],['ジュリアーニ',1],['Carcassi',2],['カルカッシ',2],['Op.35',3],['グラツィオーソ',1],['存在しない曲xyz',0]]){
    await page.fill('#library-search',q);assert.equal(await page.locator('.library-song').count(),n,q);
   }
   await page.fill('#library-search','ジュリアーニ');await page.locator('.library-song[data-song="giuliani50_18"]').click();assert.equal(await page.locator('#song').inputValue(),'giuliani50_18');
@@ -31,6 +31,6 @@ const {chromium}=require(process.env.PMG_PLAYWRIGHT_MODULE||'playwright'),assert
   await page.evaluate(()=>AppShell.openPanel('song-dialog'));await page.locator('#seq-file').setInputFiles({name:'metadata-safety.json',mimeType:'application/json',buffer:Buffer.from(JSON.stringify(hostile))});
   assert((await page.locator('#seq-origin').textContent()).includes('<img src=x'));assert.equal(await page.locator('#seq-origin img').count(),0);assert.equal(await page.evaluate(()=>window.__sourceInjected),undefined);
   await page.reload();const saved=await page.evaluate(()=>JSON.parse(localStorage.getItem('pmg.songs.v1')));assert(saved.songs.some(s=>s.id===imported.id&&s.endBeat===248&&s.source.licenseUrl===exported.song.source.licenseUrl));
-  assert.deepEqual(errors,[]);console.log('PASS: batch5, 41 songs/12 groups, bilingual search and empty results, three loads/positions/playback endpoints, downloaded JSON/source/repeat metadata and reload.');
+  assert.deepEqual(errors,[]);console.log('PASS: batch5, 45 songs/12 groups, bilingual search and empty results, three loads/positions/playback endpoints, downloaded JSON/source/repeat metadata and reload.');
  }finally{await browser.close()}
 })().catch(e=>{console.error(e);process.exitCode=1});
