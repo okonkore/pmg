@@ -1,5 +1,5 @@
 import {renderTab} from './tab-output.js';
-import './midi-import.js';
+import './midi-import.js?v=range-skip-1';
 import './configured-guitar-app.js?v=preparation-tiles-1';
 
 // Presentation only: move existing controls, keeping their handlers, values and model ownership.
@@ -201,8 +201,14 @@ document.body.classList.add('app-ready');
 // MIDI is parsed locally. Preview state never changes the current song.
 const midiButton=make('button','','MIDI 読込');midiButton.id='library-midi';byId('library-new').before(midiButton);
 const midiSongButton=make('button','','MIDI 読込');midiSongButton.id='song-midi';fileActions.append(midiSongButton);
-midiBody.innerHTML='<label>MIDI ファイル<input id="midi-file" type="file" accept=".mid,.midi,audio/midi"></label><p>ファイルはこの端末内で読み込みます。</p><p id="midi-error" role="alert"></p><div id="midi-preview" hidden><label>曲名<input id="midi-title" maxlength="100"></label><p id="midi-summary"></p><fieldset id="midi-tracks"><legend>取り込むトラック</legend></fieldset><p id="midi-warning"></p><button id="midi-confirm">マイソングに保存</button></div>';
+midiBody.innerHTML='<label>MIDI ファイル<input id="midi-file" type="file" accept=".mid,.midi,audio/midi"></label><p>ファイルはこの端末内で読み込みます。</p><p id="midi-error" role="alert"></p><div id="midi-preview" hidden><label>曲名<input id="midi-title" maxlength="100"></label><p id="midi-summary"></p><fieldset id="midi-tracks"><legend>取り込むトラック</legend></fieldset><p id="midi-warning"></p><p id="midi-range" role="status"></p><button id="midi-confirm">マイソングに保存</button></div>';
 let midiParsed=null,midiGeneration=0;
+const midiResult=make('p','','');midiResult.id='midi-result';midiResult.setAttribute('role','status');midiResult.hidden=true;byId('score-editor').prepend(midiResult);
+const midiIndices=()=>[...byId('midi-tracks').querySelectorAll('input:checked')].map(input=>Number(input.value));
+const midiRangeText=s=>`アプリ音域（21〜108）外の${s.skipped}音を除外${s.skipped?'：'+s.details:''}`;
+function updateMidiRange(){if(!midiParsed)return;const s=PMGMidiImport.selectionSummary(midiParsed,midiIndices());byId('midi-range').textContent=`${s.kept}音を取り込み · ${midiRangeText(s)}`;byId('midi-error').textContent=''}
+byId('midi-tracks').onchange=updateMidiRange;
+byId('song-picker').addEventListener('change',()=>{midiResult.hidden=true});
 function resetMidi(){midiGeneration++;midiParsed=null;byId('midi-file').value='';byId('midi-preview').hidden=true;byId('midi-error').textContent=''}
 function showMidi(){resetMidi();openPanel('midi-dialog')}
 midiButton.onclick=midiSongButton.onclick=showMidi;
@@ -216,10 +222,10 @@ byId('midi-file').onchange=async()=>{
   byId('midi-summary').textContent=`形式${midiParsed.format} · ${Number(midiParsed.bpm.toFixed(3))} BPM · ${midiParsed.meter.join('/')} · ${midiParsed.tracks.reduce((n,t)=>n+t.notes.length,0)}音`;
   const tracks=byId('midi-tracks');tracks.replaceChildren(make('legend','','取り込むトラック'));
   midiParsed.tracks.forEach((track,i)=>{const label=document.createElement('label'),input=document.createElement('input');input.type='checkbox';input.value=i;input.checked=track.notes.length>0;input.disabled=!track.notes.length;label.append(input,document.createTextNode(`${track.name||'トラック '+(i+1)} · ${track.notes.length}音`));tracks.append(label)});
-  byId('midi-warning').textContent=['選択したトラックをまとめ、現在の楽器で演奏します。',...new Set(midiParsed.tracks.flatMap(t=>t.warnings))].join(' ');byId('midi-preview').hidden=false;
+  byId('midi-warning').textContent=['選択したトラックをまとめ、現在の楽器で演奏します。',...new Set(midiParsed.tracks.flatMap(t=>t.warnings))].join(' ');byId('midi-preview').hidden=false;updateMidiRange();
  }catch(error){if(generation===midiGeneration&&byId('midi-dialog').open)byId('midi-error').textContent=error.message}
 };
 byId('midi-confirm').onclick=()=>{
- try{if(!midiParsed)return;const indices=[...byId('midi-tracks').querySelectorAll('input:checked')].map(input=>Number(input.value));const doc=PMGMidiImport.documentFrom(midiParsed,indices,byId('midi-title').value);scoreEditor.importDocument(doc);navigate('piano-roll')}
+ try{if(!midiParsed)return;const indices=midiIndices();const doc=PMGMidiImport.documentFrom(midiParsed,indices,byId('midi-title').value);scoreEditor.importDocument(doc);const summary=PMGMidiImport.selectionSummary(midiParsed,indices);midiResult.textContent=`${doc.notes.length}音を保存しました · ${midiRangeText(summary)}`;midiResult.hidden=false;navigate('piano-roll')}
  catch(error){byId('midi-error').textContent=error.message}
 };

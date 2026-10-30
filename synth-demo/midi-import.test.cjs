@@ -1,5 +1,5 @@
 const assert=require('node:assert/strict');
-const {parse,documentFrom}=require('./midi-import.js');
+const {parse,documentFrom,selectionSummary}=require('./midi-import.js');
 const vlq=n=>{const a=[n&127];while(n>>=7)a.unshift((n&127)|128);return a};
 const event=(delta,...bytes)=>[...vlq(delta),...bytes];
 const chunk=(tag,data)=>Buffer.concat([Buffer.from(tag),Buffer.from([data.length>>>24,data.length>>>16,data.length>>>8,data.length]),Buffer.from(data)]);
@@ -41,6 +41,21 @@ function tests(){
  assert.throws(()=>parse(midi([[128,128,128,128,0,...end]])),/可変長/);
  assert.throws(()=>parse(new Uint8Array(8*1024*1024+1)),/8MB/);
  assert.throws(()=>documentFrom(parse(midi([[0,144,20,100,128,0,128,20,0,...end]])),[0],'Range'),/音域/);
+ const noteTrack=(pitch,ticks=128)=>[...event(0,144,pitch,100),...event(ticks,128,pitch,0),...end];
+ const mixed=parse(midi([noteTrack(20,0),noteTrack(21,1),noteTrack(108),noteTrack(109),noteTrack(60,0)]));
+ const snapshot=JSON.stringify(mixed),kept=documentFrom(mixed,[0,1,2,3],'mixed');
+ assert.deepEqual(kept.notes.map(n=>n.pitch),[21,108]);
+ assert.deepEqual(kept.notes.map(n=>n.duration),[1/128,1]);assert.equal(kept.bpm,120);assert(kept.notes.every(n=>n.beat===0));
+ assert.equal(selectionSummary(mixed,[0,1,2,3]).skipped,2);assert.equal(selectionSummary(mixed,[0,1,2,3]).kept,2);assert.match(selectionSummary(mixed,[0,1,2,3]).details,/トラック1.*G♯0（20）.*トラック4.*C♯8（109）/);
+ assert.deepEqual(selectionSummary(mixed,[1,2]),{skipped:0,kept:2,details:''});
+ assert.throws(()=>documentFrom(mixed,[0,3],'all excluded'),/全2音.*取り込める/);
+ assert.throws(()=>documentFrom(mixed,[0,1,4],'short'),/音域内.*1\/128拍未満/);
+ assert.equal(JSON.stringify(mixed),snapshot);
+ assert.throws(()=>documentFrom(mixed,[4],'zero'),/トラック5.*先頭から0拍.*長さ0拍.*0.0078125/);
+ assert.throws(()=>parse(midi([[...event(128,255,88,4,3,2,24,4),...end]])),/トラック1.*先頭から1拍.*換算値=4.*対応値は8/);
+ assert.throws(()=>parse(midi([[...tempo,...event(64,255,81,3,9,39,192),...end]])),/トラック1.*先頭から0.5拍.*100 BPM/);
+ assert.throws(()=>parse(midi([[0,255,88,4,3,2,24,8,...event(256,255,88,4,6,3,24,8),...end]])),/基準3\/4.*トラック1.*先頭から2拍.*6\/8/);
+ const repeated=parse(midi(Array.from({length:5},()=>noteTrack(20))));assert.match(selectionSummary(repeated,[0,1,2,3,4]).details,/ほか2件/);
  const many=[];for(let i=0;i<20001;i++)many.push(0,144,60,1,1,128,60,0);
  assert.throws(()=>parse(midi([[...many,...end]],0,32767)),/20000/);
  const M=require('./sequencer-model.js');const normalized=M.normalize(doc);assert.equal(normalized.notes.length,3);assert.equal(normalized.bpm,120);

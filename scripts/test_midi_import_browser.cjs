@@ -32,6 +32,20 @@ const {fixture,midi,end,melody,event}=require('../synth-demo/midi-import.test.cj
  await page.evaluate(()=>{File.prototype.arrayBuffer=window.originalArrayBuffer});await upload(fixture);await page.waitForSelector('#midi-preview:visible');await page.evaluate(()=>window.rejectOldRead(Error('old read failed')));assert.equal(await page.locator('#midi-error').textContent(),'');
  const payload='<img src=x onerror=globalThis.importXss=1>',named=midi([[...event(0,255,3,Buffer.byteLength(payload),...Buffer.from(payload)),...melody]]);
  await upload(named);await page.waitForSelector('#midi-preview:visible');assert((await page.locator('#midi-tracks').textContent()).includes(payload));assert.equal(await page.locator('#midi-tracks img').count(),0);await page.fill('#midi-title',payload);await page.click('#midi-confirm');await page.waitForFunction(()=>AppShell.route==='piano-roll');await page.click('#nav-library');assert((await page.locator('#library-list').textContent()).includes(payload));assert.equal(await page.locator('#library-list img').count(),0);
+ // Range filtering is previewed, selected-track-only, and never overwrites on errors.
+ await page.click('#library-midi');
+ const track=(pitch,ticks=128)=>[...event(0,144,pitch,100),...event(ticks,128,pitch,0),...end];
+ const preserved=await page.evaluate(()=>JSON.stringify(scoreEditor.currentDocument()));
+ await upload(midi([track(20,0),track(109)]));await page.waitForSelector('#midi-preview:visible');
+ assert.match(await page.locator('#midi-range').textContent(),/0音を取り込み.*2音を除外/);
+ await page.click('#midi-confirm');assert.match(await page.locator('#midi-error').textContent(),/全2音/);assert.equal(await page.evaluate(()=>JSON.stringify(scoreEditor.currentDocument())),preserved);
+ await upload(midi([track(20),track(60,0)]));await page.waitForSelector('#midi-preview:visible');await page.click('#midi-confirm');assert.match(await page.locator('#midi-error').textContent(),/音域内.*1\/128拍未満.*トラック2.*先頭から0拍.*長さ0拍.*0.0078125/);assert.equal(await page.evaluate(()=>JSON.stringify(scoreEditor.currentDocument())),preserved);
+ await upload(midi([track(20,0),track(21,1),track(108),track(109)]));await page.waitForSelector('#midi-preview:visible');
+ assert.match(await page.locator('#midi-range').textContent(),/2音を取り込み.*2音を除外.*トラック1.*G♯0（20）.*トラック4.*C♯8（109）/);
+ await page.locator('#midi-tracks input[value="3"]').uncheck();assert.match(await page.locator('#midi-range').textContent(),/2音を取り込み.*1音を除外/);
+ await page.click('#midi-confirm');await page.waitForFunction(()=>AppShell.route==='piano-roll');assert.match(await page.locator('#midi-result').textContent(),/2音を保存しました.*1音を除外/);
+ assert.deepEqual(await page.evaluate(()=>scoreEditor.currentDocument().notes.map(n=>[n.pitch,n.beat,n.duration])),[[21,0,1/128],[108,0,1]]);
+ assert(await page.evaluate(()=>document.documentElement.scrollHeight<=innerHeight+1));
  await page.evaluate(()=>AppShell.openPanel('song-dialog'));const json={format:'pmg-song',version:1,song:{title:payload,bpm:120,meter:[4,4],notes:[],source:{title:payload,credit:payload,url:'javascript:globalThis.importXss=1',licenseUrl:payload}}};await page.locator('#seq-file').setInputFiles({name:'source.json',mimeType:'application/json',buffer:Buffer.from(JSON.stringify(json))});await page.evaluate(()=>AppShell.openPanel('help-dialog'));assert((await page.locator('#seq-origin').textContent()).includes(payload));assert.equal(await page.locator('#seq-origin img,#seq-origin a').count(),0);assert.equal(await page.evaluate(()=>window.importXss),undefined);
  assert.deepEqual(errors,[]);console.log('PASS MIDI browser: preview, cancel/Back, malformed/tempo errors preserve draft, track selection, save/reload, landscape, no page errors');
  }finally{await browser.close()}
