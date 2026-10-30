@@ -1,0 +1,294 @@
+[
+  {
+    "key": "prelude1009",
+    "name": "prelude",
+    "number": 1,
+    "title": "Prélude",
+    "jp": "プレリュード",
+    "meter": [
+      3,
+      4
+    ],
+    "bpm": 120,
+    "tempoBasis": "source wrapper quarter=120",
+    "writtenBars": 88,
+    "beats": 264,
+    "form": [
+      [
+        0,
+        264
+      ]
+    ],
+    "last": 262,
+    "source": {
+      "credit": "J. S. Bach / Stelios Samelis / Mutopia (2018), Bach Gesellschaft edition",
+      "license": "Public Domain",
+      "licenseUrl": "https://creativecommons.org/licenses/publicdomain/",
+      "url": "https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=890",
+      "modifications": "Complete individual movement. No repeat signs. convert-ly/LilyPond2.24.4; separate MIDI voices, all notes/holds/unisons retained. Source cello sounding pitch, shift0. Source rests included. Trill signs and expressive bowing/dynamics not realized. Tempo: source wrapper quarter=120. App articulation separate.",
+      "pitch": "Original C-major cello sounding pitches, shift0; no guitar octave-notation conversion. C2 and other notes below standard guitar E2 retained. NOT a guitar arrangement or verified six-string fingering; no tuning settings applied.",
+      "terms": "Score edition placed in the public domain by typesetter Stelios Samelis. Source and modification records retained; application code separate.",
+      "endingStatus": "終端264拍／最後の発音終端262拍。版の休符を保持。"
+    },
+    "rawNotes": 1007,
+    "notes": 1007,
+    "pitchRange": [
+      36,
+      67
+    ],
+    "belowE2": 19,
+    "lilypondUrl": "https://raw.githubusercontent.com/MutopiaProject/MutopiaProject/master/ftp/BachJS/BWV1009/cellosuite3/cellosuite3-lys/cellosuite3_1_prelude.ly",
+    "sha256": {
+      "cellosuite3_1_prelude.ly": "9ed39314ef44ac836d5eef7c1df54543dfc519ddc16066587d33e0d31bd09e7a",
+      "header.ily": "a409d8133b17c315bae44daebe8851bf8618dafd49a9575206da3cbdb5328d3c",
+      "cellosuite3.ly": "bcd1ed3e5eec03a7f1a96a3749eb26c73a286e71a501d6f3111f6bd2578ed72a",
+      "cellosuite3_5_bourree.ly": "f6131634e562cf40048d173ffd8494501c4af7557016f21c3ee3079db8fd2f21",
+      "prelude-raw.midi": "d177f0a7f50b78c7b4b8c9ca15c8476d2299627c97a0f50fc17dc3eb8858e0e4",
+      "prelude-full.midi": "d177f0a7f50b78c7b4b8c9ca15c8476d2299627c97a0f50fc17dc3eb8858e0e4"
+    }
+  },
+  {
+    "key": "allemande1009",
+    "name": "allemande",
+    "number": 2,
+    "title": "Allemande",
+    "jp": "アルマンド",
+    "meter": [
+      4,
+      4
+    ],
+    "bpm": 84,
+    "tempoBasis": "fixed audition choice; wrapper has no explicit tempo",
+    "writtenBars": 24,
+    "beats": 192,
+    "form": [
+      [
+        0,
+        48
+      ],
+      [
+        0,
+        48
+      ],
+      [
+        48,
+        96
+      ],
+      [
+        48,
+        96
+      ]
+    ],
+    "last": 191.75,
+    "source": {
+      "credit": "J. S. Bach / Stelios Samelis / Mutopia (2018), Bach Gesellschaft edition",
+      "license": "Public Domain",
+      "licenseUrl": "https://creativecommons.org/licenses/publicdomain/",
+      "url": "https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=890",
+      "modifications": "Complete individual movement. Both volta sections repeated: A A B B. convert-ly/LilyPond2.24.4; separate MIDI voices, all notes/holds/unisons retained. Source cello sounding pitch, shift0. Source rests included. Trill signs and expressive bowing/dynamics not realized. Tempo: fixed audition choice; wrapper has no explicit tempo. App articulation separate.",
+      "pitch": "Original C-major cello sounding pitches, shift0; no guitar octave-notation conversion. C2 and other notes below standard guitar E2 retained. NOT a guitar arrangement or verified six-string fingering; no tuning settings applied.",
+      "terms": "Score edition placed in the public domain by typesetter Stelios Samelis. Source and modification records retained; application code separate.",
+      "endingStatus": "終端192拍／最後の発音終端191.75拍。版の休符を保持。"
+    },
+    "rawNotes": 486,
+    "notes": 972,
+    "pitchRange": [
+      36,
+      67
+    ],
+    "belowE2": 24,
+    "lilypondUrl": "https://raw.githubusercontent.com/MutopiaProject/MutopiaProject/master/ftp/BachJS/BWV1009/cellosuite3/cellosuite3-lys/cellosuite3_2_allemande.ly",
+    "sha256": {
+      "cellosuite3_2_allemande.ly": "41ab5c08e898f9cc135d0f48268846cc457ec85b7804f3d284845b2bcec00a60",
+      "header.ily": "a409d8133b17c315bae44daebe8851bf8618dafd49a9575206da3cbdb5328d3c",
+      "cellosuite3.ly": "bcd1ed3e5eec03a7f1a96a3749eb26c73a286e71a501d6f3111f6bd2578ed72a",
+      "cellosuite3_5_bourree.ly": "f6131634e562cf40048d173ffd8494501c4af7557016f21c3ee3079db8fd2f21",
+      "allemande-raw.midi": "fe773d52b33e209e8ae1960bf96ae705d8b2260aba6d902769243bf89922827e",
+      "allemande-full.midi": "961dc15ef58542c6f014f24901180836e64a3685c79140dc0e8f2903b01fec60",
+      "allemande-first.midi": "abae2fc85205861f4ff3438e3cda046c108f7d01cd42ffc64f50d42cac8bdcc8"
+    }
+  },
+  {
+    "key": "courante1009",
+    "name": "courante",
+    "number": 3,
+    "title": "Courante",
+    "jp": "クーラント",
+    "meter": [
+      3,
+      4
+    ],
+    "bpm": 210,
+    "tempoBasis": "source wrapper dotted-half=70, equivalent quarter=210",
+    "writtenBars": 84,
+    "beats": 504,
+    "form": [
+      [
+        0,
+        120
+      ],
+      [
+        0,
+        120
+      ],
+      [
+        120,
+        252
+      ],
+      [
+        120,
+        252
+      ]
+    ],
+    "last": 503.5,
+    "source": {
+      "credit": "J. S. Bach / Stelios Samelis / Mutopia (2018), Bach Gesellschaft edition",
+      "license": "Public Domain",
+      "licenseUrl": "https://creativecommons.org/licenses/publicdomain/",
+      "url": "https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=890",
+      "modifications": "Complete individual movement. Both volta sections repeated: A A B B. convert-ly/LilyPond2.24.4; separate MIDI voices, all notes/holds/unisons retained. Source cello sounding pitch, shift0. Source rests included. Trill signs and expressive bowing/dynamics not realized. Tempo: source wrapper dotted-half=70, equivalent quarter=210. App articulation separate.",
+      "pitch": "Original C-major cello sounding pitches, shift0; no guitar octave-notation conversion. C2 and other notes below standard guitar E2 retained. NOT a guitar arrangement or verified six-string fingering; no tuning settings applied.",
+      "terms": "Score edition placed in the public domain by typesetter Stelios Samelis. Source and modification records retained; application code separate.",
+      "endingStatus": "終端504拍／最後の発音終端503.5拍。版の休符を保持。"
+    },
+    "rawNotes": 495,
+    "notes": 990,
+    "pitchRange": [
+      36,
+      64
+    ],
+    "belowE2": 20,
+    "lilypondUrl": "https://raw.githubusercontent.com/MutopiaProject/MutopiaProject/master/ftp/BachJS/BWV1009/cellosuite3/cellosuite3-lys/cellosuite3_3_courante.ly",
+    "sha256": {
+      "cellosuite3_3_courante.ly": "1408662da98bd98f8eb58ffbf1c5cbe2d951a07d5863dd89b1fd84275255c3ad",
+      "header.ily": "a409d8133b17c315bae44daebe8851bf8618dafd49a9575206da3cbdb5328d3c",
+      "cellosuite3.ly": "bcd1ed3e5eec03a7f1a96a3749eb26c73a286e71a501d6f3111f6bd2578ed72a",
+      "cellosuite3_5_bourree.ly": "f6131634e562cf40048d173ffd8494501c4af7557016f21c3ee3079db8fd2f21",
+      "courante-raw.midi": "8bb886499550c221ef62ea4bdd5d277a217274e35109c1810fd4c528de878fb5",
+      "courante-full.midi": "b3a815f7f50d90b202223d9a4836d565d39f67faf233e6755a245b46150ee439",
+      "courante-first.midi": "b5ebd457043bb5e38135a1552bfb18ad80f8d4fe85223392cc7adbc47dae03cf"
+    }
+  },
+  {
+    "key": "sarabande1009",
+    "name": "sarabande",
+    "number": 4,
+    "title": "Sarabande",
+    "jp": "サラバンド",
+    "meter": [
+      3,
+      4
+    ],
+    "bpm": 60,
+    "tempoBasis": "fixed audition choice; wrapper has no explicit tempo",
+    "writtenBars": 24,
+    "beats": 144,
+    "form": [
+      [
+        0,
+        24
+      ],
+      [
+        0,
+        24
+      ],
+      [
+        24,
+        72
+      ],
+      [
+        24,
+        72
+      ]
+    ],
+    "last": 144,
+    "source": {
+      "credit": "J. S. Bach / Stelios Samelis / Mutopia (2018), Bach Gesellschaft edition",
+      "license": "Public Domain",
+      "licenseUrl": "https://creativecommons.org/licenses/publicdomain/",
+      "url": "https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=890",
+      "modifications": "Complete individual movement. Both volta sections repeated: A A B B. convert-ly/LilyPond2.24.4; separate MIDI voices, all notes/holds/unisons retained. Source cello sounding pitch, shift0. Source rests included. Trill signs and expressive bowing/dynamics not realized. Tempo: fixed audition choice; wrapper has no explicit tempo. App articulation separate.",
+      "pitch": "Original C-major cello sounding pitches, shift0; no guitar octave-notation conversion. C2 and other notes below standard guitar E2 retained. NOT a guitar arrangement or verified six-string fingering; no tuning settings applied.",
+      "terms": "Score edition placed in the public domain by typesetter Stelios Samelis. Source and modification records retained; application code separate.",
+      "endingStatus": "終端144拍／最後の発音終端144拍。版の休符を保持。"
+    },
+    "rawNotes": 217,
+    "notes": 434,
+    "pitchRange": [
+      36,
+      67
+    ],
+    "belowE2": 14,
+    "lilypondUrl": "https://raw.githubusercontent.com/MutopiaProject/MutopiaProject/master/ftp/BachJS/BWV1009/cellosuite3/cellosuite3-lys/cellosuite3_4_sarabande.ly",
+    "sha256": {
+      "cellosuite3_4_sarabande.ly": "46ee3699f96c9a7024f218bad1fa3dd4b77ab98fb28efe522cca2ee9258776e7",
+      "header.ily": "a409d8133b17c315bae44daebe8851bf8618dafd49a9575206da3cbdb5328d3c",
+      "cellosuite3.ly": "bcd1ed3e5eec03a7f1a96a3749eb26c73a286e71a501d6f3111f6bd2578ed72a",
+      "cellosuite3_5_bourree.ly": "f6131634e562cf40048d173ffd8494501c4af7557016f21c3ee3079db8fd2f21",
+      "sarabande-raw.midi": "879829d4ac756d91dcf6d3a2189ca42ead021ee3c48440126a277fc7a2236e72",
+      "sarabande-full.midi": "b5f1cb2cf948358f49699c852076476587063b6f4742c3d9c08f90014ca38386",
+      "sarabande-first.midi": "d4fa57e44aa7a73bffbeb7c72ff6e59c7127165827fe4f5ae6c1ae960f18e1f4"
+    }
+  },
+  {
+    "key": "gigue1009",
+    "name": "gigue",
+    "number": 6,
+    "title": "Gigue",
+    "jp": "ジーグ",
+    "meter": [
+      3,
+      8
+    ],
+    "bpm": 97.5,
+    "tempoBasis": "source wrapper dotted-quarter=65, equivalent quarter=97.5",
+    "writtenBars": 108,
+    "beats": 324,
+    "form": [
+      [
+        0,
+        72
+      ],
+      [
+        0,
+        72
+      ],
+      [
+        72,
+        162
+      ],
+      [
+        72,
+        162
+      ]
+    ],
+    "last": 324,
+    "source": {
+      "credit": "J. S. Bach / Stelios Samelis / Mutopia (2018), Bach Gesellschaft edition",
+      "license": "Public Domain",
+      "licenseUrl": "https://creativecommons.org/licenses/publicdomain/",
+      "url": "https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=890",
+      "modifications": "Complete individual movement. Both volta sections repeated: A A B B. convert-ly/LilyPond2.24.4; separate MIDI voices, all notes/holds/unisons retained. Source cello sounding pitch, shift0. Source rests included. Trill signs and expressive bowing/dynamics not realized. Tempo: source wrapper dotted-quarter=65, equivalent quarter=97.5. App articulation separate.",
+      "pitch": "Original C-major cello sounding pitches, shift0; no guitar octave-notation conversion. C2 and other notes below standard guitar E2 retained. NOT a guitar arrangement or verified six-string fingering; no tuning settings applied.",
+      "terms": "Score edition placed in the public domain by typesetter Stelios Samelis. Source and modification records retained; application code separate.",
+      "endingStatus": "終端324拍／最後の発音終端324拍。版の休符を保持。"
+    },
+    "rawNotes": 523,
+    "notes": 1046,
+    "pitchRange": [
+      36,
+      67
+    ],
+    "belowE2": 8,
+    "lilypondUrl": "https://raw.githubusercontent.com/MutopiaProject/MutopiaProject/master/ftp/BachJS/BWV1009/cellosuite3/cellosuite3-lys/cellosuite3_6_gigue.ly",
+    "sha256": {
+      "cellosuite3_6_gigue.ly": "cf4daaf62cd9456c4138f730a79b649c788080f0e246483dbf07c60bf20d748a",
+      "header.ily": "a409d8133b17c315bae44daebe8851bf8618dafd49a9575206da3cbdb5328d3c",
+      "cellosuite3.ly": "bcd1ed3e5eec03a7f1a96a3749eb26c73a286e71a501d6f3111f6bd2578ed72a",
+      "cellosuite3_5_bourree.ly": "f6131634e562cf40048d173ffd8494501c4af7557016f21c3ee3079db8fd2f21",
+      "gigue-raw.midi": "20fc590fbc965e6ecc1396eeb2852593be6d69a97d7e29280a0a2c3addb8bfdd",
+      "gigue-full.midi": "b7573aebebff7b1700a5c0a7a1b45ee26b4c91ea6356fcbbc1959cf4f6b1959d",
+      "gigue-first.midi": "9901f6f4b5c8f16eebaa83800005909ccc6c87d82eabf988c0f06dd2108d6284"
+    }
+  }
+]

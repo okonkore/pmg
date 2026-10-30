@@ -7,7 +7,7 @@ const assert=require('node:assert/strict');
   page.on('pageerror',e=>errors.push(e.message));
   await page.goto(process.argv[2]||'http://127.0.0.1:8766/synth-demo/');
   await page.waitForSelector('.app-ready');
-  assert.equal(await page.locator('#song optgroup:not(#my-song-group) option').count(),45);
+  assert.equal(await page.locator('#song optgroup:not(#my-song-group) option').count(),50);
   await page.click('#nav-instrument');await page.selectOption('#preset','pluck');await page.click('#nav-performance');
   for(const [key,count,end] of [['sor35_17',265,129],['bourree1009',191,112],['sor6_11',1066,348]]){
    await page.selectOption('#song',key);
@@ -49,6 +49,6 @@ const assert=require('node:assert/strict');
   const saved=await page.evaluate(()=>JSON.parse(localStorage.getItem('pmg.songs.v1')));
   assert(saved.songs.some(s=>s.id===imported.id&&s.endBeat===348&&s.source.licenseUrl===exported.song.source.licenseUrl));
   assert.deepEqual(errors,[]);
-  console.log('PASS: batch 2, 45-menu integration, three score loads and piano-roll positions, browser playback, attribution, actual JSON download/import and persistence.');
+  console.log('PASS: batch 2, 50-menu integration, three score loads and piano-roll positions, browser playback, attribution, actual JSON download/import and persistence.');
  }finally{await browser.close()}
 })().catch(e=>{console.error(e);process.exitCode=1});
