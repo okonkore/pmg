@@ -1,6 +1,6 @@
 # Listening controls and instrument audition
 
-Base: published `4c823d26915b7934faf64e9eafac9903e98c438c`. Local continuation only; no new commit, push, upload or deployment authorized for this milestone.
+Base: published `4c823d26915b7934faf64e9eafac9903e98c438c`. Initial review was local only. Subsequent explicit approval authorizes this listening-controls milestone and the 38-piece catalog for Pages; unpublished sound research and tuning controls remain excluded.
 
 The performance screen now contains the existing volume slider plus a new room-reverb amount and reset. The actual keyboard and octave controls (original DOM nodes/handlers) moved to the instrument screen. Computer-key audition is enabled only on that route. Route changes, blur, hidden tabs and Stop retain the existing voice-release/cancel behavior and clear the room tail. Short viewports scroll only the performance/instrument area; landscape controls are compact enough to keep transport within reach.
 
@@ -33,3 +33,9 @@ Found and fixed a pending-resume race: an old asynchronous audition could see a 
 Real OfflineAudioContext comparisons cover the old/new complete default normal and physical output paths, including compressor behavior: sample error 0 in the fixtures. The dry-headroom fixture passes a 1.2 sample unchanged (OfflineAudioContext permits above-full-scale values); this verifies preserving legacy headroom, not recommending that level for hardware output. Peak protection is deliberately enabled only for reverb/boosted settings. Rapid volume automation is tested through the actual output-stage helper; the transition remains smooth and below full scale in the fixture. The default bypass preserves both the ordinary signal and the legacy headroom.
 
 Invalid persisted values (out-of-range, wrong type, unsupported schema version) fall back to the quiet default .22/0 rather than jumping to a maximum; no audio context opens on reload. All normal synth/string/configured/sample voices enter the shared bus; the worklet path enters room.input at its legacy reference level. Both converge at the same master once, followed only by complementary protection paths and the analyser. These are self-review findings, not independent reviewer or iPhone-device verification.
+
+## Approved 38-piece release integration
+
+Integrated catalog commit `50c72ac193477574b4c5ab5b6ab4c3f050c369a1` on the same published base. The integrated release passed 57 distinct test commands: 36 module tests, one string-preset test, 15 Chromium browser tests and five Python test scripts (13 Python cases). One initial app-shell test retained the old 25-song count; its contract was updated to 38 and it passed on rerun without removing any interaction assertions. Exact initial/rerun/final logs are under `/tmp/pmg-release-tests`. The default normal/physical output-path fixture still reports sample error 0; default reverb is 0.
+
+Existing synth engines, instrument parameters, original song event files, waveform assets and workflow are unchanged. Catalog metadata retains source/license, known score endings and non-applied required-tuning annotations; it introduces no tuning controls. Four legacy endings remain explicitly unverified: BWV1007 Gigue, BWV1012 Gigue, BWV1012 Gavotte II and Sor Op.60 No.12. Real-device Safari and human listening are not verified. Vendored original LilyPond source whitespace is retained for byte-exact provenance; application-code whitespace checks pass. Screenshots remain local.
