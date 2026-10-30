@@ -36,6 +36,7 @@ jobs:
           cp -R synth-demo/instruments _site/
           cp -R synth-demo/reference-comparison _site/
           cp -R synth-demo/string-lab _site/
+          cp -R synth-demo/sound-lab _site/
           touch _site/.nojekyll
       - uses: actions/upload-pages-artifact@v4
         with:
