@@ -7,7 +7,7 @@ const main=document.querySelector('main');
 const make=(tag,className,html='')=>{const el=document.createElement(tag);el.className=className;el.innerHTML=html;return el};
 const move=(target,...ids)=>ids.forEach(id=>target.append(byId(id)));
 const shell=make('main','app-shell');shell.id='app-shell';
-const header=make('header','app-header','<div><span class="app-brand">PMG</span><h1 id="app-heading">演奏</h1></div><div class="app-header-actions"><button id="app-mixer" aria-label="音量と音色">音量・音色</button><button id="app-menu" aria-label="メニュー" aria-haspopup="dialog">•••</button></div>');
+const header=make('header','app-header','<div><span class="app-brand">PMG</span><h1 id="app-heading">演奏</h1></div><div class="app-header-actions"><button id="app-mixer" aria-label="音色の詳細">音色</button><button id="app-menu" aria-label="メニュー" aria-haspopup="dialog">•••</button></div>');
 const statusBar=make('div','app-status');move(statusBar,'status');
 const songBar=make('div','app-song-bar');move(songBar,'song-picker');
 const content=make('div','app-content');
@@ -30,7 +30,7 @@ function dialog(id,title){
 }
 const menu=dialog('app-menu-dialog','メニュー');
 menu.innerHTML='<button data-panel="playback-dialog">再生設定</button><button data-panel="song-dialog">曲の設定・保存</button><button data-panel="help-dialog">使い方・出典</button>';
-const mixer=dialog('mixer-dialog','音量・音色');mixer.append(document.querySelector('#performance-screen > .controls'));
+const mixer=dialog('mixer-dialog','音色の詳細');mixer.append(document.querySelector('#performance-screen > .controls'));
 const playback=dialog('playback-dialog','再生設定');move(playback,'song-playback-settings');
 const songSettings=dialog('song-dialog','曲の設定・保存');
 const editorSettings=dialog('editor-settings-dialog','グリッド・表示');
@@ -78,6 +78,11 @@ move(menu,'open-editor','copy-song');
 const performance=byId('performance-screen');
 performance.querySelector('.top').remove();performance.querySelector('.song-actions').remove();byId('song-home').remove();
 performance.querySelector('.bottom small').remove();
+const listeningMix=make('section','app-listening-mix','<h2>音量・リバーブ</h2>');listeningMix.setAttribute('aria-label','再生音の設定');
+for(const id of ['volume','reverb'])listeningMix.append(byId(id).closest('label'));
+const mixReset=make('button','','初期値に戻す');mixReset.id='mix-reset';mixReset.onclick=()=>resetMix();listeningMix.append(mixReset);performance.append(listeningMix);performance.classList.add('app-scroll');
+const audition=make('section','app-audition','<h2>試奏</h2>');audition.id='instrument-audition';audition.append(performance.querySelector('.octave-bar'),byId('keyboard'));instrument.querySelector('.preset-picker').after(audition);
+
 const power=byId('power');power.textContent='音をオン';statusBar.append(power);
 const performanceActions=make('div','app-performance-actions','<button id="performance-instrument">楽器を選ぶ</button><button data-panel="playback-dialog" aria-label="再生設定">再生設定</button>');performance.prepend(performanceActions);
 // Spare original containers have no active controls left; preserve no duplicate UI.

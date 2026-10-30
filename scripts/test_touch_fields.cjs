@@ -22,7 +22,7 @@ const assert=require('node:assert/strict');
   }
   async function width(){assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),'No page horizontal overflow')}
   assert(!/maximum-scale|user-scalable/.test(await page.locator('meta[name=viewport]').getAttribute('content')),'Native browser zoom remains available');
-  await page.click('#nav-instrument');await fields('#instrument-screen select');await page.click('#nav-performance');
+  await page.click('#nav-instrument');await fields('#instrument-screen select');
   const key=await point('.key.white');
   for(const end of ['touchEnd','touchCancel','touchEnd']){
    await send('touchStart',[key]);await page.waitForTimeout(550);await send(end);

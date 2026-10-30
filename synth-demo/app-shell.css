@@ -59,3 +59,13 @@ body:has(.app-shell) #configured-string-sets .configured-actions{background:var(
 #midi-tracks{min-width:0;border:1px solid var(--app-line);border-radius:8px;padding:10px}
 #midi-tracks label{display:flex;flex-direction:row;align-items:center;min-height:44px;overflow-wrap:anywhere}
 #midi-tracks input{flex:0 0 22px}#midi-preview[hidden]{display:none}
+/* Listening controls reuse the existing master gain; audition belongs to the instrument. */
+.app-shell #performance-screen{display:flex;flex-direction:column;gap:16px;justify-content:flex-start}
+.app-shell #performance-screen .monitor{flex:1 0 100px;max-height:280px}
+.app-shell #performance-screen .bottom{order:3;flex-shrink:0;grid-column:auto}
+.app-listening-mix{display:grid;grid-template-columns:1fr 1fr;gap:14px 20px;padding:16px;background:var(--app-panel);border:1px solid var(--app-line);border-radius:12px}
+.app-listening-mix h2{grid-column:1/-1;margin:0;font-size:16px}.app-listening-mix label{font-size:14px;letter-spacing:0;gap:4px}.app-listening-mix input{min-height:44px;font-size:16px}.app-listening-mix button{grid-column:1/-1;justify-self:end}
+.app-audition{padding:14px;background:var(--app-panel);border:1px solid var(--app-line);border-radius:12px;margin-bottom:20px}.app-audition h2{font-size:16px;margin:0 0 12px}
+.app-shell .app-audition .keyboard{height:160px;margin-top:12px;min-height:160px}.app-shell .app-audition .octave-bar{flex-wrap:wrap}
+@media(max-height:560px){.app-shell #performance-screen .monitor{display:none}.app-listening-mix{gap:4px 16px;padding:10px}.app-listening-mix h2{display:none}.app-shell #performance-screen{gap:8px}.app-shell .app-audition .keyboard{height:120px;min-height:120px}}
+@media(max-height:560px){.app-listening-mix{grid-template-columns:minmax(0,1fr) minmax(0,1fr) auto}.app-listening-mix button{grid-column:3;grid-row:1;align-self:end}}
