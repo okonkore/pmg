@@ -215,7 +215,7 @@ const ScoreEditor=(()=>{
   function zoom(value){const beatAtCenter=(scroll.scrollLeft+scroll.clientWidth/2-GUTTER)/px;px=value;$('seq-zoom').value=px;render();scroll.scrollLeft=Math.max(0,beatAtCenter*px-scroll.clientWidth/2+GUTTER)}
   $('seq-zoom').oninput=()=>zoom(+$('seq-zoom').value);
   $('seq-fit').onclick=()=>{zoom(clamp((scroll.clientWidth-GUTTER-30)/endBeat(),1,160));scroll.scrollLeft=0};
-  $('seq-play').onclick=()=>transport?api.stop():api.play({fromBeat:cursor,loop:$('seq-loop').checked});
+  $('seq-play').onclick=()=>{if(!transport)api.play({fromBeat:cursor,loop:$('seq-loop').checked})};
   $('seq-stop').onclick=()=>api.stop();$('seq-rewind').onclick=()=>{api.stop();setPosition(0);scroll.scrollLeft=0};
   $('seq-remove').onclick=()=>{if(readonly()||!confirm('「'+history.current.title+'」をこのブラウザから削除しますか？'))return;api.stop();clearTimeout(saveTimer);library.remove(currentId);histories.delete(currentId);history=null;currentId=null;updateLibraryMenu();choose('gavotte')};
   $('seq-export').onclick=()=>{const blob=new Blob([library.export(history.current)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=history.current.title.replace(/[\\/:*?"<>|]/g,'_')+'.pmg.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)};
@@ -237,7 +237,7 @@ const ScoreEditor=(()=>{
    if(cmd&&key==='y'){e.preventDefault();historyAction('redo');return}
    if(cmd&&key==='a'){e.preventDefault();selection=new Set(doc().notes.map(n=>n.id));renderNotes();inspector();return}
    if(cmd&&key==='c'){e.preventDefault();copyNotes();return}if(cmd&&key==='v'){e.preventDefault();paste();return}
-   if(key===' '){e.preventDefault();$('seq-play').click();return}
+   if(key===' '){e.preventDefault();if(transport)api.stop();else $('seq-play').click();return}
    if(key==='delete'||key==='backspace'){e.preventDefault();deleteSelection();return}
    if(key==='escape'){selection.clear();renderNotes();inspector();return}
    if(cmd||e.altKey)return;
@@ -247,13 +247,13 @@ const ScoreEditor=(()=>{
   });
   function transportBeat(){if(!transport)return cursor;const seconds=Math.max(0,transport.clock()-transport.startTime);if(transport.beatAt)return transport.beatAt(seconds);const elapsed=seconds*transport.bpm/60,span=transport.endBeat-transport.fromBeat;return transport.loop?transport.fromBeat+(elapsed%span):Math.min(transport.endBeat,transport.fromBeat+elapsed)}
   function frame(){if(!transport)return;setPosition(transportBeat());if(!panel.hidden&&!gesture&&!pinchTail){const x=cursor*px+GUTTER;if(x>scroll.scrollLeft+scroll.clientWidth-35)scroll.scrollLeft=x-scroll.clientWidth*.3;else if(x<scroll.scrollLeft+GUTTER)scroll.scrollLeft=Math.max(0,x-GUTTER-px)}raf=requestAnimationFrame(frame)}
-  function transportStop(){if(transport)setPosition(transportBeat());transport=null;cancelAnimationFrame(raf);$('seq-play').textContent='▶ 再生'}
+  function transportStop(){if(transport)setPosition(transportBeat());transport=null;cancelAnimationFrame(raf);$('seq-play').disabled=false}
   window.addEventListener('pagehide',()=>{if(history&&!readonly())save()});
   updateLibraryMenu();load(picker.value);
   return {
    save,
    songChanged(){load(picker.value)},
-   transportStart(info){transportStop();transport=info;$('seq-play').textContent='■ 停止';cancelAnimationFrame(raf);frame()},
+   transportStart(info){transportStop();transport=info;$('seq-play').disabled=true;cancelAnimationFrame(raf);frame()},
    transportStop,
    open,
    importDocument(doc){save();const d=library.addSaved(doc);updateLibraryMenu();choose(d.id);return d.id},

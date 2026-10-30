@@ -15,6 +15,7 @@
 @media (any-pointer: coarse){#performance-screen select,#guitar-setup select{font-size:16px}}
 </style>
 <link rel="stylesheet" href="app-shell.css?v=1">
+<link rel="stylesheet" href="preparation-view.css?v=1">
 </head>
 <body><main>
 <header id="performance-header"><div><div class="eyebrow">BROWSER INSTRUMENT / 01</div><h1>Little Red Synth</h1><small>波を重ねて、音をつくる。</small></div><button class="primary" id="power">音を有効にする</button></header>
@@ -84,7 +85,7 @@
  <label><span>はじく位置 <output id="guitar-position-out"></output></span><input id="guitar-position" aria-label="はじく位置" type="range" min="0.08" max="0.45" value="0.22" step="0.01"></label>
  <label><span>胴の響き <output id="guitar-body-out"></output></span><input id="guitar-body" aria-label="胴の響き" type="range" min="0" max="1" value="0.48" step="0.01"></label>
  </div><div class="setup-actions"><button type="button" id="guitar-setup-cancel">キャンセル</button><button type="submit" class="primary">決定して生成</button></div></form></dialog>
-<div id="guitar-loading" class="guitar-loading" role="dialog" aria-modal="true" aria-labelledby="loading-title" tabindex="-1" hidden><div class="loading-card"><div class="loading-spinner" aria-hidden="true"></div><strong id="loading-title">ナイロンギターを準備しています</strong><p id="loading-count" role="status" aria-live="polite">0 / 88音</p><progress id="loading-progress" value="0" max="88" aria-label="音色の準備状況"></progress><p>しばらくお待ちください</p></div></div>
+<div id="guitar-loading" class="guitar-loading" role="dialog" aria-modal="true" aria-labelledby="loading-title" tabindex="-1" hidden><div class="loading-card"><div class="loading-spinner" aria-hidden="true"></div><strong id="loading-title">ナイロンギターを準備しています</strong><p id="loading-count" role="status" aria-live="polite">0 / 88音</p><progress id="loading-progress" value="0" max="88" aria-label="音色の準備状況"></progress><div id="loading-notes"></div><p class="preparation-legend">◌ 生成中　✓ 完了　↺ 再利用</p><button id="loading-cancel">中止</button></div></div>
 <script src="gavotte.js"></script>
 <script src="prelude.js"></script>
 <script src="bach-solos.js"></script>
@@ -99,13 +100,14 @@
 <script src="repertoire-batch6.js?v=1"></script>
 <script src="catalog-quality.js?v=1"></script>
 <script src="sequencer-model.js?v=catalog-quality-1"></script>
-<script src="sequencer.js?v=catalog-quality-1"></script>
+<script src="sequencer.js?v=distinct-transport-1"></script>
 <script src="playback-timing.js?v=1"></script>
 <script src="song-playback-settings.js?v=rit-1"></script>
 <script src="string-lab/physics.js?v=39"></script>
 <script src="physical-string-model.js?v=1"></script>
 <script src="physical-string-instrument.js?v=1"></script>
-<script src="room-reverb.js?v=1"></script>
+<script src="preparation-view.js?v=1"></script>
+<script src="room-reverb.js?v=room-tail-2"></script>
 <script>
 'use strict';
 const $=id=>document.getElementById(id);
@@ -195,13 +197,15 @@ const stringBuffers=new Map();
 let guitarWorker,guitarJobId=0,guitarPrepareTimer,guitarGeneration=0,guitarPreparation;
 const guitarRange=Array.from({length:88},(_,i)=>21+i);
 let guitarLoading=false,loadingFocus,loadingOverflow;
+const guitarTiles=new PreparationView($('loading-notes'));
+$('loading-cancel').onclick=()=>{guitarTiles.finish('cancelled');cancelGuitarWork();$('status').textContent='準備を中止しました'};
 function setGuitarLoading(active,completed=0){
  const overlay=$('guitar-loading'),main=document.querySelector('main');
  if(active&&!guitarLoading){loadingFocus=document.activeElement;loadingOverflow=document.body.style.overflow;guitarLoading=true;overlay.hidden=false;main.inert=true;main.setAttribute('aria-busy','true');document.body.style.overflow='hidden';overlay.focus({preventScroll:true})}
  if(active){$('loading-count').textContent=completed+' / 88音';$('loading-progress').value=completed;return}
  if(!guitarLoading)return;guitarLoading=false;overlay.hidden=true;main.inert=false;main.removeAttribute('aria-busy');document.body.style.overflow=loadingOverflow;if(loadingFocus?.isConnected)loadingFocus.focus({preventScroll:true});loadingFocus=undefined;
 }
-window.addEventListener('keydown',e=>{if(guitarLoading){e.preventDefault();e.stopImmediatePropagation()}},{capture:true});
+window.addEventListener('keydown',e=>{if(guitarLoading){if(e.key==='Escape')$('loading-cancel').click();if(e.key==='Tab'){e.preventDefault();$('loading-cancel').focus()}if(!['Tab','Enter',' '].includes(e.key)){e.preventDefault();e.stopImmediatePropagation()}}},{capture:true});
 const guitarJobs=new Map(),guitarPending=new Map();
 function renderGuitar(midi,settings){
  if(!guitarWorker){
@@ -237,12 +241,15 @@ function prepareGuitar(){
  const missing=guitarRange.filter(midi=>!stringBuffers.has(label+':'+midi+':'+signature));
  if(!missing.length){trimGuitarCache(protectedKeys);return Promise.resolve(true)}
  const task={generation,signature};guitarPreparation=task;
- setGuitarLoading(true,88-missing.length);$('status').textContent='ギター音色を準備中…';
+ $('loading-title').textContent='ナイロンギターを準備しています';$('loading-cancel').textContent='中止';
+ const tileToken=guitarTiles.start(guitarRange);for(const midi of guitarRange)if(!missing.includes(midi))guitarTiles.set(midi,'cached',tileToken);
+ setGuitarLoading(true,guitarRange.length-missing.length);$('status').textContent='ギター音色を準備中…';
  task.promise=(async()=>{
   try{
    let completed=88-missing.length;
    for(const midi of missing){
     if(generation!==guitarGeneration||!isGuitar()||signature!==guitarSettings())return false;
+    guitarTiles.set(midi,'running',tileToken);
     const key=label+':'+midi+':'+signature;
     if(!guitarPending.has(key)){
      const job=renderGuitar(midi,settings).then(values=>{
@@ -253,10 +260,10 @@ function prepareGuitar(){
     await guitarPending.get(key);
     if(generation!==guitarGeneration||signature!==guitarSettings())return false;
     if(!stringBuffers.has(key))return false;
-    setGuitarLoading(true,++completed);
+    guitarTiles.set(midi,'done',tileToken);setGuitarLoading(true,++completed);
    }
    trimGuitarCache(protectedKeys);return true;
-  }finally{if(guitarPreparation===task){guitarPreparation=undefined;setGuitarLoading(false)}}
+  }catch(error){if(guitarPreparation===task){task.failed=true;guitarTiles.finish('failed');$('loading-title').textContent='準備できませんでした';$('loading-cancel').textContent='閉じる';}throw error;}finally{if(guitarPreparation===task){guitarPreparation=undefined;if(!task.failed)setGuitarLoading(false)}}
  })();
  return task.promise;
 }
@@ -502,5 +509,5 @@ if(['physical','wholeShell','guitar520r'].includes(requestedPreset)){$('preset')
 if(location.hash==='#piano-roll')scoreEditor.open();
 updateOctave();
 function draw(){const canvas=$('scope'),g=canvas.getContext('2d'),data=new Uint8Array(analyser.fftSize);let lastFrame=0;function frame(now=performance.now()){requestAnimationFrame(frame);if(document.hidden||$('performance-screen').hidden||now-lastFrame<30)return;lastFrame=now;const width=Math.round(canvas.clientWidth*devicePixelRatio),height=Math.round(canvas.clientHeight*devicePixelRatio);if(canvas.width!==width||canvas.height!==height){canvas.width=width;canvas.height=height}analyser.getByteTimeDomainData(data);g.clearRect(0,0,width,height);g.strokeStyle='#ffffff09';g.lineWidth=1;for(let x=0;x<width;x+=width/16){g.beginPath();g.moveTo(x,0);g.lineTo(x,height);g.stroke()}g.strokeStyle='#e6bf7c';g.lineWidth=1.5*devicePixelRatio;g.beginPath();for(let i=0;i<data.length;i++){const x=i/(data.length-1)*width,y=data[i]/255*height;i?g.lineTo(x,y):g.moveTo(x,y)}g.stroke()}frame()}
-</script><script type="module" src="app-shell.js?v=1"></script>
+</script><script type="module" src="app-shell.js?v=preparation-tiles-1"></script>
 </body></html>

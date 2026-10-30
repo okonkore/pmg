@@ -27,8 +27,8 @@
    this.context=context;this.input=context.createGain();this.output=context.createGain();this.dry=context.createGain();this.wet=context.createGain();this.amount=0;
    this.wet.gain.value=0;this.input.connect(this.dry).connect(this.output);this.wet.connect(this.output);
    // Deterministic stereo room impulse: no network asset and no random change on reload.
-   const rate=context.sampleRate;this.impulse=context.createBuffer(2,Math.ceil(rate*1.4),rate);let seed=173;
-   for(let channel=0;channel<2;channel++){const data=this.impulse.getChannelData(channel);for(let i=Math.floor(rate*.015);i<data.length;i++){seed=(Math.imul(seed,1664525)+1013904223)>>>0;data[i]=(seed/2147483648-1)*Math.exp(-6*i/data.length);}}
+   const rate=context.sampleRate;this.impulse=context.createBuffer(2,Math.ceil(rate*3.2),rate);let seed=173;
+   for(let channel=0;channel<2;channel++){const data=this.impulse.getChannelData(channel);for(let i=Math.floor(rate*.015);i<data.length;i++){seed=(Math.imul(seed,1664525)+1013904223)>>>0;data[i]=(seed/2147483648-1)*Math.exp(-6.9*i/data.length);}}
    this.replaceConvolver();
   }
   replaceConvolver(){
@@ -40,7 +40,7 @@
    if(!Number.isFinite(value))return;this.amount=Math.min(1,Math.max(0,value));
    if(this.amount>0&&!this.connected){this.input.connect(this.convolver);this.connected=true}
    if(this.amount===0&&this.connected){this.input.disconnect(this.convolver);this.connected=false}
-   const now=this.context.currentTime,mix=this.amount*.35;
+   const now=this.context.currentTime,mix=this.amount*.65;
    for(const [param,target] of [[this.dry.gain,1-mix],[this.wet.gain,mix]]){param.cancelAndHoldAtTime(now);if(immediate)param.setValueAtTime(target,now);else{param.setValueAtTime(param.value,Math.max(now,startTime));param.linearRampToValueAtTime(target,Math.max(now,startTime)+.03)}}
   }
   clear(){this.replaceConvolver()}
