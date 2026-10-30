@@ -1,3 +1,4 @@
+import {renderTab} from './tab-output.js';
 import './midi-import.js';
 import './configured-guitar-app.js?v=preparation-tiles-1';
 
@@ -29,13 +30,17 @@ function dialog(id,title){
  return el.lastElementChild;
 }
 const menu=dialog('app-menu-dialog','メニュー');
-menu.innerHTML='<button data-panel="playback-dialog">再生設定</button><button data-panel="song-dialog">曲の設定・保存</button><button data-panel="help-dialog">使い方・出典</button>';
+menu.innerHTML='<button data-panel="playback-dialog">再生設定</button><button data-panel="song-dialog">曲の設定・保存</button><button data-panel="tab-dialog">TAB譜・印刷</button><button data-panel="help-dialog">使い方・出典</button>';
 const mixer=dialog('mixer-dialog','音色の詳細');mixer.append(document.querySelector('#performance-screen > .controls'));
 const playback=dialog('playback-dialog','再生設定');move(playback,'song-playback-settings');
 const songSettings=dialog('song-dialog','曲の設定・保存');
 const editorSettings=dialog('editor-settings-dialog','グリッド・表示');
 const noteSettings=dialog('note-dialog','選択した音符');
 const midiBody=dialog('midi-dialog','MIDI 読込');
+const tabBody=dialog('tab-dialog','TAB譜・印刷');
+const tabPrint=make('button','tab-print','印刷・PDF保存');tabPrint.onclick=()=>window.print();
+const tabDocument=make('article');tabDocument.id='tab-document';tabBody.append(tabPrint,tabDocument);
+function refreshTab(){stop();try{renderTab(tabDocument,scoreEditor.currentDocument());tabPrint.disabled=false}catch(error){tabDocument.replaceChildren(make('p'));tabDocument.firstChild.textContent=error.message;tabPrint.disabled=true}}
 const help=dialog('help-dialog','使い方・出典');
 const instrumentHelp=dialog('instrument-help-dialog','音源について');
 move(instrumentHelp,'preset-info');
@@ -68,7 +73,7 @@ const fileActions=make('div','app-file-actions');move(fileActions,'seq-save','se
 for(const id of ['seq-snap','seq-length','seq-zoom'])editorSettings.append(byId(id).closest('label'));
 move(editorSettings,'seq-fit','seq-quantize','seq-delete');
 noteSettings.append(editor.querySelector('.seq-inspector'));
-const editorMenu=dialog('editor-menu-dialog','編集メニュー');editorMenu.innerHTML='<button data-panel="song-dialog">曲の設定・保存</button><button data-panel="editor-settings-dialog">グリッド・表示</button><button data-panel="note-dialog">選択した音符</button><button data-panel="playback-dialog">再生設定</button><button data-panel="help-dialog">使い方・出典</button>';
+const editorMenu=dialog('editor-menu-dialog','編集メニュー');editorMenu.innerHTML='<button data-panel="song-dialog">曲の設定・保存</button><button data-panel="editor-settings-dialog">グリッド・表示</button><button data-panel="note-dialog">選択した音符</button><button data-panel="playback-dialog">再生設定</button><button data-panel="tab-dialog">TAB譜・印刷</button><button data-panel="help-dialog">使い方・出典</button>';
 move(tools,'seq-menu-toggle');byId('seq-menu-toggle').textContent='設定';byId('seq-menu-toggle').setAttribute('aria-expanded','false');byId('seq-menu-toggle').setAttribute('aria-haspopup','dialog');byId('seq-menu-toggle').onclick=()=>openPanel('editor-menu-dialog');
 const editorState=make('div','app-editor-state');move(editorState,'seq-badge','seq-save-state');
 move(menu,'seq-close');
@@ -123,7 +128,7 @@ function sync(){
  for(const [id,el] of dialogs){if(id!==panel&&el.open)el.close();}
  const route=routeFromURL();renderRoute(route);
  if(route==='piano-roll')scoreEditor.open();
- if(dialogs.has(panel)&&!dialogs.get(panel).open)dialogs.get(panel).showModal();
+ if(dialogs.has(panel)&&!dialogs.get(panel).open){if(panel==='tab-dialog')refreshTab();dialogs.get(panel).showModal();}
  byId('seq-menu-toggle').setAttribute('aria-expanded',String(byId('editor-menu-dialog').open));
  state.syncing=false;
 }
@@ -139,6 +144,7 @@ function navigate(route){
 }
 function openPanel(id){
  const el=dialogs.get(id);if(!el)return;
+ if(id==='tab-dialog')refreshTab();
  state.opener=document.activeElement;
  for(const other of dialogs.values())if(other!==el&&other.open)other.close();
  // Switching sheets replaces their entry so Back returns to the working surface.
