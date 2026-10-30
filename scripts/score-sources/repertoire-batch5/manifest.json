@@ -1,0 +1,125 @@
+[
+  {
+    "key": "sor35_13",
+    "file": "sorf_op35_no13",
+    "path": "SorF/O35/sorf_op35_no13",
+    "title": "Fernando Sor · Op.35 No.13 — Andante",
+    "option": "Op.35 第13番 · アンダンテ",
+    "bpm": 90,
+    "meter": [
+      2,
+      4
+    ],
+    "beats": 64,
+    "bars": 32,
+    "shift": 0,
+    "sourceId": 1945,
+    "credit": "Fernando Sor / Glen Larsen / Mutopia (2014)",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "repeat": "No sectional repeats; written unfold patterns retained.",
+    "source": {
+      "credit": "Fernando Sor / Glen Larsen / Mutopia (2014)",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "url": "https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=1945",
+      "terms": "Derived score data: CC BY-SA 4.0; retain attribution, license and modification notice. Share adaptations under the same license. Application code separate.",
+      "modifications": "Official convert-ly; LilyPond 2.24.4 separate MIDI voices; overlapping unisons retained. No sectional repeats; written unfold patterns retained. Source MIDI tempo retained as fixed audition tempo; expressive tempo changes not modeled. App articulation separate.",
+      "pitch": "Source MIDI already sounding pitch; shift 0. Original guitar work; no verified string allocation or fingering simulation.",
+      "endingStatus": "終端確認済み（出典版の終わりの休符を含む）。"
+    },
+    "notes": 368,
+    "noteEndBeats": 64.0,
+    "pitchRange": [
+      41,
+      67
+    ],
+    "lilypondUrl": "https://raw.githubusercontent.com/MutopiaProject/MutopiaProject/master/ftp/SorF/O35/sorf_op35_no13/sorf_op35_no13.ly",
+    "sha256": {
+      "sorf_op35_no13.ly": "665771bbda69b3c7943cdacd2a6e3a03a2be017d3e408725dab1908282660d19",
+      "sorf_op35_no13.midi": "184636fce7eaf3855b1e53a12866c2c30cf7ce13e76a9fb10c7ccd5e31e2ed98"
+    }
+  },
+  {
+    "key": "giuliani50_18",
+    "file": "giuliani-op50n18",
+    "path": "GiulianiM/O50/giuliani-op50n18",
+    "title": "Mauro Giuliani · Op.50 No.18 — Allegretto",
+    "option": "Op.50 第18番 · アレグレット",
+    "bpm": 132,
+    "meter": [
+      2,
+      4
+    ],
+    "beats": 33,
+    "bars": 16,
+    "shift": -12,
+    "sourceId": 1346,
+    "credit": "Mauro Giuliani / Stephen Rhen / Mutopia (2008)",
+    "license": "CC BY 3.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/3.0/",
+    "repeat": "No sectional repeats; 1-quarter pickup plus 16 full 2/4 bars.",
+    "source": {
+      "credit": "Mauro Giuliani / Stephen Rhen / Mutopia (2008)",
+      "license": "CC BY 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/3.0/",
+      "url": "https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=1346",
+      "terms": "Derived score data: CC BY 3.0; retain attribution, license and modification notice. Application code separate.",
+      "modifications": "Official convert-ly; LilyPond 2.24.4 separate MIDI voices; overlapping unisons retained. No sectional repeats; 1-quarter pickup plus 16 full 2/4 bars. Source MIDI tempo retained as fixed audition tempo; expressive tempo changes not modeled. App articulation separate.",
+      "pitch": "Written treble-register MIDI lowered 12 semitones to guitar sounding pitch. Original guitar work; no verified string allocation or fingering simulation.",
+      "endingStatus": "終端確認済み（出典版の終わりの休符を含む）。"
+    },
+    "notes": 180,
+    "noteEndBeats": 32.0,
+    "pitchRange": [
+      42,
+      67
+    ],
+    "lilypondUrl": "https://raw.githubusercontent.com/MutopiaProject/MutopiaProject/master/ftp/GiulianiM/O50/giuliani-op50n18/giuliani-op50n18.ly",
+    "sha256": {
+      "giuliani-op50n18.ly": "731dee9b646bd541f66154031a163a55f7c97c99732ea0df9078fdf4fda68c27",
+      "giuliani-op50n18.midi": "d8c8ac7df93fbd0a6c8fde680a98f975eab35bf988f0ac4d6f63af8d52cc736c"
+    }
+  },
+  {
+    "key": "carcassi60_9",
+    "file": "carcassi-op60-09",
+    "path": "CarcassiM/O60/carcassi-op60-09",
+    "title": "Matteo Carcassi · Op.60 No.9 — Allegretto grazioso",
+    "option": "Op.60 第9番 · アレグレット・グラツィオーソ（反復あり）",
+    "bpm": 120,
+    "meter": [
+      4,
+      4
+    ],
+    "beats": 248,
+    "bars": 62,
+    "shift": 0,
+    "sourceId": 306,
+    "credit": "Matteo Carcassi / Jeff Covey / Mutopia (2012)",
+    "license": "Public Domain",
+    "licenseUrl": "https://creativecommons.org/licenses/publicdomain/",
+    "repeat": "Source MIDI explicitly performs A B C B C: 8+19+8+19+8 bars; complete written second-section repeat.",
+    "source": {
+      "credit": "Matteo Carcassi / Jeff Covey / Mutopia (2012)",
+      "license": "Public Domain",
+      "licenseUrl": "https://creativecommons.org/licenses/publicdomain/",
+      "url": "https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=306",
+      "terms": "Score edition placed in the public domain by its typesetter.",
+      "modifications": "Official convert-ly; LilyPond 2.24.4 separate MIDI voices; overlapping unisons retained. Source MIDI explicitly performs A B C B C: 8+19+8+19+8 bars; complete written second-section repeat. Source MIDI tempo retained as fixed audition tempo; expressive tempo changes not modeled. App articulation separate. Header says Allegretto grazioso; source edition bibliography is unknown.",
+      "pitch": "Source MIDI already sounding pitch; shift 0. Original guitar work; no verified string allocation or fingering simulation.",
+      "endingStatus": "終端確認済み（出典版の終わりの休符を含む）。"
+    },
+    "notes": 836,
+    "noteEndBeats": 247.0,
+    "pitchRange": [
+      40,
+      76
+    ],
+    "lilypondUrl": "https://raw.githubusercontent.com/MutopiaProject/MutopiaProject/master/ftp/CarcassiM/O60/carcassi-op60-09/carcassi-op60-09.ly",
+    "sha256": {
+      "carcassi-op60-09.ly": "c14ffb32944ddc2690a90b8cf429abfb9b10ffec5858c356b5d55260feb77387",
+      "carcassi-op60-09.midi": "6341f6f3c5cff3f4b594e9b36adafe18bf9ac1c5ec20384fbebc677117cb290b"
+    }
+  }
+]

@@ -1,0 +1,276 @@
+[
+  {
+    "key": "prelude1012",
+    "url": "https://raw.githubusercontent.com/MutopiaProject/MutopiaProject/master/ftp/BachJS/BWV1012/bwv-1012-1/bwv-1012-1.ly",
+    "sha256": "5db9403569d328330c299ddc76a611b72a1a117624a7fda0f1c14ff3b6588957",
+    "status": 200
+  },
+  {
+    "key": "allemande1012",
+    "url": "https://raw.githubusercontent.com/MutopiaProject/MutopiaProject/master/ftp/BachJS/BWV1012/bwv-1012-2/bwv-1012-2.ly",
+    "sha256": "bbc1eb4ce4620a90eae28d42b9bd05e60e2f50831083fcf5e78efaab91803624",
+    "status": 200
+  },
+  {
+    "key": "courante1012",
+    "url": "https://raw.githubusercontent.com/MutopiaProject/MutopiaProject/master/ftp/BachJS/BWV1012/bwv-1012-3/bwv-1012-3.ly",
+    "sha256": "685bf76192a3acd26babb4f05b459d7f9db25ded5398176b5b98855033b04806",
+    "status": 200
+  },
+  {
+    "key": "sarabande1012",
+    "url": "https://raw.githubusercontent.com/MutopiaProject/MutopiaProject/master/ftp/BachJS/BWV1012/bwv-1012-4/bwv-1012-4.ly",
+    "sha256": "bccfccc5adbcf9c95225ab42eb6cf0149e35cb2a064efda88452681581a6a334",
+    "status": 200
+  },
+  {
+    "key": "gavotte",
+    "url": "https://raw.githubusercontent.com/MutopiaProject/MutopiaProject/master/ftp/BachJS/BWV1012/bwv-1012-5-1/bwv-1012-5-1.ly",
+    "sha256": "8d2615a9f5a8abd953128aa6b6599aa2192274a761a8252078e64e05909ed96b",
+    "status": 200
+  },
+  {
+    "key": "gavotte2",
+    "url": "https://raw.githubusercontent.com/MutopiaProject/MutopiaProject/master/ftp/BachJS/BWV1012/bwv-1012-5-2/bwv-1012-5-2.ly",
+    "sha256": "d1af9999617bc9106ddb928bb882728c7d3bad0210a34d6095afc5c8b80d1ca1",
+    "status": 200
+  },
+  {
+    "key": "gigue1012",
+    "url": "https://raw.githubusercontent.com/MutopiaProject/MutopiaProject/master/ftp/BachJS/BWV1012/bwv-1012-6/bwv-1012-6.ly",
+    "sha256": "539915578616c419f3766e6ab9b229d7f0fb11880a51e7c8c49b1d59c36d4331",
+    "status": 200
+  },
+  {
+    "key": "prelude",
+    "url": "https://raw.githubusercontent.com/MutopiaProject/MutopiaProject/master/ftp/BachJS/BWV1007/bwv1007/bwv1007-lys/bwv1007_prelude.ly",
+    "sha256": "90881f059385ffd2d141001360f5d3a4cee4249da6bab1f92ce752e8fb909b15",
+    "status": 200
+  },
+  {
+    "key": "allemande",
+    "url": "https://raw.githubusercontent.com/MutopiaProject/MutopiaProject/master/ftp/BachJS/BWV1007/bwv1007/bwv1007-lys/bwv1007_allemande.ly",
+    "sha256": "c12f7750a5c4b94f1bb17a1ae2b879bbba448710905bc395606b3e28f0764eea",
+    "status": 200
+  },
+  {
+    "key": "courante",
+    "url": "https://raw.githubusercontent.com/MutopiaProject/MutopiaProject/master/ftp/BachJS/BWV1007/bwv1007/bwv1007-lys/bwv1007_courante.ly",
+    "sha256": "b40b1823b13063716b875cdc8f12af9c87f591dcf555d64112d21f432d5655e2",
+    "status": 200
+  },
+  {
+    "key": "sarabande",
+    "url": "https://raw.githubusercontent.com/MutopiaProject/MutopiaProject/master/ftp/BachJS/BWV1007/bwv1007/bwv1007-lys/bwv1007_sarabande.ly",
+    "sha256": "21d526f194a920d7db7bf9f7d69d42912b3046c1e36c0d16fb23e0e7fe778c99",
+    "status": 200
+  },
+  {
+    "key": "gigue",
+    "url": "https://raw.githubusercontent.com/MutopiaProject/MutopiaProject/master/ftp/BachJS/BWV1007/bwv1007/bwv1007-lys/bwv1007_gigue.ly",
+    "sha256": "dee27289ec491adeb17a61f97754a75cac911b00657f0f8cc642da6253e85a98",
+    "status": 200
+  },
+  {
+    "key": "sor60_1",
+    "url": "https://raw.githubusercontent.com/MutopiaProject/MutopiaProject/master/ftp/SorF/O60/sor_op60-01/sor_op60-01.ly",
+    "sha256": "49ebb9d7ab7c208dec8e98546df34c3efe0cff02aa8a752db816c6ff7c949e9b",
+    "status": 200,
+    "rightsLines": [
+      "copyright         = \"Creative Commons Attribution-ShareAlike 2.5\"",
+      "maintainer        = \"Fabrice De Volder\""
+    ]
+  },
+  {
+    "key": "sor60_2",
+    "url": "https://raw.githubusercontent.com/MutopiaProject/MutopiaProject/master/ftp/SorF/O60/sor_op60-02/sor_op60-02.ly",
+    "sha256": "433550e4f1582924c0bd2ee308071944613697cecc276d24caffcc9680fdd3af",
+    "status": 200,
+    "rightsLines": [
+      "copyright         = \"Creative Commons Attribution-ShareAlike 2.5\"",
+      "maintainer        = \"Fabrice De Volder\""
+    ]
+  },
+  {
+    "key": "sor60_3",
+    "url": "https://raw.githubusercontent.com/MutopiaProject/MutopiaProject/master/ftp/SorF/O60/sor_op60-03/sor_op60-03.ly",
+    "sha256": "2c1b687c5021d181390737fc396f47efea5054fb7fcef413187bb2ab7f45279d",
+    "status": 200,
+    "rightsLines": [
+      "copyright         = \"Creative Commons Attribution-ShareAlike 3.0\"",
+      "maintainer        = \"Fabrice De Volder\""
+    ]
+  },
+  {
+    "key": "sor60_4",
+    "url": "https://raw.githubusercontent.com/MutopiaProject/MutopiaProject/master/ftp/SorF/O60/sor_op60-04/sor_op60-04.ly",
+    "sha256": "0e8ce73b34a2cf261e8d25587bcf2a9670d6563d816ed0bf156f711b9e6155fa",
+    "status": 200,
+    "rightsLines": [
+      "copyright         = \"Creative Commons Attribution-ShareAlike 2.5\"",
+      "maintainer        = \"Fabrice De Volder\""
+    ]
+  },
+  {
+    "key": "sor60_5",
+    "url": "https://raw.githubusercontent.com/MutopiaProject/MutopiaProject/master/ftp/SorF/O60/sor_op60-05/sor_op60-05.ly",
+    "sha256": "7f1a8652268cb535c4a7dc2d2caf9a6464e5c80e85a83d61602de441cb653ab6",
+    "status": 200,
+    "rightsLines": [
+      "copyright         = \"Creative Commons Attribution-ShareAlike 3.0\"",
+      "maintainer        = \"Fabrice De Volder\""
+    ]
+  },
+  {
+    "key": "sor60_12",
+    "url": "https://raw.githubusercontent.com/MutopiaProject/MutopiaProject/master/ftp/SorF/O60/sor_op60-12/sor_op60-12.ly",
+    "sha256": "04e0a2114946804b7b228faa8a2ec4fabbf92f59bdeedeb1d4406b252ef2dcd6",
+    "status": 200,
+    "rightsLines": [
+      "copyright = \"Creative Commons Attribution-ShareAlike 3.0\"",
+      "maintainer = \"Hajo Dezelski\""
+    ]
+  },
+  {
+    "key": "sor6_8",
+    "url": "https://raw.githubusercontent.com/MutopiaProject/MutopiaProject/master/ftp/SorF/O6/sorf-op6n08/sorf-op6n08.ly",
+    "sha256": "30fa44b57f03d234af7febf6b862b055a874d97f3dc17c1ed5d385c30fc2ca88",
+    "status": 200,
+    "rightsLines": [
+      "license = \"Creative Commons Attribution-ShareAlike 4.0\"",
+      "maintainer = \"Glen Larsen\""
+    ]
+  },
+  {
+    "key": "menuet1007",
+    "url": "https://raw.githubusercontent.com/MutopiaProject/MutopiaProject/master/ftp/BachJS/BWV1007/bwv1007/bwv1007-lys/bwv1007_menuet_i.ly",
+    "sha256": "adca3042dacb74b66a5aa326a64d900cd5f2ce0f5f4b97dba615dc72f65c8ab9",
+    "status": 200,
+    "rightsLines": []
+  },
+  {
+    "key": "menuet2_1007",
+    "url": "https://raw.githubusercontent.com/MutopiaProject/MutopiaProject/master/ftp/BachJS/BWV1007/bwv1007/bwv1007-lys/bwv1007_menuet_ii.ly",
+    "sha256": "55a8faba065e307c0532dab796d1be0d8ba6c799b715530c95d86870d9dfc054",
+    "status": 200,
+    "rightsLines": []
+  },
+  {
+    "key": "sor35_22",
+    "url": "https://raw.githubusercontent.com/MutopiaProject/MutopiaProject/master/ftp/SorF/O35/sorf_op35_no22/sorf_op35_no22.ly",
+    "sha256": "a2dfb39a40b2dd8b406cce4894af20dcd5e5312e815825170e2fbec40c5ca217",
+    "status": 200,
+    "rightsLines": [
+      "copyright = \"Creative Commons Attribution-ShareAlike 3.0\"",
+      "maintainer = \"Glen Larsen\""
+    ]
+  },
+  {
+    "key": "sor35_17",
+    "url": "https://raw.githubusercontent.com/MutopiaProject/MutopiaProject/master/ftp/SorF/O35/sorf_op35_no17/sorf_op35_no17.ly",
+    "sha256": "bdf53de336c46197d966f71a4803fcda256658f67902b74ee01499a308772da0",
+    "status": 200,
+    "rightsLines": [
+      "license = \"Creative Commons Attribution-ShareAlike 4.0\"",
+      "maintainer = \"Glen Larsen\""
+    ]
+  },
+  {
+    "key": "sor6_11",
+    "url": "https://raw.githubusercontent.com/MutopiaProject/MutopiaProject/master/ftp/SorF/O6/sorf-op6n11/sorf-op6n11.ly",
+    "sha256": "93622d182c127a32da2dd138884f87b8e4b70d6ba67b2f3969c423bc0fc4a421",
+    "status": 200,
+    "rightsLines": [
+      "license = \"Creative Commons Attribution-ShareAlike 4.0\"",
+      "maintainer = \"Glen Larsen\""
+    ]
+  },
+  {
+    "key": "bourree1009",
+    "url": "https://raw.githubusercontent.com/MutopiaProject/MutopiaProject/master/ftp/BachJS/BWV1009/cellosuite3/cellosuite3-lys/cellosuite3_5_bourree.ly",
+    "sha256": "f6131634e562cf40048d173ffd8494501c4af7557016f21c3ee3079db8fd2f21",
+    "status": 200,
+    "rightsLines": []
+  },
+  {
+    "key": "sor60_8",
+    "url": "https://raw.githubusercontent.com/MutopiaProject/MutopiaProject/master/ftp/SorF/O60/sor_op60-08/sor_op60-08.ly",
+    "sha256": "eda35161c036c7972a505acf092c6870ceedba004f8b495666b8893fa447f20b",
+    "status": 200,
+    "rightsLines": [
+      "copyright = \"Creative Commons Attribution-ShareAlike 3.0\"",
+      "maintainer = \"Hajo Dezelski\""
+    ]
+  },
+  {
+    "key": "sor60_9",
+    "url": "https://raw.githubusercontent.com/MutopiaProject/MutopiaProject/master/ftp/SorF/O60/sor_op60-09/sor_op60-09.ly",
+    "sha256": "2f8ad876c0a3abb999c761acbfcae9818349289e30cf0a6c78aa7f1099c9ae81",
+    "status": 200,
+    "rightsLines": [
+      "copyright = \"Creative Commons Attribution-ShareAlike 3.0\"",
+      "maintainer = \"Hajo Dezelski\""
+    ]
+  },
+  {
+    "key": "sor60_10",
+    "url": "https://raw.githubusercontent.com/MutopiaProject/MutopiaProject/master/ftp/SorF/O60/sor_op60-10/sor_op60-10.ly",
+    "sha256": "311c69c0d93c39de490e33b19ea880ed90a1c77f91b3d9fffaa22cca685b6bbc",
+    "status": 200,
+    "rightsLines": [
+      "copyright = \"Creative Commons Attribution-ShareAlike 3.0\"",
+      "maintainer = \"Hajo Dezelski\""
+    ]
+  },
+  {
+    "key": "bourree2_1009",
+    "url": "https://raw.githubusercontent.com/MutopiaProject/MutopiaProject/master/ftp/BachJS/BWV1009/cellosuite3/cellosuite3-lys/cellosuite3_5_bourree.ly",
+    "sha256": "f6131634e562cf40048d173ffd8494501c4af7557016f21c3ee3079db8fd2f21",
+    "status": 200,
+    "rightsLines": []
+  },
+  {
+    "key": "sor1_1",
+    "url": "https://raw.githubusercontent.com/MutopiaProject/MutopiaProject/master/ftp/SorF/O1/sor_op1_1/sor_op1_1.ly",
+    "sha256": "38a179540a0b6568704073abdee196a4eea68a78e7a3894545624fa6b0a22215",
+    "status": 200,
+    "rightsLines": [
+      "license = \"Creative Commons Attribution-ShareAlike 4.0\"",
+      "maintainer = \"Mark Van den Borre\""
+    ]
+  },
+  {
+    "key": "sor1_2",
+    "url": "https://raw.githubusercontent.com/MutopiaProject/MutopiaProject/master/ftp/SorF/O1/sor_op1_2/sor_op1_2.ly",
+    "sha256": "109e3abbcdd31e3eb19ff6c7ffbfb56927c0044e9f93edbb69751244ea4f4ad1",
+    "status": 200,
+    "rightsLines": [
+      "license = \"Creative Commons Attribution-ShareAlike 4.0\"",
+      "maintainer = \"Mark Van den Borre\""
+    ]
+  },
+  {
+    "key": "sor1_6",
+    "url": "https://raw.githubusercontent.com/MutopiaProject/MutopiaProject/master/ftp/SorF/O1/sor_op_1_6/sor_op_1_6.ly",
+    "sha256": "4e8492532d86f12d063c99a85f4e0bb7a3a2364f977f29fba075f16beffa3e7a",
+    "status": 200,
+    "rightsLines": [
+      "copyright = \"Creative Commons Attribution-ShareAlike 3.0\"",
+      "maintainer = \"Mark Van den Borre\""
+    ]
+  },
+  {
+    "key": "bwv1007_header",
+    "url": "https://raw.githubusercontent.com/MutopiaProject/MutopiaProject/master/ftp/BachJS/BWV1007/bwv1007/bwv1007-lys/header.ily",
+    "status": 200,
+    "sha256": "a34148a41096291a39b45e1ab2d73db9bf057b178468e92d8659d176d045e056",
+    "matchesVendored": true
+  },
+  {
+    "key": "bwv1009_header",
+    "url": "https://raw.githubusercontent.com/MutopiaProject/MutopiaProject/master/ftp/BachJS/BWV1009/cellosuite3/cellosuite3-lys/header.ily",
+    "status": 200,
+    "sha256": "a409d8133b17c315bae44daebe8851bf8618dafd49a9575206da3cbdb5328d3c",
+    "matchesVendored": true
+  }
+]

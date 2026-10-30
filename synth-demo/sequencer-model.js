@@ -19,7 +19,12 @@ const SequencerModel=(()=>{
    let id=typeof n.id==='string'&&n.id.length<100?n.id:uid('note');if(ids.has(id))id=uid('note');ids.add(id);
    return {id,beat,pitch,duration,velocity};
   }).sort((a,b)=>a.beat-b.beat||a.pitch-b.pitch);
-  const source=input.source&&typeof input.source==='object'?Object.fromEntries(['title','key','credit','license','url','licenseUrl','modifications','pitch','terms'].filter(k=>typeof input.source[k]==='string').map(k=>[k,input.source[k].slice(0,500)])):null;
+  const source=input.source&&typeof input.source==='object'?Object.fromEntries(['title','key','credit','license','url','licenseUrl','modifications','pitch','terms','endingStatus'].filter(k=>typeof input.source[k]==='string').map(k=>[k,input.source[k].slice(0,500)])):null;
+  if(source&&input.source.requiredTuning!==undefined){
+   const tuning=input.source.requiredTuning;
+   if(!tuning||tuning.instrument!=='guitar'||!Array.isArray(tuning.pitchesLowToHigh)||tuning.pitchesLowToHigh.length!==6||!tuning.pitchesLowToHigh.every((p,i,a)=>Number.isInteger(p)&&p>=21&&p<=108&&(!i||p>a[i-1]))||tuning.automaticallyApplied!==false)throw new Error('必要な調弦の形式が正しくありません（自動適用は非対応）');
+   source.requiredTuning={instrument:'guitar',pitchesLowToHigh:[...tuning.pitchesLowToHigh],automaticallyApplied:false};
+  }
   if(input.endBeat!==undefined&&(!Number.isFinite(input.endBeat)||input.endBeat<0||input.endBeat>MAX_BEATS))throw new Error('曲の終端が対応範囲外です');
   // Preserve the explicit score marker; playback/editor extent also includes current note ends.
   const endBeat=input.endBeat;

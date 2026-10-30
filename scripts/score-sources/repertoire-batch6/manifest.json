@@ -1,0 +1,202 @@
+[
+  {
+    "key": "tarrega_adelita",
+    "file": "adelita",
+    "path": "TarregaF/adelita",
+    "title": "Francisco Tárrega · Adelita — Lento",
+    "option": "Adelita（アデリータ） · レント（反復・D.C.あり）",
+    "bpm": 70,
+    "meter": [
+      3,
+      4
+    ],
+    "writtenBars": 16,
+    "beats": 120,
+    "sourceId": 808,
+    "credit": "Francisco Tárrega / Stewart Holmes / Mutopia (2006)",
+    "license": "CC BY-SA 2.5",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.5/",
+    "form": [
+      [
+        0,
+        24
+      ],
+      [
+        0,
+        24
+      ],
+      [
+        24,
+        48
+      ],
+      [
+        24,
+        48
+      ],
+      [
+        0,
+        24
+      ]
+    ],
+    "formName": "A A B B A: both repeat signs; D.C. al Fine returns through bar8 without repeating A again.",
+    "source": {
+      "credit": "Francisco Tárrega / Stewart Holmes / Mutopia (2006)",
+      "license": "CC BY-SA 2.5",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.5/",
+      "url": "https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=808",
+      "modifications": "Official convert-ly and LilyPond 2.24.4, separate MIDI voices; all overlaps/grace timing retained. A A B B A: both repeat signs; D.C. al Fine returns through bar8 without repeating A again. Source MIDI tempo used as fixed audition tempo; expressive timing not modeled. No pitch shift. App articulation separate.",
+      "pitch": "Original guitar sounding pitches, MIDI shift 0; no scordatura or physical settings applied. Not a verified string-choice or fingering simulation.",
+      "terms": "Derived score data: CC BY-SA 2.5; retain attribution, license and modification notice; share adaptations under the same license. Application code separate.",
+      "endingStatus": "終端確認済み（反復・戻りと最後の休符を含む）。"
+    },
+    "rawNotes": 131,
+    "notes": 313,
+    "noteEndBeats": 119.0,
+    "pitchRange": [
+      40,
+      76
+    ],
+    "performedBars": 40.0,
+    "lilypondUrl": "https://raw.githubusercontent.com/MutopiaProject/MutopiaProject/master/ftp/TarregaF/adelita/adelita.ly",
+    "sha256": {
+      "adelita.ly": "4813dec9c4d97f36d8db88968f2e82276839ec741e8f66bf23b936f581c9dc21",
+      "adelita.midi": "95b7779876ae6f75f42e11f6e0e139488793d21cb85aeef73d3a8ec3aa16caa1"
+    }
+  },
+  {
+    "key": "aguado3_1",
+    "file": "aguado-op03n01",
+    "path": "AguadoD/O3/aguado-op03n01",
+    "title": "Dionisio Aguado · Op.3 No.1 — Valse",
+    "option": "Op.3 第1番 · Valse（ワルツ）（反復・D.C.あり）",
+    "bpm": 90,
+    "meter": [
+      3,
+      8
+    ],
+    "writtenBars": 48,
+    "beats": 168,
+    "sourceId": 2041,
+    "credit": "Dionisio Aguado / Glen Larsen / Mutopia (2016)",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "form": [
+      [
+        0,
+        12
+      ],
+      [
+        0,
+        12
+      ],
+      [
+        12,
+        24
+      ],
+      [
+        12,
+        24
+      ],
+      [
+        24,
+        48
+      ],
+      [
+        24,
+        48
+      ],
+      [
+        48,
+        72
+      ],
+      [
+        48,
+        72
+      ],
+      [
+        0,
+        24
+      ]
+    ],
+    "formName": "A A B B C C D D A B: four volta sections; D.C. returns through Fine at bar16 with return repeats omitted.",
+    "source": {
+      "credit": "Dionisio Aguado / Glen Larsen / Mutopia (2016)",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "url": "https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=2041",
+      "modifications": "Official convert-ly and LilyPond 2.24.4, separate MIDI voices; all overlaps/grace timing retained. A A B B C C D D A B: four volta sections; D.C. returns through Fine at bar16 with return repeats omitted. Source MIDI tempo used as fixed audition tempo; expressive timing not modeled. No pitch shift. App articulation separate.",
+      "pitch": "Original guitar sounding pitches, MIDI shift 0; no scordatura or physical settings applied. Not a verified string-choice or fingering simulation.",
+      "terms": "Derived score data: CC BY-SA 4.0; retain attribution, license and modification notice; share adaptations under the same license. Application code separate.",
+      "endingStatus": "終端確認済み（反復・戻りと最後の休符を含む）。"
+    },
+    "rawNotes": 325,
+    "notes": 763,
+    "noteEndBeats": 167.5,
+    "pitchRange": [
+      40,
+      72
+    ],
+    "performedBars": 112.0,
+    "lilypondUrl": "https://raw.githubusercontent.com/MutopiaProject/MutopiaProject/master/ftp/AguadoD/O3/aguado-op03n01/aguado-op03n01.ly",
+    "sha256": {
+      "aguado-op03n01.ly": "fad09a204ecbcd34c6c31c3c898de1564fd68fc320529632328fa11660347e15",
+      "aguado-op03n01.midi": "7c47e3cfdeafdb0a89562e7cc333e17d5caa34581ec3dbb6d59266410f958859"
+    }
+  },
+  {
+    "key": "carcassi60_2",
+    "file": "carcassi-op60-02",
+    "path": "CarcassiM/O60/carcassi-op60-02",
+    "title": "Matteo Carcassi · Op.60 No.2 — Moderato con espressivo",
+    "option": "Op.60 第2番 · モデラート（後半反復あり）",
+    "bpm": 100,
+    "meter": [
+      4,
+      4
+    ],
+    "writtenBars": 24,
+    "beats": 160,
+    "sourceId": 1853,
+    "credit": "Matteo Carcassi / Glen Larsen / Mutopia (2013)",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/",
+    "form": [
+      [
+        0,
+        32
+      ],
+      [
+        32,
+        96
+      ],
+      [
+        32,
+        96
+      ]
+    ],
+    "formName": "A B B: eight-bar opening, then sixteen-bar second section repeated.",
+    "source": {
+      "credit": "Matteo Carcassi / Glen Larsen / Mutopia (2013)",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "url": "https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=1853",
+      "modifications": "Official convert-ly and LilyPond 2.24.4, separate MIDI voices; all overlaps/grace timing retained. A B B: eight-bar opening, then sixteen-bar second section repeated. Source MIDI tempo used as fixed audition tempo; expressive timing not modeled. No pitch shift. App articulation separate.",
+      "pitch": "Original guitar sounding pitches, MIDI shift 0; no scordatura or physical settings applied. Not a verified string-choice or fingering simulation.",
+      "terms": "Derived score data: CC BY-SA 3.0; retain attribution, license and modification notice; share adaptations under the same license. Application code separate.",
+      "endingStatus": "終端確認済み（反復・戻りと最後の休符を含む）。"
+    },
+    "rawNotes": 413,
+    "notes": 689,
+    "noteEndBeats": 159.0,
+    "pitchRange": [
+      40,
+      77
+    ],
+    "performedBars": 40.0,
+    "lilypondUrl": "https://raw.githubusercontent.com/MutopiaProject/MutopiaProject/master/ftp/CarcassiM/O60/carcassi-op60-02/carcassi-op60-02.ly",
+    "sha256": {
+      "carcassi-op60-02.ly": "cb7ea279ee2edd10f5962e5baa98fdf8a9f722a32cacd89c60919b48928447e7",
+      "carcassi-op60-02.midi": "0e91e9d8e6fc28039abb2c27d969b6060111c65517bce9cf644ce24723760152"
+    }
+  }
+]
