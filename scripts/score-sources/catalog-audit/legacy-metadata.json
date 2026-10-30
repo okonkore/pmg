@@ -1,0 +1,492 @@
+[
+  {
+    "key": "gigue1012",
+    "source": {
+      "credit": "J. S. Bach / Hajo Dezelski / Mutopia",
+      "license": "CC BY-SA 3.0",
+      "url": "https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=1508",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "endingStatus": "終端未確認：原譜と既存データの差を監査中。",
+      "pitch": "Original cello sounding pitch, not a guitar arrangement. Some movements include pitches below standard guitar E2; no verified guitar fingering or string allocation.",
+      "terms": "Derived score data: CC BY-SA 3.0; retain attribution and modification notice; share adaptations under the same license. Application code separate.",
+      "modifications": "Source MIDI converted to quarter-note onset/pitch/duration events; initial setup silence removed. Existing sounding pitches retained. Written sections played once; no automatic da capo. App audition tempo and articulation are separate; this audit preserves existing note data. See endingStatus for unresolved ending verification."
+    },
+    "verification": {
+      "key": "gigue1012",
+      "compiled": true,
+      "warnings": [],
+      "eventsEqual": false,
+      "count": 655,
+      "end": 205.0,
+      "noteEnd": 204.5
+    },
+    "endingEvidence": "Source recompilation shortens three staccato notes; existing notes retained.",
+    "sourceUrl": "https://raw.githubusercontent.com/MutopiaProject/MutopiaProject/master/ftp/BachJS/BWV1012/bwv-1012-6/bwv-1012-6.ly",
+    "sourceSha256": "539915578616c419f3766e6ab9b229d7f0fb11880a51e7c8c49b1d59c36d4331"
+  },
+  {
+    "key": "courante1012",
+    "source": {
+      "credit": "J. S. Bach / Hajo Dezelski / Mutopia",
+      "license": "CC BY-SA 3.0",
+      "url": "https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=1504",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "endingStatus": "終端確認済み（出典版の休符・スペーサーを含む）。",
+      "pitch": "Original cello sounding pitch, not a guitar arrangement. Some movements include pitches below standard guitar E2; no verified guitar fingering or string allocation.",
+      "terms": "Derived score data: CC BY-SA 3.0; retain attribution and modification notice; share adaptations under the same license. Application code separate.",
+      "modifications": "Source MIDI converted to quarter-note onset/pitch/duration events; initial setup silence removed. Existing sounding pitches retained. Written sections played once; no automatic da capo. App audition tempo and articulation are separate; this audit preserves existing note data. See endingStatus for unresolved ending verification."
+    },
+    "verification": {
+      "key": "courante1012",
+      "compiled": true,
+      "warnings": [],
+      "eventsEqual": true,
+      "count": 639,
+      "end": 217.0,
+      "noteEnd": 216.0
+    },
+    "endingEvidence": "72 numbered bars ×3 plus two source half-beat pickups; final d2 r8 s8. Retains edition encoding.",
+    "sourceUrl": "https://raw.githubusercontent.com/MutopiaProject/MutopiaProject/master/ftp/BachJS/BWV1012/bwv-1012-3/bwv-1012-3.ly",
+    "sourceSha256": "685bf76192a3acd26babb4f05b459d7f9db25ded5398176b5b98855033b04806",
+    "endBeat": 217.0
+  },
+  {
+    "key": "courante",
+    "source": {
+      "credit": "J. S. Bach / Andreas Scherer / Mutopia",
+      "license": "Public Domain",
+      "url": "https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=517",
+      "licenseUrl": "https://creativecommons.org/licenses/publicdomain/",
+      "endingStatus": "終端確認済み（出典版の休符・スペーサーを含む）。",
+      "pitch": "Original cello sounding pitch, not a guitar arrangement. Some movements include pitches below standard guitar E2; no verified guitar fingering or string allocation.",
+      "terms": "Score edition placed in the public domain by its typesetter.",
+      "modifications": "Source MIDI converted to quarter-note onset/pitch/duration events; initial setup silence removed. Existing sounding pitches retained. Written sections played once; no automatic da capo. App audition tempo and articulation are separate; this audit preserves existing note data. See endingStatus for unresolved ending verification."
+    },
+    "verification": {
+      "key": "courante",
+      "compiled": true,
+      "warnings": [],
+      "eventsEqual": true,
+      "count": 408,
+      "end": 126.0,
+      "noteEnd": 125.5
+    },
+    "endingEvidence": "42 bars ×3 with complementary eighth pickup/ending; final half-note chord then eighth rest.",
+    "sourceUrl": "https://raw.githubusercontent.com/MutopiaProject/MutopiaProject/master/ftp/BachJS/BWV1007/bwv1007/bwv1007-lys/bwv1007_courante.ly",
+    "sourceSha256": "b40b1823b13063716b875cdc8f12af9c87f591dcf555d64112d21f432d5655e2",
+    "endBeat": 126.0
+  },
+  {
+    "key": "prelude1012",
+    "source": {
+      "credit": "J. S. Bach / Hajo Dezelski / Mutopia",
+      "license": "CC BY-SA 3.0",
+      "url": "https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=1494",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "endingStatus": "終端確認済み（出典版の休符・スペーサーを含む）。",
+      "pitch": "Original cello sounding pitch, not a guitar arrangement. Some movements include pitches below standard guitar E2; no verified guitar fingering or string allocation.",
+      "terms": "Derived score data: CC BY-SA 3.0; retain attribution and modification notice; share adaptations under the same license. Application code separate.",
+      "modifications": "Source MIDI converted to quarter-note onset/pitch/duration events; initial setup silence removed. Existing sounding pitches retained. Written sections played once; no automatic da capo. App audition tempo and articulation are separate; this audit preserves existing note data. See endingStatus for unresolved ending verification."
+    },
+    "verification": {
+      "key": "prelude1012",
+      "compiled": true,
+      "warnings": [],
+      "eventsEqual": true,
+      "count": 1349,
+      "end": 624.0,
+      "noteEnd": 623.5
+    },
+    "endingEvidence": "104 bars ×6; final D4 quarter then source s8, total624.",
+    "sourceUrl": "https://raw.githubusercontent.com/MutopiaProject/MutopiaProject/master/ftp/BachJS/BWV1012/bwv-1012-1/bwv-1012-1.ly",
+    "sourceSha256": "5db9403569d328330c299ddc76a611b72a1a117624a7fda0f1c14ff3b6588957",
+    "endBeat": 624.0
+  },
+  {
+    "key": "prelude",
+    "source": {
+      "credit": "J. S. Bach / Andreas Scherer / Mutopia",
+      "license": "Public Domain",
+      "url": "https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=517",
+      "licenseUrl": "https://creativecommons.org/licenses/publicdomain/",
+      "endingStatus": "終端確認済み（出典版の休符・スペーサーを含む）。",
+      "pitch": "Original cello sounding pitch, not a guitar arrangement. Some movements include pitches below standard guitar E2; no verified guitar fingering or string allocation.",
+      "terms": "Score edition placed in the public domain by its typesetter.",
+      "modifications": "Source MIDI converted to quarter-note onset/pitch/duration events; initial setup silence removed. Existing sounding pitches retained. Written sections played once; no automatic da capo. App audition tempo and articulation are separate; this audit preserves existing note data. See endingStatus for unresolved ending verification."
+    },
+    "verification": {
+      "key": "prelude",
+      "compiled": true,
+      "warnings": [],
+      "eventsEqual": true,
+      "count": 656,
+      "end": 168.0,
+      "noteEnd": 168.0
+    },
+    "endingEvidence": "42 bars ×4; final whole-note chord, no final rest.",
+    "sourceUrl": "https://raw.githubusercontent.com/MutopiaProject/MutopiaProject/master/ftp/BachJS/BWV1007/bwv1007/bwv1007-lys/bwv1007_prelude.ly",
+    "sourceSha256": "90881f059385ffd2d141001360f5d3a4cee4249da6bab1f92ce752e8fb909b15",
+    "endBeat": 168.0
+  },
+  {
+    "key": "gavotte",
+    "source": {
+      "credit": "J. S. Bach / Hajo Dezelski / Mutopia",
+      "license": "CC BY-SA 3.0",
+      "url": "https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=1506",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "endingStatus": "終端確認済み（出典版の休符・スペーサーを含む）。",
+      "pitch": "Original cello sounding pitch, not a guitar arrangement. Some movements include pitches below standard guitar E2; no verified guitar fingering or string allocation.",
+      "terms": "Derived score data: CC BY-SA 3.0; retain attribution and modification notice; share adaptations under the same license. Application code separate.",
+      "modifications": "Source MIDI converted to quarter-note onset/pitch/duration events; initial setup silence removed. Existing sounding pitches retained. Written sections played once; no automatic da capo. App audition tempo and articulation are separate; this audit preserves existing note data. See endingStatus for unresolved ending verification."
+    },
+    "verification": {
+      "key": "gavotte",
+      "compiled": true,
+      "warnings": [],
+      "eventsEqual": true,
+      "count": 258,
+      "end": 116.0,
+      "noteEnd": 114.0
+    },
+    "endingEvidence": "28 numbered bars ×4 plus two2-beat pickups; final chord through114, source skip through116. Retains edition encoding.",
+    "sourceUrl": "https://raw.githubusercontent.com/MutopiaProject/MutopiaProject/master/ftp/BachJS/BWV1012/bwv-1012-5-1/bwv-1012-5-1.ly",
+    "sourceSha256": "8d2615a9f5a8abd953128aa6b6599aa2192274a761a8252078e64e05909ed96b",
+    "endBeat": 116.0
+  },
+  {
+    "key": "allemande",
+    "source": {
+      "credit": "J. S. Bach / Andreas Scherer / Mutopia",
+      "license": "Public Domain",
+      "url": "https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=517",
+      "licenseUrl": "https://creativecommons.org/licenses/publicdomain/",
+      "endingStatus": "終端確認済み（出典版の休符・スペーサーを含む）。",
+      "pitch": "Original cello sounding pitch, not a guitar arrangement. Some movements include pitches below standard guitar E2; no verified guitar fingering or string allocation.",
+      "terms": "Score edition placed in the public domain by its typesetter.",
+      "modifications": "Source MIDI converted to quarter-note onset/pitch/duration events; initial setup silence removed. Existing sounding pitches retained. Written sections played once; no automatic da capo. App audition tempo and articulation are separate; this audit preserves existing note data. See endingStatus for unresolved ending verification."
+    },
+    "verification": {
+      "key": "allemande",
+      "compiled": true,
+      "warnings": [],
+      "eventsEqual": true,
+      "count": 474,
+      "end": 128.0,
+      "noteEnd": 128.0
+    },
+    "endingEvidence": "32 bars ×4 with complementary sixteenth pickup/ending; no final rest.",
+    "sourceUrl": "https://raw.githubusercontent.com/MutopiaProject/MutopiaProject/master/ftp/BachJS/BWV1007/bwv1007/bwv1007-lys/bwv1007_allemande.ly",
+    "sourceSha256": "c12f7750a5c4b94f1bb17a1ae2b879bbba448710905bc395606b3e28f0764eea",
+    "endBeat": 128.0
+  },
+  {
+    "key": "gigue",
+    "source": {
+      "credit": "J. S. Bach / Andreas Scherer / Mutopia",
+      "license": "Public Domain",
+      "url": "https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=517",
+      "licenseUrl": "https://creativecommons.org/licenses/publicdomain/",
+      "endingStatus": "終端未確認：原譜と既存データの差を監査中。",
+      "pitch": "Original cello sounding pitch, not a guitar arrangement. Some movements include pitches below standard guitar E2; no verified guitar fingering or string allocation.",
+      "terms": "Score edition placed in the public domain by its typesetter.",
+      "modifications": "Source MIDI converted to quarter-note onset/pitch/duration events; initial setup silence removed. Existing sounding pitches retained. Written sections played once; no automatic da capo. App audition tempo and articulation are separate; this audit preserves existing note data. See endingStatus for unresolved ending verification."
+    },
+    "verification": {
+      "key": "gigue",
+      "compiled": true,
+      "warnings": [],
+      "eventsEqual": false,
+      "count": 213,
+      "end": 102.0,
+      "noteEnd": 102.0
+    },
+    "endingEvidence": "Source recompilation shortens three staccato notes; existing notes retained.",
+    "sourceUrl": "https://raw.githubusercontent.com/MutopiaProject/MutopiaProject/master/ftp/BachJS/BWV1007/bwv1007/bwv1007-lys/bwv1007_gigue.ly",
+    "sourceSha256": "dee27289ec491adeb17a61f97754a75cac911b00657f0f8cc642da6253e85a98"
+  },
+  {
+    "key": "allemande1012",
+    "source": {
+      "credit": "J. S. Bach / Hajo Dezelski / Mutopia",
+      "license": "CC BY-SA 3.0",
+      "url": "https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=1503",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "endingStatus": "終端確認済み（出典版の休符・スペーサーを含む）。",
+      "pitch": "Original cello sounding pitch, not a guitar arrangement. Some movements include pitches below standard guitar E2; no verified guitar fingering or string allocation.",
+      "terms": "Derived score data: CC BY-SA 3.0; retain attribution and modification notice; share adaptations under the same license. Application code separate.",
+      "modifications": "Source MIDI converted to quarter-note onset/pitch/duration events; initial setup silence removed. Existing sounding pitches retained. Written sections played once; no automatic da capo. App audition tempo and articulation are separate; this audit preserves existing note data. See endingStatus for unresolved ending verification."
+    },
+    "verification": {
+      "key": "allemande1012",
+      "compiled": true,
+      "warnings": [
+        "/tmp/catalog-compile/allemande1012.ly:55:113: warning: already have a beam"
+      ],
+      "eventsEqual": true,
+      "count": 541,
+      "end": 80.5,
+      "noteEnd": 80.25
+    },
+    "endingEvidence": "20 numbered bars ×4 plus two source quarter-beat pickups; final d,8. s16. Retains edition encoding.",
+    "sourceUrl": "https://raw.githubusercontent.com/MutopiaProject/MutopiaProject/master/ftp/BachJS/BWV1012/bwv-1012-2/bwv-1012-2.ly",
+    "sourceSha256": "bbc1eb4ce4620a90eae28d42b9bd05e60e2f50831083fcf5e78efaab91803624",
+    "endBeat": 80.5
+  },
+  {
+    "key": "sarabande",
+    "source": {
+      "credit": "J. S. Bach / Andreas Scherer / Mutopia",
+      "license": "Public Domain",
+      "url": "https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=517",
+      "licenseUrl": "https://creativecommons.org/licenses/publicdomain/",
+      "endingStatus": "終端確認済み（出典版の休符・スペーサーを含む）。",
+      "pitch": "Original cello sounding pitch, not a guitar arrangement. Some movements include pitches below standard guitar E2; no verified guitar fingering or string allocation.",
+      "terms": "Score edition placed in the public domain by its typesetter.",
+      "modifications": "Source MIDI converted to quarter-note onset/pitch/duration events; initial setup silence removed. Existing sounding pitches retained. Written sections played once; no automatic da capo. App audition tempo and articulation are separate; this audit preserves existing note data. See endingStatus for unresolved ending verification."
+    },
+    "verification": {
+      "key": "sarabande",
+      "compiled": true,
+      "warnings": [],
+      "eventsEqual": true,
+      "count": 154,
+      "end": 48.0,
+      "noteEnd": 48.0
+    },
+    "endingEvidence": "16 bars ×3; final G3/G2 quarter notes, no final rest.",
+    "sourceUrl": "https://raw.githubusercontent.com/MutopiaProject/MutopiaProject/master/ftp/BachJS/BWV1007/bwv1007/bwv1007-lys/bwv1007_sarabande.ly",
+    "sourceSha256": "21d526f194a920d7db7bf9f7d69d42912b3046c1e36c0d16fb23e0e7fe778c99",
+    "endBeat": 48.0
+  },
+  {
+    "key": "gavotte2",
+    "source": {
+      "credit": "J. S. Bach / Hajo Dezelski / Mutopia",
+      "license": "CC BY-SA 3.0",
+      "url": "https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=1507",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "endingStatus": "終端未確認：原譜と既存データの差を監査中。",
+      "pitch": "Original cello sounding pitch, not a guitar arrangement. Some movements include pitches below standard guitar E2; no verified guitar fingering or string allocation.",
+      "terms": "Derived score data: CC BY-SA 3.0; retain attribution and modification notice; share adaptations under the same license. Application code separate.",
+      "modifications": "Source MIDI converted to quarter-note onset/pitch/duration events; initial setup silence removed. Existing sounding pitches retained. Written sections played once; no automatic da capo. App audition tempo and articulation are separate; this audit preserves existing note data. See endingStatus for unresolved ending verification."
+    },
+    "verification": {
+      "key": "gavotte2",
+      "compiled": true,
+      "warnings": [],
+      "eventsEqual": false,
+      "count": 215,
+      "end": 100.0,
+      "noteEnd": 98.0
+    },
+    "endingEvidence": "Source recompilation splits F-sharp3 at beats18 and18.5; existing tied/merged event retained.",
+    "sourceUrl": "https://raw.githubusercontent.com/MutopiaProject/MutopiaProject/master/ftp/BachJS/BWV1012/bwv-1012-5-2/bwv-1012-5-2.ly",
+    "sourceSha256": "d1af9999617bc9106ddb928bb882728c7d3bad0210a34d6095afc5c8b80d1ca1"
+  },
+  {
+    "key": "sarabande1012",
+    "source": {
+      "credit": "J. S. Bach / Hajo Dezelski / Mutopia",
+      "license": "CC BY-SA 3.0",
+      "url": "https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=1505",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "endingStatus": "終端確認済み（出典版の休符・スペーサーを含む）。",
+      "pitch": "Original cello sounding pitch, not a guitar arrangement. Some movements include pitches below standard guitar E2; no verified guitar fingering or string allocation.",
+      "terms": "Derived score data: CC BY-SA 3.0; retain attribution and modification notice; share adaptations under the same license. Application code separate.",
+      "modifications": "Source MIDI converted to quarter-note onset/pitch/duration events; initial setup silence removed. Existing sounding pitches retained. Written sections played once; no automatic da capo. App audition tempo and articulation are separate; this audit preserves existing note data. See endingStatus for unresolved ending verification."
+    },
+    "verification": {
+      "key": "sarabande1012",
+      "compiled": true,
+      "warnings": [],
+      "eventsEqual": true,
+      "count": 301,
+      "end": 192.0,
+      "noteEnd": 192.0
+    },
+    "endingEvidence": "32 bars ×6; final chord through192.",
+    "sourceUrl": "https://raw.githubusercontent.com/MutopiaProject/MutopiaProject/master/ftp/BachJS/BWV1012/bwv-1012-4/bwv-1012-4.ly",
+    "sourceSha256": "bccfccc5adbcf9c95225ab42eb6cf0149e35cb2a064efda88452681581a6a334",
+    "endBeat": 192.0
+  },
+  {
+    "key": "sor60_1",
+    "source": {
+      "credit": "Fernando Sor / Fabrice De Volder / Mutopia",
+      "license": "CC BY-SA 2.5",
+      "url": "https://www.mutopiaproject.org/ftp/SorF/O60/sor_op60-01/sor_op60-01.ly",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.5/",
+      "endingStatus": "終端確認済み（出典版の休符・スペーサーを含む）。",
+      "terms": "Derived score data: CC BY-SA 2.5; retain attribution and modification notice; share adaptations under the same license. Application code separate.",
+      "modifications": "Source MIDI converted to quarter-note onset/pitch/duration events; initial setup silence removed. Guitar sounding pitch: MIDI lowered 12 semitones. Written sections played once; no automatic da capo. App audition tempo and articulation are separate; this audit preserves existing note data. See endingStatus for unresolved ending verification."
+    },
+    "verification": {
+      "key": "sor60_1",
+      "compiled": true,
+      "warnings": [],
+      "eventsEqual": true,
+      "count": 63,
+      "end": 64.0,
+      "noteEnd": 63.0
+    },
+    "endingEvidence": "16 bars ×4; final C quarter then quarter rest.",
+    "sourceUrl": "https://raw.githubusercontent.com/MutopiaProject/MutopiaProject/master/ftp/SorF/O60/sor_op60-01/sor_op60-01.ly",
+    "sourceSha256": "49ebb9d7ab7c208dec8e98546df34c3efe0cff02aa8a752db816c6ff7c949e9b",
+    "endBeat": 64.0
+  },
+  {
+    "key": "sor60_2",
+    "source": {
+      "credit": "Fernando Sor / Fabrice De Volder / Mutopia",
+      "license": "CC BY-SA 2.5",
+      "url": "https://www.mutopiaproject.org/ftp/SorF/O60/sor_op60-02/sor_op60-02.ly",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.5/",
+      "endingStatus": "終端確認済み（出典版の休符・スペーサーを含む）。",
+      "terms": "Derived score data: CC BY-SA 2.5; retain attribution and modification notice; share adaptations under the same license. Application code separate.",
+      "modifications": "Source MIDI converted to quarter-note onset/pitch/duration events; initial setup silence removed. Guitar sounding pitch: MIDI lowered 12 semitones. Written sections played once; no automatic da capo. App audition tempo and articulation are separate; this audit preserves existing note data. See endingStatus for unresolved ending verification."
+    },
+    "verification": {
+      "key": "sor60_2",
+      "compiled": true,
+      "warnings": [],
+      "eventsEqual": true,
+      "count": 135,
+      "end": 120.0,
+      "noteEnd": 119.0
+    },
+    "endingEvidence": "40 bars ×3; final bass half-note plus quarter skip, upper voice quarter rest.",
+    "sourceUrl": "https://raw.githubusercontent.com/MutopiaProject/MutopiaProject/master/ftp/SorF/O60/sor_op60-02/sor_op60-02.ly",
+    "sourceSha256": "433550e4f1582924c0bd2ee308071944613697cecc276d24caffcc9680fdd3af",
+    "endBeat": 120.0
+  },
+  {
+    "key": "sor60_3",
+    "source": {
+      "credit": "Fernando Sor / Fabrice De Volder / Mutopia",
+      "license": "CC BY-SA 3.0",
+      "url": "https://www.mutopiaproject.org/ftp/SorF/O60/sor_op60-03/sor_op60-03.ly",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "endingStatus": "終端確認済み（出典版の休符・スペーサーを含む）。",
+      "terms": "Derived score data: CC BY-SA 3.0; retain attribution and modification notice; share adaptations under the same license. Application code separate.",
+      "modifications": "Source MIDI converted to quarter-note onset/pitch/duration events; initial setup silence removed. Existing sounding pitches retained. Written sections played once; no automatic da capo. App audition tempo and articulation are separate; this audit preserves existing note data. See endingStatus for unresolved ending verification."
+    },
+    "verification": {
+      "key": "sor60_3",
+      "compiled": true,
+      "warnings": [],
+      "eventsEqual": true,
+      "count": 115,
+      "end": 96.0,
+      "noteEnd": 95.0
+    },
+    "endingEvidence": "24 bars ×4; final C quarter then quarter rest.",
+    "sourceUrl": "https://raw.githubusercontent.com/MutopiaProject/MutopiaProject/master/ftp/SorF/O60/sor_op60-03/sor_op60-03.ly",
+    "sourceSha256": "2c1b687c5021d181390737fc396f47efea5054fb7fcef413187bb2ab7f45279d",
+    "endBeat": 96.0
+  },
+  {
+    "key": "sor60_4",
+    "source": {
+      "credit": "Fernando Sor / Fabrice De Volder / Mutopia",
+      "license": "CC BY-SA 2.5",
+      "url": "https://www.mutopiaproject.org/ftp/SorF/O60/sor_op60-04/sor_op60-04.ly",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.5/",
+      "endingStatus": "終端確認済み（出典版の休符・スペーサーを含む）。",
+      "terms": "Derived score data: CC BY-SA 2.5; retain attribution and modification notice; share adaptations under the same license. Application code separate.",
+      "modifications": "Source MIDI converted to quarter-note onset/pitch/duration events; initial setup silence removed. Existing sounding pitches retained. Written sections played once; no automatic da capo. App audition tempo and articulation are separate; this audit preserves existing note data. See endingStatus for unresolved ending verification."
+    },
+    "verification": {
+      "key": "sor60_4",
+      "compiled": true,
+      "warnings": [],
+      "eventsEqual": true,
+      "count": 107,
+      "end": 73.0,
+      "noteEnd": 72.0
+    },
+    "endingEvidence": "24 numbered bars ×3 plus1-beat pickup; final C quarter then quarter rest.",
+    "sourceUrl": "https://raw.githubusercontent.com/MutopiaProject/MutopiaProject/master/ftp/SorF/O60/sor_op60-04/sor_op60-04.ly",
+    "sourceSha256": "0e8ce73b34a2cf261e8d25587bcf2a9670d6563d816ed0bf156f711b9e6155fa",
+    "endBeat": 73.0
+  },
+  {
+    "key": "sor60_5",
+    "source": {
+      "credit": "Fernando Sor / Fabrice De Volder / Mutopia",
+      "license": "CC BY-SA 3.0",
+      "url": "https://www.mutopiaproject.org/ftp/SorF/O60/sor_op60-05/sor_op60-05.ly",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "endingStatus": "終端確認済み（出典版の休符・スペーサーを含む）。",
+      "terms": "Derived score data: CC BY-SA 3.0; retain attribution and modification notice; share adaptations under the same license. Application code separate.",
+      "modifications": "Source MIDI converted to quarter-note onset/pitch/duration events; initial setup silence removed. Existing sounding pitches retained. Written sections played once; no automatic da capo. App audition tempo and articulation are separate; this audit preserves existing note data. See endingStatus for unresolved ending verification."
+    },
+    "verification": {
+      "key": "sor60_5",
+      "compiled": true,
+      "warnings": [],
+      "eventsEqual": true,
+      "count": 211,
+      "end": 120.0,
+      "noteEnd": 119.5
+    },
+    "endingEvidence": "40 bars ×3 equivalent including complementary pickup/ending; final eighth rest.",
+    "sourceUrl": "https://raw.githubusercontent.com/MutopiaProject/MutopiaProject/master/ftp/SorF/O60/sor_op60-05/sor_op60-05.ly",
+    "sourceSha256": "7f1a8652268cb535c4a7dc2d2caf9a6464e5c80e85a83d61602de441cb653ab6",
+    "endBeat": 120.0
+  },
+  {
+    "key": "sor60_12",
+    "source": {
+      "credit": "Fernando Sor / Hajo Dezelski / Mutopia",
+      "license": "CC BY-SA 3.0",
+      "url": "https://www.mutopiaproject.org/ftp/SorF/O60/sor_op60-12/sor_op60-12.ly",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "endingStatus": "終端未確認：原譜と既存データの差を監査中。",
+      "terms": "Derived score data: CC BY-SA 3.0; retain attribution and modification notice; share adaptations under the same license. Application code separate.",
+      "modifications": "Source MIDI converted to quarter-note onset/pitch/duration events; initial setup silence removed. Existing sounding pitches retained. Both written alternate endings retained without unfolding repeats. App audition tempo and articulation are separate; this audit preserves existing note data. See endingStatus for unresolved ending verification."
+    },
+    "verification": {
+      "key": "sor60_12",
+      "compiled": true,
+      "warnings": [
+        "/tmp/catalog-compile/sor60_12.ly:43:26: warning: barcheck failed at: 3/8",
+        "/tmp/catalog-compile/sor60_12.ly:84:35: warning: barcheck failed at: 3/8",
+        "/tmp/catalog-compile/sor60_12.ly:43:26: warning: barcheck failed at: 3/8",
+        "/tmp/catalog-compile/sor60_12.ly:84:35: warning: barcheck failed at: 3/8"
+      ],
+      "eventsEqual": true,
+      "count": 149,
+      "end": 50.5,
+      "noteEnd": 50.0
+    },
+    "endingEvidence": "Source bar checks fail at3/8 near alternate endings; ending alignment requires further review.",
+    "sourceUrl": "https://raw.githubusercontent.com/MutopiaProject/MutopiaProject/master/ftp/SorF/O60/sor_op60-12/sor_op60-12.ly",
+    "sourceSha256": "04e0a2114946804b7b228faa8a2ec4fabbf92f59bdeedeb1d4406b252ef2dcd6"
+  },
+  {
+    "key": "sor6_8",
+    "source": {
+      "credit": "Fernando Sor / Glen Larsen / Mutopia",
+      "license": "CC BY-SA 4.0",
+      "url": "https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=2128",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "endingStatus": "終端確認済み（出典版の休符・スペーサーを含む）。",
+      "terms": "Derived score data: CC BY-SA 4.0; retain attribution and modification notice; share adaptations under the same license. Application code separate.",
+      "modifications": "Source MIDI converted to quarter-note onset/pitch/duration events; initial setup silence removed. Existing sounding pitches retained. No sectional repeats. App audition tempo and articulation are separate; this audit preserves existing note data. See endingStatus for unresolved ending verification."
+    },
+    "verification": {
+      "key": "sor6_8",
+      "compiled": true,
+      "warnings": [],
+      "eventsEqual": true,
+      "count": 295,
+      "end": 117.0,
+      "noteEnd": 117.0
+    },
+    "endingEvidence": "39 bars ×3; final held chord, no final rest.",
+    "sourceUrl": "https://raw.githubusercontent.com/MutopiaProject/MutopiaProject/master/ftp/SorF/O6/sorf-op6n08/sorf-op6n08.ly",
+    "sourceSha256": "30fa44b57f03d234af7febf6b862b055a874d97f3dc17c1ed5d385c30fc2ca88",
+    "endBeat": 117.0
+  }
+]

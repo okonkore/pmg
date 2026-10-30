@@ -1,0 +1,156 @@
+[
+  {
+    "key": "sor60_8",
+    "file": "sor_op60-08",
+    "title": "Fernando Sor · Op.60 No.8",
+    "option": "Op.60 第8番",
+    "meter": [
+      4,
+      4
+    ],
+    "bpm": 80,
+    "beats": 64,
+    "bars": 16,
+    "pickup": 0,
+    "final": 4,
+    "sourceId": 1748,
+    "source": {
+      "credit": "Fernando Sor / Hajo Dezelski / Mutopia (2010)",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "url": "https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=1748",
+      "modifications": "Official convert-ly syntax update; separate MIDI tracks per voice preserve overlapping unisons. Complete study; each volta section once. LilyPond 2.24.4 to quarter-note events; no pitch shift. End marker 64 beats including rests. Fixed tempo; app articulation separate.",
+      "pitch": "Original guitar sounding pitches, MIDI shift 0; not an added arrangement. No human fretboard performance verification.",
+      "terms": "Adapted score data: CC BY-SA 3.0; retain attribution, license and modification notice; share adaptations under the same license. Application code is separate."
+    },
+    "lilypondUrl": "https://raw.githubusercontent.com/MutopiaProject/MutopiaProject/master/ftp/SorF/O60/sor_op60-08/sor_op60-08.ly",
+    "sha256": {
+      "scripts/score-sources/repertoire-batch3/sor_op60-08.ly": "eda35161c036c7972a505acf092c6870ceedba004f8b495666b8893fa447f20b",
+      "scripts/score-sources/repertoire-batch3/sor_op60-08.midi": "b78cadba884167a6168d2887173d175ef34cf43b592d735bccf3af435b394eed"
+    },
+    "notes": 81,
+    "noteEndBeats": 63.0,
+    "pitchRange": [
+      43,
+      67
+    ],
+    "belowE2": 0,
+    "midiPitchShift": 0
+  },
+  {
+    "key": "sor60_9",
+    "file": "sor_op60-09",
+    "title": "Fernando Sor · Op.60 No.9",
+    "option": "Op.60 第9番",
+    "meter": [
+      4,
+      4
+    ],
+    "bpm": 80,
+    "beats": 64,
+    "bars": 16,
+    "pickup": 0,
+    "final": 4,
+    "sourceId": 1749,
+    "source": {
+      "credit": "Fernando Sor / Hajo Dezelski / Mutopia (2010)",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "url": "https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=1749",
+      "modifications": "Official convert-ly syntax update; separate MIDI tracks per voice preserve overlapping unisons. Complete study; each volta section once. LilyPond 2.24.4 to quarter-note events; no pitch shift. End marker 64 beats including rests. Fixed tempo; app articulation separate.",
+      "pitch": "Original guitar sounding pitches, MIDI shift 0; not an added arrangement. No human fretboard performance verification.",
+      "terms": "Adapted score data: CC BY-SA 3.0; retain attribution, license and modification notice; share adaptations under the same license. Application code is separate."
+    },
+    "lilypondUrl": "https://raw.githubusercontent.com/MutopiaProject/MutopiaProject/master/ftp/SorF/O60/sor_op60-09/sor_op60-09.ly",
+    "sha256": {
+      "scripts/score-sources/repertoire-batch3/sor_op60-09.ly": "2f8ad876c0a3abb999c761acbfcae9818349289e30cf0a6c78aa7f1099c9ae81",
+      "scripts/score-sources/repertoire-batch3/sor_op60-09.midi": "e3550b4e38470a7c9f51e9e8fdba584c6230c16f72dcaebe71484632a7ece41a"
+    },
+    "notes": 151,
+    "noteEndBeats": 63.0,
+    "pitchRange": [
+      43,
+      67
+    ],
+    "belowE2": 0,
+    "midiPitchShift": 0
+  },
+  {
+    "key": "sor60_10",
+    "file": "sor_op60-10",
+    "title": "Fernando Sor · Op.60 No.10",
+    "option": "Op.60 第10番",
+    "meter": [
+      4,
+      4
+    ],
+    "bpm": 80,
+    "beats": 65,
+    "bars": 16,
+    "pickup": 1,
+    "final": 4,
+    "sourceId": 1750,
+    "source": {
+      "credit": "Fernando Sor / Hajo Dezelski / Mutopia (2010)",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "url": "https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=1750",
+      "modifications": "Official convert-ly syntax update; separate MIDI tracks per voice preserve overlapping unisons. Complete study; each volta section once. LilyPond 2.24.4 to quarter-note events; no pitch shift. End marker 65 beats including rests. Fixed tempo; app articulation separate.",
+      "pitch": "Original guitar sounding pitches, MIDI shift 0; not an added arrangement. No human fretboard performance verification.",
+      "terms": "Adapted score data: CC BY-SA 3.0; retain attribution, license and modification notice; share adaptations under the same license. Application code is separate."
+    },
+    "lilypondUrl": "https://raw.githubusercontent.com/MutopiaProject/MutopiaProject/master/ftp/SorF/O60/sor_op60-10/sor_op60-10.ly",
+    "sha256": {
+      "scripts/score-sources/repertoire-batch3/sor_op60-10.ly": "311c69c0d93c39de490e33b19ea880ed90a1c77f91b3d9fffaa22cca685b6bbc",
+      "scripts/score-sources/repertoire-batch3/sor_op60-10.midi": "1cb3a3abd1ee81bf4aab9a942e789bd8aeeddb1e0fb68cc00a0a25ef43d2bc28"
+    },
+    "notes": 153,
+    "noteEndBeats": 65.0,
+    "pitchRange": [
+      40,
+      67
+    ],
+    "belowE2": 0,
+    "midiPitchShift": 0
+  },
+  {
+    "key": "bourree2_1009",
+    "file": "bourree1009ii",
+    "title": "J. S. Bach · BWV 1009 — Bourrée II",
+    "option": "Bourrée II（ブーレ II）",
+    "meter": [
+      2,
+      2
+    ],
+    "bpm": 150,
+    "beats": 96,
+    "bars": 24,
+    "pickup": 1,
+    "final": 3,
+    "sourceId": 890,
+    "source": {
+      "credit": "J. S. Bach / Stelios Samelis / Mutopia (2018)",
+      "license": "Public Domain",
+      "licenseUrl": "https://creativecommons.org/licenses/publicdomain/",
+      "url": "https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=890",
+      "modifications": "Complete Bourree II isolated at I/II boundary; restored inherited 2/2 and quarter pickup. Volta repeats and return to Bourree I omitted; trill not realized. LilyPond 2.24.4 to quarter-note events; no pitch shift. End marker 96 beats including rests. Fixed tempo; app articulation separate.",
+      "pitch": "Original cello sounding pitch C2-Eb4; below standard guitar E2, not a guitar arrangement.",
+      "terms": "Score edition placed in the public domain by the typesetter."
+    },
+    "lilypondUrl": "https://raw.githubusercontent.com/MutopiaProject/MutopiaProject/master/ftp/BachJS/BWV1009/cellosuite3/cellosuite3-lys/cellosuite3_5_bourree.ly",
+    "sha256": {
+      "scripts/score-sources/repertoire-batch2/cellosuite3_5_bourree.ly": "f6131634e562cf40048d173ffd8494501c4af7557016f21c3ee3079db8fd2f21",
+      "scripts/score-sources/repertoire-batch2/header.ily": "a409d8133b17c315bae44daebe8851bf8618dafd49a9575206da3cbdb5328d3c",
+      "scripts/score-sources/repertoire-batch2/cellosuite3.ly": "bcd1ed3e5eec03a7f1a96a3749eb26c73a286e71a501d6f3111f6bd2578ed72a",
+      "scripts/score-sources/repertoire-batch3/bourree1009ii.midi": "c8801c74c97827cfe61dd098e7daab2cb8db676fdfeca9c389b5d3a6878bcadf"
+    },
+    "notes": 158,
+    "noteEndBeats": 96.0,
+    "pitchRange": [
+      36,
+      63
+    ],
+    "belowE2": 1,
+    "midiPitchShift": 0
+  }
+]

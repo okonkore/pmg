@@ -1,0 +1,514 @@
+[
+  {
+    "key": "prelude1012",
+    "title": "J. S. Bach · BWV 1012 — Prélude",
+    "events": 1349,
+    "pitchRange": [
+      38,
+      79
+    ],
+    "belowStandardGuitarE2": 3,
+    "noteEnd": 623.5,
+    "endBeat": 624.0,
+    "license": "CC BY-SA 3.0",
+    "sourceUrl": "https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=1494",
+    "coverage": "Complete individual piece/movement in the credited edition; sectional repeats not unfolded.",
+    "reviewGap": null
+  },
+  {
+    "key": "allemande1012",
+    "title": "J. S. Bach · BWV 1012 — Allemande",
+    "events": 541,
+    "pitchRange": [
+      36,
+      74
+    ],
+    "belowStandardGuitarE2": 2,
+    "noteEnd": 80.25,
+    "endBeat": 80.5,
+    "license": "CC BY-SA 3.0",
+    "sourceUrl": "https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=1503",
+    "coverage": "Complete individual piece/movement in the credited edition; sectional repeats not unfolded.",
+    "reviewGap": null
+  },
+  {
+    "key": "courante1012",
+    "title": "J. S. Bach · BWV 1012 — Courante",
+    "events": 639,
+    "pitchRange": [
+      38,
+      71
+    ],
+    "belowStandardGuitarE2": 2,
+    "noteEnd": 216,
+    "endBeat": 217.0,
+    "license": "CC BY-SA 3.0",
+    "sourceUrl": "https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=1504",
+    "coverage": "Complete individual piece/movement in the credited edition; sectional repeats not unfolded.",
+    "reviewGap": null
+  },
+  {
+    "key": "sarabande1012",
+    "title": "J. S. Bach · BWV 1012 — Sarabande",
+    "events": 301,
+    "pitchRange": [
+      38,
+      72
+    ],
+    "belowStandardGuitarE2": 1,
+    "noteEnd": 192,
+    "endBeat": 192.0,
+    "license": "CC BY-SA 3.0",
+    "sourceUrl": "https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=1505",
+    "coverage": "Complete individual piece/movement in the credited edition; sectional repeats not unfolded.",
+    "reviewGap": null
+  },
+  {
+    "key": "gavotte",
+    "title": "J. S. Bach · BWV 1012 — Gavotte I",
+    "events": 258,
+    "pitchRange": [
+      38,
+      71
+    ],
+    "belowStandardGuitarE2": 1,
+    "noteEnd": 114,
+    "endBeat": 116.0,
+    "license": "CC BY-SA 3.0",
+    "sourceUrl": "https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=1506",
+    "coverage": "Complete individual piece/movement in the credited edition; sectional repeats not unfolded.",
+    "reviewGap": null
+  },
+  {
+    "key": "gavotte2",
+    "title": "J. S. Bach · BWV 1012 — Gavotte II",
+    "events": 214,
+    "pitchRange": [
+      38,
+      69
+    ],
+    "belowStandardGuitarE2": 3,
+    "noteEnd": 98,
+    "endBeat": null,
+    "license": "CC BY-SA 3.0",
+    "sourceUrl": "https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=1507",
+    "coverage": "Complete individual piece/movement in the credited edition; sectional repeats not unfolded.",
+    "reviewGap": "Source recompilation splits F-sharp3 at beats18 and18.5; existing tied/merged event retained."
+  },
+  {
+    "key": "gigue1012",
+    "title": "J. S. Bach · BWV 1012 — Gigue",
+    "events": 655,
+    "pitchRange": [
+      37,
+      74
+    ],
+    "belowStandardGuitarE2": 4,
+    "noteEnd": 204.5,
+    "endBeat": null,
+    "license": "CC BY-SA 3.0",
+    "sourceUrl": "https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=1508",
+    "coverage": "Complete individual piece/movement in the credited edition; sectional repeats not unfolded.",
+    "reviewGap": "Source recompilation shortens three staccato notes; existing notes retained."
+  },
+  {
+    "key": "prelude",
+    "title": "J. S. Bach · BWV 1007 — Prélude",
+    "events": 656,
+    "pitchRange": [
+      36,
+      67
+    ],
+    "belowStandardGuitarE2": 9,
+    "noteEnd": 168,
+    "endBeat": 168.0,
+    "license": "Public Domain",
+    "sourceUrl": "https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=517",
+    "coverage": "Complete individual piece/movement in the credited edition; sectional repeats not unfolded.",
+    "reviewGap": null
+  },
+  {
+    "key": "allemande",
+    "title": "J. S. Bach · BWV 1007 — Allemande",
+    "events": 474,
+    "pitchRange": [
+      38,
+      67
+    ],
+    "belowStandardGuitarE2": 4,
+    "noteEnd": 128.0,
+    "endBeat": 128.0,
+    "license": "Public Domain",
+    "sourceUrl": "https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=517",
+    "coverage": "Complete individual piece/movement in the credited edition; sectional repeats not unfolded.",
+    "reviewGap": null
+  },
+  {
+    "key": "courante",
+    "title": "J. S. Bach · BWV 1007 — Courante",
+    "events": 408,
+    "pitchRange": [
+      36,
+      64
+    ],
+    "belowStandardGuitarE2": 6,
+    "noteEnd": 125.5,
+    "endBeat": 126.0,
+    "license": "Public Domain",
+    "sourceUrl": "https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=517",
+    "coverage": "Complete individual piece/movement in the credited edition; sectional repeats not unfolded.",
+    "reviewGap": null
+  },
+  {
+    "key": "sarabande",
+    "title": "J. S. Bach · BWV 1007 — Sarabande",
+    "events": 154,
+    "pitchRange": [
+      36,
+      62
+    ],
+    "belowStandardGuitarE2": 4,
+    "noteEnd": 48,
+    "endBeat": 48.0,
+    "license": "Public Domain",
+    "sourceUrl": "https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=517",
+    "coverage": "Complete individual piece/movement in the credited edition; sectional repeats not unfolded.",
+    "reviewGap": null
+  },
+  {
+    "key": "gigue",
+    "title": "J. S. Bach · BWV 1007 — Gigue",
+    "events": 213,
+    "pitchRange": [
+      38,
+      64
+    ],
+    "belowStandardGuitarE2": 1,
+    "noteEnd": 102,
+    "endBeat": null,
+    "license": "Public Domain",
+    "sourceUrl": "https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=517",
+    "coverage": "Complete individual piece/movement in the credited edition; sectional repeats not unfolded.",
+    "reviewGap": "Source recompilation shortens three staccato notes; existing notes retained."
+  },
+  {
+    "key": "menuet1007",
+    "title": "J. S. Bach · BWV 1007 — Menuet I",
+    "events": 134,
+    "pitchRange": [
+      36,
+      64
+    ],
+    "belowStandardGuitarE2": 4,
+    "noteEnd": 72,
+    "endBeat": 72,
+    "license": "Public Domain",
+    "sourceUrl": "https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=517",
+    "coverage": "Complete individual piece/movement in the credited edition; sectional repeats not unfolded.",
+    "reviewGap": null
+  },
+  {
+    "key": "menuet2_1007",
+    "title": "J. S. Bach · BWV 1007 — Menuet II",
+    "events": 126,
+    "pitchRange": [
+      38,
+      63
+    ],
+    "belowStandardGuitarE2": 4,
+    "noteEnd": 72,
+    "endBeat": 72,
+    "license": "Public Domain",
+    "sourceUrl": "https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=517",
+    "coverage": "Complete individual piece/movement in the credited edition; sectional repeats not unfolded.",
+    "reviewGap": null
+  },
+  {
+    "key": "sor60_1",
+    "title": "Fernando Sor · Op.60 No.1",
+    "events": 63,
+    "pitchRange": [
+      43,
+      67
+    ],
+    "belowStandardGuitarE2": 0,
+    "noteEnd": 63,
+    "endBeat": 64.0,
+    "license": "CC BY-SA 2.5",
+    "sourceUrl": "https://www.mutopiaproject.org/ftp/SorF/O60/sor_op60-01/sor_op60-01.ly",
+    "coverage": "Complete individual piece/movement in the credited edition; sectional repeats not unfolded.",
+    "reviewGap": null
+  },
+  {
+    "key": "sor60_2",
+    "title": "Fernando Sor · Op.60 No.2",
+    "events": 135,
+    "pitchRange": [
+      43,
+      67
+    ],
+    "belowStandardGuitarE2": 0,
+    "noteEnd": 119,
+    "endBeat": 120.0,
+    "license": "CC BY-SA 2.5",
+    "sourceUrl": "https://www.mutopiaproject.org/ftp/SorF/O60/sor_op60-02/sor_op60-02.ly",
+    "coverage": "Complete individual piece/movement in the credited edition; sectional repeats not unfolded.",
+    "reviewGap": null
+  },
+  {
+    "key": "sor60_3",
+    "title": "Fernando Sor · Op.60 No.3",
+    "events": 115,
+    "pitchRange": [
+      43,
+      60
+    ],
+    "belowStandardGuitarE2": 0,
+    "noteEnd": 95,
+    "endBeat": 96.0,
+    "license": "CC BY-SA 3.0",
+    "sourceUrl": "https://www.mutopiaproject.org/ftp/SorF/O60/sor_op60-03/sor_op60-03.ly",
+    "coverage": "Complete individual piece/movement in the credited edition; sectional repeats not unfolded.",
+    "reviewGap": null
+  },
+  {
+    "key": "sor60_4",
+    "title": "Fernando Sor · Op.60 No.4",
+    "events": 107,
+    "pitchRange": [
+      43,
+      68
+    ],
+    "belowStandardGuitarE2": 0,
+    "noteEnd": 72,
+    "endBeat": 73.0,
+    "license": "CC BY-SA 2.5",
+    "sourceUrl": "https://www.mutopiaproject.org/ftp/SorF/O60/sor_op60-04/sor_op60-04.ly",
+    "coverage": "Complete individual piece/movement in the credited edition; sectional repeats not unfolded.",
+    "reviewGap": null
+  },
+  {
+    "key": "sor60_5",
+    "title": "Fernando Sor · Op.60 No.5",
+    "events": 211,
+    "pitchRange": [
+      40,
+      69
+    ],
+    "belowStandardGuitarE2": 0,
+    "noteEnd": 119.5,
+    "endBeat": 120.0,
+    "license": "CC BY-SA 3.0",
+    "sourceUrl": "https://www.mutopiaproject.org/ftp/SorF/O60/sor_op60-05/sor_op60-05.ly",
+    "coverage": "Complete individual piece/movement in the credited edition; sectional repeats not unfolded.",
+    "reviewGap": null
+  },
+  {
+    "key": "sor60_12",
+    "title": "Fernando Sor · Op.60 No.12",
+    "events": 149,
+    "pitchRange": [
+      43,
+      72
+    ],
+    "belowStandardGuitarE2": 0,
+    "noteEnd": 50.0,
+    "endBeat": null,
+    "license": "CC BY-SA 3.0",
+    "sourceUrl": "https://www.mutopiaproject.org/ftp/SorF/O60/sor_op60-12/sor_op60-12.ly",
+    "coverage": "Complete individual piece/movement in the credited edition; sectional repeats not unfolded.",
+    "reviewGap": "Source bar checks fail at3/8 near alternate endings; ending alignment requires further review."
+  },
+  {
+    "key": "sor60_8",
+    "title": "Fernando Sor · Op.60 No.8",
+    "events": 81,
+    "pitchRange": [
+      43,
+      67
+    ],
+    "belowStandardGuitarE2": 0,
+    "noteEnd": 63,
+    "endBeat": 64,
+    "license": "CC BY-SA 3.0",
+    "sourceUrl": "https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=1748",
+    "coverage": "Complete individual piece/movement in the credited edition; sectional repeats not unfolded.",
+    "reviewGap": null
+  },
+  {
+    "key": "sor60_9",
+    "title": "Fernando Sor · Op.60 No.9",
+    "events": 151,
+    "pitchRange": [
+      43,
+      67
+    ],
+    "belowStandardGuitarE2": 0,
+    "noteEnd": 63,
+    "endBeat": 64,
+    "license": "CC BY-SA 3.0",
+    "sourceUrl": "https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=1749",
+    "coverage": "Complete individual piece/movement in the credited edition; sectional repeats not unfolded.",
+    "reviewGap": null
+  },
+  {
+    "key": "sor60_10",
+    "title": "Fernando Sor · Op.60 No.10",
+    "events": 153,
+    "pitchRange": [
+      40,
+      67
+    ],
+    "belowStandardGuitarE2": 0,
+    "noteEnd": 65,
+    "endBeat": 65,
+    "license": "CC BY-SA 3.0",
+    "sourceUrl": "https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=1750",
+    "coverage": "Complete individual piece/movement in the credited edition; sectional repeats not unfolded.",
+    "reviewGap": null
+  },
+  {
+    "key": "sor6_8",
+    "title": "Fernando Sor · Op.6 No.8 — Andantino",
+    "events": 295,
+    "pitchRange": [
+      41,
+      71
+    ],
+    "belowStandardGuitarE2": 0,
+    "noteEnd": 117,
+    "endBeat": 117.0,
+    "license": "CC BY-SA 4.0",
+    "sourceUrl": "https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=2128",
+    "coverage": "Complete individual piece/movement in the credited edition; sectional repeats not unfolded.",
+    "reviewGap": null
+  },
+  {
+    "key": "sor6_11",
+    "title": "Fernando Sor · Op.6 No.11",
+    "events": 1066,
+    "pitchRange": [
+      40,
+      72
+    ],
+    "belowStandardGuitarE2": 0,
+    "noteEnd": 346,
+    "endBeat": 348,
+    "license": "CC BY-SA 4.0",
+    "sourceUrl": "https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=2134",
+    "coverage": "Complete individual piece/movement in the credited edition; sectional repeats not unfolded.",
+    "reviewGap": null
+  },
+  {
+    "key": "sor35_17",
+    "title": "Fernando Sor · Op.35 No.17",
+    "events": 265,
+    "pitchRange": [
+      40,
+      69
+    ],
+    "belowStandardGuitarE2": 0,
+    "noteEnd": 128,
+    "endBeat": 129,
+    "license": "CC BY-SA 4.0",
+    "sourceUrl": "https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=1954",
+    "coverage": "Complete individual piece/movement in the credited edition; sectional repeats not unfolded.",
+    "reviewGap": null
+  },
+  {
+    "key": "sor35_22",
+    "title": "Fernando Sor · Op.35 No.22",
+    "events": 416,
+    "pitchRange": [
+      40,
+      71
+    ],
+    "belowStandardGuitarE2": 0,
+    "noteEnd": 143,
+    "endBeat": 144,
+    "license": "CC BY-SA 3.0",
+    "sourceUrl": "https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=1850",
+    "coverage": "Complete individual piece/movement in the credited edition; sectional repeats not unfolded.",
+    "reviewGap": null
+  },
+  {
+    "key": "bourree1009",
+    "title": "J. S. Bach · BWV 1009 — Bourrée I",
+    "events": 191,
+    "pitchRange": [
+      36,
+      65
+    ],
+    "belowStandardGuitarE2": 2,
+    "noteEnd": 112,
+    "endBeat": 112,
+    "license": "Public Domain",
+    "sourceUrl": "https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=890",
+    "coverage": "Complete individual piece/movement in the credited edition; sectional repeats not unfolded.",
+    "reviewGap": null
+  },
+  {
+    "key": "bourree2_1009",
+    "title": "J. S. Bach · BWV 1009 — Bourrée II",
+    "events": 158,
+    "pitchRange": [
+      36,
+      63
+    ],
+    "belowStandardGuitarE2": 1,
+    "noteEnd": 96,
+    "endBeat": 96,
+    "license": "Public Domain",
+    "sourceUrl": "https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=890",
+    "coverage": "Complete individual piece/movement in the credited edition; sectional repeats not unfolded.",
+    "reviewGap": null
+  },
+  {
+    "key": "sor1_1",
+    "title": "Fernando Sor · Op.1 No.1 — Andante",
+    "events": 221,
+    "pitchRange": [
+      42,
+      74
+    ],
+    "belowStandardGuitarE2": 0,
+    "noteEnd": 53,
+    "endBeat": 54,
+    "license": "CC BY-SA 4.0",
+    "sourceUrl": "https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=413",
+    "coverage": "Complete individual piece/movement in the credited edition; sectional repeats not unfolded.",
+    "reviewGap": null
+  },
+  {
+    "key": "sor1_2",
+    "title": "Fernando Sor · Op.1 No.2 — Waltz",
+    "events": 306,
+    "pitchRange": [
+      43,
+      71
+    ],
+    "belowStandardGuitarE2": 0,
+    "noteEnd": 71.5,
+    "endBeat": 72,
+    "license": "CC BY-SA 4.0",
+    "sourceUrl": "https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=452",
+    "coverage": "Complete individual piece/movement in the credited edition; sectional repeats not unfolded.",
+    "reviewGap": null
+  },
+  {
+    "key": "sor1_6",
+    "title": "Fernando Sor · Op.1 No.6 — Marcia",
+    "events": 465,
+    "pitchRange": [
+      41,
+      77
+    ],
+    "belowStandardGuitarE2": 0,
+    "noteEnd": 159,
+    "endBeat": 160,
+    "license": "CC BY-SA 3.0",
+    "sourceUrl": "https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=458",
+    "coverage": "Complete individual piece/movement in the credited edition; sectional repeats not unfolded.",
+    "reviewGap": null
+  }
+]

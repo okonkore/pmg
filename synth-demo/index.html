@@ -93,8 +93,13 @@
 <script src="sor-op6.js?v=1"></script>
 <script src="repertoire-batch1.js?v=1"></script>
 <script src="repertoire-batch2.js?v=1"></script>
-<script src="sequencer-model.js?v=repertoire-end-marker-1"></script>
-<script src="sequencer.js?v=repertoire-source-1"></script>
+<script src="repertoire-batch3.js?v=1"></script>
+<script src="repertoire-batch4.js?v=1"></script>
+<script src="repertoire-batch5.js?v=1"></script>
+<script src="repertoire-batch6.js?v=1"></script>
+<script src="catalog-quality.js?v=1"></script>
+<script src="sequencer-model.js?v=catalog-quality-1"></script>
+<script src="sequencer.js?v=catalog-quality-1"></script>
 <script src="playback-timing.js?v=1"></script>
 <script src="song-playback-settings.js?v=rit-1"></script>
 <script src="string-lab/physics.js?v=39"></script>
@@ -114,12 +119,22 @@ const suite1012={
  gigue1012:bach1012Songs.gigue1012
 };
 const suite1007={prelude:{score:preludeScore,label:'Prélude',edition:'全曲',option:'Prélude（プレリュード）'},...bachSoloSongs,menuet1007:repertoireBatch1.menuet1007,menuet2_1007:repertoireBatch1.menuet2_1007};
-const sorOp35Songs={sor35_17:repertoireBatch2.sor35_17,sor35_22:repertoireBatch1.sor35_22};
+const sorOp35Songs={sor35_13:repertoireBatch5.sor35_13,sor35_17:repertoireBatch2.sor35_17,sor35_22:repertoireBatch1.sor35_22};
 const sorOp6Collection={...sorOp6Songs,sor6_11:repertoireBatch2.sor6_11};
-const suite1009={bourree1009:repertoireBatch2.bourree1009};
-const songs={...suite1012,...suite1007,...sorSongs,...sorOp6Collection,...sorOp35Songs,...suite1009};
+const suite1009={bourree1009:repertoireBatch2.bourree1009,bourree2_1009:repertoireBatch3.bourree2_1009};
+const sorOp60Collection={...sorSongs,sor60_8:repertoireBatch3.sor60_8,sor60_9:repertoireBatch3.sor60_9,sor60_10:repertoireBatch3.sor60_10};
+const sorOp1Songs={sor1_1:repertoireBatch4.sor1_1,sor1_2:repertoireBatch4.sor1_2,sor1_6:repertoireBatch4.sor1_6};
+const giulianiSongs={giuliani50_18:repertoireBatch5.giuliani50_18};
+const carcassiSongs={carcassi60_2:repertoireBatch6.carcassi60_2,carcassi60_9:repertoireBatch5.carcassi60_9};
+const tarregaSongs={tarrega_adelita:repertoireBatch6.tarrega_adelita};
+const aguadoSongs={aguado3_1:repertoireBatch6.aguado3_1};
+const songs={...suite1012,...suite1007,...sorOp60Collection,...sorOp6Collection,...sorOp35Songs,...suite1009,...sorOp1Songs,...giulianiSongs,...carcassiSongs,...tarregaSongs,...aguadoSongs};
+for(const [key,metadata] of Object.entries(catalogQuality)){
+ const song=songs[key];song.source={...metadata.source,...song.source};
+ if(metadata.endBeat!==undefined)song.score={...song.score,endBeat:metadata.endBeat};
+}
 let scoreEditor;
-for(const [label,collection] of [['BWV 1012 · 無伴奏チェロ組曲 第6番',suite1012],['BWV 1007 · 無伴奏チェロ組曲 第1番',suite1007],['フェルナンド・ソル · 25の漸進的練習曲 Op.60',sorSongs],['フェルナンド・ソル · 12の練習曲 Op.6',sorOp6Collection],['フェルナンド・ソル · 24の練習曲 Op.35',sorOp35Songs],['BWV 1009 · 無伴奏チェロ組曲 第3番',suite1009]]){
+for(const [label,collection] of [['バッハ / J. S. Bach · BWV 1012 · 無伴奏チェロ組曲 第6番',suite1012],['バッハ / J. S. Bach · BWV 1007 · 無伴奏チェロ組曲 第1番',suite1007],['ソル / Fernando Sor · 25の漸進的練習曲 Op.60',sorOp60Collection],['ソル / Fernando Sor · 12の練習曲 Op.6',sorOp6Collection],['ソル / Fernando Sor · 24の練習曲 Op.35',sorOp35Songs],['バッハ / J. S. Bach · BWV 1009 · 無伴奏チェロ組曲 第3番',suite1009],['ソル / Fernando Sor · ディヴェルティスマン Op.1',sorOp1Songs],['ジュリアーニ / Mauro Giuliani · Le Papillon Op.50',giulianiSongs],['カルカッシ / Matteo Carcassi · 25の練習曲 Op.60',carcassiSongs],['タレガ / Francisco Tárrega (Tarrega)',tarregaSongs],['アグアド / Dionisio Aguado · 8つの小品 Op.3',aguadoSongs]]){
  const group=document.createElement('optgroup');group.label=label;
  for(const [value,song] of Object.entries(collection)){const option=document.createElement('option');option.value=value;option.textContent=song.option;group.append(option)}
  $('song').append(group);
