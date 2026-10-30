@@ -1,0 +1,170 @@
+[
+  {
+    "key": "menuet1006a",
+    "file": "bwv-1006a_4g",
+    "name": "Menuet I",
+    "japanese": "メヌエット I",
+    "bpm": 96,
+    "meter": [
+      3,
+      4
+    ],
+    "writtenBars": 34,
+    "beats": 204,
+    "sourceId": 1501,
+    "form": [
+      [
+        0,
+        24
+      ],
+      [
+        0,
+        24
+      ],
+      [
+        24,
+        102
+      ],
+      [
+        24,
+        102
+      ]
+    ],
+    "source": {
+      "credit": "J. S. Bach / guitar edition Hajo Dezelski / Mutopia (2008), after BGA 1879 vol.42",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "url": "https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=1501",
+      "modifications": "Full individual movement; A A B B repeats. Official convert-ly / LilyPond 2.24.4; separate MIDI voices, overlaps retained. Guitar written pitches lowered 12 semitones. Fixed audition tempo chosen; source has no tempo. Trill signs are not realized. No automatic Menuet I return. App articulation separate.",
+      "pitch": "Guitar sounding E2-B4, standard E2 A2 D3 G3 B3 E4 range. Edition marked Guitar (staff named Laute); not a verified fingering/string-choice simulation.",
+      "terms": "Derived score data CC BY-SA 3.0; retain attribution, license and changes; share adaptations under the same license. Application code separate.",
+      "endingStatus": "反復と終端確認済み。"
+    },
+    "rawNotes": 235,
+    "notes": 470,
+    "noteEndBeats": 204.0,
+    "pitchRange": [
+      40,
+      71
+    ],
+    "tempoBasis": "fixed audition choice, no source tempo",
+    "pitchShift": -12,
+    "lilypondUrl": "https://raw.githubusercontent.com/MutopiaProject/MutopiaProject/master/ftp/BachJS/BWV1006a/bwv-1006a_4g/bwv-1006a_4g.ly",
+    "sha256": {
+      "bwv-1006a_4g.ly": "f9fcf5e84c052154f6bc61d45be126008d9ee5f3b7a1678eb89bf9d676bbc3e0",
+      "bwv-1006a_4g.midi": "9f417185d0dbdc7d098f440fd2aea3d102fc76d5a0b020dad73fa31a4975218c"
+    }
+  },
+  {
+    "key": "menuet2_1006a",
+    "file": "bwv-1006a_5g",
+    "name": "Menuet II",
+    "japanese": "メヌエット II",
+    "bpm": 96,
+    "meter": [
+      3,
+      4
+    ],
+    "writtenBars": 32,
+    "beats": 192,
+    "sourceId": 1502,
+    "form": [
+      [
+        0,
+        48
+      ],
+      [
+        0,
+        48
+      ],
+      [
+        48,
+        96
+      ],
+      [
+        48,
+        96
+      ]
+    ],
+    "source": {
+      "credit": "J. S. Bach / guitar edition Hajo Dezelski / Mutopia (2008), after BGA 1879 vol.42",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "url": "https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=1502",
+      "modifications": "Full individual movement; A A B B repeats. Official convert-ly / LilyPond 2.24.4; separate MIDI voices, overlaps retained. Guitar written pitches lowered 12 semitones. Fixed audition tempo chosen; source has no tempo. Trill signs are not realized. No automatic Menuet I return. App articulation separate.",
+      "pitch": "Guitar sounding E2-B4, standard E2 A2 D3 G3 B3 E4 range. Edition marked Guitar (staff named Laute); not a verified fingering/string-choice simulation.",
+      "terms": "Derived score data CC BY-SA 3.0; retain attribution, license and changes; share adaptations under the same license. Application code separate.",
+      "endingStatus": "反復と終端確認済み。"
+    },
+    "rawNotes": 246,
+    "notes": 492,
+    "noteEndBeats": 192.0,
+    "pitchRange": [
+      40,
+      71
+    ],
+    "tempoBasis": "fixed audition choice, no source tempo",
+    "pitchShift": -12,
+    "lilypondUrl": "https://raw.githubusercontent.com/MutopiaProject/MutopiaProject/master/ftp/BachJS/BWV1006a/bwv-1006a_5g/bwv-1006a_5g.ly",
+    "sha256": {
+      "bwv-1006a_5g.ly": "14d81f0981ce6ca2ec40ffb4c71583abd0a04b98359c9f097e372e5a663791d0",
+      "bwv-1006a_5g.midi": "14a65ef0688393dd6fbdea778ea5e60eb71f1e385349ed1c7742252efa4834cd"
+    }
+  },
+  {
+    "key": "bourree1006a",
+    "file": "bwv-1006a_6g",
+    "name": "Bourrée",
+    "japanese": "ブーレ",
+    "bpm": 120,
+    "meter": [
+      4,
+      4
+    ],
+    "writtenBars": 36,
+    "beats": 292,
+    "sourceId": 1498,
+    "form": [
+      [
+        0,
+        65
+      ],
+      [
+        0,
+        65
+      ],
+      [
+        65,
+        146
+      ],
+      [
+        65,
+        146
+      ]
+    ],
+    "source": {
+      "credit": "J. S. Bach / guitar edition Hajo Dezelski / Mutopia (2008), after BGA 1879 vol.42",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "url": "https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=1498",
+      "modifications": "Full individual movement; A A B B repeats. Official convert-ly / LilyPond 2.24.4; separate MIDI voices, overlaps retained. Guitar written pitches lowered 12 semitones. Fixed audition tempo chosen; source has no tempo. Trill signs are not realized. No automatic Menuet I return. App articulation separate. Edition retains a quarter-note pickup plus 16/20 full bars, including each final silent quarter; these gaps are preserved, not silently corrected.",
+      "pitch": "Guitar sounding E2-B4, standard E2 A2 D3 G3 B3 E4 range. Edition marked Guitar (staff named Laute); not a verified fingering/string-choice simulation.",
+      "terms": "Derived score data CC BY-SA 3.0; retain attribution, license and changes; share adaptations under the same license. Application code separate.",
+      "endingStatus": "版の各節末の1拍休止を保持（弱起を含む65拍＋81拍を各2回）。"
+    },
+    "rawNotes": 356,
+    "notes": 712,
+    "noteEndBeats": 291.0,
+    "pitchRange": [
+      40,
+      71
+    ],
+    "tempoBasis": "fixed audition choice, no source tempo",
+    "pitchShift": -12,
+    "lilypondUrl": "https://raw.githubusercontent.com/MutopiaProject/MutopiaProject/master/ftp/BachJS/BWV1006a/bwv-1006a_6g/bwv-1006a_6g.ly",
+    "sha256": {
+      "bwv-1006a_6g.ly": "f9cf52f65959d3e4a5d981b63acdefaa600e901614e94fbd4914074831bd2479",
+      "bwv-1006a_6g.midi": "cda7c37deae9428de176fa94dd34ab834665590c34b516b7db8b87e3d825947f"
+    }
+  }
+]

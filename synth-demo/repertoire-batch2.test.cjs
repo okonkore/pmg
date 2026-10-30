@@ -27,7 +27,7 @@ console.log('Batch 2: full scores, meters, pitch ranges, protected originals, ed
 
 // Exercise the actual app's catalog wiring without constructing its audio engine.
 const catalog=vm.createContext({});
-for(const file of ['gavotte.js','prelude.js','bach-solos.js','bach-1012.js','sor-op60.js','sor-op6.js','repertoire-batch1.js','repertoire-batch2.js','repertoire-batch3.js','repertoire-batch4.js','catalog-quality.js','repertoire-batch5.js','repertoire-batch6.js'])vm.runInContext(fs.readFileSync(path.join(__dirname,file),'utf8'),catalog);
+for(const file of ['gavotte.js','prelude.js','bach-solos.js','bach-1012.js','sor-op60.js','sor-op6.js','repertoire-batch1.js','repertoire-batch2.js','repertoire-batch3.js','repertoire-batch4.js','catalog-quality.js','repertoire-batch5.js','repertoire-batch6.js','repertoire-batch7.js'])vm.runInContext(fs.readFileSync(path.join(__dirname,file),'utf8'),catalog);
 const elements=new Map();
 function element(){return {children:[],value:'',textContent:'',append(child){this.children.push(child)}}}
 catalog.document={getElementById(id){if(!elements.has(id))elements.set(id,element());return elements.get(id)},createElement:element};
@@ -36,7 +36,7 @@ assert(html.includes('<script src="repertoire-batch2.js?v=1"></script>'));
 const inline=[...html.matchAll(/<script>([\s\S]*?)<\/script>/g)][0][1];
 vm.runInContext(inline.slice(0,inline.indexOf('const presets=')),catalog);
 const actual=vm.runInContext('songs',catalog);
-assert.equal(Object.keys(actual).length,38);
+assert.equal(Object.keys(actual).length,41);
 for(const key of Object.keys(expected)){
  assert.equal(JSON.stringify(actual[key]),JSON.stringify(songs[key]));
  const options=elements.get('song').children.flatMap(g=>g.children);

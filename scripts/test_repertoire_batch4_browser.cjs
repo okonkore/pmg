@@ -7,10 +7,10 @@ const assert=require('node:assert/strict');
   page.on('pageerror',e=>errors.push(e.message));
   await page.goto(process.argv[2]||'http://127.0.0.1:8766/synth-demo/');
   await page.waitForSelector('.app-ready');
-  assert.equal(await page.locator('#song optgroup:not(#my-song-group) option').count(),38);
+  assert.equal(await page.locator('#song optgroup:not(#my-song-group) option').count(),41);
   // Library uses option title and composer/opus group text for search.
   await page.click('#nav-library');
-  for(const [query,count] of [['Sor',17],['ソル',17],['Bach',16],['バッハ',16],['Op.1',3],['ワルツ',2],['6弦F2',1],['BWV 1009',2]]){
+  for(const [query,count] of [['Sor',17],['ソル',17],['Bach',19],['バッハ',19],['Op.1',3],['ワルツ',2],['6弦F2',1],['BWV 1009',2]]){
    await page.fill('#library-search',query);
    assert.equal(await page.locator('.library-song').count(),count,query);
   }
@@ -62,6 +62,6 @@ const assert=require('node:assert/strict');
   const saved=await page.evaluate(()=>JSON.parse(localStorage.getItem('pmg.songs.v1')));
   assert(saved.songs.some(s=>s.id===imported.id&&s.endBeat===160&&s.source.licenseUrl===exported.song.source.licenseUrl));
   assert.deepEqual(errors,[]);
-  console.log('PASS: batch 4, 38-menu integration, three score loads and piano-roll positions, browser playback, attribution, actual JSON download/import and persistence.');
+  console.log('PASS: batch 4, 41-menu integration, three score loads and piano-roll positions, browser playback, attribution, actual JSON download/import and persistence.');
  }finally{await browser.close()}
 })().catch(e=>{console.error(e);process.exitCode=1});
