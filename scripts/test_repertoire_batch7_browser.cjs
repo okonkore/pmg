@@ -4,10 +4,10 @@ const {chromium}=require(process.env.PMG_PLAYWRIGHT_MODULE||'playwright'),assert
  try{
   const page=await browser.newPage(),errors=[];page.on('pageerror',e=>errors.push(e.message));
   await page.goto(process.argv[2]||'http://127.0.0.1:8770/synth-demo/');await page.waitForSelector('.app-ready');
-  assert.equal(await page.locator('#song optgroup:not(#my-song-group) option').count(),50);
-  assert.equal(await page.locator('#song optgroup:not(#my-song-group)').count(),12);
+  assert.equal(await page.locator('#song optgroup:not(#my-song-group) option').count(),51);
+  assert.equal(await page.locator('#song optgroup:not(#my-song-group)').count(),13);
   await page.click('#nav-library');
-  for(const [q,n] of [['',50],['BWV 1006a',7],['Bach',28],['存在しない曲xyz',0]]){
+  for(const [q,n] of [['',51],['BWV 1006a',7],['Bach',29],['存在しない曲xyz',0]]){
    await page.fill('#library-search',q);assert.equal(await page.locator('.library-song').count(),n,q);
   }
   await page.fill('#library-search','BWV 1006a');await page.locator('.library-song[data-song="menuet1006a"]').click();assert.equal(await page.locator('#song').inputValue(),'menuet1006a');
@@ -31,6 +31,6 @@ const {chromium}=require(process.env.PMG_PLAYWRIGHT_MODULE||'playwright'),assert
   await page.evaluate(()=>AppShell.openPanel('song-dialog'));await page.locator('#seq-file').setInputFiles({name:'metadata-safety.json',mimeType:'application/json',buffer:Buffer.from(JSON.stringify(hostile))});
   assert((await page.locator('#seq-origin').textContent()).includes('<img src=x'));assert.equal(await page.locator('#seq-origin img').count(),0);assert.equal(await page.evaluate(()=>window.__sourceInjected),undefined);
   await page.reload();const saved=await page.evaluate(()=>JSON.parse(localStorage.getItem('pmg.songs.v1')));assert(saved.songs.some(s=>s.id===imported.id&&s.endBeat===292&&s.source.licenseUrl===exported.song.source.licenseUrl));
-  assert.deepEqual(errors,[]);console.log('PASS: batch7, 50 songs/12 groups, bilingual search and empty results, three loads/positions/playback endpoints, downloaded JSON/source/repeat metadata and reload.');
+  assert.deepEqual(errors,[]);console.log('PASS: batch7, 51 songs/13 groups, bilingual search and empty results, three loads/positions/playback endpoints, downloaded JSON/source/repeat metadata and reload.');
  }finally{await browser.close()}
 })().catch(e=>{console.error(e);process.exitCode=1});

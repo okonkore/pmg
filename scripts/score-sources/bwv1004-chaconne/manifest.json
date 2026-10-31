@@ -1,0 +1,54 @@
+{
+  "key": "chaconne1004",
+  "source": {
+    "credit": "J. S. Bach / violin engraving Hajo Dezelski / Mutopia (2019); BGA 1879 vol.27.1",
+    "url": "https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=1426",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/",
+    "modifications": "Complete edition, no repeat signs. convert-ly/LilyPond2.24.4, four separate MIDI voices; all3123 notes/holds/unisons retained. Entire violin sounding score shifted -12 semitones. Written running figures retained; arpeggio text at source bars89/201 is NOT realized: sustained/simultaneous chords remain literal. No Segovia arrangement/bass additions. Fixed audition quarter=60; source has no tempo. Trill/fermata not realized; app articulation separate.",
+    "pitch": "D minor/D major/D minor retained. Violin G3-G6 (55-91) -> G2-G5 (43-79), -12 semitones intentional transposition, NOT guitar notation correction. Standard6-string range; held-string assignment passes, conservative fret-span4 fails at beat491.5 (two A3 voices). Fingers/barres/hand motion unverified; no automatic tuning changes.",
+    "terms": "Derived score data CC BY-SA3.0; retain attribution, license and changes; share adaptations under the same license. Application code separate.",
+    "endingStatus": "版の2拍アウフタクト＋256個の3拍区間＝770拍。最後の同音2声767–770拍を保持。アルペジオ指示未展開。"
+  },
+  "notes": 3123,
+  "endBeat": 770,
+  "noteEndBeat": 770,
+  "meter": [
+    3,
+    4
+  ],
+  "bpm": 60,
+  "pitchShift": -12,
+  "pitchRange": [
+    43,
+    79
+  ],
+  "rawPitchRange": [
+    55,
+    91
+  ],
+  "rawVoiceCounts": [
+    2085,
+    306,
+    117,
+    615
+  ],
+  "structure": "2-beat opening plus256 full3-beat segments, source comments1..257; no added fermata or silence",
+  "keyChangeBeats": [
+    395,
+    623
+  ],
+  "arpeggioTextBeats": [
+    264,
+    599
+  ],
+  "sourceUrl": "https://raw.githubusercontent.com/MutopiaProject/MutopiaProject/master/ftp/BachJS/BWV1004/bwv-1004_5/bwv-1004_5.ly",
+  "sha256": {
+    "bwv-1004_5.ly": "c553876e6a194d575c8d1c2b045dc12b0e1a3b111a70bfa5a7d3f03cf11d941d",
+    "chaconne.midi": "3557e5903c7eebf14ed7c6c793f3dc8fb04f68a03711fb49eef759a45673b08d",
+    "voice1.midi": "e5ddf853fd290f17cdef8d578db90b8c655597fa53bd0767d67a1af7370e0f9b",
+    "voice2.midi": "7dad93f88a049814289b1ceb16f849d965db51002dd30fe40aa92eba5cd0c5fc",
+    "voice3.midi": "a79b82731275b81e812c6548da20f548fb6e00e5cf1cc99a2c794ebd7de8cbbf",
+    "voice4.midi": "bde2c6d1f2841956aaacaa71394fa5081e12def607735ee74b0ef226350dc56a"
+  }
+}

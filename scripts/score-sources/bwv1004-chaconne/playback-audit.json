@@ -1,0 +1,49 @@
+{
+  "method": "Actual app scheduler, allocator, oscillator voice and sample loaders; deterministic mock AudioContext, real WAV durations; no PCM audibility claim.",
+  "polyphony": [
+    {
+      "key": "chaconne1004",
+      "peak": 4,
+      "samePitchPeak": 2
+    }
+  ],
+  "results": [
+    {
+      "key": "chaconne1004",
+      "mode": "pluck",
+      "scheduled": 3123,
+      "naturalBeforeGate": 0,
+      "steals": 0,
+      "beforeGate": 0,
+      "beforeAttack": 0
+    },
+    {
+      "key": "chaconne1004",
+      "mode": "pad",
+      "scheduled": 3123,
+      "naturalBeforeGate": 0,
+      "steals": 801,
+      "beforeGate": 0,
+      "beforeAttack": 0
+    },
+    {
+      "key": "chaconne1004",
+      "mode": "guitar520r",
+      "scheduled": 3123,
+      "naturalBeforeGate": 0,
+      "steals": 0,
+      "beforeGate": 0,
+      "beforeAttack": 0
+    },
+    {
+      "key": "chaconne1004",
+      "mode": "whole",
+      "scheduled": 3123,
+      "naturalBeforeGate": 16,
+      "steals": 1578,
+      "beforeGate": 0,
+      "beforeAttack": 0
+    }
+  ],
+  "additionalChecks": "Two loops and seek from beat623 with guitar520r; event-by-event onset/pitch/gate checks through770; no real-device or PCM listening claim."
+}

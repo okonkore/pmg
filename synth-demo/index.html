@@ -102,6 +102,7 @@
 <script src="repertoire-batch7.js?v=1"></script>
 <script src="bwv1006a-complete.js?v=1"></script>
 <script src="bwv1009-complete.js?v=1"></script>
+<script src="bwv1004-chaconne.js?v=1"></script>
 <script src="catalog-quality.js?v=1"></script>
 <script src="sequencer-model.js?v=catalog-quality-1"></script>
 <script src="sequencer.js?v=distinct-transport-1"></script>
@@ -135,13 +136,14 @@ const carcassiSongs={carcassi60_2:repertoireBatch6.carcassi60_2,carcassi60_9:rep
 const tarregaSongs={tarrega_adelita:repertoireBatch6.tarrega_adelita};
 const aguadoSongs={aguado3_1:repertoireBatch6.aguado3_1};
 const suite1006a={prelude1006a:bwv1006aComplete.prelude1006a,loure1006a:bwv1006aComplete.loure1006a,gavotte1006a:bwv1006aComplete.gavotte1006a,...repertoireBatch7,gigue1006a:bwv1006aComplete.gigue1006a};
-const songs={...suite1012,...suite1007,...sorOp60Collection,...sorOp6Collection,...sorOp35Songs,...suite1009,...sorOp1Songs,...giulianiSongs,...carcassiSongs,...tarregaSongs,...aguadoSongs,...suite1006a};
+const partita1004={...bwv1004Chaconne};
+const songs={...suite1012,...suite1007,...sorOp60Collection,...sorOp6Collection,...sorOp35Songs,...suite1009,...sorOp1Songs,...giulianiSongs,...carcassiSongs,...tarregaSongs,...aguadoSongs,...suite1006a,...partita1004};
 for(const [key,metadata] of Object.entries(catalogQuality)){
  const song=songs[key];song.source={...metadata.source,...song.source};
  if(metadata.endBeat!==undefined)song.score={...song.score,endBeat:metadata.endBeat};
 }
 let scoreEditor;
-for(const [label,collection] of [['バッハ / J. S. Bach · BWV 1012 · 無伴奏チェロ組曲 第6番',suite1012],['バッハ / J. S. Bach · BWV 1007 · 無伴奏チェロ組曲 第1番',suite1007],['ソル / Fernando Sor · 25の漸進的練習曲 Op.60',sorOp60Collection],['ソル / Fernando Sor · 12の練習曲 Op.6',sorOp6Collection],['ソル / Fernando Sor · 24の練習曲 Op.35',sorOp35Songs],['バッハ / J. S. Bach · BWV 1009 · 無伴奏チェロ組曲 第3番',suite1009],['ソル / Fernando Sor · ディヴェルティスマン Op.1',sorOp1Songs],['ジュリアーニ / Mauro Giuliani · Le Papillon Op.50',giulianiSongs],['カルカッシ / Matteo Carcassi · 25の練習曲 Op.60',carcassiSongs],['タレガ / Francisco Tárrega (Tarrega)',tarregaSongs],['アグアド / Dionisio Aguado · 8つの小品 Op.3',aguadoSongs],['バッハ / J. S. Bach · BWV 1006a · ギター版',suite1006a]]){
+for(const [label,collection] of [['バッハ / J. S. Bach · BWV 1012 · 無伴奏チェロ組曲 第6番',suite1012],['バッハ / J. S. Bach · BWV 1007 · 無伴奏チェロ組曲 第1番',suite1007],['ソル / Fernando Sor · 25の漸進的練習曲 Op.60',sorOp60Collection],['ソル / Fernando Sor · 12の練習曲 Op.6',sorOp6Collection],['ソル / Fernando Sor · 24の練習曲 Op.35',sorOp35Songs],['バッハ / J. S. Bach · BWV 1009 · 無伴奏チェロ組曲 第3番',suite1009],['ソル / Fernando Sor · ディヴェルティスマン Op.1',sorOp1Songs],['ジュリアーニ / Mauro Giuliani · Le Papillon Op.50',giulianiSongs],['カルカッシ / Matteo Carcassi · 25の練習曲 Op.60',carcassiSongs],['タレガ / Francisco Tárrega (Tarrega)',tarregaSongs],['アグアド / Dionisio Aguado · 8つの小品 Op.3',aguadoSongs],['バッハ / J. S. Bach · BWV 1006a · ギター版',suite1006a],['バッハ / J. S. Bach · BWV 1004 · ヴァイオリン原譜−1oct',partita1004]]){
  const group=document.createElement('optgroup');group.label=label;
  for(const [value,song] of Object.entries(collection)){const option=document.createElement('option');option.value=value;option.textContent=song.option;group.append(option)}
  $('song').append(group);
