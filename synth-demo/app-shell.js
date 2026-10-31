@@ -64,7 +64,8 @@ for(const el of document.querySelectorAll('.configured-performance')){
 // Preserve existing editor actions; distribute them between a compact toolbar and focused sheets.
 const editor=byId('score-editor'),toolbars=[...editor.querySelectorAll(':scope > .seq-toolbar')];
 const tools=make('div','app-editor-tools');editor.prepend(tools);tools.setAttribute('aria-label','編集ツール');
-move(tools,'seq-select','seq-draw','seq-pan','seq-undo','seq-redo');
+move(tools,'seq-undo','seq-redo','seq-select','seq-draw','seq-pan');
+byId('seq-undo').textContent='↶ 戻す';
 tools.insertAdjacentHTML('beforeend','<button data-panel="note-dialog">音符</button>');
 const transport=toolbars[0];
 move(songSettings,'seq-new','seq-copy');songSettings.append(editor.querySelector('.seq-title-row'));

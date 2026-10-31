@@ -71,3 +71,7 @@ body:has(.app-shell) #configured-string-sets .configured-actions{background:var(
 .app-shell .app-audition .keyboard{height:160px;margin-top:12px;min-height:160px}.app-shell .app-audition .octave-bar{flex-wrap:wrap}
 @media(max-height:560px){.app-shell #performance-screen .monitor{display:none}.app-listening-mix{gap:4px 16px;padding:10px}.app-listening-mix h2{display:none}.app-shell #performance-screen{gap:8px}.app-shell .app-audition .keyboard{height:120px;min-height:120px}}
 @media(max-height:560px){.app-listening-mix{grid-template-columns:minmax(0,1fr) minmax(0,1fr) auto}.app-listening-mix button{grid-column:3;grid-row:1;align-self:end}}
+
+.app-editor-tools #seq-undo{position:sticky;left:0;z-index:2;min-height:44px;min-width:70px;box-shadow:4px 0 0 var(--app-bg)}
+.app-editor-tools #seq-undo:disabled{opacity:1;color:var(--app-muted);background:var(--app-bg)}
+.app-editor-tools #seq-redo{min-height:44px;min-width:44px}
