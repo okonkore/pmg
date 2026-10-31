@@ -1,0 +1,172 @@
+{
+  "polyphony": [
+    {
+      "key": "allemande1004",
+      "peak": 4,
+      "samePitchPeak": 2
+    },
+    {
+      "key": "courante1004",
+      "peak": 3,
+      "samePitchPeak": 1
+    },
+    {
+      "key": "sarabanda1004",
+      "peak": 4,
+      "samePitchPeak": 1
+    },
+    {
+      "key": "giga1004",
+      "peak": 1,
+      "samePitchPeak": 1
+    }
+  ],
+  "selfReview": true,
+  "method": "Actual app scheduler, allocator, oscillator voice and sample loaders; deterministic mock AudioContext, real WAV durations; no PCM audibility claim.",
+  "results": [
+    {
+      "key": "allemande1004",
+      "mode": "pluck",
+      "scheduled": 1094,
+      "naturalBeforeGate": 0,
+      "steals": 0,
+      "beforeGate": 0,
+      "beforeAttack": 0
+    },
+    {
+      "key": "allemande1004",
+      "mode": "pad",
+      "scheduled": 1094,
+      "naturalBeforeGate": 0,
+      "steals": 521,
+      "beforeGate": 0,
+      "beforeAttack": 0
+    },
+    {
+      "key": "allemande1004",
+      "mode": "guitar520r",
+      "scheduled": 1094,
+      "naturalBeforeGate": 0,
+      "steals": 0,
+      "beforeGate": 0,
+      "beforeAttack": 0
+    },
+    {
+      "key": "allemande1004",
+      "mode": "whole",
+      "scheduled": 1094,
+      "naturalBeforeGate": 0,
+      "steals": 924,
+      "beforeGate": 0,
+      "beforeAttack": 0
+    },
+    {
+      "key": "courante1004",
+      "mode": "pluck",
+      "scheduled": 858,
+      "naturalBeforeGate": 0,
+      "steals": 0,
+      "beforeGate": 0,
+      "beforeAttack": 0
+    },
+    {
+      "key": "courante1004",
+      "mode": "pad",
+      "scheduled": 858,
+      "naturalBeforeGate": 0,
+      "steals": 6,
+      "beforeGate": 0,
+      "beforeAttack": 0
+    },
+    {
+      "key": "courante1004",
+      "mode": "guitar520r",
+      "scheduled": 858,
+      "naturalBeforeGate": 0,
+      "steals": 0,
+      "beforeGate": 0,
+      "beforeAttack": 0
+    },
+    {
+      "key": "courante1004",
+      "mode": "whole",
+      "scheduled": 858,
+      "naturalBeforeGate": 0,
+      "steals": 508,
+      "beforeGate": 0,
+      "beforeAttack": 0
+    },
+    {
+      "key": "sarabanda1004",
+      "mode": "pluck",
+      "scheduled": 534,
+      "naturalBeforeGate": 0,
+      "steals": 0,
+      "beforeGate": 0,
+      "beforeAttack": 0
+    },
+    {
+      "key": "sarabanda1004",
+      "mode": "pad",
+      "scheduled": 534,
+      "naturalBeforeGate": 0,
+      "steals": 5,
+      "beforeGate": 0,
+      "beforeAttack": 0
+    },
+    {
+      "key": "sarabanda1004",
+      "mode": "guitar520r",
+      "scheduled": 534,
+      "naturalBeforeGate": 0,
+      "steals": 0,
+      "beforeGate": 0,
+      "beforeAttack": 0
+    },
+    {
+      "key": "sarabanda1004",
+      "mode": "whole",
+      "scheduled": 534,
+      "naturalBeforeGate": 2,
+      "steals": 112,
+      "beforeGate": 0,
+      "beforeAttack": 0
+    },
+    {
+      "key": "giga1004",
+      "mode": "pluck",
+      "scheduled": 1816,
+      "naturalBeforeGate": 0,
+      "steals": 0,
+      "beforeGate": 0,
+      "beforeAttack": 0
+    },
+    {
+      "key": "giga1004",
+      "mode": "pad",
+      "scheduled": 1816,
+      "naturalBeforeGate": 0,
+      "steals": 1668,
+      "beforeGate": 0,
+      "beforeAttack": 0
+    },
+    {
+      "key": "giga1004",
+      "mode": "guitar520r",
+      "scheduled": 1816,
+      "naturalBeforeGate": 0,
+      "steals": 0,
+      "beforeGate": 0,
+      "beforeAttack": 0
+    },
+    {
+      "key": "giga1004",
+      "mode": "whole",
+      "scheduled": 1816,
+      "naturalBeforeGate": 0,
+      "steals": 1520,
+      "beforeGate": 0,
+      "beforeAttack": 0
+    }
+  ]
+}

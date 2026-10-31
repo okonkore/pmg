@@ -1,0 +1,279 @@
+[
+  {
+    "key": "allemande1004",
+    "file": "bwv-1004_1",
+    "name": "Allemande",
+    "jp": "アルマンド",
+    "variable": "melody",
+    "meter": [
+      4,
+      4
+    ],
+    "bpm": 84,
+    "id": 1423,
+    "credit": "Hajo Dezelski",
+    "year": 2010,
+    "form": [
+      [
+        0,
+        64.25
+      ],
+      [
+        0,
+        64.25
+      ],
+      [
+        64.25,
+        128.5
+      ],
+      [
+        64.25,
+        128.5
+      ]
+    ],
+    "notes": 1094,
+    "rawNotes": 547,
+    "endBeat": 257.0,
+    "noteEndBeat": 256.5,
+    "pitchRange": [
+      44,
+      74
+    ],
+    "source": {
+      "credit": "J. S. Bach / violin engraving Hajo Dezelski / Mutopia (2010); BGA 1879 vol.27.1",
+      "url": "https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=1423",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "modifications": "Complete violin edition, all voices/holds retained; LilyPond2.24.4 separate-voice MIDI. All repeat signs unfolded, including graphical signs in Sarabanda/Giga and Sarabanda alternative endings. Entire sounding score -12 semitones; not guitar notation correction. Ornaments/dynamics/fermata not realized. Fixed audition tempo; none specified in source.",
+      "pitch": "D minor retained; violin MIDI 56-86 shifted -12 to 44-74. Standard6-string range. Necessary held-string check: True; conservative fret-span4: True. Fingers/barres/hand motion unverified; this is octave-down audition, not a completed guitar arrangement. No tuning changes.",
+      "terms": "Derived score data CC BY-SA 3.0; retain attribution, license and changes; share adaptations under the same license. Application code separate.",
+      "endingStatus": "32 written 4/4 bars plus two quarter-beat pickups; AABB=257 quarter beats. Final half-beat rest/spacer retained."
+    },
+    "fingering": {
+      "passNecessaryCheck": true,
+      "firstFailureBeat": null
+    },
+    "span4": {
+      "passNecessaryCheck": true,
+      "firstFailureBeat": null
+    },
+    "lilypondUrl": "https://raw.githubusercontent.com/MutopiaProject/MutopiaProject/master/ftp/BachJS/BWV1004/bwv-1004_1/bwv-1004_1.ly",
+    "sha256": {
+      "bwv-1004_1.ly": "cc9423f5d0f1a9ee9b0e7fc79524046ef7d7a1641fac11d9332330cbb1b9385a",
+      "bwv-1004_1-raw.midi": "c8e54bd768a774e384fbcc1c899124c0a33f017c88ef52e472c68d865339cb63",
+      "bwv-1004_1-full.midi": "7ffa94f8832e3536e37b3713447697cad58d5035c60aa0b19a2d5b85a43dcb36"
+    }
+  },
+  {
+    "key": "courante1004",
+    "file": "bwv-1004_2",
+    "name": "Courante",
+    "jp": "クーラント",
+    "variable": "melody",
+    "meter": [
+      3,
+      4
+    ],
+    "bpm": 108,
+    "id": 1424,
+    "credit": "Hajo Dezelski",
+    "year": 2008,
+    "form": [
+      [
+        0,
+        72.25
+      ],
+      [
+        0,
+        72.25
+      ],
+      [
+        72.25,
+        162.5
+      ],
+      [
+        72.25,
+        162.5
+      ]
+    ],
+    "notes": 858,
+    "rawNotes": 429,
+    "endBeat": 325.0,
+    "noteEndBeat": 324.75,
+    "pitchRange": [
+      43,
+      74
+    ],
+    "source": {
+      "credit": "J. S. Bach / violin engraving Hajo Dezelski / Mutopia (2008); BGA 1879 vol.27.1",
+      "url": "https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=1424",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "modifications": "Complete violin edition, all voices/holds retained; LilyPond2.24.4 separate-voice MIDI. All repeat signs unfolded, including graphical signs in Sarabanda/Giga and Sarabanda alternative endings. Entire sounding score -12 semitones; not guitar notation correction. Ornaments/dynamics/fermata not realized. Fixed audition tempo; none specified in source.",
+      "pitch": "D minor retained; violin MIDI 55-86 shifted -12 to 43-74. Standard6-string range. Necessary held-string check: True; conservative fret-span4: True. Fingers/barres/hand motion unverified; this is octave-down audition, not a completed guitar arrangement. No tuning changes.",
+      "terms": "Derived score data CC BY-SA 3.0; retain attribution, license and changes; share adaptations under the same license. Application code separate.",
+      "endingStatus": "54 written 3/4 bars plus two quarter-beat pickups; AABB=325 quarter beats. Final quarter-beat spacer retained."
+    },
+    "fingering": {
+      "passNecessaryCheck": true,
+      "firstFailureBeat": null
+    },
+    "span4": {
+      "passNecessaryCheck": true,
+      "firstFailureBeat": null
+    },
+    "lilypondUrl": "https://raw.githubusercontent.com/MutopiaProject/MutopiaProject/master/ftp/BachJS/BWV1004/bwv-1004_2/bwv-1004_2.ly",
+    "sha256": {
+      "bwv-1004_2.ly": "19e0a074659bbadcaecdebfc00cc4e86acbc3d70da5c603920f5c78dedabc602",
+      "bwv-1004_2-raw.midi": "b981f1e2f0bfbe5e5326f375f7036b0febda09d5f6f919f6481deb31514e50d9",
+      "bwv-1004_2-full.midi": "866fe9c75b758977a36eff010907f4010ff6483b82a7bbe97c6ac625dbb3d4e6"
+    }
+  },
+  {
+    "key": "sarabanda1004",
+    "file": "bwv-1004_3_sarabanda",
+    "name": "Sarabanda",
+    "jp": "サラバンド",
+    "variable": "sarabanda",
+    "meter": [
+      3,
+      4
+    ],
+    "bpm": 60,
+    "id": 1427,
+    "credit": "Benjamin D. Esham",
+    "year": 2008,
+    "form": [
+      [
+        0,
+        24
+      ],
+      [
+        0,
+        24
+      ],
+      [
+        24,
+        27
+      ],
+      [
+        27,
+        69
+      ],
+      [
+        69,
+        75
+      ],
+      [
+        27,
+        69
+      ],
+      [
+        75,
+        78
+      ],
+      [
+        78,
+        90
+      ]
+    ],
+    "notes": 534,
+    "rawNotes": 307,
+    "endBeat": 156,
+    "noteEndBeat": 156.0,
+    "pitchRange": [
+      43,
+      70
+    ],
+    "source": {
+      "credit": "J. S. Bach / violin engraving Benjamin D. Esham / Mutopia (2008); BGA 1879 vol.27.1",
+      "url": "https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=1427",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "modifications": "Complete violin edition, all voices/holds retained; LilyPond2.24.4 separate-voice MIDI. All repeat signs unfolded, including graphical signs in Sarabanda/Giga and Sarabanda alternative endings. Entire sounding score -12 semitones; not guitar notation correction. Ornaments/dynamics/fermata not realized. Source MIDI quarter tempo retained.",
+      "pitch": "D minor retained; violin MIDI 55-82 shifted -12 to 43-70. Standard6-string range. Necessary held-string check: True; conservative fret-span4: True. Fingers/barres/hand motion unverified; this is octave-down audition, not a completed guitar arrangement. No tuning changes.",
+      "terms": "Derived score data CC BY-SA 3.0; retain attribution, license and changes; share adaptations under the same license. Application code separate.",
+      "endingStatus": "A(8 bars) twice, B lead(1), core(14), first ending(2), core(14), second ending(1), coda(4): 52 performed 3/4 bars,156 beats."
+    },
+    "fingering": {
+      "passNecessaryCheck": true,
+      "firstFailureBeat": null
+    },
+    "span4": {
+      "passNecessaryCheck": true,
+      "firstFailureBeat": null
+    },
+    "lilypondUrl": "https://raw.githubusercontent.com/MutopiaProject/MutopiaProject/master/ftp/BachJS/BWV1004/bwv-1004_3_sarabanda/bwv-1004_3_sarabanda.ly",
+    "sha256": {
+      "bwv-1004_3_sarabanda.ly": "2ae9c31f1eed33c4d7b93a6520a93d9d4a95eaaed14e62147b958220ac84b75f",
+      "bwv-1004_3_sarabanda-raw.midi": "8910b3bf09ddc06fe3327fe3a2421b4f03de2a165bfef61189e6f11d7ecd43de",
+      "bwv-1004_3_sarabanda-full.midi": "85b8f99471b786fbc5de0e8eaf34c2f28f68ba11decfb4a56125be92a19a0cba",
+      "bwv-1004_3_sarabanda-internal.midi": "021a29e3c64ecca72fd0d609c7d025dcfcafd67c18658bdc970c6658a68b1b03"
+    }
+  },
+  {
+    "key": "giga1004",
+    "file": "bwv-1004_4_giga",
+    "name": "Giga",
+    "jp": "ジーグ",
+    "variable": "giga",
+    "meter": [
+      12,
+      8
+    ],
+    "bpm": 108,
+    "id": 1428,
+    "credit": "Benjamin D. Esham",
+    "year": 2008,
+    "form": [
+      [
+        0,
+        120
+      ],
+      [
+        0,
+        120
+      ],
+      [
+        120,
+        240
+      ],
+      [
+        120,
+        240
+      ]
+    ],
+    "notes": 1816,
+    "rawNotes": 908,
+    "endBeat": 480,
+    "noteEndBeat": 480.0,
+    "pitchRange": [
+      43,
+      74
+    ],
+    "source": {
+      "credit": "J. S. Bach / violin engraving Benjamin D. Esham / Mutopia (2008); BGA 1879 vol.27.1",
+      "url": "https://www.mutopiaproject.org/cgibin/piece-info.cgi?id=1428",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "modifications": "Complete violin edition, all voices/holds retained; LilyPond2.24.4 separate-voice MIDI. All repeat signs unfolded, including graphical signs in Sarabanda/Giga and Sarabanda alternative endings. Entire sounding score -12 semitones; not guitar notation correction. Ornaments/dynamics/fermata not realized. Source MIDI quarter tempo retained.",
+      "pitch": "D minor retained; violin MIDI 55-86 shifted -12 to 43-74. Standard6-string range. Necessary held-string check: True; conservative fret-span4: True. Fingers/barres/hand motion unverified; this is octave-down audition, not a completed guitar arrangement. No tuning changes.",
+      "terms": "Derived score data CC BY-SA 3.0; retain attribution, license and changes; share adaptations under the same license. Application code separate.",
+      "endingStatus": "40 written 12/8 bars including complementary pickups/closing bars; both20-bar halves repeated:480 quarter beats."
+    },
+    "fingering": {
+      "passNecessaryCheck": true,
+      "firstFailureBeat": null
+    },
+    "span4": {
+      "passNecessaryCheck": true,
+      "firstFailureBeat": null
+    },
+    "lilypondUrl": "https://raw.githubusercontent.com/MutopiaProject/MutopiaProject/master/ftp/BachJS/BWV1004/bwv-1004_4_giga/bwv-1004_4_giga.ly",
+    "sha256": {
+      "bwv-1004_4_giga.ly": "9e9344a3eb5fb6db1e1c568bce91f45b4932917b5060a554b14ebeb9031c3ee5",
+      "bwv-1004_4_giga-raw.midi": "b0e35585315602bcd9f4cb816f999dfeded42a5030947b0be7799edfe4810032",
+      "bwv-1004_4_giga-full.midi": "36f0948f5e1e18edb8ba8a49977ef45074568c42448c6acb3fd98dabf403db48"
+    }
+  }
+]

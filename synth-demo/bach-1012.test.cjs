@@ -1,7 +1,7 @@
 'use strict';
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),vm=require('node:vm');
 const scope=vm.createContext({});
-for(const file of ['gavotte.js','prelude.js','bach-solos.js','bach-1012.js','sor-op60.js','sor-op6.js','repertoire-batch1.js','repertoire-batch2.js','repertoire-batch3.js','repertoire-batch4.js','catalog-quality.js','repertoire-batch5.js','repertoire-batch6.js','repertoire-batch7.js','bwv1006a-complete.js','bwv1009-complete.js','bwv1004-chaconne.js']){
+for(const file of ['gavotte.js','prelude.js','bach-solos.js','bach-1012.js','sor-op60.js','sor-op6.js','repertoire-batch1.js','repertoire-batch2.js','repertoire-batch3.js','repertoire-batch4.js','catalog-quality.js','repertoire-batch5.js','repertoire-batch6.js','repertoire-batch7.js','bwv1006a-complete.js','bwv1009-complete.js','bwv1004-chaconne.js','bwv1004-complete.js']){
  vm.runInContext(fs.readFileSync(path.join(__dirname,file),'utf8'),scope,{filename:file});
 }
 const elements=new Map();
@@ -13,7 +13,7 @@ new vm.Script(inline); // Validate the rest of the app as well as the menu initi
 vm.runInContext(inline.slice(0,inline.indexOf('const presets=')),scope);
 const {songs,suite}=vm.runInContext('({songs,suite:suite1012})',scope);
 assert.deepEqual(Object.keys(suite),['prelude1012','allemande1012','courante1012','sarabande1012','gavotte','gavotte2','gigue1012']);
-assert.equal(Object.keys(songs).length,51,'50 retained selections plus BWV1004 Chaconne');
+assert.equal(Object.keys(songs).length,55,'51 retained selections plus four BWV1004 movements');
 const groups=elements.get('song').children;
 assert.equal(groups.length,13);assert.equal(groups[0].children.length,7);assert.equal(groups[1].children.length,7);
 assert.equal(elements.get('song').value,'gavotte');

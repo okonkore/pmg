@@ -8,7 +8,7 @@ const base=process.argv[2]||'http://127.0.0.1:8766/synth-demo/';
  function innerHeightSafe(result){return Math.ceil(result.height)+1}
  async function panel(id){await page.evaluate(id=>AppShell.openPanel(id),id);await page.waitForSelector('#'+id+'[open]');}
  async function close(id){await page.click('#'+id+' [data-dismiss]');await page.waitForFunction(()=>!history.state?.pmgPanel);}
- await bounds();assert.equal(await page.locator('#song optgroup:not(#my-song-group) option').count(),51);
+ await bounds();assert.equal(await page.locator('#song optgroup:not(#my-song-group) option').count(),55);
  for(const size of [{width:390,height:844},{width:375,height:667},{width:844,height:390},{width:390,height:430},{width:1280,height:800}]){
   await page.setViewportSize(size);
   for(const route of ['performance','piano-roll','library','instrument']){await page.click('#nav-'+route);await bounds();assert.equal(await page.locator('#nav-'+route).getAttribute('aria-current'),'page');}
