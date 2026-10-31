@@ -88,7 +88,7 @@ for(const id of ['volume','reverb'])listeningMix.append(byId(id).closest('label'
 const mixReset=make('button','','初期値に戻す');mixReset.id='mix-reset';mixReset.onclick=()=>resetMix();listeningMix.append(mixReset);performance.append(listeningMix);performance.classList.add('app-scroll');
 const audition=make('section','app-audition','<h2>試奏</h2>');audition.id='instrument-audition';audition.append(performance.querySelector('.octave-bar'),byId('keyboard'));instrument.querySelector('.preset-picker').after(audition);
 
-const power=byId('power');power.textContent='音をオン';statusBar.append(power);
+const power=byId('power');power.textContent='音をオン';header.querySelector('.app-header-actions').prepend(power);
 const performanceActions=make('div','app-performance-actions','<button id="performance-instrument">楽器を選ぶ</button><button data-panel="playback-dialog" aria-label="再生設定">再生設定</button>');performance.prepend(performanceActions);
 // Spare original containers have no active controls left; preserve no duplicate UI.
 main.hidden=true;
