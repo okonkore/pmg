@@ -159,7 +159,7 @@ const presets={
  clav:{label:'Funky Clav',description:'弦風のアタックと短い減衰、軽いオートワウ。細かい刻みに。',cutoff:2100,release:.085,space:.045,attack:.002,decay:.38,sustain:.002,detune:0,wave:'sawtooth',sub:0,resonance:3.8},
  bass:{label:'Round Bass',description:'丸い低音と、弾き始めに開くフィルター。ZキーでC2付近に下げるとベースらしく。',cutoff:650,release:.12,space:0,attack:.006,decay:.18,sustain:.62,resonance:1.8,layers:[['triangle',0,.58,1],['square',0,.17,1],['sine',0,.25,.5]]},
  brass:{label:'Synth Brass',description:'立ち上がりに「パッ」と開く、厚みのあるシンセブラス。短い和音にも。',cutoff:3200,release:.16,space:.08,attack:.025,decay:.16,sustain:.65,resonance:1.1,layers:[['sawtooth',-6,.4,1],['sawtooth',6,.4,1],['square',0,.15,1]]},
- harpsichord:{label:'Harpsichord（チェンバロ）',description:'以前のNylon Guitarの音をそのまま保存。明るく歯切れのよい、チェンバロ風の響き。',engine:'string',cutoff:4200,release:.45,space:.1,body:190,bodyGain:3,length:3.2,feedback:.996,pick:.22},
+ harpsichord:{outputGain:2,label:'Harpsichord（チェンバロ）',description:'以前のNylon Guitarの音をそのまま保存。明るく歯切れのよい、チェンバロ風の響き。',engine:'string',cutoff:4200,release:.45,space:.1,body:190,bodyGain:3,length:3.2,feedback:.996,pick:.22},
  warmstring:{label:'Warm String Synth',description:'倍音がゆっくりほどける、温かい弦風シンセ。これまでのNylon Guitarの合成音です。',engine:'string',excitation:'nylon',cutoff:6400,release:.38,space:.035,body:230,bodyGain:.8,length:3.4},
  physical:{label:'Physical String Ver2（物理弦）',description:'実験室の弦モデルを鍵盤で演奏。材料・張力・引く力から音を計算します。共鳴や録音に合わせた音色補正は使いません。',engine:'physical',cutoff:8000,release:.22,space:0},
  guitar520r:{label:'Guitar 520R · Spruce',description:'1〜3弦はナイロン、4〜6弦はナイロン芯の巻弦。スプルース前板・650 mm。A0〜E6の68音を個別計算。E2より低い音は6弦の張力を下げています。',engine:'520r',cutoff:8000,release:.05,space:0},
@@ -362,7 +362,8 @@ function playString(id,midi,when,p,velocity=1){
  source.buffer=buffer;
  body.type='peaking';body.frequency.value=p.body;body.Q.value=.8;body.gain.value=p.bodyGain;
  filter.type='lowpass';filter.frequency.value=+$('cutoff').value;filter.Q.value=.5;
- env.gain.value=(p.excitation==='nylon'?.20:.23)*velocity;
+ // Per-preset output calibration; the generated waveform and other instruments are unchanged.
+ env.gain.value=(p.excitation==='nylon'?.20:.23)*velocity*(p.outputGain??1);
  let bodyUpper;
  source.connect(body);
  if(p.excitation==='nylon'){
