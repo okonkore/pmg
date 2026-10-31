@@ -74,7 +74,7 @@ for(const id of ['seq-snap','seq-length','seq-zoom'])editorSettings.append(byId(
 move(editorSettings,'seq-fit','seq-quantize','seq-delete');
 noteSettings.append(editor.querySelector('.seq-inspector'));
 const editorMenu=dialog('editor-menu-dialog','編集メニュー');editorMenu.innerHTML='<button data-panel="song-dialog">曲の設定・保存</button><button data-panel="editor-settings-dialog">グリッド・表示</button><button data-panel="note-dialog">選択した音符</button><button data-panel="playback-dialog">再生設定</button><button data-panel="tab-dialog">TAB譜・印刷</button><button data-panel="help-dialog">使い方・出典</button>';
-move(tools,'seq-menu-toggle');byId('seq-menu-toggle').textContent='設定';byId('seq-menu-toggle').setAttribute('aria-expanded','false');byId('seq-menu-toggle').setAttribute('aria-haspopup','dialog');byId('seq-menu-toggle').onclick=()=>openPanel('editor-menu-dialog');
+byId('seq-menu-toggle').remove();
 const editorState=make('div','app-editor-state');move(editorState,'seq-badge','seq-save-state');
 move(menu,'seq-close');
 editor.replaceChildren(tools,byId('seq-scroll'),transport,editorState);
@@ -129,7 +129,7 @@ function sync(){
  const route=routeFromURL();renderRoute(route);
  if(route==='piano-roll')scoreEditor.open();
  if(dialogs.has(panel)&&!dialogs.get(panel).open){if(panel==='tab-dialog')refreshTab();dialogs.get(panel).showModal();}
- byId('seq-menu-toggle').setAttribute('aria-expanded',String(byId('editor-menu-dialog').open));
+ byId('app-menu').setAttribute('aria-expanded',String(byId('editor-menu-dialog').open||byId('app-menu-dialog').open));
  state.syncing=false;
 }
 function navigate(route){
@@ -150,10 +150,10 @@ function openPanel(id){
  // Switching sheets replaces their entry so Back returns to the working surface.
  if(history.state?.pmgPanel)history.replaceState({pmgPanel:id,pmgIndex:state.entryIndex},'',location.href);
  else history.pushState({pmgPanel:id,pmgIndex:++state.entryIndex},'',location.href);
- el.showModal();byId('seq-menu-toggle').setAttribute('aria-expanded',String(id==='editor-menu-dialog'));
+ el.showModal();byId('app-menu').setAttribute('aria-expanded',String(id==='editor-menu-dialog'||id==='app-menu-dialog'));
 }
 function dismiss(el){
- el.close();byId('seq-menu-toggle').setAttribute('aria-expanded','false');
+ el.close();byId('app-menu').setAttribute('aria-expanded','false');
  if(history.state?.pmgPanel===el.id)history.back();
  if(state.opener?.isConnected&&!state.opener.closest('dialog:not([open])'))state.opener.focus({preventScroll:true});
 }
@@ -173,7 +173,7 @@ function renderLibrary(){
 window.AppShell={navigate,sync,openPanel,get route(){return state.route}};
 nav.addEventListener('click',e=>{const button=e.target.closest('[data-route]');if(button)navigate(button.dataset.route)});
 document.addEventListener('click',e=>{const button=e.target.closest('[data-panel]');if(button)openPanel(button.dataset.panel)});
-byId('app-menu').onclick=()=>openPanel('app-menu-dialog');byId('app-mixer').onclick=()=>openPanel('mixer-dialog');
+byId('app-menu').onclick=()=>openPanel(state.route==='piano-roll'?'editor-menu-dialog':'app-menu-dialog');byId('app-mixer').onclick=()=>openPanel('mixer-dialog');
 byId('instrument-details').onclick=()=>openPanel('instrument-help-dialog');
 byId('performance-instrument').onclick=()=>navigate('instrument');
 byId('library-new').onclick=()=>{navigate('piano-roll');byId('seq-new').click();openPanel('song-dialog')};

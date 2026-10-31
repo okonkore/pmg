@@ -8,7 +8,7 @@ const base=process.argv[2]||'http://127.0.0.1:8766/synth-demo/';
  function innerHeightSafe(result){return Math.ceil(result.height)+1}
  async function panel(id){await page.evaluate(id=>AppShell.openPanel(id),id);await page.waitForSelector('#'+id+'[open]');}
  async function close(id){await page.click('#'+id+' [data-dismiss]');await page.waitForFunction(()=>!history.state?.pmgPanel);}
- await bounds();assert.equal(await page.locator('#song optgroup:not(#my-song-group) option').count(),38);
+ await bounds();assert.equal(await page.locator('#song optgroup:not(#my-song-group) option').count(),50);
  for(const size of [{width:390,height:844},{width:375,height:667},{width:844,height:390},{width:390,height:430},{width:1280,height:800}]){
   await page.setViewportSize(size);
   for(const route of ['performance','piano-roll','library','instrument']){await page.click('#nav-'+route);await bounds();assert.equal(await page.locator('#nav-'+route).getAttribute('aria-current'),'page');}
@@ -16,7 +16,7 @@ const base=process.argv[2]||'http://127.0.0.1:8766/synth-demo/';
  await page.setViewportSize({width:390,height:844});await page.click('#nav-library');
  await page.fill('#library-search','ソル');assert(await page.locator('.library-song').count()>0);await page.fill('#library-search','zzzz-no-song');assert(await page.locator('#library-empty').isVisible());await page.fill('#library-search','');
  await page.locator('.library-song').first().click();assert.equal(await page.evaluate(()=>AppShell.route),'performance');
- await page.click('#nav-piano-roll');await page.click('#seq-menu-toggle');await page.click('#editor-menu-dialog [data-panel="song-dialog"]');await page.click('#seq-copy');await page.waitForFunction(()=>!document.querySelector('.app-dialog[open]'));
+ await page.click('#nav-piano-roll');await page.click('#app-menu');await page.click('#editor-menu-dialog [data-panel="song-dialog"]');await page.click('#seq-copy');await page.waitForFunction(()=>!document.querySelector('.app-dialog[open]'));
  await panel('song-dialog');await page.fill('#seq-title','App shell saved song');await page.locator('#seq-title').blur();const id=await page.inputValue('#song');const saved=await page.evaluate(()=>JSON.stringify(scoreEditor.currentDocument()));await close('song-dialog');
  await page.click('#nav-performance');await page.goBack();await page.waitForFunction(()=>AppShell.route==='piano-roll');assert.equal(await page.evaluate(()=>JSON.stringify(scoreEditor.currentDocument())),saved);await page.goForward();await page.waitForFunction(()=>AppShell.route==='performance');
  await page.click('#app-menu');await page.goBack();await page.waitForFunction(()=>!document.querySelector('#app-menu-dialog').open);await page.goForward();await page.waitForFunction(()=>document.querySelector('#app-menu-dialog').open);await close('app-menu-dialog');

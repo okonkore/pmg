@@ -514,5 +514,5 @@ if(['physical','wholeShell','guitar520r'].includes(requestedPreset)){$('preset')
 if(location.hash==='#piano-roll')scoreEditor.open();
 updateOctave();
 function draw(){const canvas=$('scope'),g=canvas.getContext('2d'),data=new Uint8Array(analyser.fftSize);let lastFrame=0;function frame(now=performance.now()){requestAnimationFrame(frame);if(document.hidden||$('performance-screen').hidden||now-lastFrame<30)return;lastFrame=now;const width=Math.round(canvas.clientWidth*devicePixelRatio),height=Math.round(canvas.clientHeight*devicePixelRatio);if(canvas.width!==width||canvas.height!==height){canvas.width=width;canvas.height=height}analyser.getByteTimeDomainData(data);g.clearRect(0,0,width,height);g.strokeStyle='#ffffff09';g.lineWidth=1;for(let x=0;x<width;x+=width/16){g.beginPath();g.moveTo(x,0);g.lineTo(x,height);g.stroke()}g.strokeStyle='#e6bf7c';g.lineWidth=1.5*devicePixelRatio;g.beginPath();for(let i=0;i<data.length;i++){const x=i/(data.length-1)*width,y=data[i]/255*height;i?g.lineTo(x,y):g.moveTo(x,y)}g.stroke()}frame()}
-</script><script type="module" src="app-shell.js?v=midi-range-skip-1"></script>
+</script><script type="module" src="app-shell.js?v=single-editor-menu-1"></script>
 </body></html>
