@@ -1,5 +1,5 @@
-import {GuitarCoefficients} from './coefficient-engine.js?v=string-choice-1';
-import {renderNote} from './render-note.js';
+import {GuitarCoefficients} from './coefficient-engine.js?v=short-scale-1';
+import {renderNote} from './render-note.js?v=short-scale-1';
 let coefficients,kernel;
 self.onmessage=async({data})=>{const {id}=data;try{
  if(data.type==='init'){const [r,k,c]=await Promise.all([fetch(new URL('./body-library-256.json',import.meta.url)),fetch(new URL('../physical-guitar/kernel.wasm',import.meta.url)),fetch(new URL('./coefficients.wasm?v=coeff-cpp-1',import.meta.url))]);if(!r.ok||!k.ok||!c.ok)throw Error('計算データを取得できません');coefficients=await GuitarCoefficients.create(await r.json(),await c.arrayBuffer());kernel=await k.arrayBuffer();self.postMessage({id,type:'ready'});return;}

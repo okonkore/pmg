@@ -16,7 +16,8 @@ export function validateSettings(input){
   }
   return row;
  });
- return {version:VERSION,scaleMm:numeric(input.scaleMm,500,750,'弦長'),pluckPositionMm:numeric(input.pluckPositionMm,10,160,'弾く位置'),forceN:numeric(input.forceN,.05,4,'引く力'),strings};
+ if(!Number.isFinite(input.scaleMm)||input.scaleMm<=0)throw Error('弦長は0より大きい有限の値で指定してください');
+ return {version:VERSION,scaleMm:input.scaleMm,pluckPositionMm:numeric(input.pluckPositionMm,10,160,'弾く位置'),forceN:numeric(input.forceN,.05,4,'引く力'),strings};
 }
 export function signature(input){return JSON.stringify(validateSettings(input));}
 export function section(s){
@@ -25,11 +26,18 @@ export function section(s){
  const dc=s.coreDiameterMm/1000,dw=s.wireDiameterMm/1000,core=s.coreFill*Math.PI*dc*dc/4,wire=Math.PI*dw*dw/4,helix=Math.hypot(1,Math.PI*(dc+dw)/dw);
  return {mu:s.densityKgM3*core+s.wireDensityKgM3*wire*helix,ei:E*core*core/(4*Math.PI*s.filaments),EA:E*core,bondedEI:E*s.coreFill*Math.PI*dc**4/64};
 }
+// Zero-tension boundary of the same stiff-string formula, not a UI minimum.
+export function zeroTensionLengthMm(sec,hz){return 1000*Math.pow(sec.ei*Math.PI*Math.PI/(4*sec.mu*hz*hz),.25);}
+function requireTension(T,s,sec,hz,midi){
+ if(!Number.isFinite(T))throw Error(`${s.number}弦・MIDI ${midi}：張力計算が有限の数値範囲を超えました。弦長・太さ・物性を確認してください`);
+ if(T<=0)throw Error(`${s.number}弦・MIDI ${midi}：この弦長と剛性では指定音程の張力が正になりません（張力0の境界は約${zeroTensionLengthMm(sec,hz).toPrecision(7)} mm）。弦長・太さ・物性を変更してください`);
+}
 /** Shared preparation context: validate and calculate each string section once. */
 export function prepareSettings(input){
  const config=validateSettings(input),sections=config.strings.map(section),opens=config.strings.map((s,i)=>{const sec=sections[i],L=config.scaleMm/1000,k=Math.PI/L,w=2*Math.PI*440*2**((s.openMidi-69)/12);return (sec.mu*w*w-sec.ei*k**4)/(k*k);});
- if(sections.some(sec=>Object.values(sec).some(x=>!Number.isFinite(x)||x<=0))||opens.some(T=>!Number.isFinite(T)||T<=0))throw Error('この太さ・硬さでは標準調弦の張力が正の有限値になりません');
+ for(let i=0;i<6;i++){const sec=sections[i],s=config.strings[i];if(Object.values(sec).some(x=>!Number.isFinite(x)||x<=0))throw Error(`${i+1}弦：物性値が正の有限値になりません`);requireTension(opens[i],s,sec,440*2**((s.openMidi-69)/12),s.openMidi);}
  const totalTensionN=opens.reduce((sum,T)=>sum+T,0);
+ if(!Number.isFinite(totalTensionN))throw Error('6本の弦の合計張力が有限の数値範囲を超えました');
  function conditions(midi,stringNumber){
   if(!Number.isInteger(midi)||midi<21||midi>108)throw Error('音域はA0〜C8です');
   if(stringNumber!==undefined&&(!Number.isInteger(stringNumber)||stringNumber<1||stringNumber>6))throw Error('弦番号を確認してください');
@@ -37,8 +45,13 @@ export function prepareSettings(input){
   if(stringNumber!==undefined&&(midi<s.openMidi||midi-s.openMidi>19))throw Error('指定弦の0〜19フレットで演奏できない音程です');
   const sec=sections[s.number-1],L0=config.scaleMm/1000,k0=Math.PI/L0,T0=opens[s.number-1],hz=440*2**((midi-69)/12);let length=L0,tension=T0;
   if(midi<s.openMidi)tension=(sec.mu*(2*Math.PI*hz)**2-sec.ei*k0**4)/(k0*k0);
-  else {let lo=.01,hi=L0*1.01;for(let j=0;j<64;j++){const x=(lo+hi)/2,k=Math.PI/x,f=Math.sqrt((T0*k*k+sec.ei*k**4)/sec.mu)/(2*Math.PI);if(f>hz)lo=x;else hi=x;}length=(lo+hi)/2;}
-  if(!Number.isFinite(tension)||!(tension>0)||!Number.isFinite(length)||!(length>0))throw Error('この太さ・硬さでは指定した調弦の張力が正になりません');
+  // Positive bending stiffness requires a length >= the flexible-string length.
+  // Half that length brackets the root; retain the old endpoint where it is valid.
+  else {let lo=Math.min(.01,L0*2**(-(midi-s.openMidi)/12)/2),hi=L0*1.01;for(let j=0;j<64;j++){const x=(lo+hi)/2,k=Math.PI/x,f=Math.sqrt((T0*k*k+sec.ei*k**4)/sec.mu)/(2*Math.PI);if(f>hz)lo=x;else hi=x;}length=(lo+hi)/2;}
+  requireTension(tension,s,sec,hz,midi);
+  if(!Number.isFinite(length)||length<=0)throw Error(`${s.number}弦・MIDI ${midi}：振動長を有限の精度で解決できません`);
+  const k=Math.PI/length,solvedHz=Math.sqrt((tension*k*k+sec.ei*k**4)/sec.mu)/(2*Math.PI);
+  if(!Number.isFinite(solvedHz)||Math.abs(solvedHz/hz-1)>1e-10)throw Error(`${s.number}弦・MIDI ${midi}：振動長の計算精度が不足しています`);
   return {midi,string:s.number,fret:Math.max(0,midi-s.openMidi),hz,lengthM:length,tensionN:tension,section:sec,pluckPositionM:Math.min(config.pluckPositionMm/1000,length*.9),positionLimited:config.pluckPositionMm/1000>length*.9};
  }
  return {config,sections,totalTensionN,sixthTensionN:opens[5],conditions};

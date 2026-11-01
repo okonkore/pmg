@@ -17,7 +17,7 @@ export async function renderNote(model,kernel,rate,{onProgress=()=>{},createEngi
   }catch(e){
    if(e.message!=='Physical state exceeded safe output range')throw e;
    attempts.push({block,sample:engine.age,timeS:engine.age/rate,reason:e.message});
-   if(block===1)throw Error(`${e.message}（${rate} Hz、弦${model.physics.string}、フレット${model.physics.fret}、刻み4→2→1で再計算失敗、${(engine.age/rate).toFixed(6)}秒）`);
+   if(block===1)throw Error(`数値計算が安全な出力範囲を超えました：${e.message}（${rate} Hz、弦${model.physics.string}、フレット${model.physics.fret}、刻み4→2→1で再計算失敗、${(engine.age/rate).toFixed(6)}秒）`);
    onProgress({stage:'安全範囲を超えたため初期状態から再計算',fraction:0});
    await new Promise(r=>setTimeout(r,0));
   }

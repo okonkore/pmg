@@ -1,5 +1,5 @@
 /** C++/Eigen coefficient preparation. One body instance per preparation worker. */
-import {prepareSettings} from './settings.js?v=string-choice-1';
+import {prepareSettings} from './settings.js?v=short-scale-1';
 function wasiImports(){
  return {wasi_snapshot_preview1:{
   // These libc endpoints are not used on the successful numerical path.
@@ -32,7 +32,10 @@ export class GuitarCoefficients {
   const total=context.totalTensionN+(midi<40?spec.tensionN-context.sixthTensionN:0);
   const params=Float64Array.of(spec.lengthM,spec.tensionN,sec.mu,sec.ei,sec.bondedEI??sec.ei,sec.EA,s.diameterMm/1000,s.lossAngle,s.construction==='wound'?1:0,spec.pluckPositionM,config.forceN,total,sampleRate);
   const w=this.wasm,ptr=w.allocate(params.byteLength);if(!ptr)throw Error('係数計算用メモリを確保できません');const started=performance.now();
-  try{new Float64Array(w.memory.buffer,ptr,params.length).set(params);if(!w.prepare_coefficients(ptr))throw Error(this.error());}finally{w.deallocate(ptr);}
+  try{new Float64Array(w.memory.buffer,ptr,params.length).set(params);if(!w.prepare_coefficients(ptr)){
+   const reason=this.error(),explanations={'No resolved string fundamental':'このサンプルレートで弦の基本振動を解決できません','Invalid static pluck displacement':'撥弦時の静的変位を解決できません','Nonlinear initial state did not converge':'撥弦時の非線形平衡計算が収束しません','Non-positive vibration energy':'連成モデルの振動エネルギーが正になりません','Non-positive string/body mass':'連成モデルの質量行列が正になりません','Unstable vibration model':'連成モデルが不安定です','Eigenvector reconstruction failed':'固有振動の再構成精度が不足しています','Real eigensolver did not converge':'固有振動計算が収束しません','Unresolved coincident radiation poles':'近接した放射モードを数値的に分離できません'};
+   throw Error(`${spec.string}弦・MIDI ${midi}・${sampleRate} Hz：${explanations[reason]||'係数計算を完了できません'}（${reason}）`);
+  }}finally{w.deallocate(ptr);}
   const binary=w.memory.buffer.slice(w.result_data(),w.result_data()+w.result_size()),m=new Float64Array(w.memory.buffer,w.result_metadata(),12);this.builds++;
   return {binary,physics:{...spec,states:m[0],modes:m[1],stringModes:m[2],bodyStates:this.body.size,observerStates:0,initialReconstructionRelativeError:m[3],initialStaticResidual:m[4],forceN:m[5],forceLimited:m[5]<config.forceN,initialDeltaT:m[6],pullMm:m[7],totalTensionN:total,fullPressureModes:m[9],minObserverPoleSeparation:m[8],coefficientBackend:'cpp-eigen-wasm',coefficientMs:performance.now()-started}};
  }
