@@ -165,17 +165,17 @@ const ScoreEditor=(()=>{
   grid.addEventListener('pointercancel',()=>{tapStart=lastTap=null;finishGesture(true)});
   grid.addEventListener('lostpointercapture',()=>finishGesture());
   grid.addEventListener('dblclick',e=>{if(performance.now()<suppressClicksUntil||performance.now()-lastTouch<700||readonly()||tool!=='select')return;const note=e.target.closest('[data-note]');if(note){selection=new Set([note.dataset.note]);deleteSelection();return}addNote(point(e))});
-  function touchGeometry(){const points=[...touches.values()].slice(0,2);return {x:(points[0].x+points[1].x)/2,y:(points[0].y+points[1].y)/2,width:Math.max(1,Math.abs(points[0].x-points[1].x)),height:Math.max(1,Math.abs(points[0].y-points[1].y))}}
+  function touchGeometry(){const points=[...touches.values()].slice(0,2);return {x:(points[0].x+points[1].x)/2,y:(points[0].y+points[1].y)/2,width:Math.max(1,Math.abs(points[0].x-points[1].x)),height:Math.max(1,Math.abs(points[0].y-points[1].y)),distance:Math.max(1,Math.hypot(points[0].x-points[1].x,points[0].y-points[1].y))}}
   scroll.addEventListener('pointerdown',e=>{
-   if(e.pointerType!=='touch')return;lastTouch=performance.now();const axis=e.target.closest('#seq-ruler')?'time':e.target.closest('#seq-piano')?'pitch':null;touches.set(e.pointerId,{x:e.clientX,y:e.clientY,axis});
+   if(e.pointerType!=='touch')return;lastTouch=performance.now();const axis=e.target.closest('#seq-ruler')?'time':e.target.closest('#seq-piano')?'pitch':e.target.closest('#seq-grid')?'both':null;touches.set(e.pointerId,{x:e.clientX,y:e.clientY,axis});
    if(touches.size<2&&!pinchTail)return;
    e.preventDefault();e.stopPropagation();tapStart=lastTap=null;rulerTap=null;finishGesture(true);pinchTail=true;
-   if(touches.size===2){const points=[...touches.values()],axis=points[0].axis&&points[0].axis===points[1].axis?points[0].axis:null;const c=touchGeometry(),r=scroll.getBoundingClientRect();pinch=axis?{...c,axis,distance:axis==='time'?c.width:c.height,px,rowHeight,beat:(scroll.scrollLeft+c.x-r.left-GUTTER)/px,row:(scroll.scrollTop+c.y-r.top-RULER)/rowHeight}:null;for(const id of touches.keys())scroll.setPointerCapture(id)}
+   if(touches.size===2){const points=[...touches.values()],axis=points[0].axis&&points[0].axis===points[1].axis?points[0].axis:null;const c=touchGeometry(),r=scroll.getBoundingClientRect();pinch=axis?{...c,axis,distance:axis==='both'?c.distance:axis==='time'?c.width:c.height,px,rowHeight,beat:(scroll.scrollLeft+c.x-r.left-GUTTER)/px,row:(scroll.scrollTop+c.y-r.top-RULER)/rowHeight}:null;for(const id of touches.keys())scroll.setPointerCapture(id)}
   },{capture:true});
   function paintPinch(){
    pinchFrame=0;if(!pinch||touches.size<2)return;
-   const c=touchGeometry(),scale=(pinch.axis==='time'?c.width:c.height)/pinch.distance,r=scroll.getBoundingClientRect();if(pinch.axis==='time')px=clamp(pinch.px*scale,1,160);else rowHeight=clamp(pinch.rowHeight*scale,8,40);$('seq-zoom').value=px;render();
-   if(pinch.axis==='time')scroll.scrollLeft=Math.max(0,pinch.beat*px+GUTTER-(c.x-r.left));else scroll.scrollTop=Math.max(0,pinch.row*rowHeight+RULER-(c.y-r.top));sticky();
+   const c=touchGeometry(),scale=(pinch.axis==='both'?c.distance:pinch.axis==='time'?c.width:c.height)/pinch.distance,r=scroll.getBoundingClientRect();if(pinch.axis!=='pitch')px=clamp(pinch.px*scale,1,160);if(pinch.axis!=='time')rowHeight=clamp(pinch.rowHeight*scale,8,40);$('seq-zoom').value=px;render();
+   if(pinch.axis!=='pitch')scroll.scrollLeft=Math.max(0,pinch.beat*px+GUTTER-(c.x-r.left));if(pinch.axis!=='time')scroll.scrollTop=Math.max(0,pinch.row*rowHeight+RULER-(c.y-r.top));sticky();
   }
   scroll.addEventListener('pointermove',e=>{
    if(e.pointerType!=='touch'||!touches.has(e.pointerId))return;touches.set(e.pointerId,{...touches.get(e.pointerId),x:e.clientX,y:e.clientY});
