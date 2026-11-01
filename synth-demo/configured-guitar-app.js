@@ -1,4 +1,4 @@
-import {createPreparedGuitar} from './instruments/configured-guitar/bank.js?v=short-scale-1';
+import {createPreparedGuitar} from './instruments/configured-guitar/bank.js?v=refinement-1';
 import {validateSettings,prepareSettings} from './instruments/configured-guitar/settings.js?v=short-scale-1';
 import {StringSetLibrary} from './instruments/configured-guitar/string-sets.js';
 // This module adds one instrument and reuses the application's transport/voice registry.
