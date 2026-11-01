@@ -58,10 +58,13 @@ const ScoreEditor=(()=>{
   function renderNotes(){
    const frag=document.createDocumentFragment(),conflicts=M.stringConflicts(doc().notes);
    for(const n of doc().notes.filter(visible)){
-    const button=document.createElement('div');button.className='seq-note'+(selection.has(n.id)?' selected':'');button.dataset.note=n.id;button.dataset.readonly=String(readonly());button.setAttribute('role','button');button.setAttribute('tabindex','-1');button.setAttribute('aria-label',`${noteName(n.pitch)}、${rounded(n.beat)}拍、長さ${rounded(n.duration)}拍、強さ${Math.round(n.velocity*127)}、${n.stringNumber?n.stringNumber+'弦（'+(n.stringAssignment==='auto'?'自動配置':'指定')+'）':'弦未指定'}${conflicts.has(n.id)?'、同じ弦の音が重なっています':''}`);button.title=button.getAttribute('aria-label');
+    const position=n.stringNumber?M.guitarPositions(n.pitch,doc().source).find(p=>p.stringNumber===n.stringNumber):null;
+    const fret=position?String(position.fret):'—';
+    const button=document.createElement('div');button.className='seq-note'+(selection.has(n.id)?' selected':'');button.dataset.note=n.id;button.dataset.readonly=String(readonly());button.setAttribute('role','button');button.setAttribute('tabindex','-1');button.setAttribute('aria-label',`${noteName(n.pitch)}、${rounded(n.beat)}拍、長さ${rounded(n.duration)}拍、強さ${Math.round(n.velocity*127)}、${n.stringNumber?'ギター運指：'+n.stringNumber+'弦、'+(position?fret+'フレット':'指定弦の範囲外')+'（'+(n.stringAssignment==='auto'?'自動配置':'指定')+'）':'弦未指定'}${conflicts.has(n.id)?'、同じ弦の音が重なっています':''}`);button.title=button.getAttribute('aria-label');
     Object.assign(button.style,{left:n.beat*px+'px',top:(TOP-n.pitch)*rowHeight+1+'px',width:Math.max(5,n.duration*px-1)+'px',height:Math.max(6,rowHeight-2)+'px',lineHeight:Math.max(6,rowHeight-4)+'px'});
     button.dataset.string=n.stringNumber||'unassigned';
-    if(n.duration*px>28)button.append(document.createTextNode((n.stringNumber?n.stringNumber+'弦 ':'未 ')+noteName(n.pitch)));
+    const label=n.stringNumber?'F'+fret:'—';
+    if(n.duration*px>label.length*6+12)button.append(document.createTextNode(label));
     if(conflicts.has(n.id))button.append(document.createTextNode(' ⚠'));
     const handle=document.createElement('span');handle.className='seq-resize';button.append(handle);frag.append(button);
    }
