@@ -4,3 +4,5 @@
 
 .tab-print-help{display:none}@media print{.tab-print-help{display:block}}
 @media screen{.tab-measure th:first-child{position:sticky;left:0;background:#222923;z-index:1}}.tab-measure:focus-visible{outline:2px solid #e4c18a}
+
+#tab-text{box-sizing:border-box;width:100%;height:55dvh;min-height:160px;font:16px/1.4 monospace;white-space:pre;overflow:auto;user-select:text;-webkit-user-select:text;touch-action:auto}.tab-text-panel{margin:12px 0}@media print{.tab-text-panel{display:none!important}}

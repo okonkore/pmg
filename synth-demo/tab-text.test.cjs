@@ -1,0 +1,12 @@
+const assert=require('node:assert/strict'),{render}=require('./tab-text.js'),{plan}=require('./tab-model.js');
+const doc={title:'Original fixture',bpm:120,meter:[4,4],endBeat:8,source:{credit:'Fixture author',license:'CC0'},notes:[{pitch:40,beat:0,duration:5},{pitch:83,beat:0,duration:1/3},{pitch:64,beat:1/3,duration:1/3},{pitch:21,beat:.123456789,duration:.17}]};
+const before=JSON.stringify(doc),tab=plan(doc),text=render(doc,tab);
+assert.equal(JSON.stringify(doc),before);assert(text.includes('j'));assert(text.includes('不均等時間列'));assert(text.includes('長さ=0.17'));assert(text.includes('未割当'));assert(text.includes('Fixture author'));assert(text.includes('CC0'));
+const lines=text.split('\n');let blocks=0;for(let i=0;i<lines.length;i++)if(/^[|:][0-9a-z?~\-]+[|:]$/.test(lines[i])){const block=lines.slice(i,i+6);assert.equal(block.length,6);assert(block.every(l=>l.length===block[0].length));blocks++;i+=5}assert(blocks>=2);assert.equal(lines.filter(l=>/^#\d+ /.test(l)).length,doc.notes.length);
+const simple=render({...doc,source:null,notes:[{pitch:64,beat:0,duration:1},{pitch:40,beat:0,duration:4}]});assert(simple.includes('1セル=1/4拍'));assert(simple.includes('|0~~~'));assert(simple.includes('~'));assert(simple.includes('-'));
+const unsupported=render(doc,{...tab,entries:tab.entries.map(n=>n.string?{...n,fret:36}:n)});assert(unsupported.includes('警告: 0〜35外'));assert(unsupported.includes('?'));
+console.log('PASS text TAB: columns, single-character frets, simultaneous/held notes, bar continuation, exact free timing, full note ledger, credits and immutable input');
+const explicit={title:'Original string fixture',bpm:90,meter:[4,4],notes:[{pitch:74,beat:0,duration:2,stringNumber:1},{pitch:59,beat:0,duration:1,stringNumber:2},{pitch:76,beat:1,duration:1,stringNumber:1}]};
+const planned=plan(explicit),encoded=render(explicit,planned);assert(encoded.includes('指定弦を優先'));assert(encoded.includes('指定弦=1'));assert(encoded.includes('a'));assert(encoded.includes('未割当'));for(const n of planned.entries)if(n.string)assert.equal(n.string,n.stringNumber);assert.equal(encoded.split('\n').filter(l=>/^#\d+ /.test(l)).length,3);
+for(let fret=10;fret<=35;fret++){const d={title:'Alphabet',bpm:120,meter:[4,4],notes:[{pitch:64+fret,beat:0,duration:1}]};const t=plan(d);t.entries=[{...d.notes[0],index:0,string:1,fret}];assert(render(d,t).includes('|'+fret.toString(36)+'~~~'));}
+console.log('PASS explicit string choices, conflict preservation, a through z encoding');

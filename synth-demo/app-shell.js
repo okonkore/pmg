@@ -1,3 +1,4 @@
+import './tab-text.js';
 import {renderTab} from './tab-output.js?v=string-choice-1';
 import './midi-import.js?v=range-skip-1';
 import './configured-guitar-app.js?v=short-scale-1';
@@ -40,7 +41,12 @@ const midiBody=dialog('midi-dialog','MIDI 読込');
 const tabBody=dialog('tab-dialog','TAB譜・印刷');
 const tabPrint=make('button','tab-print','印刷・PDF保存');tabPrint.onclick=()=>window.print();
 const tabDocument=make('article');tabDocument.id='tab-document';tabBody.append(tabPrint,tabDocument);
-function refreshTab(){stop();try{renderTab(tabDocument,scoreEditor.currentDocument());tabPrint.disabled=false}catch(error){tabDocument.replaceChildren(make('p'));tabDocument.firstChild.textContent=error.message;tabPrint.disabled=true}}
+const tabTextPanel=make('details','tab-text-panel');tabTextPanel.innerHTML='<summary>テキストTAB・コピー・TXT保存</summary><button id="tab-copy">コピー</button><button id="tab-save-text">TXT保存</button><p id="tab-text-status" role="status"></p><textarea id="tab-text" aria-label="テキストTAB" readonly wrap="off"></textarea>';tabBody.insertBefore(tabTextPanel,tabDocument);
+const tabText=tabTextPanel.querySelector('textarea');let tabTextTitle='TAB';
+byId('tab-copy').onclick=async()=>{try{await navigator.clipboard.writeText(tabText.value);byId('tab-text-status').textContent='コピーしました'}catch{tabText.focus();tabText.select();byId('tab-text-status').textContent='コピーできませんでした。選択したテキストを端末のコピー操作でコピーしてください'}};
+byId('tab-save-text').onclick=()=>{const url=URL.createObjectURL(new Blob([tabText.value],{type:'text/plain;charset=utf-8'}));const a=document.createElement('a');a.href=url;a.download=tabTextTitle.replace(/[\\/:*?"<>|\x00-\x1f]/g,'_')+'.txt';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)};
+function refreshTab(){stop();tabTextPanel.open=true;byId('tab-text-status').textContent='';try{const doc=scoreEditor.currentDocument(),tab=renderTab(tabDocument,doc);tabText.value=PMGTabText.render(doc,tab);tabTextTitle=doc.title||'TAB';tabTextPanel.hidden=false;tabPrint.disabled=false}catch(error){tabDocument.replaceChildren(make('p'));tabDocument.firstChild.textContent=error.message;tabPrint.disabled=true;tabText.value='';tabTextPanel.hidden=true}}
+
 const help=dialog('help-dialog','使い方・出典');
 const instrumentHelp=dialog('instrument-help-dialog','音源について');
 move(instrumentHelp,'preset-info');
