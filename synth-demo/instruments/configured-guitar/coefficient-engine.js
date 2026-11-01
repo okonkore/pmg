@@ -1,5 +1,5 @@
 /** C++/Eigen coefficient preparation. One body instance per preparation worker. */
-import {prepareSettings} from './settings.js?v=coeff-cpp-1';
+import {prepareSettings} from './settings.js?v=string-choice-1';
 function wasiImports(){
  return {wasi_snapshot_preview1:{
   // These libc endpoints are not used on the successful numerical path.

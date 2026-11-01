@@ -10,7 +10,7 @@
   if(barCount>512)throw Error('この出力は512小節まで対応しています。曲データは変更していません。');
   let states=[{busy:Array(6).fill(null),position:0,cost:0,path:null}];
   for(const note of notes){
-   const candidates=tuning.map((p,i)=>({string:6-i,fret:note.pitch-p,i})).filter(c=>c.fret>=0&&c.fret<=19);
+   const candidates=tuning.map((p,i)=>({string:6-i,fret:note.pitch-p,i})).filter(c=>c.fret>=0&&c.fret<=19&&(note.stringNumber===undefined||c.string===note.stringNumber));
    const next=[];
    for(const s of states){
     const busy=s.busy.map(n=>n&&n.end>note.beat+EPS?n:null);
@@ -31,7 +31,7 @@
    const intervals=here.map(n=>[Math.max(start,n.beat),Math.min(finish,n.beat+n.duration)]).sort((a,b)=>a[0]-b[0]);let at=start;const rests=[];for(const [a,b]of intervals){if(a>at+EPS)rests.push([at,a]);at=Math.max(at,b)}if(at<finish-EPS)rests.push([at,finish]);
    bars.push({number:i+1,start,end:finish,times,notes:here,rests});
   }
-  return {tuning:[...tuning],requiredTuning:!!doc.source?.requiredTuning,entries,bars,unassigned:entries.filter(n=>!n.string),stretches:entries.filter(n=>n.stretch),automatic:true};
+  return {tuning:[...tuning],requiredTuning:!!doc.source?.requiredTuning,entries,bars,unassigned:entries.filter(n=>!n.string),stretches:entries.filter(n=>n.stretch),automatic:!notes.some(n=>n.stringNumber!==undefined)};
  }
  const api={plan,STANDARD};if(typeof module!=='undefined'&&module.exports)module.exports=api;else root.PMGTab=api;
 })(globalThis);

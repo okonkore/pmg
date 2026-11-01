@@ -58,3 +58,5 @@
  .seq-inspector input:not([type=range]) {font-size:16px}
  .seq-toolbar input[type=number] {width:80px}
 }
+
+.seq-inspector select{font:inherit;max-width:100%;min-height:36px;background:#211b15;color:#f5ead8;border:1px solid #ffffff40;border-radius:5px;padding:5px}#seq-string-help{max-width:260px;font-size:12px;line-height:1.5}@media(any-pointer:coarse){.seq-inspector select{font-size:16px}}

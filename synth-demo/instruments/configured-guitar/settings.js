@@ -34,6 +34,7 @@ export function prepareSettings(input){
   if(!Number.isInteger(midi)||midi<21||midi>108)throw Error('音域はA0〜C8です');
   if(stringNumber!==undefined&&(!Number.isInteger(stringNumber)||stringNumber<1||stringNumber>6))throw Error('弦番号を確認してください');
   const s=stringNumber===undefined?([...config.strings].reverse().filter(s=>s.openMidi<=midi).at(-1)||config.strings[5]):config.strings[stringNumber-1];
+  if(stringNumber!==undefined&&(midi<s.openMidi||midi-s.openMidi>19))throw Error('指定弦の0〜19フレットで演奏できない音程です');
   const sec=sections[s.number-1],L0=config.scaleMm/1000,k0=Math.PI/L0,T0=opens[s.number-1],hz=440*2**((midi-69)/12);let length=L0,tension=T0;
   if(midi<s.openMidi)tension=(sec.mu*(2*Math.PI*hz)**2-sec.ei*k0**4)/(k0*k0);
   else {let lo=.01,hi=L0*1.01;for(let j=0;j<64;j++){const x=(lo+hi)/2,k=Math.PI/x,f=Math.sqrt((T0*k*k+sec.ei*k**4)/sec.mu)/(2*Math.PI);if(f>hz)lo=x;else hi=x;}length=(lo+hi)/2;}

@@ -2,6 +2,8 @@
 // Song data and edit history are independent of the DOM and audio engine.
 const SequencerModel=(()=>{
  const MAX_BEATS=4096,MAX_NOTES=20000,MIN_LENGTH=1/128,VERSION=1;
+ const GUITAR_OPENS=[64,59,55,50,45,40],MAX_FRET=19;
+ function guitarPositions(pitch,source){return GUITAR_OPENS.map((open,i)=>({stringNumber:i+1,fret:pitch-open})).filter(p=>p.fret>=0&&p.fret<=MAX_FRET&&(!source?.requiredTuning||source.requiredTuning.pitchesLowToHigh?.[6-p.stringNumber]===GUITAR_OPENS[p.stringNumber-1]));}
  const clone=value=>JSON.parse(JSON.stringify(value));
  const uid=prefix=>prefix+'-'+(globalThis.crypto?.randomUUID?.()||Date.now().toString(36)+'-'+Math.random().toString(36).slice(2));
  function freeze(value){if(value&&typeof value==='object'){Object.values(value).forEach(freeze);Object.freeze(value)}return value}
@@ -17,7 +19,9 @@ const SequencerModel=(()=>{
    const velocity=n.velocity??1;
    if(!Number.isFinite(velocity)||velocity<=0||velocity>1)throw new Error('ベロシティの形式が正しくありません');
    let id=typeof n.id==='string'&&n.id.length<100?n.id:uid('note');if(ids.has(id))id=uid('note');ids.add(id);
-   return {id,beat,pitch,duration,velocity};
+   const stringNumber=n.stringNumber;
+   if(stringNumber!==undefined&&(!Number.isInteger(stringNumber)||!guitarPositions(pitch,input.source).some(p=>p.stringNumber===stringNumber)))throw new Error('指定弦ではこの音程・調弦を0〜19フレットで演奏できません。弦を自動に戻してから変更してください');
+   return {id,beat,pitch,duration,velocity,...(stringNumber===undefined?{}:{stringNumber})};
   }).sort((a,b)=>a.beat-b.beat||a.pitch-b.pitch);
   const source=input.source&&typeof input.source==='object'?Object.fromEntries(['title','key','credit','license','url','licenseUrl','modifications','pitch','terms','endingStatus'].filter(k=>typeof input.source[k]==='string').map(k=>[k,input.source[k].slice(0,500)])):null;
   if(source&&input.source.requiredTuning!==undefined){
@@ -33,9 +37,9 @@ const SequencerModel=(()=>{
  function fromSong(key,song){
   const is1012=key==='gavotte'||key==='gavotte2'||key.endsWith('1012');
   const meter=song.score.meter|| (key.startsWith('prelude')&&is1012?[12,8]:key.startsWith('gigue')?[6,8]:key.startsWith('sarabande')?(is1012?[3,2]:[3,4]):key.startsWith('courante')?[3,4]:key.startsWith('gavotte')?[2,2]:[4,4]);
-  return normalize({id:key,title:song.score.title,bpm:song.score.bpm,meter,endBeat:song.score.endBeat,notes:song.score.events.map(([beat,pitch,duration,velocity],i)=>({id:'original-'+i,beat,pitch,duration,velocity:velocity??1})),source:song.source?{...song.source,key,title:song.score.title}:{key,title:song.score.title,credit:is1012?'J. S. Bach / Hajo Dezelski / Mutopia':'J. S. Bach / Andreas Scherer / Mutopia',license:is1012?'CC BY-SA 3.0':'Public Domain',url:'https://www.mutopiaproject.org/cgibin/piece-info.cgi?id='+(is1012?({prelude1012:1494,allemande1012:1503,courante1012:1504,sarabande1012:1505,gavotte:1506,gavotte2:1507,gigue1012:1508}[key]||1506):517)}});
+  return normalize({id:key,title:song.score.title,bpm:song.score.bpm,meter,endBeat:song.score.endBeat,notes:song.score.events.map(([beat,pitch,duration,velocity,stringNumber],i)=>({id:'original-'+i,beat,pitch,duration,velocity:velocity??1,...(stringNumber===undefined?{}:{stringNumber})})),source:song.source?{...song.source,key,title:song.score.title}:{key,title:song.score.title,credit:is1012?'J. S. Bach / Hajo Dezelski / Mutopia':'J. S. Bach / Andreas Scherer / Mutopia',license:is1012?'CC BY-SA 3.0':'Public Domain',url:'https://www.mutopiaproject.org/cgibin/piece-info.cgi?id='+(is1012?({prelude1012:1494,allemande1012:1503,courante1012:1504,sarabande1012:1505,gavotte:1506,gavotte2:1507,gigue1012:1508}[key]||1506):517)}});
  }
- function toSong(document){const d=normalize(document);return {label:d.title,option:d.title,edition:'マイソング',source:d.source,score:{title:d.title,bpm:d.bpm,meter:d.meter,endBeat:d.endBeat,events:d.notes.map(n=>[n.beat,n.pitch,n.duration,n.velocity])}}}
+ function toSong(document){const d=normalize(document);return {label:d.title,option:d.title,edition:'マイソング',source:d.source,score:{title:d.title,bpm:d.bpm,meter:d.meter,endBeat:d.endBeat,events:d.notes.map(n=>[n.beat,n.pitch,n.duration,n.velocity,...(n.stringNumber===undefined?[]:[n.stringNumber])])}}}
  // Offset chord attacks only; keep their original ends and the loop length.
  function playbackEvents(events,bpm,{enabled=false,intervalMs=20,direction='up'}={}){
   const sorted=events.map(e=>[...e]).sort((a,b)=>a[0]-b[0]);
@@ -83,6 +87,6 @@ const SequencerModel=(()=>{
   export(document){return JSON.stringify({format:'pmg-song',version:VERSION,song:normalize(document)},null,2)}
   import(text){const data=JSON.parse(text);if(data.format!=='pmg-song'||data.version!==VERSION)throw new Error('PMGの曲ファイルを選んでください');return this.add(data.song)}
  }
- return {MAX_BEATS,MAX_NOTES,MIN_LENGTH,clone,uid,normalize,fromSong,toSong,playbackEvents,History,Library};
+ return {guitarPositions,MAX_FRET,MAX_BEATS,MAX_NOTES,MIN_LENGTH,clone,uid,normalize,fromSong,toSong,playbackEvents,History,Library};
 })();
 if(typeof module!=='undefined')module.exports=SequencerModel;

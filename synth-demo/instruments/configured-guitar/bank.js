@@ -1,6 +1,11 @@
-import {validateSettings,signature,MIDI_RANGE} from './settings.js';
+import {validateSettings,signature,MIDI_RANGE,prepareSettings} from './settings.js?v=string-choice-1';
 export const MAX_PREPARATION_CONCURRENCY=4;
 const DB_NAME='pmg-physical-guitar-prepared-v1',MAX_MEMORY=64*1024*1024;
+export function noteRequest(value){
+ if(Number.isInteger(value)&&value>=21&&value<=108)return {midi:value};
+ if(typeof value==='string'&&/^(?:2[1-9]|[3-9][0-9]|10[0-8])@[1-6]$/.test(value))return {midi:Number(value.split('@')[0]),stringNumber:Number(value.split('@')[1])};
+ throw Error('準備する音程・弦の指定を確認してください');
+}
 const aborted=()=>new DOMException('準備を中止しました','AbortError');
 function request(req){return new Promise((resolve,reject)=>{req.onsuccess=()=>resolve(req.result);req.onerror=()=>reject(req.error);});}
 async function openDB(){const req=indexedDB.open(DB_NAME,1);req.onupgradeneeded=()=>{req.result.createObjectStore('notes');};return request(req);}
@@ -18,7 +23,7 @@ export async function createPreparedGuitar(context,{destination=context.destinat
  function check(token){if(token!==generation)throw aborted();}
  function ask(entry,type,params={}){const id=++job;return new Promise((resolve,reject)=>{entry.pending.set(id,{resolve,reject});try{entry.worker.postMessage({type,id,...params});}catch(e){entry.pending.delete(id);reject(e);}});}
  async function spawn(token,onStage){
-  check(token);const entry={worker:new Worker(new URL('./worker.js?v=guard-retry-1',import.meta.url),{type:'module'}),pending:new Map()};workers.add(entry);
+  check(token);const entry={worker:new Worker(new URL('./worker.js?v=string-choice-1',import.meta.url),{type:'module'}),pending:new Map()};workers.add(entry);
   entry.worker.onmessage=({data})=>{const p=entry.pending.get(data.id);if(!p||token!==generation)return;if(data.type==='progress'){onStage(data);return;}entry.pending.delete(data.id);data.type==='error'?p.reject(Error(data.message)):p.resolve(data);};
   entry.worker.onerror=e=>{const error=Error(e.message||'計算Workerが停止しました');for(const p of entry.pending.values())p.reject(error);entry.pending.clear();};
   entry.worker.onmessageerror=()=>{for(const p of entry.pending.values())p.reject(Error('計算結果を読み取れませんでした'));entry.pending.clear();};
@@ -27,7 +32,7 @@ export async function createPreparedGuitar(context,{destination=context.destinat
  async function run(input,{midis=MIDI_RANGE,concurrency=1}={},benchmarkOnly=false){
   const config=validateSettings(input),list=[...new Set(midis)];
   if(!Number.isInteger(concurrency)||concurrency<1||concurrency>MAX_PREPARATION_CONCURRENCY)throw Error('並列数は1〜4で指定してください');
-  if(list.some(n=>!Number.isInteger(n)||n<21||n>108))throw Error('準備する音域を確認してください');
+  const preparedSettings=prepareSettings(config);for(const n of list){const request=noteRequest(n);preparedSettings.conditions(request.midi,request.stringNumber);}
   cancel();const token=generation,started=performance.now(),configKey='full-pressure-m256-guard-retry-4-2-1-v1:'+signature(config),running=new Map(),notes=[];preparing=true;
   let done=0,reused=0,cursor=0,workerCount=0;const missing=[];
   const stage=()=>{check(token);onProgress({type:'stage',running:[...running.values()].map(item=>({...item})),workers:workerCount,concurrency,done,total:list.length,benchmark:benchmarkOnly});};
@@ -43,7 +48,7 @@ export async function createPreparedGuitar(context,{destination=context.destinat
     while(cursor<missing.length){
      check(token);const midi=missing[cursor++];running.set(slot,{midi,stage:entry?'弦と胴の係数を計算':'計算エンジンを起動',fraction:0});stage();
      if(!entry)entry=await spawn(token,data=>{const item=running.get(slot);if(item){item.stage=data.stage;item.fraction=data.fraction;stage();}});
-     check(token);const result=await ask(entry,'render',{settings:config,midi,rate:context.sampleRate});check(token);
+     check(token);const result=await ask(entry,'render',{settings:config,...noteRequest(midi),rate:context.sampleRate});check(token);
      if(!benchmarkOnly){running.get(slot).stage='端末に保存';running.get(slot).fraction=1;stage();await write(key(configKey,midi),{pcm:result.pcm,pcmScale:result.pcmScale,rate:result.rate,frames:result.frames,physics:result.physics,integration:result.integration,capped:result.capped,peak:result.peak});check(token);}
      notes.push({midi,frames:result.frames,peak:result.peak,coefficientMs:result.physics.coefficientMs});delete result.pcm;running.delete(slot);done++;progress(midi);stage();
     }
@@ -61,8 +66,8 @@ export async function createPreparedGuitar(context,{destination=context.destinat
   const bytes=buffer.length*4;while(memory+bytes>MAX_MEMORY&&cache.size){const [first,item]=cache.entries().next().value;memory-=item.bytes;cache.delete(first);}const item={buffer,physics:record.physics,bytes};cache.set(k,item);memory+=bytes;return item;
  }
  async function ensure(midi){if(!active)throw Error('先に弦の設定を決定してください');const k=key(active.configKey,midi);if(loads.has(k))return loads.get(k);const promise=loadNote(midi).finally(()=>loads.delete(k));loads.set(k,promise);return promise;}
- function play({midi,when=context.currentTime,gain=1,onended=()=>{}}){if(!Number.isFinite(when)||!Number.isFinite(gain)||gain<0||gain>1)throw Error('演奏条件を確認してください');let source,volume,ended=false,releaseAt=Infinity;const finish=()=>{if(ended)return;ended=true;source?.disconnect();volume?.disconnect();onended();};
-  const voice={midi,ready:ensure(midi).then(item=>{if(ended)return;if(releaseAt<=context.currentTime){finish();return;}source=context.createBufferSource();volume=context.createGain();volume.gain.value=gain;source.buffer=item.buffer;source.connect(volume).connect(destination);source.onended=finish;source.start(Math.max(when,context.currentTime));if(Number.isFinite(releaseAt))voice.release(releaseAt);return item;}).catch(e=>{finish();throw e;}),release(at=context.currentTime){releaseAt=Math.min(releaseAt,at);if(source&&!ended){const t=Math.max(at,context.currentTime);volume.gain.cancelScheduledValues(t);volume.gain.setValueAtTime(gain,t);volume.gain.linearRampToValueAtTime(0,t+.012);source.stop(t+.012);}},kill(){if(source&&!ended){try{source.stop();}catch{}}finish();}};return voice;
+ function play({midi,stringNumber,when=context.currentTime,gain=1,onended=()=>{}}){if(!Number.isFinite(when)||!Number.isFinite(gain)||gain<0||gain>1)throw Error('演奏条件を確認してください');let source,volume,ended=false,releaseAt=Infinity;const finish=()=>{if(ended)return;ended=true;source?.disconnect();volume?.disconnect();onended();};
+  const voice={midi,ready:ensure(stringNumber===undefined?midi:`${midi}@${stringNumber}`).then(item=>{if(ended)return;if(releaseAt<=context.currentTime){finish();return;}source=context.createBufferSource();volume=context.createGain();volume.gain.value=gain;source.buffer=item.buffer;source.connect(volume).connect(destination);source.onended=finish;source.start(Math.max(when,context.currentTime));if(Number.isFinite(releaseAt))voice.release(releaseAt);return item;}).catch(e=>{finish();throw e;}),release(at=context.currentTime){releaseAt=Math.min(releaseAt,at);if(source&&!ended){const t=Math.max(at,context.currentTime);volume.gain.cancelScheduledValues(t);volume.gain.setValueAtTime(gain,t);volume.gain.linearRampToValueAtTime(0,t+.012);source.stop(t+.012);}},kill(){if(source&&!ended){try{source.stop();}catch{}}finish();}};return voice;
  }
  return {prepare,benchmark,ensure,play,cancel,get lastPreparation(){return lastPreparation;},async has(midi){return !!active&&await exists(key(active.configKey,midi));},get preparing(){return preparing;},get active(){return active;},dispose(){cancel();cache.clear();memory=0;db.close();}};
 }
