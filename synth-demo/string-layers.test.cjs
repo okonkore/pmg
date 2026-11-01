@@ -1,0 +1,35 @@
+const assert=require('node:assert/strict');
+const M=require('./sequencer-model.js'),Tab=require('./tab-model.js');
+const note=(id,pitch,beat=0,duration=1,stringNumber)=>({id,pitch,beat,duration,velocity:.8,...(stringNumber?{stringNumber}:{})});
+const doc=notes=>M.normalize({title:'Generated test',bpm:120,meter:[4,4],notes});
+let d=doc([note('manual',50,0,2,4),note('unison',50),note('outside',21),note('future',50,1,1,5)]);
+let r=M.assignStrings(d);
+assert.equal(r.document.notes.find(n=>n.id==='manual').stringNumber,4);
+assert.equal(r.document.notes.find(n=>n.id==='unison').stringNumber,5);
+assert.equal(r.document.notes.find(n=>n.id==='unison').stringAssignment,'auto');
+assert.equal(r.remaining,1);assert.deepEqual(d.notes.map(n=>n.stringNumber),[undefined,4,undefined,5]);
+assert.deepEqual(r.document.notes.map(({stringNumber,stringAssignment,...n})=>n),d.notes.map(({stringNumber,...n})=>n));
+const h=new M.History(d);h.commit(r.document);h.undo();assert.deepEqual(h.current,d);h.redo();assert.deepEqual(h.current,r.document);
+assert.deepEqual(M.normalize(JSON.parse(JSON.stringify(h.current))),h.current);
+const busy=doc([1,2,3,4,5,6].map((s,i)=>note('held'+i,[64,59,55,50,45,40][i],1,1,s)).concat(note('long',64,0,3)));
+assert.equal(M.assignStrings(busy).assigned,0,'future held notes reserved');
+const full=doc(Array.from({length:7},(_,i)=>note('chord'+i,64)));
+r=M.assignStrings(full);assert.equal(r.assigned,5);assert.equal(r.remaining,2);assert.equal(M.stringConflicts(r.document.notes).size,0);
+const unison=doc([note('d4',50,0,1,4),note('d5',50,0,1,5)]);
+assert.equal(M.toSong(unison).score.events.length,2);assert.deepEqual(M.toSong(unison).score.events.map(n=>n[4]),[4,5]);
+assert.equal(Tab.plan(unison).entries.filter(n=>n.string).length,2);
+assert.equal(M.stringConflicts(unison.notes).size,0);
+assert.equal(M.stringConflicts([note('a',50,0,2,4),note('b',52,1,1,4)]).size,2);
+assert.equal(M.stringConflicts([note('a',50,0,1,4),note('b',52,1,1,4)]).size,0);
+assert.equal(M.assignStrings(doc([note('low',21)])).remaining,1);
+console.log('String layers: reservations, unisons, metadata, identity/timing, history, JSON, TAB, conflicts, impossible notes passed');
+
+// Insertion targets only the new note; existing unspecified notes are never reassigned.
+const insertion=doc([note('old',50,3),note('held',50,0,2,4),note('new',50,1)]);
+const inserted=M.assignStrings(insertion,{noteIds:new Set(['new'])});
+assert.equal(inserted.document.notes.find(n=>n.id==='new').stringNumber,5);
+assert.equal(inserted.document.notes.find(n=>n.id==='old').stringNumber,undefined);
+assert.deepEqual(inserted.document.notes.find(n=>n.id==='held'),insertion.notes.find(n=>n.id==='held'));
+const crowded=doc([note('four',50,0,2,4),note('five',50,0,2,5),note('six',50,0,2,6),note('new',50,1)]);
+assert.equal(M.assignStrings(crowded,{noteIds:new Set(['new'])}).document.notes.find(n=>n.id==='new').stringNumber,undefined);
+console.log('Targeted insertion: only new note assigned, held/manual notes protected, unavailable notes stay unspecified');

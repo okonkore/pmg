@@ -72,7 +72,7 @@ const editor=byId('score-editor'),toolbars=[...editor.querySelectorAll(':scope >
 const tools=make('div','app-editor-tools');editor.prepend(tools);tools.setAttribute('aria-label','編集ツール');
 move(tools,'seq-undo','seq-redo','seq-select','seq-draw','seq-pan');
 byId('seq-undo').textContent='↶ 戻す';
-tools.insertAdjacentHTML('beforeend','<button data-panel="note-dialog">音符</button>');
+tools.insertAdjacentHTML('beforeend','<button id="seq-note-settings" data-panel="note-dialog">音符</button>');
 const transport=toolbars[0];
 move(songSettings,'seq-new','seq-copy');songSettings.append(editor.querySelector('.seq-title-row'));
 songSettings.append(byId('seq-bpm').closest('.seq-tools'));
@@ -84,7 +84,7 @@ const editorMenu=dialog('editor-menu-dialog','編集メニュー');editorMenu.in
 byId('seq-menu-toggle').remove();
 const editorState=make('div','app-editor-state');move(editorState,'seq-badge','seq-save-state');
 move(menu,'seq-close');
-editor.replaceChildren(tools,byId('seq-scroll'),transport,editorState);
+editor.replaceChildren(tools,byId('seq-layers'),byId('seq-scroll'),transport,editorState);
 // Keep old action hooks available in contextual locations.
 move(menu,'open-editor','copy-song');
 const performance=byId('performance-screen');

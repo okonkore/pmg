@@ -20,8 +20,8 @@ const SequencerModel=(()=>{
    if(!Number.isFinite(velocity)||velocity<=0||velocity>1)throw new Error('ベロシティの形式が正しくありません');
    let id=typeof n.id==='string'&&n.id.length<100?n.id:uid('note');if(ids.has(id))id=uid('note');ids.add(id);
    const stringNumber=n.stringNumber;
-   if(stringNumber!==undefined&&(!Number.isInteger(stringNumber)||!guitarPositions(pitch,input.source).some(p=>p.stringNumber===stringNumber)))throw new Error('指定弦ではこの音程・調弦を0〜19フレットで演奏できません。弦を自動に戻してから変更してください');
-   return {id,beat,pitch,duration,velocity,...(stringNumber===undefined?{}:{stringNumber})};
+   if(stringNumber!==undefined&&(!Number.isInteger(stringNumber)||!guitarPositions(pitch,input.source).some(p=>p.stringNumber===stringNumber)))throw new Error('指定弦ではこの音程・調弦を0〜19フレットで演奏できません。弦を未指定に戻してから変更してください');
+   return {id,beat,pitch,duration,velocity,...(stringNumber===undefined?{}:{stringNumber,...(n.stringAssignment==='auto'?{stringAssignment:'auto'}:{})})};
   }).sort((a,b)=>a.beat-b.beat||a.pitch-b.pitch);
   const source=input.source&&typeof input.source==='object'?Object.fromEntries(['title','key','credit','license','url','licenseUrl','modifications','pitch','terms','endingStatus'].filter(k=>typeof input.source[k]==='string').map(k=>[k,input.source[k].slice(0,500)])):null;
   if(source&&input.source.requiredTuning!==undefined){
@@ -33,6 +33,38 @@ const SequencerModel=(()=>{
   // Preserve the explicit score marker; playback/editor extent also includes current note ends.
   const endBeat=input.endBeat;
   return {id:String(input.id||''),title,bpm,meter:[...meter],...(endBeat===undefined?{}:{endBeat}),notes,source};
+ }
+ // Explicit assignment only: original songs and MIDI stay unassigned until requested.
+ function assignStrings(document,{noteIds}={}){
+  const d=normalize(document),fixed=Array.from({length:6},()=>[]),ends=Array(6).fill(0);
+  for(const n of d.notes)if(n.stringNumber)fixed[n.stringNumber-1].push([n.beat,n.beat+n.duration]);
+  for(let i=0;i<6;i++){
+   const merged=[];for(const interval of fixed[i]){const last=merged.at(-1);if(last&&interval[0]<=last[1])last[1]=Math.max(last[1],interval[1]);else merged.push([...interval]);}fixed[i]=merged;
+  }
+  function free(n,string){
+   if(ends[string]>n.beat)return false;
+   const ranges=fixed[string];let lo=0,hi=ranges.length;
+   while(lo<hi){const mid=(lo+hi)>>1;if(ranges[mid][1]<=n.beat)lo=mid+1;else hi=mid;}
+   return lo===ranges.length||ranges[lo][0]>=n.beat+n.duration;
+  }
+  let position=0,assigned=0;
+  const pending=d.notes.filter(n=>!n.stringNumber&&(!noteIds||noteIds.has(n.id))).sort((a,b)=>a.beat-b.beat||guitarPositions(a.pitch,d.source).length-guitarPositions(b.pitch,d.source).length||b.duration-a.duration);
+  for(const n of pending){
+   const choices=guitarPositions(n.pitch,d.source).filter(p=>free(n,p.stringNumber-1));
+   choices.sort((a,b)=>(Math.abs(a.fret-position)+a.fret*.15)-(Math.abs(b.fret-position)+b.fret*.15)||a.stringNumber-b.stringNumber);
+   const p=choices[0];if(!p)continue;
+   n.stringNumber=p.stringNumber;n.stringAssignment='auto';ends[p.stringNumber-1]=n.beat+n.duration;if(p.fret)position=p.fret;assigned++;
+  }
+  return {document:d,assigned,remaining:pending.length-assigned};
+ }
+ function stringConflicts(notes){
+  const ids=new Set(),latestEnd=Array(6).fill(null);
+  for(const n of [...notes].sort((a,b)=>a.beat-b.beat)){
+   if(!n.stringNumber)continue;const i=n.stringNumber-1,p=latestEnd[i];
+   if(p&&p.beat+p.duration>n.beat){ids.add(n.id);ids.add(p.id);}
+   if(!p||n.beat+n.duration>p.beat+p.duration)latestEnd[i]=n;
+  }
+  return ids;
  }
  function fromSong(key,song){
   const is1012=key==='gavotte'||key==='gavotte2'||key.endsWith('1012');
@@ -87,6 +119,6 @@ const SequencerModel=(()=>{
   export(document){return JSON.stringify({format:'pmg-song',version:VERSION,song:normalize(document)},null,2)}
   import(text){const data=JSON.parse(text);if(data.format!=='pmg-song'||data.version!==VERSION)throw new Error('PMGの曲ファイルを選んでください');return this.add(data.song)}
  }
- return {guitarPositions,MAX_FRET,MAX_BEATS,MAX_NOTES,MIN_LENGTH,clone,uid,normalize,fromSong,toSong,playbackEvents,History,Library};
+ return {assignStrings,stringConflicts,guitarPositions,MAX_FRET,MAX_BEATS,MAX_NOTES,MIN_LENGTH,clone,uid,normalize,fromSong,toSong,playbackEvents,History,Library};
 })();
 if(typeof module!=='undefined')module.exports=SequencerModel;

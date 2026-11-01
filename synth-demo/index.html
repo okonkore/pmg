@@ -509,7 +509,7 @@ function closeEditorScreen(){scoreEditor?.save();showEditorScreen(false);$('open
 $('back-performance').onclick=closeEditorScreen;
 function syncEditorRoute(){if(window.AppShell){window.AppShell.sync();return}if(location.hash==='#piano-roll')scoreEditor.open();else closeEditorScreen()}
 window.addEventListener('popstate',syncEditorRoute);window.addEventListener('hashchange',syncEditorRoute);
-scoreEditor=ScoreEditor.mount({songs,updateSong,stop,showEditor:()=>showEditorScreen(true),closeEditor:closeEditorScreen,play:startSong,audition:async midi=>{
+scoreEditor=ScoreEditor.mount({songs,updateSong,stop,isGuitarInstrument:()=>isGuitar()||['configured-guitar','520r','whole-shell'].includes(presets[preset].engine),showEditor:()=>showEditorScreen(true),closeEditor:closeEditorScreen,play:startSong,audition:async midi=>{
  const run=playbackRun;
  try{await enable([midi]);if(run!==playbackRun)return;const voice=play('editor-preview-'+performance.now(),midi);voice.release(ctx.currentTime+.35)}catch(error){report(error)}
 }});

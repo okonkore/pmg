@@ -10,12 +10,14 @@ const ScoreEditor=(()=>{
   const library=new M.Library(api.songs,storage),histories=new Map();
   const panel=document.getElementById('score-editor'),picker=document.getElementById('song');
   let history,currentId,selection=new Set(),tool='select',px=56,cursor=0,clipboard=[],gesture,transport,raf=0,saveTimer;
+  let layer='all';
   let draft=null,rowHeight=20,pinch=null,pinchTail=false,tapStart=null,lastTap=null,lastTouch=-Infinity,suppressClicksUntil=0,pinchFrame=0,rulerTap=null;
   const touches=new Map();
   panel.innerHTML=`
    <div class="seq-header"><div class="seq-heading"><h2>ピアノロール</h2><span id="seq-badge" class="seq-badge"></span></div><div class="seq-tools"><button id="seq-menu-toggle" aria-expanded="true">▾ メニューを閉じる</button><span class="seq-menu-item seq-tools"><button id="seq-new">＋ 新しい曲</button><button id="seq-copy">コピーして編集</button></span><button id="seq-close" aria-label="ピアノロールを閉じる">閉じる</button></div></div>
    <div class="seq-title-row seq-menu-item"><input id="seq-title" aria-label="曲名" maxlength="100"><span id="seq-save-state" class="seq-save-state" role="status"></span></div>
    <p id="seq-notice" class="seq-notice seq-menu-item"></p>
+   <div id="seq-layers" class="seq-tools"><label>弦 <select id="seq-layer" aria-label="弦レイヤー。全体ではギターの追加音を自動配置、未指定では配置しません" title="全体：ギターの追加音だけ自動配置。未指定：配置しない"><option value="all">全体</option><option value="unassigned">未指定</option>${[1,2,3,4,5,6].map(i=>`<option value="${i}">${i}弦</option>`).join('')}</select></label><button id="seq-auto-strings">弦を自動配置</button><output id="seq-layer-status" role="status"></output></div>
    <div class="seq-toolbar">
     <div class="seq-tools"><button id="seq-play" aria-label="カーソルから再生">▶ 再生</button><button id="seq-stop">■ 停止</button><button id="seq-rewind" aria-label="先頭へ戻る">|◀</button><output id="seq-position" class="seq-position">1.1.000</output><label><input id="seq-loop" type="checkbox">ループ</label></div>
     <div class="seq-tools seq-menu-item"><label>BPM <input id="seq-bpm" type="number" min="20" max="300" step="1"></label><label>拍子 <select id="seq-meter"><option value="4/4">4/4</option><option value="2/2">2/2</option><option value="3/4">3/4</option><option value="3/2">3/2</option><option value="6/8">6/8</option><option value="12/8">12/8</option></select></label></div>
@@ -26,9 +28,10 @@ const ScoreEditor=(()=>{
     <div class="seq-tools"><label>ズーム <input id="seq-zoom" type="range" min="1" max="160" value="56"></label><button id="seq-fit">全体</button><button id="seq-save">保存</button><button id="seq-export">JSON書出</button><button id="seq-import">読込</button><button id="seq-remove">曲を削除</button><input id="seq-file" type="file" accept=".json,application/json" hidden></div>
    </div>
    <div id="seq-scroll" class="seq-scroll" tabindex="0" role="region" aria-label="ピアノロール。音符を選択し矢印キーで移動。Deleteで削除。" aria-describedby="seq-help"><div id="seq-roll" class="seq-roll"><div id="seq-grid" class="seq-grid"></div><div id="seq-playhead" class="seq-playhead"></div><div id="seq-piano" class="seq-piano"></div><div id="seq-ruler" class="seq-ruler"></div><div id="seq-corner" class="seq-corner">小節</div></div></div>
-   <div class="seq-inspector seq-menu-item"><span id="seq-selection-info" class="seq-selection-info">音符を選択</span><label>音程 <input id="seq-pitch" aria-label="選択音符の音程" placeholder="C4"></label><label>ギターの弦・フレット<select id="seq-string" aria-label="選択音符の弦・フレット"></select></label><small id="seq-string-help">標準調弦・0〜19フレット。「Physical Guitar（弦を設定）」とTABに使用。他の音源には無効。</small><label>位置（拍）<input id="seq-at" type="number" min="0" max="4095" step="0.25"></label><label>長さ（拍）<input id="seq-duration" type="number" min="0.0078125" max="4096" step="0.25"></label><label>強さ <input id="seq-velocity" type="range" min="1" max="127" value="127"><output id="seq-velocity-out">127</output></label></div>
+   <div class="seq-inspector seq-menu-item"><span id="seq-selection-info" class="seq-selection-info">音符を選択</span><label>音程 <input id="seq-pitch" aria-label="選択音符の音程" placeholder="C4"></label><label>ギターの弦・フレット<select id="seq-string" aria-label="選択音符の弦・フレット"></select></label><label>重なり音を選択<select id="seq-overlap" aria-label="重なり音を選択"></select></label><label>複製先の弦<select id="seq-duplicate-string" aria-label="複製先の弦"></select></label><button id="seq-duplicate-note">別の弦に複製</button><small id="seq-string-help">標準調弦・0〜19フレット。「Physical Guitar（弦を設定）」とTABに使用。他の音源には無効。</small><label>位置（拍）<input id="seq-at" type="number" min="0" max="4095" step="0.25"></label><label>長さ（拍）<input id="seq-duration" type="number" min="0.0078125" max="4096" step="0.25"></label><label>強さ <input id="seq-velocity" type="range" min="1" max="127" value="127"><output id="seq-velocity-out">127</output></label></div>
    <p id="seq-help" class="seq-help seq-menu-item">空白のドラッグでスクロール。小節番号の行をピンチで横方向、左の鍵盤列をピンチで縦方向に拡大・縮小。描画領域ではピンチは無効です。音符をダブルタップで削除。鉛筆モードでは空白をタップで音符を追加、ドラッグでスクロール。選択モードでは空白のダブルタップで追加。音符をドラッグで移動、右端で長さ変更。<kbd>Shift</kbd>＋クリック／Shift＋空白のドラッグで範囲選択。小節バーのカーソルをドラッグして再生位置を移動。<br><kbd>V</kbd> 選択 · <kbd>P</kbd> 鉛筆 · <kbd>Space</kbd> 再生／停止 · <kbd>Delete</kbd> 削除 · <kbd>Ctrl / ⌘ C・V</kbd> コピー／貼り付け · <kbd>Ctrl / ⌘ Z</kbd> Undo<span id="seq-origin" class="seq-origin"></span></p>`;
   const $=id=>document.getElementById(id),scroll=$('seq-scroll'),grid=$('seq-grid'),roll=$('seq-roll'),ruler=$('seq-ruler');
+  const visible=n=>layer==='all'||(layer==='unassigned'?!n.stringNumber:n.stringNumber===Number(layer));
   const readonly=()=>history?.readonly;
   const doc=()=>draft||history.current;
   const barBeats=()=>doc().meter[0]*4/doc().meter[1];
@@ -46,18 +49,20 @@ const ScoreEditor=(()=>{
   }
   function save(){clearTimeout(saveTimer);if(!history||readonly())return;const picked=picker.value,ok=library.save(history.current);updateLibraryMenu();picker.value=picked;api.updateSong();message(ok?'このブラウザに保存済み':library.error,!ok)}
   function changed(){
-   api.stop();selection=new Set([...selection].filter(id=>history.current.notes.some(n=>n.id===id)));api.songs[currentId]=M.toSong(history.current);api.updateSong();
+   api.stop();selection=new Set([...selection].filter(id=>history.current.notes.some(n=>n.id===id&&visible(n))));api.songs[currentId]=M.toSong(history.current);api.updateSong();
    message('保存中…');clearTimeout(saveTimer);saveTimer=setTimeout(save,250);render();
   }
   function edit(change){if(readonly())return;try{if(history.edit(change))changed()}catch(error){message(error.message,true);render()}}
   function setPosition(beat){cursor=clamp(beat,0,M.MAX_BEATS);const bar=barBeats(),unit=4/doc().meter[1];$('seq-position').textContent=`${Math.floor(cursor/bar)+1}.${Math.floor((cursor%bar)/unit)+1}.${String(Math.round((cursor%unit)/unit*960)).padStart(3,'0')}`;$('seq-playhead').style.left=GUTTER+cursor*px+'px';const marker=$('seq-ruler-cursor');if(marker)marker.style.left=cursor*px+'px'}
   function sticky(){ $('seq-piano').style.transform=`translateX(${scroll.scrollLeft}px)`;ruler.style.transform=`translateY(${scroll.scrollTop}px)`;$('seq-corner').style.transform=`translate(${scroll.scrollLeft}px,${scroll.scrollTop}px)` }
   function renderNotes(){
-   const frag=document.createDocumentFragment();
-   for(const n of doc().notes){
-    const button=document.createElement('div');button.className='seq-note'+(selection.has(n.id)?' selected':'');button.dataset.note=n.id;button.dataset.readonly=String(readonly());button.setAttribute('role','button');button.setAttribute('tabindex','-1');button.setAttribute('aria-label',`${noteName(n.pitch)}、${rounded(n.beat)}拍、長さ${rounded(n.duration)}拍、強さ${Math.round(n.velocity*127)}`);button.title=button.getAttribute('aria-label');
+   const frag=document.createDocumentFragment(),conflicts=M.stringConflicts(doc().notes);
+   for(const n of doc().notes.filter(visible)){
+    const button=document.createElement('div');button.className='seq-note'+(selection.has(n.id)?' selected':'');button.dataset.note=n.id;button.dataset.readonly=String(readonly());button.setAttribute('role','button');button.setAttribute('tabindex','-1');button.setAttribute('aria-label',`${noteName(n.pitch)}、${rounded(n.beat)}拍、長さ${rounded(n.duration)}拍、強さ${Math.round(n.velocity*127)}、${n.stringNumber?n.stringNumber+'弦（'+(n.stringAssignment==='auto'?'自動配置':'指定')+'）':'弦未指定'}${conflicts.has(n.id)?'、同じ弦の音が重なっています':''}`);button.title=button.getAttribute('aria-label');
     Object.assign(button.style,{left:n.beat*px+'px',top:(TOP-n.pitch)*rowHeight+1+'px',width:Math.max(5,n.duration*px-1)+'px',height:Math.max(6,rowHeight-2)+'px',lineHeight:Math.max(6,rowHeight-4)+'px'});
-    if(n.duration*px>28)button.append(document.createTextNode(noteName(n.pitch)));
+    button.dataset.string=n.stringNumber||'unassigned';
+    if(n.duration*px>28)button.append(document.createTextNode((n.stringNumber?n.stringNumber+'弦 ':'未 ')+noteName(n.pitch)));
+    if(conflicts.has(n.id))button.append(document.createTextNode(' ⚠'));
     const handle=document.createElement('span');handle.className='seq-resize';button.append(handle);frag.append(button);
    }
    grid.replaceChildren(frag);
@@ -69,7 +74,17 @@ const ScoreEditor=(()=>{
    $('seq-velocity').disabled=readonly()||!selected.length;
    $('seq-pitch').value=single?noteName(n.pitch):'';$('seq-at').value=single?rounded(n.beat):'';$('seq-duration').value=single?rounded(n.duration):'';
    $('seq-velocity').value=n?Math.round(n.velocity*127):127;$('seq-velocity-out').textContent=$('seq-velocity').value;
-   const choice=$('seq-string');choice.replaceChildren(new Option('自動',''));if(single)for(const p of M.guitarPositions(n.pitch,doc().source))choice.add(new Option(`${p.stringNumber}弦 · ${p.fret===0?'開放':p.fret+'フレット'}`,String(p.stringNumber)));choice.value=single&&n.stringNumber?String(n.stringNumber):'';choice.disabled=readonly()||!single;
+   const choice=$('seq-string');choice.replaceChildren(new Option('未指定（従来の再生）',''));if(single)for(const p of M.guitarPositions(n.pitch,doc().source))choice.add(new Option(`${p.stringNumber}弦 · ${p.fret===0?'開放':p.fret+'フレット'}`,String(p.stringNumber)));choice.value=single&&n.stringNumber?String(n.stringNumber):'';choice.disabled=readonly()||!single;
+   const overlap=$('seq-overlap');overlap.replaceChildren();
+   const overlapping=single?doc().notes.filter(x=>visible(x)&&x.pitch===n.pitch&&x.beat<n.beat+n.duration&&x.beat+x.duration>n.beat):[];
+   for(const x of overlapping)overlap.add(new Option(`${x.stringNumber?x.stringNumber+'弦':'未指定'} · ${rounded(x.beat)}拍 · ${x.id.slice(-6)}`,x.id));overlap.value=n?.id||'';overlap.disabled=overlapping.length<2;
+   if($('seq-note-settings'))$('seq-note-settings').textContent=overlapping.length>1?`音符 · 重なり${overlapping.length}`:'音符';
+   const duplicate=$('seq-duplicate-string');duplicate.replaceChildren();
+   if(single)for(const p of M.guitarPositions(n.pitch,doc().source).filter(p=>p.stringNumber!==n.stringNumber))duplicate.add(new Option(`${p.stringNumber}弦 · ${p.fret}フレット`,String(p.stringNumber)));
+   duplicate.disabled=readonly()||!single||!duplicate.options.length;$('seq-duplicate-note').disabled=duplicate.disabled;
+   $('seq-auto-strings').disabled=readonly()||!doc().notes.some(n=>!n.stringNumber);
+   const conflicts=M.stringConflicts(doc().notes).size;
+   $('seq-layer-status').textContent=`${doc().notes.filter(visible).length}音`+(conflicts?` · ⚠ 同弦重複${conflicts}音`:'');
    $('seq-string-help').textContent='標準調弦・0〜19フレット。「Physical Guitar（弦を設定）」とTABに使用。他の音源には無効。'+(doc().source?.requiredTuning?' 必要調弦が標準と異なる弦は指定できません。':'');
    $('seq-delete').disabled=readonly()||!selected.length;$('seq-quantize').disabled=readonly()||!selected.length||!snap();
    $('seq-undo').disabled=readonly()||!history.past.length;$('seq-redo').disabled=readonly()||!history.future.length;
@@ -104,7 +119,9 @@ const ScoreEditor=(()=>{
   function point(e){const r=grid.getBoundingClientRect();return {beat:clamp((e.clientX-r.left)/px,0,M.MAX_BEATS),pitch:clamp(TOP-Math.floor((e.clientY-r.top)/rowHeight),21,108),x:e.clientX-r.left,y:e.clientY-r.top}}
   function addNote(p){
    const beat=Math.max(0,quantize(p.beat)),duration=Math.min(+$('seq-length').value,M.MAX_BEATS-beat);if(duration<M.MIN_LENGTH)return;
-   const n={id:M.uid('note'),beat,pitch:p.pitch,duration,velocity:1};selection=new Set([n.id]);edit(d=>d.notes.push(n));return n.id;
+   const n={id:M.uid('note'),beat,pitch:p.pitch,duration,velocity:1};
+   if(!['all','unassigned'].includes(layer)){if(!M.guitarPositions(n.pitch,doc().source).some(p=>p.stringNumber===Number(layer))){message('この弦では0〜19フレットの範囲外、または必要調弦が異なります',true);return;}n.stringNumber=Number(layer);}
+   selection=new Set([n.id]);edit(d=>{d.notes.push(n);if(layer==='all'&&api.isGuitarInstrument?.())d.notes=M.assignStrings(d,{noteIds:new Set([n.id])}).document.notes;});return n.id;
   }
   function setTool(next){tool=next;for(const t of ['select','draw','pan'])$('seq-'+t).setAttribute('aria-pressed',String(t===tool));grid.dataset.tool=tool}
   function shiftSelection(beats,pitches){
@@ -131,7 +148,7 @@ const ScoreEditor=(()=>{
    if(g.kind==='pan'){g.moved=g.moved||Math.hypot(e.clientX-g.x,e.clientY-g.y)>(e.pointerType==='touch'?8:4);if(g.moved){scroll.scrollLeft=g.left-(e.clientX-g.x);scroll.scrollTop=g.top-(e.clientY-g.y)}return}
    if(g.kind==='marquee'){
     const left=Math.min(g.point.beat,p.beat),right=Math.max(g.point.beat,p.beat),low=Math.min(g.point.pitch,p.pitch),high=Math.max(g.point.pitch,p.pitch);
-    selection=new Set(g.selection);for(const n of doc().notes)if(n.beat<right&&n.beat+n.duration>left&&n.pitch>=low&&n.pitch<=high)selection.add(n.id);
+    selection=new Set(g.selection);for(const n of doc().notes)if(visible(n)&&n.beat<right&&n.beat+n.duration>left&&n.pitch>=low&&n.pitch<=high)selection.add(n.id);
     renderNotes();const box=document.createElement('div');box.className='seq-marquee';Object.assign(box.style,{left:left*px+'px',top:(TOP-high)*rowHeight+'px',width:(right-left)*px+'px',height:(high-low+1)*rowHeight+'px'});grid.append(box);inspector();return;
    }
    if(Math.abs(e.clientX-g.clientX)+Math.abs(e.clientY-g.clientY)<(e.pointerType==='touch'?8:3)&&!draft)return;
@@ -224,21 +241,33 @@ const ScoreEditor=(()=>{
   $('seq-import').onclick=()=>$('seq-file').click();
   $('seq-file').onchange=async()=>{const file=$('seq-file').files[0];if(!file)return;try{if(file.size>8*1024*1024)throw new Error('曲ファイルは8MB以内で選んでください');const d=library.import(await file.text());updateLibraryMenu();choose(d.id)}catch(error){message('読み込めませんでした：'+error.message,true)}$('seq-file').value=''};
   function changeSingle(change){if(selection.size!==1)return;edit(d=>{const n=d.notes.find(n=>selection.has(n.id));if(n)change(n)})}
-  $('seq-string').onchange=()=>changeSingle(n=>{if($('seq-string').value==='')delete n.stringNumber;else n.stringNumber=Number($('seq-string').value)});
+  $('seq-string').onchange=()=>changeSingle(n=>{delete n.stringAssignment;if($('seq-string').value==='')delete n.stringNumber;else n.stringNumber=Number($('seq-string').value)});
+  $('seq-layer').onchange=()=>{finishGesture(true);layer=$('seq-layer').value;selection.clear();tapStart=lastTap=null;renderNotes();inspector();};
+  $('seq-auto-strings').onclick=()=>{
+   if(readonly())return;const result=M.assignStrings(history.current);
+   if(history.commit(result.document))changed();
+   clearTimeout(saveTimer);save();if(!library.error)message(`${result.assigned}音を自動配置・未指定${result.remaining}音（空き弦／音域／必要調弦で判定）。運指案です。`);
+  };
+  $('seq-overlap').onchange=()=>{selection=new Set([$('seq-overlap').value]);renderNotes();inspector();};
+  $('seq-duplicate-note').onclick=()=>{
+   const original=doc().notes.find(n=>selection.has(n.id)),stringNumber=Number($('seq-duplicate-string').value);if(!original||!stringNumber||readonly())return;
+   const n={...M.clone(original),id:M.uid('note'),stringNumber};delete n.stringAssignment;
+   edit(d=>d.notes.push(n));selection=new Set([n.id]);layer='all';$('seq-layer').value=layer;renderNotes();inspector();
+  };
   $('seq-pitch').onchange=()=>{const match=/^([A-Ga-g])([#♯b♭]?)(-?\d)$/.exec($('seq-pitch').value.trim());if(!match){message('音程はC4、F#3などで入力してください',true);inspector();return}const pc={C:0,D:2,E:4,F:5,G:7,A:9,B:11}[match[1].toUpperCase()]+(['#','♯'].includes(match[2])?1:['b','♭'].includes(match[2])?-1:0);changeSingle(n=>n.pitch=(+match[3]+1)*12+pc)};
   $('seq-at').onchange=()=>changeSingle(n=>n.beat=+$('seq-at').value);
   $('seq-duration').onchange=()=>changeSingle(n=>n.duration=+$('seq-duration').value);
   $('seq-velocity').oninput=()=>$('seq-velocity-out').textContent=$('seq-velocity').value;
   $('seq-velocity').onchange=()=>edit(d=>d.notes.filter(n=>selection.has(n.id)).forEach(n=>n.velocity=+$('seq-velocity').value/127));
   function copyNotes(){clipboard=M.clone(doc().notes.filter(n=>selection.has(n.id)));message(clipboard.length+'音をコピーしました')}
-  function paste(){if(readonly()||!clipboard.length)return;const first=Math.min(...clipboard.map(n=>n.beat)),last=Math.max(...clipboard.map(n=>n.beat+n.duration))-first;if(cursor+last>M.MAX_BEATS){message('貼り付け位置が曲の上限を超えています',true);return}const notes=clipboard.map(n=>({...n,id:M.uid('note'),beat:rounded(n.beat-first+cursor)}));selection=new Set(notes.map(n=>n.id));edit(d=>d.notes.push(...notes))}
+  function paste(){if(readonly()||!clipboard.length)return;const first=Math.min(...clipboard.map(n=>n.beat)),last=Math.max(...clipboard.map(n=>n.beat+n.duration))-first;if(cursor+last>M.MAX_BEATS){message('貼り付け位置が曲の上限を超えています',true);return}const notes=clipboard.map(n=>({...n,id:M.uid('note'),beat:rounded(n.beat-first+cursor)}));selection=new Set(notes.map(n=>n.id));edit(d=>d.notes.push(...notes));if(notes.some(n=>!visible(n))){layer='all';$('seq-layer').value=layer;renderNotes();inspector();}}
   panel.addEventListener('keydown',e=>{
    if(['INPUT','SELECT','TEXTAREA'].includes(e.target.tagName)||e.target.isContentEditable)return;
    const cmd=e.ctrlKey||e.metaKey,key=e.key.toLowerCase();
    if(cmd&&key==='s'){e.preventDefault();save();return}
    if(cmd&&key==='z'){e.preventDefault();historyAction(e.shiftKey?'redo':'undo');return}
    if(cmd&&key==='y'){e.preventDefault();historyAction('redo');return}
-   if(cmd&&key==='a'){e.preventDefault();selection=new Set(doc().notes.map(n=>n.id));renderNotes();inspector();return}
+   if(cmd&&key==='a'){e.preventDefault();selection=new Set(doc().notes.filter(visible).map(n=>n.id));renderNotes();inspector();return}
    if(cmd&&key==='c'){e.preventDefault();copyNotes();return}if(cmd&&key==='v'){e.preventDefault();paste();return}
    if(key===' '){e.preventDefault();if(transport)api.stop();else $('seq-play').click();return}
    if(key==='delete'||key==='backspace'){e.preventDefault();deleteSelection();return}

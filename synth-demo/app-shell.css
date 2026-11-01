@@ -30,7 +30,7 @@ body{padding:0;background:var(--app-bg);color:var(--app-text)}
 .app-shell .keyboard{margin:0;height:100%;min-height:0}.app-shell .key{border-radius:0 0 8px 8px;padding:0 0 10px;min-height:0}.app-shell .key.white{background:linear-gradient(#f7f0de,#dfd5bc);color:#4b493e;border-color:#888573}.app-shell .key.black{background:linear-gradient(#41463f,#1b211c);color:#e0ddcc;border-color:#151a16}.app-shell .key.active{background:#bc9863;color:#171b17}.app-shell .key span{font-size:10px}
 .app-shell .bottom{margin:0;display:block}.app-shell .actions{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px}.app-shell #demo{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;background:var(--app-accent);color:#191b18}.app-shell #stop{font-size:12px}
 /* Focused editor: fixed controls, independently scrolling piano roll. */
-.app-shell #score-editor{display:grid;grid-template-rows:auto minmax(0,1fr) auto auto;margin:0;border:0;border-radius:0;box-shadow:none;background:var(--app-bg);overflow:hidden}
+.app-shell #score-editor{display:grid;grid-template-rows:auto auto minmax(0,1fr) auto auto;margin:0;border:0;border-radius:0;box-shadow:none;background:var(--app-bg);overflow:hidden}
 .app-editor-tools{display:flex;align-items:center;gap:6px;padding:8px 12px;overflow-x:auto;overscroll-behavior:contain}.app-editor-tools button{flex:0 0 auto;font-size:12px;padding:8px 10px}.app-editor-tools #seq-menu-toggle{position:static;box-shadow:none;font-weight:500;min-height:44px;margin-left:auto}
 .app-shell #seq-scroll{height:auto;min-height:0;max-height:none;width:100%;border-top:1px solid var(--app-line);border-bottom:1px solid var(--app-line)}
 .app-shell .seq-toolbar{padding:8px 12px;border:0;flex-wrap:nowrap;overflow:auto;gap:6px}.app-shell .seq-toolbar .seq-tools{flex-wrap:nowrap;gap:6px}.app-shell .seq-toolbar button{font-size:12px;padding:8px 10px;white-space:nowrap}.app-shell .seq-toolbar label{white-space:nowrap}.app-shell .seq-position{font-size:12px;min-width:74px;padding:8px}.app-shell .seq-toolbar input[type=checkbox]{width:20px;height:20px}
@@ -75,3 +75,15 @@ body:has(.app-shell) #configured-string-sets .configured-actions{background:var(
 .app-editor-tools #seq-undo{position:sticky;left:0;z-index:2;min-height:44px;min-width:70px;box-shadow:4px 0 0 var(--app-bg)}
 .app-editor-tools #seq-undo:disabled{opacity:1;color:var(--app-muted);background:var(--app-bg)}
 .app-editor-tools #seq-redo{min-height:44px;min-width:44px}
+
+/* A single compact roll with explicit string layers. */
+#seq-layers { flex:0 0 auto; gap:8px; padding:4px 8px; overflow-x:auto; flex-wrap:nowrap; }
+#seq-layers select { font-size:16px; min-height:40px; }
+#seq-layers button { min-height:40px; white-space:nowrap; }
+#seq-layer-status { white-space:nowrap; font-size:12px; }
+.seq-note[data-string="1"],.seq-note[data-string="4"] { border-left:3px solid #f5c66d; }
+.seq-note[data-string="2"],.seq-note[data-string="5"] { border-left:3px solid #89d3e8; }
+.seq-note[data-string="3"],.seq-note[data-string="6"] { border-left:3px solid #d6acf5; }
+#seq-layers { display:flex; align-items:center; }
+#seq-layers label { display:inline-flex; flex-direction:row; align-items:center; gap:6px; white-space:nowrap; }
+#seq-layers select { border:1px solid var(--app-line); border-radius:8px; padding:4px; }
