@@ -81,9 +81,6 @@ body:has(.app-shell) #configured-string-sets .configured-actions{background:var(
 #seq-layers select { font-size:16px; min-height:40px; }
 #seq-layers button { min-height:40px; white-space:nowrap; }
 #seq-layer-status { white-space:nowrap; font-size:12px; }
-.seq-note[data-string="1"],.seq-note[data-string="4"] { border-left:3px solid #f5c66d; }
-.seq-note[data-string="2"],.seq-note[data-string="5"] { border-left:3px solid #89d3e8; }
-.seq-note[data-string="3"],.seq-note[data-string="6"] { border-left:3px solid #d6acf5; }
 #seq-layers { display:flex; align-items:center; }
 #seq-layers label { display:inline-flex; flex-direction:row; align-items:center; gap:6px; white-space:nowrap; }
 #seq-layers select { border:1px solid var(--app-line); border-radius:8px; padding:4px; }
