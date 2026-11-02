@@ -68,7 +68,23 @@ const ScoreEditor=(()=>{
     if(conflicts.has(n.id))button.append(document.createTextNode(' ⚠'));
     const handle=document.createElement('span');handle.className='seq-resize';button.append(handle);frag.append(button);
    }
-   grid.replaceChildren(frag);
+   grid.replaceChildren(frag);renderGrip();
+  }
+  function renderGrip(){
+   grid.querySelector('.seq-duration-grip')?.remove();
+   if(!document.body.classList.contains('ui-v2')||readonly()||selection.size!==1||!['select','draw'].includes(tool))return;
+   const n=doc().notes.find(n=>selection.has(n.id)&&visible(n));if(!n)return;
+   const gr=grid.getBoundingClientRect(),sr=scroll.getBoundingClientRect();
+   const left=Math.max(gr.left,sr.left+GUTTER),right=sr.right-4,top=sr.top+RULER,bottom=sr.bottom-4;
+   const nx=gr.left+n.beat*px,ny=gr.top+(TOP-n.pitch)*rowHeight+1,nend=nx+n.duration*px;
+   if(nend<=left||nx>=right||ny+rowHeight<=top||ny>=bottom||right-left<44||bottom-top<44)return;
+   // Float outside the note row, clamped to the visible editor (not the page).
+   let y=ny+rowHeight+5;if(y+44>bottom)y=ny-49;y=clamp(y,top,bottom-44);
+   const x=clamp(nend-22,left,right-44),grip=document.createElement('button');
+   grip.type='button';grip.className='seq-duration-grip';grip.dataset.resizeNote=n.id;
+   grip.setAttribute('aria-label',`${noteName(n.pitch)}の長さを変更、現在${rounded(n.duration)}拍`);grip.title='左右にドラッグ、または左右矢印キーで長さを変更';grip.textContent='↔';
+   grip.addEventListener('keydown',e=>{if(!['ArrowLeft','ArrowRight'].includes(e.key))return;e.preventDefault();e.stopPropagation();edit(d=>{const note=d.notes.find(note=>note.id===n.id);if(note)note.duration=clamp(note.duration+(e.key==='ArrowRight'?1:-1)*(snap()||.25),M.MIN_LENGTH,M.MAX_BEATS-note.beat)});grid.querySelector('.seq-duration-grip')?.focus({preventScroll:true});});
+   Object.assign(grip.style,{left:(x-gr.left)+'px',top:(y-gr.top)+'px'});grid.append(grip);
   }
   function inspector(){
    const selected=doc().notes.filter(n=>selection.has(n.id)),n=selected[0],single=selected.length===1;
@@ -126,20 +142,20 @@ const ScoreEditor=(()=>{
    if(!['all','unassigned'].includes(layer)){if(!M.guitarPositions(n.pitch,doc().source).some(p=>p.stringNumber===Number(layer))){message('この弦では0〜19フレットの範囲外、または必要調弦が異なります',true);return;}n.stringNumber=Number(layer);}
    selection=new Set([n.id]);edit(d=>{d.notes.push(n);if(layer==='all'&&api.isGuitarInstrument?.())d.notes=M.assignStrings(d,{noteIds:new Set([n.id])}).document.notes;});return n.id;
   }
-  function setTool(next){tool=next;for(const t of ['select','draw','pan','range'])$('seq-'+t)?.setAttribute('aria-pressed',String(t===tool));grid.dataset.tool=tool}
+  function setTool(next){tool=next;for(const t of ['select','draw','pan','range'])$('seq-'+t)?.setAttribute('aria-pressed',String(t===tool));grid.dataset.tool=tool;renderGrip()}
   function shiftSelection(beats,pitches){
    edit(d=>{const chosen=d.notes.filter(n=>selection.has(n.id));if(!chosen.length)return;const deltaBeat=clamp(beats,-Math.min(...chosen.map(n=>n.beat)),M.MAX_BEATS-Math.max(...chosen.map(n=>n.beat+n.duration)));const deltaPitch=clamp(pitches,21-Math.min(...chosen.map(n=>n.pitch)),108-Math.max(...chosen.map(n=>n.pitch)));chosen.forEach(n=>{n.beat=n.beat+deltaBeat;n.pitch+=deltaPitch})});
   }
   grid.addEventListener('pointerdown',e=>{
-   if(e.button!==0)return;e.preventDefault();scroll.focus({preventScroll:true});const p=point(e),target=e.target.closest('[data-note]');
-   tapStart=e.pointerType==='touch'?{id:target?.dataset.note||null,x:e.clientX,y:e.clientY,time:performance.now(),pointer:e.pointerId}:null;
+   if(e.button!==0)return;e.preventDefault();scroll.focus({preventScroll:true});const p=point(e),grip=e.target.closest('[data-resize-note]'),target=grip?[...grid.querySelectorAll('[data-note]')].find(n=>n.dataset.note===grip.dataset.resizeNote):e.target.closest('[data-note]');
+   tapStart=!grip&&e.pointerType==='touch'?{id:target?.dataset.note||null,x:e.clientX,y:e.clientY,time:performance.now(),pointer:e.pointerId}:null;
    grid.setPointerCapture(e.pointerId);
    if(tool==='pan'){gesture={kind:'pan',pointer:e.pointerId,x:e.clientX,y:e.clientY,left:scroll.scrollLeft,top:scroll.scrollTop};grid.setPointerCapture(e.pointerId);return}
    if(tool==='range'&&(!target||!selection.has(target.dataset.note))){
     tapStart=lastTap=null;gesture={kind:'marquee',point:p,selection:new Set(e.shiftKey?selection:[]),previous:new Set(selection),pointer:e.pointerId};if(!e.shiftKey)selection.clear();renderNotes();inspector();
    }else if(target){const id=target.dataset.note;if(e.shiftKey){selection.has(id)?selection.delete(id):selection.add(id)}else if(!selection.has(id))selection=new Set([id]);renderNotes();inspector();
     if(readonly()||!selection.has(id))return;
-    api.stop();gesture={kind:tool!=='range'&&e.target.closest('.seq-resize')?'resize':'move',base:M.clone(history.current),id,point:p,clientX:e.clientX,clientY:e.clientY,selection:new Set(selection),pointer:e.pointerId};
+    api.stop();gesture={kind:tool!=='range'&&(grip||e.target.closest('.seq-resize'))?'resize':'move',base:M.clone(history.current),id,point:p,clientX:e.clientX,clientY:e.clientY,selection:new Set(selection),pointer:e.pointerId};
    }else if(tool==='draw'&&!readonly()){
     gesture={kind:'pan',blank:true,addOnTap:true,point:p,pointer:e.pointerId,x:e.clientX,y:e.clientY,left:scroll.scrollLeft,top:scroll.scrollTop};
    }else if(e.shiftKey){
@@ -189,7 +205,7 @@ const ScoreEditor=(()=>{
   grid.addEventListener('pointerup',e=>{const g=gesture;if(g&&g.pointer!==e.pointerId)return;const add=g?.addOnTap&&!g.moved&&Math.hypot(e.clientX-g.x,e.clientY-g.y)<=(e.pointerType==='touch'?8:4);const moved=gesture?.moved||(draft&&JSON.stringify(draft.notes)!==JSON.stringify(gesture?.base.notes));finishGesture();if(add&&!readonly()){tapStart=lastTap=null;api.stop();addNote(g.point)}else if(moved||g?.addOnTap){tapStart=lastTap=null}else finishTap(e)});
   grid.addEventListener('pointercancel',()=>{tapStart=lastTap=null;finishGesture(true)});
   grid.addEventListener('lostpointercapture',()=>finishGesture(true));
-  grid.addEventListener('dblclick',e=>{if(performance.now()<suppressClicksUntil||performance.now()-lastTouch<700||readonly()||tool!=='select')return;const note=e.target.closest('[data-note]');if(note){selection=new Set([note.dataset.note]);deleteSelection();return}addNote(point(e))});
+  grid.addEventListener('dblclick',e=>{if(e.target.closest('.seq-duration-grip'))return;if(performance.now()<suppressClicksUntil||performance.now()-lastTouch<700||readonly()||tool!=='select')return;const note=e.target.closest('[data-note]');if(note){selection=new Set([note.dataset.note]);deleteSelection();return}addNote(point(e))});
   function touchGeometry(){const points=[...touches.values()].slice(0,2);return {x:(points[0].x+points[1].x)/2,y:(points[0].y+points[1].y)/2,width:Math.max(1,Math.abs(points[0].x-points[1].x)),height:Math.max(1,Math.abs(points[0].y-points[1].y)),distance:Math.max(1,Math.hypot(points[0].x-points[1].x,points[0].y-points[1].y))}}
   scroll.addEventListener('pointerdown',e=>{
    if(e.pointerType!=='touch')return;lastTouch=performance.now();const axis=e.target.closest('#seq-ruler')?'time':e.target.closest('#seq-piano')?'pitch':e.target.closest('#seq-grid')?'both':null;touches.set(e.pointerId,{x:e.clientX,y:e.clientY,axis});
@@ -220,7 +236,8 @@ const ScoreEditor=(()=>{
   });
   ruler.addEventListener('pointerup',e=>{if(rulerTap?.pointer!==e.pointerId)return;if(rulerTap.dragging||Math.hypot(e.clientX-rulerTap.x,e.clientY-rulerTap.y)<8)seekRuler(e);rulerTap=null});
   for(const type of ['pointercancel','lostpointercapture'])ruler.addEventListener(type,()=>{rulerTap=null});
-  scroll.addEventListener('scroll',sticky,{passive:true});
+  scroll.addEventListener('scroll',()=>{sticky();renderGrip()},{passive:true});
+  new ResizeObserver(renderGrip).observe(scroll);
   const piano=$('seq-piano');piano.setAttribute('aria-label','鍵盤列：2本指で縦方向に拡大・縮小');piano.title='鍵盤列をピンチ：縦方向の拡大・縮小';
   for(let pitch=TOP;pitch>=21;pitch--){const key=document.createElement('button');key.className='seq-piano-key'+([1,3,6,8,10].includes(pitch%12)?' black':'');key.textContent=noteName(pitch);key.title=noteName(pitch)+' を試聴';key.addEventListener('click',()=>api.audition(pitch));piano.append(key)}
   $('open-editor').addEventListener('click',open);
