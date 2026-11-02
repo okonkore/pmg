@@ -126,22 +126,24 @@ const ScoreEditor=(()=>{
    if(!['all','unassigned'].includes(layer)){if(!M.guitarPositions(n.pitch,doc().source).some(p=>p.stringNumber===Number(layer))){message('この弦では0〜19フレットの範囲外、または必要調弦が異なります',true);return;}n.stringNumber=Number(layer);}
    selection=new Set([n.id]);edit(d=>{d.notes.push(n);if(layer==='all'&&api.isGuitarInstrument?.())d.notes=M.assignStrings(d,{noteIds:new Set([n.id])}).document.notes;});return n.id;
   }
-  function setTool(next){tool=next;for(const t of ['select','draw','pan'])$('seq-'+t).setAttribute('aria-pressed',String(t===tool));grid.dataset.tool=tool}
+  function setTool(next){tool=next;for(const t of ['select','draw','pan','range'])$('seq-'+t)?.setAttribute('aria-pressed',String(t===tool));grid.dataset.tool=tool}
   function shiftSelection(beats,pitches){
-   edit(d=>{const chosen=d.notes.filter(n=>selection.has(n.id));if(!chosen.length)return;const deltaBeat=clamp(beats,-Math.min(...chosen.map(n=>n.beat)),M.MAX_BEATS-Math.max(...chosen.map(n=>n.beat+n.duration)));const deltaPitch=clamp(pitches,21-Math.min(...chosen.map(n=>n.pitch)),108-Math.max(...chosen.map(n=>n.pitch)));chosen.forEach(n=>{n.beat=rounded(n.beat+deltaBeat);n.pitch+=deltaPitch})});
+   edit(d=>{const chosen=d.notes.filter(n=>selection.has(n.id));if(!chosen.length)return;const deltaBeat=clamp(beats,-Math.min(...chosen.map(n=>n.beat)),M.MAX_BEATS-Math.max(...chosen.map(n=>n.beat+n.duration)));const deltaPitch=clamp(pitches,21-Math.min(...chosen.map(n=>n.pitch)),108-Math.max(...chosen.map(n=>n.pitch)));chosen.forEach(n=>{n.beat=n.beat+deltaBeat;n.pitch+=deltaPitch})});
   }
   grid.addEventListener('pointerdown',e=>{
    if(e.button!==0)return;e.preventDefault();scroll.focus({preventScroll:true});const p=point(e),target=e.target.closest('[data-note]');
    tapStart=e.pointerType==='touch'?{id:target?.dataset.note||null,x:e.clientX,y:e.clientY,time:performance.now(),pointer:e.pointerId}:null;
    grid.setPointerCapture(e.pointerId);
    if(tool==='pan'){gesture={kind:'pan',pointer:e.pointerId,x:e.clientX,y:e.clientY,left:scroll.scrollLeft,top:scroll.scrollTop};grid.setPointerCapture(e.pointerId);return}
-   if(target){const id=target.dataset.note;if(e.shiftKey){selection.has(id)?selection.delete(id):selection.add(id)}else if(!selection.has(id))selection=new Set([id]);renderNotes();inspector();
+   if(tool==='range'&&(!target||!selection.has(target.dataset.note))){
+    tapStart=lastTap=null;gesture={kind:'marquee',point:p,selection:new Set(e.shiftKey?selection:[]),previous:new Set(selection),pointer:e.pointerId};if(!e.shiftKey)selection.clear();renderNotes();inspector();
+   }else if(target){const id=target.dataset.note;if(e.shiftKey){selection.has(id)?selection.delete(id):selection.add(id)}else if(!selection.has(id))selection=new Set([id]);renderNotes();inspector();
     if(readonly()||!selection.has(id))return;
-    api.stop();gesture={kind:e.target.closest('.seq-resize')?'resize':'move',base:M.clone(history.current),id,point:p,clientX:e.clientX,clientY:e.clientY,selection:new Set(selection),pointer:e.pointerId};
+    api.stop();gesture={kind:tool!=='range'&&e.target.closest('.seq-resize')?'resize':'move',base:M.clone(history.current),id,point:p,clientX:e.clientX,clientY:e.clientY,selection:new Set(selection),pointer:e.pointerId};
    }else if(tool==='draw'&&!readonly()){
     gesture={kind:'pan',blank:true,addOnTap:true,point:p,pointer:e.pointerId,x:e.clientX,y:e.clientY,left:scroll.scrollLeft,top:scroll.scrollTop};
    }else if(e.shiftKey){
-    gesture={kind:'marquee',point:p,selection:new Set(selection),pointer:e.pointerId};renderNotes();inspector();
+    gesture={kind:'marquee',point:p,selection:new Set(selection),previous:new Set(selection),pointer:e.pointerId};renderNotes();inspector();
    }else{gesture={kind:'pan',blank:true,pointer:e.pointerId,x:e.clientX,y:e.clientY,left:scroll.scrollLeft,top:scroll.scrollTop}}
    grid.setPointerCapture(e.pointerId);
   });
@@ -150,6 +152,7 @@ const ScoreEditor=(()=>{
    if(tapStart&&Math.hypot(e.clientX-tapStart.x,e.clientY-tapStart.y)>8){tapStart=null;lastTap=null}
    if(g.kind==='pan'){g.moved=g.moved||Math.hypot(e.clientX-g.x,e.clientY-g.y)>(e.pointerType==='touch'?8:4);if(g.moved){scroll.scrollLeft=g.left-(e.clientX-g.x);scroll.scrollTop=g.top-(e.clientY-g.y)}return}
    if(g.kind==='marquee'){
+    g.moved=true;
     const left=Math.min(g.point.beat,p.beat),right=Math.max(g.point.beat,p.beat),low=Math.min(g.point.pitch,p.pitch),high=Math.max(g.point.pitch,p.pitch);
     selection=new Set(g.selection);for(const n of doc().notes)if(visible(n)&&n.beat<right&&n.beat+n.duration>left&&n.pitch>=low&&n.pitch<=high)selection.add(n.id);
     renderNotes();const box=document.createElement('div');box.className='seq-marquee';Object.assign(box.style,{left:left*px+'px',top:(TOP-high)*rowHeight+'px',width:(right-left)*px+'px',height:(high-low+1)*rowHeight+'px'});grid.append(box);inspector();return;
@@ -161,7 +164,7 @@ const ScoreEditor=(()=>{
     if(g.kind==='move'){
      const deltaBeat=clamp(quantize(anchor.beat+p.beat-g.point.beat)-anchor.beat,-Math.min(...chosen.map(n=>n.beat)),M.MAX_BEATS-Math.max(...chosen.map(n=>n.beat+n.duration)));
      const deltaPitch=clamp(p.pitch-g.point.pitch,21-Math.min(...chosen.map(n=>n.pitch)),108-Math.max(...chosen.map(n=>n.pitch)));
-     chosen.forEach(n=>{n.beat=rounded(n.beat+deltaBeat);n.pitch+=deltaPitch});
+     chosen.forEach(n=>{n.beat=n.beat+deltaBeat;n.pitch+=deltaPitch});
     }else{
      let delta=quantize(anchor.beat+anchor.duration+p.beat-g.point.beat)-anchor.beat-anchor.duration;
      delta=clamp(delta,minLength()-Math.min(...chosen.map(n=>n.duration)),M.MAX_BEATS-Math.max(...chosen.map(n=>n.beat+n.duration)));chosen.forEach(n=>n.duration=Math.max(M.MIN_LENGTH,rounded(n.duration+delta)));
@@ -170,10 +173,12 @@ const ScoreEditor=(()=>{
    renderNotes();inspector();
   });
   function finishGesture(cancel=false){
-   if(!gesture)return;const next=draft,g=gesture;gesture=null;draft=null;if(g.blank&&!g.moved&&!cancel)selection.clear();
+   if(!gesture)return;const next=draft,g=gesture;gesture=null;draft=null;if(cancel&&g.previous)selection=new Set(g.previous);if(g.blank&&!g.moved&&!cancel)selection.clear();
    if(!cancel&&next&&!readonly()){try{if(history.commit(next))changed();else render()}catch(error){message(error.message,true);render()}}else{renderNotes();inspector()}
   }
+  new MutationObserver(()=>{if(panel.hidden)finishGesture(true)}).observe(panel,{attributes:true,attributeFilter:['hidden']});
   function finishTap(e){
+   if(tool==='range'){tapStart=lastTap=null;return;}
    const tap=tapStart;tapStart=null;if(!tap||tap.pointer!==e.pointerId||performance.now()-tap.time>350||Math.hypot(e.clientX-tap.x,e.clientY-tap.y)>8){lastTap=null;return}
    const now=performance.now();
    if(lastTap&&lastTap.id===tap.id&&now-lastTap.time<380&&Math.hypot(tap.x-lastTap.x,tap.y-lastTap.y)<24){
@@ -183,7 +188,7 @@ const ScoreEditor=(()=>{
   }
   grid.addEventListener('pointerup',e=>{const g=gesture;if(g&&g.pointer!==e.pointerId)return;const add=g?.addOnTap&&!g.moved&&Math.hypot(e.clientX-g.x,e.clientY-g.y)<=(e.pointerType==='touch'?8:4);const moved=gesture?.moved||(draft&&JSON.stringify(draft.notes)!==JSON.stringify(gesture?.base.notes));finishGesture();if(add&&!readonly()){tapStart=lastTap=null;api.stop();addNote(g.point)}else if(moved||g?.addOnTap){tapStart=lastTap=null}else finishTap(e)});
   grid.addEventListener('pointercancel',()=>{tapStart=lastTap=null;finishGesture(true)});
-  grid.addEventListener('lostpointercapture',()=>finishGesture());
+  grid.addEventListener('lostpointercapture',()=>finishGesture(true));
   grid.addEventListener('dblclick',e=>{if(performance.now()<suppressClicksUntil||performance.now()-lastTouch<700||readonly()||tool!=='select')return;const note=e.target.closest('[data-note]');if(note){selection=new Set([note.dataset.note]);deleteSelection();return}addNote(point(e))});
   function touchGeometry(){const points=[...touches.values()].slice(0,2);return {x:(points[0].x+points[1].x)/2,y:(points[0].y+points[1].y)/2,width:Math.max(1,Math.abs(points[0].x-points[1].x)),height:Math.max(1,Math.abs(points[0].y-points[1].y)),distance:Math.max(1,Math.hypot(points[0].x-points[1].x,points[0].y-points[1].y))}}
   scroll.addEventListener('pointerdown',e=>{
@@ -262,8 +267,8 @@ const ScoreEditor=(()=>{
   $('seq-duration').onchange=()=>changeSingle(n=>n.duration=+$('seq-duration').value);
   $('seq-velocity').oninput=()=>$('seq-velocity-out').textContent=$('seq-velocity').value;
   $('seq-velocity').onchange=()=>edit(d=>d.notes.filter(n=>selection.has(n.id)).forEach(n=>n.velocity=+$('seq-velocity').value/127));
-  function copyNotes(){clipboard=M.clone(doc().notes.filter(n=>selection.has(n.id)));message(clipboard.length+'音をコピーしました')}
-  function paste(){if(readonly()||!clipboard.length)return;const first=Math.min(...clipboard.map(n=>n.beat)),last=Math.max(...clipboard.map(n=>n.beat+n.duration))-first;if(cursor+last>M.MAX_BEATS){message('貼り付け位置が曲の上限を超えています',true);return}const notes=clipboard.map(n=>({...n,id:M.uid('note'),beat:rounded(n.beat-first+cursor)}));selection=new Set(notes.map(n=>n.id));edit(d=>d.notes.push(...notes));if(notes.some(n=>!visible(n))){layer='all';$('seq-layer').value=layer;renderNotes();inspector();}}
+  function copyNotes(){if(!selection.size)return;clipboard=M.clone(doc().notes.filter(n=>selection.has(n.id)));message(clipboard.length+'音をコピーしました')}
+  function paste(at=cursor){if(!Number.isFinite(at)||at<0||at>M.MAX_BEATS){message('貼り付け位置は0〜4096拍で指定してください',true);return;}if(readonly()||!clipboard.length)return;const first=Math.min(...clipboard.map(n=>n.beat)),last=Math.max(...clipboard.map(n=>n.beat+n.duration))-first;if(at+last>M.MAX_BEATS){message('貼り付け位置が曲の上限を超えています',true);return}const notes=clipboard.map(n=>({...n,id:M.uid('note'),beat:n.beat-first+at}));try{M.normalize({...history.current,notes:[...history.current.notes,...notes]});}catch(error){message(error.message,true);return;}selection=new Set(notes.map(n=>n.id));edit(d=>d.notes.push(...notes));if(notes.some(n=>!visible(n))){layer='all';$('seq-layer').value=layer;renderNotes();inspector();}}
   panel.addEventListener('keydown',e=>{
    if(['INPUT','SELECT','TEXTAREA'].includes(e.target.tagName)||e.target.isContentEditable)return;
    const cmd=e.ctrlKey||e.metaKey,key=e.key.toLowerCase();
@@ -274,7 +279,7 @@ const ScoreEditor=(()=>{
    if(cmd&&key==='c'){e.preventDefault();copyNotes();return}if(cmd&&key==='v'){e.preventDefault();paste();return}
    if(key===' '){e.preventDefault();if(transport)api.stop();else $('seq-play').click();return}
    if(key==='delete'||key==='backspace'){e.preventDefault();deleteSelection();return}
-   if(key==='escape'){selection.clear();renderNotes();inspector();return}
+   if(key==='escape'){finishGesture(true);tapStart=lastTap=null;selection.clear();renderNotes();inspector();return}
    if(cmd||e.altKey)return;
    if(key==='h')setTool('pan');if(key==='v')setTool('select');if(key==='p'&&!readonly())setTool('draw');
    const shifts={arrowleft:[-(snap()||.25),0],arrowright:[snap()||.25,0],arrowup:[0,e.shiftKey?12:1],arrowdown:[0,e.shiftKey?-12:-1]};
@@ -287,6 +292,7 @@ const ScoreEditor=(()=>{
   updateLibraryMenu();load(picker.value);
   return {
    save,
+   selectionTools:{setTool(next){finishGesture(true);setTool(next)},copy:copyNotes,paste,clear(){finishGesture(true);selection.clear();renderNotes();inspector()},state(){return {count:selection.size,copied:clipboard.length,cursor,readonly:readonly(),tool}}},
    songChanged(){load(picker.value)},
    transportStart(info){transportStop();transport=info;$('seq-play').disabled=true;cancelAnimationFrame(raf);frame()},
    transportStop,

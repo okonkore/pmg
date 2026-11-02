@@ -20,8 +20,20 @@ const assignmentResult=make('p','v2-assignment-result');assignmentResult.setAttr
 layerSheet.append(layerList,$('seq-layers'),assignmentResult);$('seq-layer').closest('label').hidden=true;
 const layerHelp=make('p',null,'全体：ギターの新しい音は自動配置。未指定：弦を決めずに追加。1〜6弦：選んだ弦に追加。');layerHelp.className='v2-caption';layerSheet.append(layerHelp);
 const toolSheet=AppShell.createPanel('v2-tool-dialog','編集ツール');
-const modeButtons=make('div','v2-mode-buttons');modeButtons.append($('seq-select'),$('seq-draw'),$('seq-pan'));toolSheet.append(modeButtons,$('seq-redo'),trigger(null,'グリッド・ズーム・削除','editor-settings-dialog'));
+const rangeButton=make('button','seq-range','▧ 範囲');rangeButton.setAttribute('aria-pressed','false');rangeButton.onclick=()=>scoreEditor.selectionTools.setTool('range');
+const modeButtons=make('div','v2-mode-buttons');modeButtons.append(rangeButton,$('seq-select'),$('seq-draw'),$('seq-pan'));toolSheet.append(modeButtons,$('seq-redo'),trigger(null,'グリッド・ズーム・削除','editor-settings-dialog'));
 for(const button of modeButtons.children)button.addEventListener('click',()=>$('v2-tool-dialog').querySelector('[data-dismiss]').click());
+const selectionSheet=AppShell.createPanel('v2-selection-dialog','選択・コピー');
+const selectionCount=make('p','v2-selection-count');selectionCount.setAttribute('role','status');
+const copyNotesButton=make('button','v2-copy-notes','選択音をコピー'),pasteNotesButton=make('button','v2-paste-notes','指定位置へ貼り付け'),clearNotesButton=make('button','v2-clear-selection','選択を解除');
+const pasteLabel=make('label',null,'貼り付け開始（拍・先頭は0）'),pasteAt=make('input','v2-paste-at');pasteAt.type='number';pasteAt.min='0';pasteAt.max='4096';pasteAt.step='any';pasteLabel.append(pasteAt);
+const atCursor=make('button','v2-paste-cursor','再生カーソルの位置を使う');atCursor.onclick=()=>pasteAt.value=scoreEditor.selectionTools.state().cursor;
+const selectionHelp=make('p',null,'範囲ツールで囲み、選択した音をドラッグしてまとめて移動。コピーはアプリ内に保持。貼り付けは最初の音を指定拍に合わせます。弦指定が無効になる移動は取り消します。');selectionHelp.className='v2-caption';
+const selectionResult=make('p','v2-selection-result');selectionResult.setAttribute('role','status');new MutationObserver(()=>selectionResult.textContent=$('seq-save-state').textContent).observe($('seq-save-state'),{childList:true,subtree:true});
+selectionSheet.append(selectionCount,selectionResult,copyNotesButton,pasteLabel,atCursor,pasteNotesButton,clearNotesButton,selectionHelp);
+function syncSelection(){const s=scoreEditor.selectionTools.state();selectionCount.textContent=`選択${s.count}音 · コピー${s.copied}音`;copyNotesButton.disabled=!s.count;pasteNotesButton.disabled=!s.copied||s.readonly;clearNotesButton.disabled=!s.count;$('v2-selection').textContent=s.count?`${s.count}音 ▾`:'コピー ▾';}
+copyNotesButton.onclick=()=>{scoreEditor.selectionTools.copy();syncSelection()};pasteNotesButton.onclick=()=>{scoreEditor.selectionTools.paste(pasteAt.value===''?NaN:Number(pasteAt.value));syncSelection()};clearNotesButton.onclick=()=>{scoreEditor.selectionTools.clear();syncSelection()};
+const selectionButton=trigger('v2-selection','コピー ▾','v2-selection-dialog');selectionButton.addEventListener('click',()=>{pasteAt.value=scoreEditor.selectionTools.state().cursor;syncSelection()});
 const tools=document.querySelector('.app-editor-tools'),dock=make('div','v2-editor-dock');
 const toolButton=trigger('v2-tool','選択 ▾','v2-tool-dialog'),layerButton=trigger('v2-layer','全体 ▾','v2-layer-dialog');
 const copyButton=make('button','v2-copy-edit','コピーして編集');copyButton.onclick=()=>$('seq-copy').click();
@@ -29,20 +41,21 @@ dock.append($('seq-undo'),$('seq-play'),$('seq-stop'),$('seq-position'),$('seq-n
 $('seq-undo').textContent='↶';$('seq-play').textContent='▶';$('seq-play').setAttribute('aria-label','カーソルから再生');$('seq-stop').textContent='■';$('seq-stop').setAttribute('aria-label','再生を停止');$('seq-note-settings').textContent='音符';
 const playbackBody=$('playback-dialog').querySelector('.app-dialog-body');playbackBody.prepend($('seq-rewind'),$('seq-loop').closest('label'));
 editor.querySelector(':scope > .seq-toolbar').remove();
-tools.replaceChildren(toolButton,layerButton,$('seq-layer-status'),copyButton);editor.append(dock);
+tools.replaceChildren(toolButton,layerButton,selectionButton,$('seq-layer-status'),copyButton);editor.append(dock);
 const info=make('div','v2-save-alert');info.setAttribute('role','status');info.hidden=true;tools.after(info);
 // Keep editing errors visible even though routine status has moved into its sheet.
 function syncEditor(){
  const saveText=$('seq-save-state').textContent;assignmentResult.hidden=!saveText.includes('自動配置');assignmentResult.textContent=assignmentResult.hidden?'':saveText;
  const error=$('seq-save-state').dataset.error==='true';info.hidden=!error;info.textContent=error?$('seq-save-state').textContent:'';
- const active=['select','draw','pan'].find(id=>$('seq-'+id).getAttribute('aria-pressed')==='true');toolButton.textContent=({select:'↖ 選択',draw:'✎ 鉛筆',pan:'✋ 移動'}[active]||'ツール')+' ▾';
+ const active=['select','draw','pan','range'].find(id=>$('seq-'+id).getAttribute('aria-pressed')==='true');toolButton.textContent=({range:'▧ 範囲',select:'↖ 選択',draw:'✎ 鉛筆',pan:'✋ 移動'}[active]||'ツール')+' ▾';
  const layer=$('seq-layer').value;layerButton.textContent=({all:'全体',unassigned:'未指定'}[layer]||layer+'弦')+' ▾';
  for(const b of layerList.children)b.setAttribute('aria-pressed',String(b.dataset.layer===layer));
  copyButton.hidden=!$('seq-draw').disabled;
 }
 $('seq-layer').addEventListener('change',syncEditor);
 new MutationObserver(syncEditor).observe($('seq-save-state'),{childList:true,subtree:true,attributes:true});
-for(const id of ['seq-select','seq-draw','seq-pan'])new MutationObserver(syncEditor).observe($(id),{attributes:true,attributeFilter:['aria-pressed','disabled']});
+new MutationObserver(syncSelection).observe($('seq-selection-info'),{childList:true,subtree:true});syncSelection();
+for(const id of ['seq-select','seq-draw','seq-pan','seq-range'])new MutationObserver(syncEditor).observe($(id),{attributes:true,attributeFilter:['aria-pressed','disabled']});
 const performance=$('performance-screen'),hero=make('div','v2-now-playing');hero.innerHTML='<span class="v2-caption">選択中の曲</span><h2></h2><p></p><button data-panel="v2-song-dialog">曲を変更</button>';performance.prepend(hero);
 $('mixer-dialog').querySelector('.app-dialog-body').append($('mix-reset'));
 const instrumentSheet=AppShell.createPanel('v2-instrument-dialog','楽器の設定');
