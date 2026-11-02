@@ -1,0 +1,55 @@
+/* Optional V2 surface: shared controls/models, larger uninterrupted work area. */
+.ui-v2 .app-shell{grid-template-rows:auto auto minmax(0,1fr) auto}
+.ui-v2 .app-header{grid-row:1;padding:6px 10px;gap:8px;min-height:56px}
+.ui-v2 .app-content{grid-row:3}.ui-v2 .app-nav{grid-row:4;padding:4px 8px calc(4px + env(safe-area-inset-bottom));gap:4px}
+.ui-v2 .app-nav button{min-height:44px;font-size:12px}.ui-v2 .app-nav span{font-size:17px}
+.ui-v2 .app-header>div:first-child{flex:1;min-width:0;gap:6px}
+.ui-v2 .app-brand{display:inline;font-size:10px;letter-spacing:0;color:var(--app-muted)}
+.ui-v2 #app-heading{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
+.ui-v2 #v2-title{border:0;background:transparent;padding:5px 0;font-size:15px;font-weight:600;text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.ui-v2 #power{font-size:12px}.ui-v2 .app-header-actions{gap:4px!important}
+.ui-v2 #score-editor{grid-template-rows:auto auto minmax(0,1fr) auto}
+.ui-v2 .app-editor-tools{grid-row:1;padding:4px 8px;gap:6px;overflow:auto;min-height:52px}
+.ui-v2 .app-editor-tools button{min-height:44px;font-size:13px;box-shadow:none}
+.ui-v2 #seq-layer-status{font-size:11px;color:var(--app-muted);margin-left:auto}
+.ui-v2 #v2-copy-edit{font-size:12px;margin-left:auto}.ui-v2 #v2-copy-edit:not([hidden])~*{display:none}
+.ui-v2 #v2-save-alert{grid-row:2;padding:4px 10px;font-size:12px;max-height:54px;overflow:auto;color:#ffc3a1}
+.ui-v2 #seq-scroll{grid-row:3}
+.ui-v2 #v2-editor-dock{grid-row:4;display:grid;grid-template-columns:44px 48px 44px minmax(66px,1fr) auto;gap:6px;align-items:center;padding:6px 8px;border-top:1px solid var(--app-line);background:var(--app-bg)}
+.ui-v2 #v2-editor-dock button{min-height:44px;padding:6px;font-size:14px}
+.ui-v2 #seq-play{background:var(--app-accent);color:#171b18}.ui-v2 #seq-position{font-size:11px;min-width:0;text-align:center;padding:4px;overflow:hidden}
+.ui-v2 #seq-note-settings{max-width:106px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ui-v2 #v2-layer-list{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.ui-v2 #v2-layer-list button{min-height:48px;text-align:left}
+.ui-v2 #v2-layer-list button[aria-pressed=true]{outline:2px solid var(--app-accent);background:#394238}
+.ui-v2 #seq-layers{padding:0;flex-wrap:wrap}.ui-v2 #seq-layers button{width:100%;min-height:44px}
+.ui-v2 #v2-mode-buttons{display:flex;gap:8px;flex-wrap:wrap}
+.ui-v2 .v2-caption{font-size:12px;color:var(--app-muted);line-height:1.6;letter-spacing:0}
+.ui-v2 #performance-screen{padding:16px;gap:12px;width:100%}
+.ui-v2 #v2-now-playing{text-align:center;padding:16px 8px 4px}
+.ui-v2 #v2-now-playing h2{font-size:clamp(20px,4vw,28px);line-height:1.4;margin:12px 0;overflow-wrap:anywhere}
+.ui-v2 #v2-now-playing p{color:var(--app-muted);font-size:13px;margin:8px}
+.ui-v2 #performance-screen .monitor{flex:1 0 60px;max-height:180px}
+.ui-v2 .app-listening-mix{gap:8px 16px;padding:12px}.ui-v2 .app-listening-mix h2{display:none}
+.ui-v2 .app-performance-actions{order:2}.ui-v2 #performance-screen .bottom{order:3}
+.ui-v2 .app-library,.ui-v2 .app-instrument{padding:14px;width:100%}
+.ui-v2 .app-section-heading{margin-bottom:14px}.ui-v2 .app-section-heading h2{font-size:18px}
+.ui-v2 #v2-instrument-settings{width:100%;margin-bottom:14px}
+.ui-v2 #v2-song-dialog #song-picker{margin:0}.ui-v2 #v2-song-dialog #song{font-size:16px;width:100%}
+.ui-v2 #v2-status-dialog .app-status,.ui-v2 #v2-status-dialog .app-editor-state{display:flex;padding:0;flex-wrap:wrap}
+.ui-v2 #v2-status-dialog #status{max-height:none;overflow:visible}
+.ui-v2 #v2-status-dialog .seq-save-state{font-size:13px;text-align:left}
+.ui-v2 #v2-instrument-dialog .guitar-controls{margin:0;padding:0;border:0}
+@media(max-width:700px){
+ body.ui-v2:has(.app-shell) .app-dialog[open]{top:auto;bottom:max(0px,calc(100dvh - var(--app-offset-top,0px) - var(--app-height,100dvh)));margin:0;width:100%;max-width:none;max-height:calc(var(--app-height,100dvh) - env(safe-area-inset-top) - 16px);border-radius:20px 20px 0 0;border-bottom:0;padding-bottom:env(safe-area-inset-bottom)}
+ .ui-v2 .app-dialog-header{padding:12px 16px}.ui-v2 .app-dialog-body{padding:16px;gap:12px}
+ .ui-v2 .app-dialog-header button{min-height:44px}.ui-v2 .app-dialog-body>button{min-height:44px}
+}
+@media(max-height:500px){
+ .ui-v2 .app-header{min-height:48px;padding:2px 8px}.ui-v2 .app-editor-tools{padding:2px 8px;min-height:48px}
+ .ui-v2 #v2-editor-dock{padding:2px 8px}.ui-v2 .app-nav{padding-top:0;padding-bottom:env(safe-area-inset-bottom)}
+ .ui-v2 #v2-now-playing{padding:0}.ui-v2 #v2-now-playing h2{font-size:18px;margin:4px}.ui-v2 #performance-screen .monitor{display:none}
+}
+
+.ui-v2 #v2-audio-alert{grid-row:2;max-height:60px;overflow:auto;color:#ffc3a1;font-size:12px;text-align:left;padding:6px 12px;border-radius:0}
+.ui-v2 #v2-assignment-result{font-size:13px;line-height:1.6}

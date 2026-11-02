@@ -97,10 +97,10 @@ const SequencerModel=(()=>{
  }
  class Library{
   constructor(songs,storage){
-   this.songs=songs;this.storage=storage;this.key='pmg.songs.v1';this.builtins=new Set(Object.keys(songs));this.users=new Map();this.error='';
+   this.songs=songs;this.storage=storage;this.key='pmg.songs.v1';this.builtins=new Set(Object.keys(songs));this.users=new Map();this.error='';this.storageSnapshot=null;
    for(const key of this.builtins)Object.defineProperty(songs,key,{value:freeze(songs[key]),writable:false,configurable:false,enumerable:true});
    try{
-    const raw=storage?.getItem(this.key);if(raw){const data=JSON.parse(raw);if(data.version!==VERSION||!Array.isArray(data.songs))throw new Error('保存データの形式が正しくありません');for(const item of data.songs){const doc=normalize(item);if(!doc.id.startsWith('user-')||this.builtins.has(doc.id))throw new Error('保存された曲IDが正しくありません');this.users.set(doc.id,doc);songs[doc.id]=toSong(doc)}}
+    const raw=storage?.getItem(this.key);this.storageSnapshot=raw??null;if(raw){const data=JSON.parse(raw);if(data.version!==VERSION||!Array.isArray(data.songs))throw new Error('保存データの形式が正しくありません');for(const item of data.songs){const doc=normalize(item);if(!doc.id.startsWith('user-')||this.builtins.has(doc.id))throw new Error('保存された曲IDが正しくありません');this.users.set(doc.id,doc);songs[doc.id]=toSong(doc)}}
    }catch(error){this.error='保存データを読み込めませんでした。既存データは上書きしません。';this.loadFailed=true}
   }
   isBuiltin(id){return this.builtins.has(id)}
@@ -114,7 +114,7 @@ const SequencerModel=(()=>{
   remove(id){if(this.isBuiltin(id))throw new Error('内蔵曲は削除できません');this.users.delete(id);delete this.songs[id];return this.persist()}
   persist(){
    if(this.loadFailed){this.error='保存データの読み込みに失敗したため自動保存を停止しています。JSONで書き出してください。';return false}
-   try{if(!this.storage)throw new Error('Storage unavailable');this.storage.setItem(this.key,JSON.stringify({version:VERSION,songs:[...this.users.values()]}));this.error='';return true}catch(error){this.error='ブラウザに保存できません。JSONで書き出して曲を保管してください。';return false}
+   try{if(!this.storage)throw new Error('Storage unavailable');if((this.storage.getItem(this.key)??null)!==this.storageSnapshot){this.error='別の画面で曲が更新されました。未保存の編集をJSONで書き出してから、再読み込みしてください。';return false;}const raw=JSON.stringify({version:VERSION,songs:[...this.users.values()]});this.storage.setItem(this.key,raw);this.storageSnapshot=raw;this.error='';return true}catch(error){this.error='ブラウザに保存できません。JSONで書き出して曲を保管してください。';return false}
   }
   export(document){return JSON.stringify({format:'pmg-song',version:VERSION,song:normalize(document)},null,2)}
   import(text){const data=JSON.parse(text);if(data.format!=='pmg-song'||data.version!==VERSION)throw new Error('PMGの曲ファイルを選んでください');return this.add(data.song)}

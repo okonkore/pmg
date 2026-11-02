@@ -152,7 +152,7 @@ function navigate(route){
 function openPanel(id){
  const el=dialogs.get(id);if(!el)return;
  if(id==='tab-dialog')refreshTab();
- state.opener=document.activeElement;
+ const active=document.activeElement;if(!active?.closest('dialog')||!state.opener?.isConnected)state.opener=active;
  for(const other of dialogs.values())if(other!==el&&other.open)other.close();
  // Switching sheets replaces their entry so Back returns to the working surface.
  if(history.state?.pmgPanel)history.replaceState({pmgPanel:id,pmgIndex:state.entryIndex},'',location.href);
@@ -177,7 +177,7 @@ function renderLibrary(){
  }
  byId('library-empty').hidden=list.children.length>0;
 }
-window.AppShell={navigate,sync,openPanel,get route(){return state.route}};
+window.AppShell={navigate,sync,openPanel,createPanel:dialog,get route(){return state.route}};
 nav.addEventListener('click',e=>{const button=e.target.closest('[data-route]');if(button)navigate(button.dataset.route)});
 document.addEventListener('click',e=>{const button=e.target.closest('[data-panel]');if(button)openPanel(button.dataset.panel)});
 byId('app-menu').onclick=()=>openPanel(state.route==='piano-roll'?'editor-menu-dialog':'app-menu-dialog');byId('app-mixer').onclick=()=>openPanel('mixer-dialog');
@@ -200,6 +200,11 @@ window.addEventListener('pagehide',()=>{
  if(field?.matches('#seq-title,#seq-bpm,#seq-meter,#seq-pitch,#seq-at,#seq-duration,#seq-velocity')&&field.checkValidity()&&!(field.type==='number'&&field.value===''))field.dispatchEvent(new Event('change',{bubbles:true}));
  scoreEditor.save();
 },{capture:true});
+// A UI switch carries the selected song without moving or migrating its data.
+const entryPreset=new URLSearchParams(location.search).get('preset');
+if(entryPreset&&Object.hasOwn(presets,entryPreset)&&preset!==entryPreset){byId('preset').value=entryPreset;byId('preset').dispatchEvent(new Event('change',{bubbles:true}));}
+const entrySong=new URLSearchParams(location.search).get('song');
+if(entrySong&&Object.hasOwn(songs,entrySong)){byId('song').value=entrySong;byId('song').dispatchEvent(new Event('change',{bubbles:true}));}
 // Initial native guitar setup may already be open; do not cancel it during boot.
 renderRoute(routeFromURL());if(editorScreen){state.syncing=true;scoreEditor.open();state.syncing=false;}
 if(dialogs.has(history.state?.pmgPanel))dialogs.get(history.state.pmgPanel).showModal();
@@ -236,3 +241,17 @@ byId('midi-confirm').onclick=()=>{
  try{if(!midiParsed)return;const indices=midiIndices();const doc=PMGMidiImport.documentFrom(midiParsed,indices,byId('midi-title').value);scoreEditor.importDocument(doc);const summary=PMGMidiImport.selectionSummary(midiParsed,indices);midiResult.textContent=`${doc.notes.length}音を保存しました · ${midiRangeText(summary)}`;midiResult.hidden=false;navigate('piano-roll')}
  catch(error){byId('midi-error').textContent=error.message}
 };
+
+// Both presentations use the same models, storage keys and native dialog navigation.
+const isV2=new URLSearchParams(location.search).get('ui')==='v2';
+for(const body of [menu,editorMenu]){
+ const switchUI=make('button','',isV2?'従来UIに戻る':'UI V2を試す');switchUI.dataset.uiSwitch='';body.append(switchUI);
+ switchUI.onclick=()=>{document.activeElement?.blur();if(!scoreEditor.save()){openPanel('song-dialog');return;}const url=new URL(location.href);if(isV2)url.searchParams.delete('ui');else url.searchParams.set('ui','v2');url.searchParams.set('song',byId('song').value);url.searchParams.set('preset',byId('preset').value);location.assign(url.href);};
+}
+// Never silently replace an open edit with another tab's data. Export is available before reload.
+const sharedUpdate=make('dialog','app-dialog');sharedUpdate.id='shared-update-dialog';sharedUpdate.setAttribute('aria-labelledby','shared-update-title');
+sharedUpdate.innerHTML='<div class="app-dialog-header"><h2 id="shared-update-title">別の画面で更新されました</h2></div><div class="app-dialog-body app-scroll"><p>古い内容で上書きしないよう、この画面の操作を止めています。編集中の曲があればJSONで保管してから再読み込みしてください。</p><button id="shared-export">編集中の曲をJSONで書き出す</button><button id="shared-reload">最新データで再読み込み</button></div>';
+document.body.append(sharedUpdate);sharedUpdate.addEventListener('cancel',e=>e.preventDefault());
+byId('shared-export').onclick=()=>byId('seq-export').click();byId('shared-reload').onclick=()=>location.reload();
+window.addEventListener('storage',e=>{if(e.key===null||(e.key.startsWith('pmg')&&e.oldValue!==e.newValue)){stop();if(!sharedUpdate.open)sharedUpdate.showModal();}});
+if(isV2){await import('./ui-v2.js');window.PMGV2Ready?.();}

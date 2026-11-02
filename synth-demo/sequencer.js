@@ -47,7 +47,7 @@ const ScoreEditor=(()=>{
    for(const d of library.users.values()){const option=document.createElement('option');option.value=d.id;option.textContent=d.title;group.append(option)}
    group.disabled=!library.users.size;
   }
-  function save(){clearTimeout(saveTimer);if(!history||readonly())return;const picked=picker.value,ok=library.save(history.current);updateLibraryMenu();picker.value=picked;api.updateSong();message(ok?'このブラウザに保存済み':library.error,!ok)}
+  function save(){clearTimeout(saveTimer);if(!history||readonly())return true;const picked=picker.value,ok=library.save(history.current);updateLibraryMenu();picker.value=picked;api.updateSong();message(ok?'このブラウザに保存済み':library.error,!ok);return ok}
   function changed(){
    api.stop();selection=new Set([...selection].filter(id=>history.current.notes.some(n=>n.id===id&&visible(n))));api.songs[currentId]=M.toSong(history.current);api.updateSong();
    message('保存中…');clearTimeout(saveTimer);saveTimer=setTimeout(save,250);render();
