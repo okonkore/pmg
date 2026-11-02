@@ -28,10 +28,11 @@ const selectionCount=make('p','v2-selection-count');selectionCount.setAttribute(
 const copyNotesButton=make('button','v2-copy-notes','選択音をコピー'),pasteNotesButton=make('button','v2-paste-notes','指定位置へ貼り付け'),clearNotesButton=make('button','v2-clear-selection','選択を解除');
 const pasteLabel=make('label',null,'貼り付け開始（拍・先頭は0）'),pasteAt=make('input','v2-paste-at');pasteAt.type='number';pasteAt.min='0';pasteAt.max='4096';pasteAt.step='any';pasteLabel.append(pasteAt);
 const atCursor=make('button','v2-paste-cursor','再生カーソルの位置を使う');atCursor.onclick=()=>pasteAt.value=scoreEditor.selectionTools.state().cursor;
+const deleteNotesButton=make('button','v2-delete-notes','選択した音符を削除');deleteNotesButton.onclick=()=>{$('seq-delete').click();syncSelection()};
 const selectionHelp=make('p',null,'範囲ツールで囲み、選択した音をドラッグしてまとめて移動。コピーはアプリ内に保持。貼り付けは最初の音を指定拍に合わせます。弦指定が無効になる移動は取り消します。');selectionHelp.className='v2-caption';
 const selectionResult=make('p','v2-selection-result');selectionResult.setAttribute('role','status');new MutationObserver(()=>selectionResult.textContent=$('seq-save-state').textContent).observe($('seq-save-state'),{childList:true,subtree:true});
-selectionSheet.append(selectionCount,selectionResult,copyNotesButton,pasteLabel,atCursor,pasteNotesButton,clearNotesButton,selectionHelp);
-function syncSelection(){const s=scoreEditor.selectionTools.state();selectionCount.textContent=`選択${s.count}音 · コピー${s.copied}音`;copyNotesButton.disabled=!s.count;pasteNotesButton.disabled=!s.copied||s.readonly;clearNotesButton.disabled=!s.count;$('v2-selection').textContent=s.count?`${s.count}音 ▾`:'コピー ▾';}
+selectionSheet.append(selectionCount,selectionResult,copyNotesButton,pasteLabel,atCursor,pasteNotesButton,clearNotesButton,deleteNotesButton,selectionHelp);
+function syncSelection(){const s=scoreEditor.selectionTools.state();selectionCount.textContent=`選択${s.count}音 · コピー${s.copied}音`;deleteNotesButton.disabled=!s.count||s.readonly;deleteNotesButton.textContent=s.count?`選択した${s.count}音を削除`:'選択した音符を削除';copyNotesButton.disabled=!s.count;pasteNotesButton.disabled=!s.copied||s.readonly;clearNotesButton.disabled=!s.count;$('v2-selection').textContent=s.count?`${s.count}音 ▾`:'コピー ▾';}
 copyNotesButton.onclick=()=>{scoreEditor.selectionTools.copy();syncSelection()};pasteNotesButton.onclick=()=>{scoreEditor.selectionTools.paste(pasteAt.value===''?NaN:Number(pasteAt.value));syncSelection()};clearNotesButton.onclick=()=>{scoreEditor.selectionTools.clear();syncSelection()};
 const selectionButton=trigger('v2-selection','コピー ▾','v2-selection-dialog');selectionButton.addEventListener('click',()=>{pasteAt.value=scoreEditor.selectionTools.state().cursor;syncSelection()});
 const tools=document.querySelector('.app-editor-tools'),dock=make('div','v2-editor-dock');
