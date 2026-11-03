@@ -50,7 +50,7 @@ const ScoreEditor=(()=>{
   function save(){clearTimeout(saveTimer);if(!history||readonly())return true;const picked=picker.value,ok=library.save(history.current);updateLibraryMenu();picker.value=picked;api.updateSong();message(ok?'このブラウザに保存済み':library.error,!ok);return ok}
   function changed(){
    api.stop();selection=new Set([...selection].filter(id=>history.current.notes.some(n=>n.id===id&&visible(n))));api.songs[currentId]=M.toSong(history.current);api.updateSong();
-   message('保存中…');clearTimeout(saveTimer);saveTimer=setTimeout(save,250);render();
+   message('保存中…');clearTimeout(saveTimer);save();render();
   }
   function edit(change){if(readonly())return;try{if(history.edit(change))changed()}catch(error){message(error.message,true);render()}}
   function setPosition(beat){cursor=clamp(beat,0,M.MAX_BEATS);const bar=barBeats(),unit=4/doc().meter[1];$('seq-position').textContent=`${Math.floor(cursor/bar)+1}.${Math.floor((cursor%bar)/unit)+1}.${String(Math.round((cursor%unit)/unit*960)).padStart(3,'0')}`;$('seq-playhead').style.left=GUTTER+cursor*px+'px';const marker=$('seq-ruler-cursor');if(marker)marker.style.left=cursor*px+'px'}
@@ -129,6 +129,7 @@ const ScoreEditor=(()=>{
    if(currentId&&history&&!readonly())save();api.stop();clearTimeout(saveTimer);draft=null;currentId=id;
    if(!histories.has(id))histories.set(id,new M.History(library.get(id),library.isBuiltin(id)));
    history=histories.get(id);selection.clear();if(reset)cursor=0;message(library.error|| (readonly()?'オリジナルを保護しています':'このブラウザに保存済み'),!!library.error);render();
+   document.dispatchEvent(new Event('pmg-song-opened'));
    if(reset){scroll.scrollLeft=0;const notes=history.current.notes;const pitch=notes.length?[...notes].sort((a,b)=>a.pitch-b.pitch)[Math.floor(notes.length/2)].pitch:60;scroll.scrollTop=clamp((TOP-pitch)*rowHeight-scroll.clientHeight/2+RULER,0,88*rowHeight)}
   }
   function choose(id){api.showEditor?.();panel.hidden=false;updateLibraryMenu();picker.value=id;api.updateSong();load(id);$('open-editor').setAttribute('aria-expanded','true')}

@@ -198,7 +198,7 @@ function noteName(midi){return ['C','C♯','D','D♯','E','F','F♯','G','G♯',
 function shiftedMidi(base){return base+octaveOffset*12}
 function inPianoRange(midi){return midi>=21&&midi<=108}
 function updateOctave(){for(const [name,base,key] of keys){const b=keyEls.get(base),midi=shiftedMidi(base);b.disabled=!inPianoRange(midi);b.setAttribute('aria-label',noteName(midi)+(b.disabled?'（音域外）':''));b.querySelector('span').textContent=noteName(midi)+'\n'+key.toUpperCase()}const low=Math.max(21,shiftedMidi(60)),high=Math.min(108,shiftedMidi(72));$('octave-range').textContent=noteName(low)+' – '+noteName(high);$('keyboard').setAttribute('aria-label',noteName(low)+'から'+noteName(high)+'の鍵盤');$('octave-down').disabled=octaveOffset===-4;$('octave-up').disabled=octaveOffset===3;$('octave-reset').disabled=octaveOffset===0;refreshKeys()}
-function changeOctave(offset){const next=Math.max(-4,Math.min(3,offset));if(next===octaveOffset)return;stop();octaveOffset=next;updateOctave();warmGuitar()}
+function changeOctave(offset){const next=Math.max(-4,Math.min(3,offset));if(next===octaveOffset)return;stop();octaveOffset=next;updateOctave();document.dispatchEvent(new Event('pmg-settings-changed'));warmGuitar()}
 $('octave-down').onclick=()=>changeOctave(octaveOffset-1);$('octave-up').onclick=()=>changeOctave(octaveOffset+1);$('octave-reset').onclick=()=>changeOctave(0);
 // iOS selection magnifier starts from native touch handling, before contextmenu.
 function clearKeyboardSelection(){const selection=window.getSelection();if(selection&&selection.rangeCount)selection.removeAllRanges()}
@@ -319,7 +319,7 @@ $('guitar-setup-form').onsubmit=e=>{
  e.preventDefault();
  const parameters={nail:+$('guitar-nail').value,position:+$('guitar-position').value,body:+$('guitar-body').value};
  if(JSON.stringify(parameters)!==JSON.stringify(guitarParameters)){for(const key of stringBuffers.keys())if(key.startsWith(presets.nylon.label+':'))stringBuffers.delete(key)}
- guitarParameters=parameters;$('guitar-setup').close('generate');void enable().catch(report);
+ guitarParameters=parameters;document.dispatchEvent(new Event('pmg-settings-changed'));$('guitar-setup').close('generate');void enable().catch(report);
 };
 updateGuitarControls();
 function stringBuffer(midi,p){
@@ -464,7 +464,7 @@ function resetMix(){$('volume').value=.22;$('reverb').value=0;update('volume');u
 for(const name of ['cutoff','release','space','volume','reverb']){$(name).addEventListener('input',()=>update(name));update(name)}
 function update(name){const value=+$(name).value;$(name+'-out').textContent=name==='cutoff'?(value/1000).toFixed(1)+'k':name==='release'?value.toFixed(2)+'s':Math.round(value*100)+'%';if(name==='volume'||name==='reverb')saveMix();if(!ctx)return;const now=ctx.currentTime;if(name==='reverb'||name==='volume'){const start=mixOutput.set(+$('volume').value,+$('reverb').value);if(name==='reverb')room.setAmount(value,false,start);}if(name==='space'){wet.gain.cancelScheduledValues(now);wet.gain.setTargetAtTime(value,now,.03);}if(name==='cutoff')for(const v of allVoices)if(v.filter){v.filter.frequency.cancelScheduledValues(now);v.filter.frequency.setTargetAtTime(value,now,.025)}}
 for(const [value,p] of Object.entries(presets)){const option=document.createElement('option');option.value=value;option.textContent=p.label;$('preset').append(option)}
-function selectPreset(){const previous=preset;stop();preset=$('preset').value;for(const name of ['cutoff','release','space']){$(name).value=presets[preset][name];update(name)}$('preset-info').textContent=presets[preset].description;$('guitar-520r-spec').hidden=!is520R();$('guitar-controls').hidden=!isGuitar();$('physical-controls').hidden=!isPhysical();$('cutoff').disabled=isPhysical()||isWholeShell()||is520R();$('release').disabled=isWholeShell()||is520R();$('space').disabled=isPhysical()||isWholeShell()||is520R();$('note').textContent=presetsName();if(isGuitar())openGuitarSetup(previous);else if(ctx)$('status').textContent='演奏できます'}
+function selectPreset(restoring=false){const previous=preset;stop();preset=$('preset').value;for(const name of ['cutoff','release','space']){$(name).value=presets[preset][name];update(name)}$('preset-info').textContent=presets[preset].description;$('guitar-520r-spec').hidden=!is520R();$('guitar-controls').hidden=!isGuitar();$('physical-controls').hidden=!isPhysical();$('cutoff').disabled=isPhysical()||isWholeShell()||is520R();$('release').disabled=isWholeShell()||is520R();$('space').disabled=isPhysical()||isWholeShell()||is520R();$('note').textContent=presetsName();if(isGuitar()&&restoring!==true)openGuitarSetup(previous);else if(ctx)$('status').textContent='演奏できます';document.dispatchEvent(new Event('pmg-preset-changed'))}
 $('preset').onchange=selectPreset;
 $('preset-info').textContent=presets[preset].description;
 window.addEventListener('keydown',async e=>{if(e.defaultPrevented||document.querySelector('dialog[open]')||(window.AppShell&&AppShell.route!=='instrument')||$('guitar-setup').open||editorScreen||e.target.closest?.('#score-editor'))return;if(e.ctrlKey||e.metaKey||e.altKey||['INPUT','SELECT','TEXTAREA'].includes(e.target.tagName))return;if(e.key.toLowerCase()==='z'||e.key.toLowerCase()==='x'){e.preventDefault();if(!e.repeat)changeOctave(octaveOffset+(e.key.toLowerCase()==='z'?-1:1));return}const k=keys.find(k=>k[2]===e.key.toLowerCase());if(!k||e.repeat)return;e.preventDefault();const id='k'+k[2],midi=shiftedMidi(k[1]);if(!inPianoRange(midi))return;await audition(id,midi)});
@@ -532,8 +532,6 @@ scoreEditor=ScoreEditor.mount({songs,updateSong,stop,isGuitarInstrument:()=>isGu
  const run=playbackRun;
  try{await enable([midi]);if(run!==playbackRun)return;const voice=play('editor-preview-'+performance.now(),midi);voice.release(ctx.currentTime+.35)}catch(error){report(error)}
 }});
-const requestedPreset=new URLSearchParams(location.search).get('preset');
-if(['physical','wholeShell','guitar520r'].includes(requestedPreset)){$('preset').value=requestedPreset;selectPreset();}
 if(location.hash==='#piano-roll')scoreEditor.open();
 updateOctave();
 function draw(){const canvas=$('scope'),g=canvas.getContext('2d'),data=new Uint8Array(analyser.fftSize);let lastFrame=0;function frame(now=performance.now()){requestAnimationFrame(frame);if(document.hidden||$('performance-screen').hidden||now-lastFrame<30)return;lastFrame=now;const width=Math.round(canvas.clientWidth*devicePixelRatio),height=Math.round(canvas.clientHeight*devicePixelRatio);if(canvas.width!==width||canvas.height!==height){canvas.width=width;canvas.height=height}analyser.getByteTimeDomainData(data);g.clearRect(0,0,width,height);g.strokeStyle='#ffffff09';g.lineWidth=1;for(let x=0;x<width;x+=width/16){g.beginPath();g.moveTo(x,0);g.lineTo(x,height);g.stroke()}g.strokeStyle='#e6bf7c';g.lineWidth=1.5*devicePixelRatio;g.beginPath();for(let i=0;i<data.length;i++){const x=i/(data.length-1)*width,y=data[i]/255*height;i?g.lineTo(x,y):g.moveTo(x,y)}g.stroke()}frame()}

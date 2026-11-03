@@ -1,0 +1,11 @@
+# Reload restoration
+
+Root causes: startup selected gavotte/lead regardless of the saved song collection; only explicit UI-switch query parameters restored selection. Changing preset reset cutoff/release/space. Committed song edits waited 250 ms for persistence.
+
+A versioned `pmg.resume.v1` navigation/preferences record now remembers the song ID, preset, route, per-preset cutoff/release/space, physical-string position/force/keyboard velocity, keyboard octave, and confirmed plain-guitar nail/position/body parameters. It contains no song notes or copied instrument library. Existing song, mix, playback, configured-guitar settings/draft and string-set stores remain authoritative and unchanged. Valid explicit song/preset URL parameters override the stored choice; later choices update those parameters so they cannot revert a reload. A nonempty route hash takes precedence. Missing/deleted IDs or malformed/unknown-version resume data fall back safely without rewriting that record at startup.
+
+Song edits persist on completed edit/Undo/redo, not only a timer or unload. Existing pagehide input-field flushing is retained. Gesture drafts and canceled dialogs are not new saved edits. LocalStorage failures still show the existing song error/export path; resume save failures show a status message. The song library and the resume record both check their loaded snapshot before overwriting; another tab's update invokes the existing reload/export warning. This is optimistic conflict detection, not atomic multi-process transactions. Pre-release tabs should be refreshed.
+
+Restoration selects a preset without enabling audio or generating banks. Existing explicitly opened instrument deep links can still show their setup on a first visit; reload/stored-choice restoration does not reopen preparation automatically. Audio enable, buffers and playing transport are not restored. Undo stacks, selection, clipboard, cursor, grid zoom/scroll and unfinished text/dialog edits are not persisted as session history. Browser-managed storage can still be unavailable or evicted. No cross-device sync.
+
+Tests use Chromium mobile emulation; actual iPhone Safari and device termination mid-write are not verified. This candidate is local only, with no publication permission. The separate held legacy startup-gate patch is not included.

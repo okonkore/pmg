@@ -1,3 +1,4 @@
+import {readResumeState,installResumeState} from './resume-state.js';
 import './tab-text.js';
 import {renderTab} from './tab-output.js?v=string-choice-1';
 import './midi-import.js?v=range-skip-1';
@@ -201,10 +202,12 @@ window.addEventListener('pagehide',()=>{
  scoreEditor.save();
 },{capture:true});
 // A UI switch carries the selected song without moving or migrating its data.
-const entryPreset=new URLSearchParams(location.search).get('preset');
-if(entryPreset&&Object.hasOwn(presets,entryPreset)&&preset!==entryPreset){byId('preset').value=entryPreset;byId('preset').dispatchEvent(new Event('change',{bubbles:true}));}
-const entrySong=new URLSearchParams(location.search).get('song');
+const resumeState=readResumeState();
+const entryPreset=new URLSearchParams(location.search).get('preset')||resumeState.preset;
+if(entryPreset&&Object.hasOwn(presets,entryPreset)&&preset!==entryPreset){byId('preset').value=entryPreset;byId('preset').dispatchEvent(new CustomEvent('change',{bubbles:true,detail:{restore:!new URLSearchParams(location.search).has('preset')||window.performance.getEntriesByType('navigation')[0]?.type==='reload'||resumeState.preset===entryPreset}}));}
+const entrySong=new URLSearchParams(location.search).get('song')||resumeState.song;
 if(entrySong&&Object.hasOwn(songs,entrySong)){byId('song').value=entrySong;byId('song').dispatchEvent(new Event('change',{bubbles:true}));}
+if(!location.hash&&Object.hasOwn(routes,resumeState.route))history.replaceState(history.state,'',href(resumeState.route));
 // Initial native guitar setup may already be open; do not cancel it during boot.
 renderRoute(routeFromURL());if(editorScreen){state.syncing=true;scoreEditor.open();state.syncing=false;}
 if(dialogs.has(history.state?.pmgPanel))dialogs.get(history.state.pmgPanel).showModal();
@@ -255,3 +258,5 @@ document.body.append(sharedUpdate);sharedUpdate.addEventListener('cancel',e=>e.p
 byId('shared-export').onclick=()=>byId('seq-export').click();byId('shared-reload').onclick=()=>location.reload();
 window.addEventListener('storage',e=>{if(e.key===null||(e.key.startsWith('pmg')&&e.oldValue!==e.newValue)){stop();if(!sharedUpdate.open)sharedUpdate.showModal();}});
 if(isV2){await import('./ui-v2.js');window.PMGV2Ready?.();}
+
+installResumeState(resumeState,{getPreset:()=>preset,getOctave:()=>octaveOffset,setOctave:n=>{octaveOffset=n;updateOctave()},getGuitar:()=>guitarParameters,setGuitar:v=>{guitarParameters=v},getRoute:()=>state.route});
