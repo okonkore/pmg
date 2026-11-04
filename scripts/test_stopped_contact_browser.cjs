@@ -10,15 +10,15 @@ const {chromium,launchOptions}=require('./playwright_runtime.cjs');
   const result=await page.evaluate(async()=>{
    const {createPreparedGuitar}=await import('/instruments/configured-guitar/bank.js'),{signature}=await import('/instruments/configured-guitar/settings.js');
    const config=await(await fetch('/instruments/configured-guitar/default-settings.json')).json(),context={sampleRate:48000,destination:null,createBuffer(_n,n,rate){const data=new Float32Array(n);return {length:n,sampleRate:rate,getChannelData:()=>data}}};
-   const bank=await createPreparedGuitar(context),db=await new Promise(r=>{const q=indexedDB.open('pmg-physical-guitar-prepared-v1');q.onsuccess=()=>r(q.result)}),oldKey='full-pressure-m256-refinement-retry-4-2-1-v1:'+signature(config)+':48000:79@2';
+   const bank=await createPreparedGuitar(context),db=await new Promise(r=>{const q=indexedDB.open('pmg-physical-guitar-prepared-v1');q.onsuccess=()=>r(q.result)}),oldKey='full-pressure-m256-stopped-contact-8e-7-v1:'+signature(config)+':48000:79@2';
    const get=k=>new Promise(r=>{const q=db.transaction('notes').objectStore('notes').get(k);q.onsuccess=()=>r(q.result)});
    await new Promise(r=>{const tx=db.transaction('notes','readwrite');tx.objectStore('notes').put({sentinel:'legacy-kept'},oldKey);tx.oncomplete=r});
    try{
-    await bank.prepare(config,{midis:['79@2']});const generated=bank.lastPreparation.generated,key=bank.active.configKey+':48000:79@2',record=await get(key),old=await get(oldKey);await bank.prepare(config,{midis:['79@2']});
-    return {generated,reused:bank.lastPreparation.reused,old,physics:record.physics,integration:record.integration,peak:record.peak,key};
+    await bank.prepare(config,{midis:['79@2','64@1']});const generated=bank.lastPreparation.generated,key=bank.active.configKey+':48000:79@2',record=await get(key),old=await get(oldKey),open=await get(bank.active.configKey+':48000:64@1');await bank.prepare(config,{midis:['79@2','64@1']});
+    return {openPhysics:open.physics,openIntegration:open.integration,generated,reused:bank.lastPreparation.reused,old,physics:record.physics,integration:record.integration,peak:record.peak,key};
    }finally{bank.dispose();db.close()}
   });
-  assert.equal(result.generated,1);assert.equal(result.reused,1);assert.equal(result.old.sentinel,'legacy-kept');assert.equal(result.physics.contactDampingNms,8e-7);assert.equal(result.physics.fret,20);assert.equal(result.physics.contactAssignment,'stopped');assert([1,2].includes(result.integration.block));assert(result.peak<1);assert.deepEqual(errors,[]);
+  assert.equal(result.generated,2);assert.equal(result.reused,2);assert.equal(result.openPhysics.contactDampingNms,2e-7);assert.equal(result.openPhysics.contactAssignment,'open');assert([1,2].includes(result.openIntegration.block));assert.equal(result.old.sentinel,'legacy-kept');assert.equal(result.physics.contactDampingNms,8e-7);assert.equal(result.physics.fret,20);assert.equal(result.physics.contactAssignment,'stopped');assert([1,2].includes(result.integration.block));assert(result.peak<1);assert.deepEqual(errors,[]);
   console.log(JSON.stringify({ui20F:true,cacheMigrationPreservesOld:true,...result}));
  }finally{await browser?.close();await new Promise(r=>server.close(r))}
 })().catch(e=>{console.error(e);process.exitCode=1});

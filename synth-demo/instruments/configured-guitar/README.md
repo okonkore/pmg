@@ -145,8 +145,8 @@ compiled third-party components are listed in `vendor/COEFFICIENT-NOTICES.md`.
 ## Stopped-end rotational resistance
 
 Explicit `stringNumber` plus MIDI determines a fret in 0–20. A positive fret
-receives `c = 8e-7 N·m·s/rad`; fret 0 receives zero. Pitch-only notes, old songs
-without string assignments, keyboard notes, and virtual basses retain zero
+receives `c = 8e-7 N·m·s/rad`; open notes now receive the separate nut resistance below. Pitch-only non-open notes, including old songs
+without string assignments and virtual basses, retain zero
 contact resistance even when the synthesis algorithm shortens a chosen string.
 The model never treats inferred string selection as a physical fingering.
 The existing note editor/string layers, stored fifth event field and explicit
@@ -170,7 +170,7 @@ Default internal loss remains **0.02**; no Loss7 preset migration occurs. Auditi
 used **0.14 on the speaking string**. The contact coefficient has the same units
 and meaning in both settings, but resulting timbre and decay can differ.
 Contact notes start integration at block2 with the existing refinement/fresh
-block1 retry; unspecified and open notes retain their prior block4/2/1 policy.
+block1 retry; notes without added contact resistance retain their prior block4/2/1 policy.
 
 Settings/song schema and storage keys are unchanged. The PCM cache prefix and
 module/WASM URLs are versioned; old cached audio is kept, new audio is generated
@@ -182,3 +182,52 @@ Regression: `node scripts/test_stopped_contact.cjs` covers six strings at 20F,
 sixth-string 5/12F, both losses, JS/WASM equivalence, step refinement, no clipping,
 open/unspecified behavior and boundary validation. This does not establish
 physical validity over every material, scale or device.
+
+
+## Provisional open-nut rotational resistance
+
+Open notes now receive `c_nut = 2e-7 N·m·s/rad` using the same passive,
+cross-mode, two-axis rotational dashpot at x=0. This applies when the selected
+string's open MIDI equals the requested MIDI, whether the string was specified
+or selected automatically. Explicit stopped notes retain exactly `8e-7`;
+non-open unspecified notes and virtual basses retain zero added resistance.
+`contactAssignment` continues to record the user's assignment provenance;
+an automatic open still says `unspecified`, while `contactDampingNms` records
+the applied nut coefficient. Only the configured physical instrument changes.
+
+The nut/body translational coupling and its existing losses remain. This is an
+**additional** lumped loss in relative endpoint slope, not evidence that the nut
+previously absorbed no energy. It assumes an isotropic, frequency-independent
+rotational resistance relative to the moving endpoint chord. It does not resolve
+nut material, groove slip, headstock/neck impedance or the string behind the nut.
+There is no new EQ, envelope, gain normalization, or per-note fitted coefficient.
+
+The value is an explicit provisional choice, one quarter of the existing finger
+proxy, not a literature measurement, recording fit, or acoustically validated
+optimum. For an isolated weakly damped mode the approximate added amplitude
+attenuation is `8.686*c_nut*(n*pi/L)^2/(mu*L)` dB/s; it grows as n² and L⁻³
+at fixed linear density. Coupling changes actual modal decays, so this is only
+an estimate, especially at short scales or for high partials. Added passive
+loss does not guarantee faster decay at every frequency in observed pressure.
+Short-scale numerical stability is not proof of a realistic short-scale nut.
+
+The delegated prior recording analysis reported fourth-string open fundamental
+4.7–5.3 dB/s versus 19.5 dB/s in the old model. This change can worsen that
+existing over-damping. Those recordings were **not reloaded or remeasured** in
+this change; no claim is made that all open recordings now match or improve.
+Listening and a per-partial comparison are still needed to calibrate this value.
+
+The PCM namespace is now `full-pressure-m256-stopped-8e-7-nut-2e-7-v1`;
+module URLs are refreshed through the application entry point. Existing stored
+settings/songs and old PCM are preserved. No coefficient ABI or WASM build
+change is needed: both backends already accept the same endpoint resistance.
+Open notes use the existing contact block2→block1 refinement/retry policy.
+
+Validation commands: `node scripts/test_nut_contact.cjs`,
+`node scripts/test_stopped_contact.cjs`, `node scripts/test_short_scale_render.cjs`,
+and `PMG_BROWSER_EXECUTABLE=/usr/bin/chromium node scripts/test_stopped_contact_browser.cjs`.
+The nut test compares unaffected coefficient binaries to pinned baseline
+`ffa847989198917828302974b3df6c74c4b62a3f`, and exercises all six opens at
+650/100 mm, stable poles, finite/unclipped output, JS/WASM agreement and
+step-refinement diagnostics. The 100 mm case does not meet the normal-scale
+accuracy budgets; see `../../../docs/NUT_DAMPING.md` for observed results.

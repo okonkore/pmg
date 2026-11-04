@@ -1,5 +1,5 @@
-import {createPreparedGuitar} from './instruments/configured-guitar/bank.js?v=stopped-contact-1';
-import {validateSettings,prepareSettings} from './instruments/configured-guitar/settings.js?v=stopped-contact-1';
+import {createPreparedGuitar} from './instruments/configured-guitar/bank.js?v=nut-contact-1';
+import {validateSettings,prepareSettings} from './instruments/configured-guitar/settings.js?v=nut-contact-1';
 import {StringSetLibrary} from './instruments/configured-guitar/string-sets.js';
 // This module adds one instrument and reuses the application's transport/voice registry.
 const NAME='configuredGuitar',baseEnable=enable,basePlay=play,baseStop=stop;

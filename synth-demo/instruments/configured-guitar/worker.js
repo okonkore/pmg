@@ -1,8 +1,8 @@
-import {GuitarCoefficients} from './coefficient-engine.js?v=stopped-contact-1';
-import {renderNote} from './render-note.js?v=stopped-contact-1';
+import {GuitarCoefficients} from './coefficient-engine.js?v=nut-contact-1';
+import {renderNote} from './render-note.js?v=nut-contact-1';
 let coefficients,kernel;
 self.onmessage=async({data})=>{const {id}=data;try{
- if(data.type==='init'){const [r,k,c]=await Promise.all([fetch(new URL('./body-library-256.json',import.meta.url)),fetch(new URL('../physical-guitar/kernel.wasm',import.meta.url)),fetch(new URL('./coefficients.wasm?v=stopped-contact-1',import.meta.url))]);if(!r.ok||!k.ok||!c.ok)throw Error('計算データを取得できません');coefficients=await GuitarCoefficients.create(await r.json(),await c.arrayBuffer());kernel=await k.arrayBuffer();self.postMessage({id,type:'ready'});return;}
+ if(data.type==='init'){const [r,k,c]=await Promise.all([fetch(new URL('./body-library-256.json',import.meta.url)),fetch(new URL('../physical-guitar/kernel.wasm',import.meta.url)),fetch(new URL('./coefficients.wasm?v=nut-contact-1',import.meta.url))]);if(!r.ok||!k.ok||!c.ok)throw Error('計算データを取得できません');coefficients=await GuitarCoefficients.create(await r.json(),await c.arrayBuffer());kernel=await k.arrayBuffer();self.postMessage({id,type:'ready'});return;}
  if(data.type!=='render'||!coefficients)throw Error('計算エンジンが未準備です');self.postMessage({id,type:'progress',stage:'弦と胴の係数を計算',fraction:0});
  const model=coefficients.build(data.settings,data.midi,{sampleRate:data.rate,stringNumber:data.stringNumber});
  const {samples,count,integration}=await renderNote(model,kernel,data.rate,{onProgress:p=>self.postMessage({id,type:'progress',...p})});

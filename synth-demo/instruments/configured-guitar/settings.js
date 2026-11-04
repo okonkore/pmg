@@ -1,9 +1,11 @@
 /** Shared serializable settings for either preparation backend.
- * Geometry and material coefficients are physical inputs; no tone-fit parameters.
+ * Geometry and material coefficients are physical inputs; endpoint losses include explicitly provisional contact assumptions.
  */
 export const VERSION=1;
 // Listening-selected stopped-end rotational dashpot, not a measured finger model.
 export const STOPPED_END_RESISTANCE_NMS=8e-7;
+// Provisional extra nut loss, not a measured nut impedance; existing body coupling remains.
+export const NUT_END_RESISTANCE_NMS=2e-7;
 export const MIDI_RANGE=Object.freeze(Array.from({length:88},(_,i)=>21+i));
 export function validateSettings(input){
  if(!input||input.version!==VERSION||!Array.isArray(input.strings)||input.strings.length!==6)throw Error('6本の弦を設定してください');
@@ -54,7 +56,7 @@ export function prepareSettings(input){
   if(!Number.isFinite(length)||length<=0)throw Error(`${s.number}弦・MIDI ${midi}：振動長を有限の精度で解決できません`);
   const k=Math.PI/length,solvedHz=Math.sqrt((tension*k*k+sec.ei*k**4)/sec.mu)/(2*Math.PI);
   if(!Number.isFinite(solvedHz)||Math.abs(solvedHz/hz-1)>1e-10)throw Error(`${s.number}弦・MIDI ${midi}：振動長の計算精度が不足しています`);
-  return {contactDampingNms:stringNumber!==undefined&&midi>s.openMidi?STOPPED_END_RESISTANCE_NMS:0,contactAssignment:stringNumber===undefined?'unspecified':midi===s.openMidi?'open':'stopped',midi,string:s.number,fret:Math.max(0,midi-s.openMidi),hz,lengthM:length,tensionN:tension,section:sec,pluckPositionM:Math.min(config.pluckPositionMm/1000,length*.9),positionLimited:config.pluckPositionMm/1000>length*.9};
+  return {contactDampingNms:midi===s.openMidi?NUT_END_RESISTANCE_NMS:stringNumber!==undefined&&midi>s.openMidi?STOPPED_END_RESISTANCE_NMS:0,contactAssignment:stringNumber===undefined?'unspecified':midi===s.openMidi?'open':'stopped',midi,string:s.number,fret:Math.max(0,midi-s.openMidi),hz,lengthM:length,tensionN:tension,section:sec,pluckPositionM:Math.min(config.pluckPositionMm/1000,length*.9),positionLimited:config.pluckPositionMm/1000>length*.9};
  }
  return {config,sections,totalTensionN,sixthTensionN:opens[5],conditions};
 }

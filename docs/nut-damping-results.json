@@ -1,0 +1,190 @@
+{
+  "baseline": "ffa847989198917828302974b3df6c74c4b62a3f",
+  "nutResistanceNms": 2e-07,
+  "normal650mm": [
+    {
+      "scaleMm": 650,
+      "sn": 1,
+      "maxPole": -0.007521507076058988,
+      "backendError": 1.0475115643686369e-10,
+      "stepError": 0.0002915535284882872,
+      "peak": 0.313763290643692
+    },
+    {
+      "scaleMm": 650,
+      "sn": 2,
+      "maxPole": -0.007521507076058988,
+      "backendError": 4.586717331488058e-10,
+      "stepError": 0.0004445467407777812,
+      "peak": 0.43092793226242065
+    },
+    {
+      "scaleMm": 650,
+      "sn": 3,
+      "maxPole": -0.007521507076058988,
+      "backendError": 1.5444410519966291e-10,
+      "stepError": 0.00029867192511243894,
+      "peak": 0.4213409125804901
+    },
+    {
+      "scaleMm": 650,
+      "sn": 4,
+      "maxPole": -0.007521507076058988,
+      "backendError": 3.940436748583044e-08,
+      "stepError": 7.617337974642986e-05,
+      "peak": 0.2631438374519348
+    },
+    {
+      "scaleMm": 650,
+      "sn": 5,
+      "maxPole": -0.007521507076058988,
+      "backendError": 3.0449031551250296e-08,
+      "stepError": 4.4719500592699654e-05,
+      "peak": 0.5033280849456787
+    },
+    {
+      "scaleMm": 650,
+      "sn": 6,
+      "maxPole": -0.007521507076058988,
+      "backendError": 2.6786655226747407e-10,
+      "stepError": 3.5864160241774325e-05,
+      "peak": 0.26245397329330444
+    }
+  ],
+  "short100mmDiagnostics": [
+    {
+      "scaleMm": 100,
+      "sn": 1,
+      "block": 1,
+      "backendError": 0.023345818876605615,
+      "stepError": 0.010242858556668611
+    },
+    {
+      "scaleMm": 100,
+      "sn": 1,
+      "baselineBackendError": 1.3597131206102787e-09,
+      "baselineStepError": 0.10359775776333878,
+      "accuracyBudgetExceeded": true
+    },
+    {
+      "scaleMm": 100,
+      "sn": 1,
+      "maxPole": -0.007521507076058988,
+      "backendError": 0.023345818876605615,
+      "stepError": 0.010242858556668611,
+      "peak": 0.09202433377504349
+    },
+    {
+      "scaleMm": 100,
+      "sn": 2,
+      "block": 1,
+      "backendError": 0.02933336676659876,
+      "stepError": 0.007854301532218024
+    },
+    {
+      "scaleMm": 100,
+      "sn": 2,
+      "baselineBackendError": 0.034144471978146226,
+      "baselineStepError": 0.058737810339915826,
+      "accuracyBudgetExceeded": true
+    },
+    {
+      "scaleMm": 100,
+      "sn": 2,
+      "maxPole": -0.007521507076058988,
+      "backendError": 0.02933336676659876,
+      "stepError": 0.007854301532218024,
+      "peak": 0.06643611937761307
+    },
+    {
+      "scaleMm": 100,
+      "sn": 3,
+      "block": 1,
+      "backendError": 0.006669670487449822,
+      "stepError": 0.028409304993881775
+    },
+    {
+      "scaleMm": 100,
+      "sn": 3,
+      "baselineBackendError": 0.015833030784949086,
+      "baselineStepError": 0.11930641581809373,
+      "accuracyBudgetExceeded": true
+    },
+    {
+      "scaleMm": 100,
+      "sn": 3,
+      "maxPole": -0.007521507076058988,
+      "backendError": 0.006669670487449822,
+      "stepError": 0.028409304993881775,
+      "peak": 0.08787360042333603
+    },
+    {
+      "scaleMm": 100,
+      "sn": 4,
+      "block": 1,
+      "backendError": 0.017789941882030258,
+      "stepError": 0.00041380676874056574
+    },
+    {
+      "scaleMm": 100,
+      "sn": 4,
+      "baselineBackendError": 0.010569895410941485,
+      "baselineStepError": 0.0009329086708126499,
+      "accuracyBudgetExceeded": true
+    },
+    {
+      "scaleMm": 100,
+      "sn": 4,
+      "maxPole": -0.007521507076058988,
+      "backendError": 0.017789941882030258,
+      "stepError": 0.00041380676874056574,
+      "peak": 0.08116431534290314
+    },
+    {
+      "scaleMm": 100,
+      "sn": 5,
+      "block": 1,
+      "backendError": 0.004921596179135298,
+      "stepError": 0.0004602257376939727
+    },
+    {
+      "scaleMm": 100,
+      "sn": 5,
+      "baselineBackendError": 0.004692918645191351,
+      "baselineStepError": 0.0015586586788003886,
+      "accuracyBudgetExceeded": true
+    },
+    {
+      "scaleMm": 100,
+      "sn": 5,
+      "maxPole": -0.007521507076058988,
+      "backendError": 0.004921596179135298,
+      "stepError": 0.0004602257376939727,
+      "peak": 0.07501019537448883
+    },
+    {
+      "scaleMm": 100,
+      "sn": 6,
+      "block": 1,
+      "backendError": 0.0030148453786809012,
+      "stepError": 0.00017082763741513906
+    },
+    {
+      "scaleMm": 100,
+      "sn": 6,
+      "baselineBackendError": 0.0028953708797611766,
+      "baselineStepError": 0.0004495816925802574,
+      "accuracyBudgetExceeded": true
+    },
+    {
+      "scaleMm": 100,
+      "sn": 6,
+      "maxPole": -0.007521507076058988,
+      "backendError": 0.0030148453786809012,
+      "stepError": 0.00017082763741513906,
+      "peak": 0.10950277000665665
+    }
+  ],
+  "recordingsVerified": false,
+  "published": false
+}

@@ -1,6 +1,6 @@
 const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict');
 (async()=>{
- const {PhysicalGuitarEngine,GuitarCoefficients,base,root}=await require('./configured_guitar_loader.cjs')(),data=s=>'data:text/javascript;base64,'+Buffer.from(s).toString('base64');
+ const {PhysicalGuitarEngine,GuitarCoefficients,base,root}=await require('./configured_guitar_loader.cjs')({settingsSource:require('node:child_process').execFileSync('git',['show','ffa847989198917828302974b3df6c74c4b62a3f:synth-demo/instruments/configured-guitar/settings.js'])}),data=s=>'data:text/javascript;base64,'+Buffer.from(s).toString('base64');
  const source=fs.readFileSync(path.join(base,'render-note.js'),'utf8').replace("'../physical-guitar/engine.js'",JSON.stringify(data(fs.readFileSync(path.join(root,'physical-guitar/engine.js'))))),{renderNote,createRefinementProbe}=await import(data(source));
  const config=JSON.parse(fs.readFileSync(path.join(base,'default-settings.json'))),kernel=fs.readFileSync(path.join(root,'physical-guitar/kernel.wasm')),coeff=await GuitarCoefficients.create(JSON.parse(fs.readFileSync(path.join(base,'body-library-256.json'))),fs.readFileSync(path.join(base,'coefficients.wasm')));
  const rms=x=>Math.sqrt(x.reduce((a,b)=>a+b*b,0)/x.length),error=(a,b)=>rms(a.map((x,i)=>x-b[i]))/rms(b);

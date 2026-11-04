@@ -1,7 +1,7 @@
 import {PhysicalGuitarEngine} from '../physical-guitar/engine.js';
 
 // This policy is part of the bank cache identity. Never resume a failed state.
-export const RENDER_POLICY='stopped-contact-refinement-v1';
+export const RENDER_POLICY='endpoint-contact-refinement-v1';
 const REFINEMENT_ERROR='Integration step failed local refinement check';
 // Compare 128 pressure samples from identical state, not a spectral filter.
 // Reuse the same WASM memory; all persistent state and propagators are restored.

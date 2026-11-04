@@ -1,5 +1,5 @@
 /** C++/Eigen coefficient preparation. One body instance per preparation worker. */
-import {prepareSettings} from './settings.js?v=stopped-contact-1';
+import {prepareSettings} from './settings.js?v=nut-contact-1';
 function wasiImports(){
  return {wasi_snapshot_preview1:{
   // These libc endpoints are not used on the successful numerical path.
@@ -11,7 +11,7 @@ function wasiImports(){
 }
 export class GuitarCoefficients {
  static async create(body,bytes){
-  if(!bytes){const r=await fetch(new URL('./coefficients.wasm?v=stopped-contact-1',import.meta.url));if(!r.ok)throw Error('係数計算WASMを取得できません');bytes=await r.arrayBuffer();}
+  if(!bytes){const r=await fetch(new URL('./coefficients.wasm?v=nut-contact-1',import.meta.url));if(!r.ok)throw Error('係数計算WASMを取得できません');bytes=await r.arrayBuffer();}
   const {instance}=await WebAssembly.instantiate(bytes,wasiImports());instance.exports._initialize?.();return new this(body,instance.exports);
  }
  constructor(body,exports){

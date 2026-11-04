@@ -9,7 +9,7 @@ const fs=require('node:fs'),path=require('node:path'),assert=require('node:asser
  const error=(a,b)=>Math.sqrt(a.reduce((sum,v,i)=>sum+(v-b[i])**2,0)/b.reduce((sum,v)=>sum+v*v,0));
  for(let sn=1;sn<=6;sn++){
   const open=config.strings[sn-1].openMidi;
-  assert.equal(settings.noteConditions(config,open,sn).contactDampingNms,0);
+  assert.equal(settings.noteConditions(config,open,sn).contactDampingNms,2e-7);
   assert.equal(settings.noteConditions(config,open+20,sn).contactDampingNms,8e-7);
   assert.equal(settings.noteConditions(config,open+20).contactDampingNms,0);
   assert.equal(settings.noteConditions(config,open+20).contactAssignment,'unspecified');
@@ -26,5 +26,5 @@ const fs=require('node:fs'),path=require('node:path'),assert=require('node:asser
   assert(backendError<.003,'JS/WASM mismatch '+backendError);assert(stepError<.005,'step error '+stepError);
   const row={sn,fret,loss,backendError,stepError,maxPole,peak:Math.max(...a.map(Math.abs))};reports.push(row);console.log(JSON.stringify(row));
  }
- console.log('PASS: explicit stopped-only application, 0/20/21F boundaries, legacy pitch-only, bit-exact open/auto, 8 notes x 2 losses JS/WASM and step convergence; stable finite unclipped.');
+ console.log('PASS: explicit stopped and open nut application, 0/20/21F boundaries, legacy pitch-only, bit-exact open/auto, 8 notes x 2 losses JS/WASM and step convergence; stable finite unclipped.');
 })().catch(e=>{console.error(e);process.exitCode=1});

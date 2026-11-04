@@ -2,7 +2,7 @@ import {readResumeState,installResumeState} from './resume-state.js';
 import './tab-text.js';
 import {renderTab} from './tab-output.js?v=stopped-contact-1';
 import './midi-import.js?v=range-skip-1';
-import './configured-guitar-app.js?v=stopped-contact-1';
+import './configured-guitar-app.js?v=nut-contact-1';
 
 // Presentation only: move existing controls, keeping their handlers, values and model ownership.
 const byId=id=>document.getElementById(id);
