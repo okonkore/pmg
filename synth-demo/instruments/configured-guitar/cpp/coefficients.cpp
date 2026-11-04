@@ -25,6 +25,7 @@ static double metadata[12];
 static const char* error="";
 static M take(const double*& p,int r,int c) { M m=Eigen::Map<const RM>(p,r,c);p+=r*c;return m; }
 extern "C" {
+int coefficient_abi_version() { return 2; }
 void* allocate(int bytes) { return std::malloc(bytes); }
 void deallocate(void* p) { std::free(p); }
 const char* last_error() { return error; }
@@ -50,10 +51,11 @@ static Grad gradient(const V& r,const V& a,const M& H,double ea) {
   return {ea*(g*a+e*hr),ea*(u*u.transpose()-a*a.transpose()+e*H),e};
 }
 // Parameters: length, tension, mu, EI, bondedEI, EA, diameter, loss,
-// wound, pluck position, requested force, total six-string tension, sample rate.
-extern "C" int prepare_coefficients(const double* params) {
-  error="";result.clear();if(!body){error="Body is not initialized";return 0;}
-  const auto& b=*body;const double L=params[0],T=params[1],mu=params[2],ei=params[3],bonded=params[4],EA=params[5],diameter=params[6],loss=params[7],position=params[9],force=params[10],total=params[11],rate=params[12];
+// wound, pluck position, requested force, total six-string tension, sample rate, stopped-end resistance (N m s/rad).
+extern "C" int prepare_coefficients(const double* params,int parameterCount) {
+  error="";result.clear();if(parameterCount!=14){error="Coefficient parameter ABI mismatch";return 0;}if(!body){error="Body is not initialized";return 0;}
+  const auto& b=*body;const double L=params[0],T=params[1],mu=params[2],ei=params[3],bonded=params[4],EA=params[5],diameter=params[6],loss=params[7],position=params[9],force=params[10],total=params[11],rate=params[12],contact=params[13];
+  if(!std::isfinite(contact)||contact<0){error="Invalid stopped-end resistance";return 0;}
   const bool wound=params[8]!=0;int count=0;
   for(int j=1;j<=61;j++){double k=j*PI/L;if(std::sqrt((T*k*k+bonded*k*k*k*k)/mu)/(2*PI)>=rate*.45)break;count=j;}
   if(count==0){error="No resolved string fundamental";return 0;}
@@ -76,6 +78,11 @@ extern "C" int prepare_coefficients(const double* params) {
   Eigen::LLT<M> massSolve(massDynamic);if(massSolve.info()!=Eigen::Success){error="Non-positive string/body mass";return 0;}
   M rhs=M::Zero(nb+d,n);rhs.topLeftCorner(nb,nb)=b.A-b.B*Ke*b.Q;
   for(int i=0;i<d;i++){rhs(nb+i,q0+i)=-omega[i];rhs(nb+i,v0+i)=-2*sigma[i];if(wound)rhs(nb+i,z0+i)=-alpha[i];}
+  // Same rank-one damping per transverse axis as prepare.js: C=c*k*k^T/mn.
+  // Passive torque -c*thetaDot, applied before solving the coupled mass matrix.
+  if(contact>0)for(int pol=0;pol<2;pol++)for(int ni=0;ni<count;ni++)for(int nj=0;nj<count;nj++){
+    int i=2*ni+pol,j=2*nj+pol;rhs(nb+i,v0+j)-=contact*wave[i]*wave[j]/mn;
+  }
   M solved=massSolve.solve(rhs),A=M::Zero(n,n);A.topRows(nb)=solved.topRows(nb);A.middleRows(v0,d)=solved.bottomRows(d);
   for(int i=0;i<d;i++){A(q0+i,v0+i)=omega[i];if(wound){A(z0+i,v0+i)=alpha[i];A(z0+i,z0+i)=-2*PI*1000;}}
   M R=M::Zero(PORTS,n);R.topLeftCorner(3,nb)=b.deltaQ;

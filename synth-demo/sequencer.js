@@ -28,7 +28,7 @@ const ScoreEditor=(()=>{
     <div class="seq-tools"><label>ズーム <input id="seq-zoom" type="range" min="1" max="160" value="56"></label><button id="seq-fit">全体</button><button id="seq-save">保存</button><button id="seq-export">JSON書出</button><button id="seq-import">読込</button><button id="seq-remove">曲を削除</button><input id="seq-file" type="file" accept=".json,application/json" hidden></div>
    </div>
    <div id="seq-scroll" class="seq-scroll" tabindex="0" role="region" aria-label="ピアノロール。音符を選択し矢印キーで移動。Deleteで削除。" aria-describedby="seq-help"><div id="seq-roll" class="seq-roll"><div id="seq-grid" class="seq-grid"></div><div id="seq-playhead" class="seq-playhead"></div><div id="seq-piano" class="seq-piano"></div><div id="seq-ruler" class="seq-ruler"></div><div id="seq-corner" class="seq-corner">小節</div></div></div>
-   <div class="seq-inspector seq-menu-item"><span id="seq-selection-info" class="seq-selection-info">音符を選択</span><label>音程 <input id="seq-pitch" aria-label="選択音符の音程" placeholder="C4"></label><label>ギターの弦・フレット<select id="seq-string" aria-label="選択音符の弦・フレット"></select></label><label>重なり音を選択<select id="seq-overlap" aria-label="重なり音を選択"></select></label><label>複製先の弦<select id="seq-duplicate-string" aria-label="複製先の弦"></select></label><button id="seq-duplicate-note">別の弦に複製</button><small id="seq-string-help">標準調弦・0〜19フレット。「Physical Guitar（弦を設定）」とTABに使用。他の音源には無効。</small><label>位置（拍）<input id="seq-at" type="number" min="0" max="4095" step="0.25"></label><label>長さ（拍）<input id="seq-duration" type="number" min="0.0078125" max="4096" step="0.25"></label><label>強さ <input id="seq-velocity" type="range" min="1" max="127" value="127"><output id="seq-velocity-out">127</output></label></div>
+   <div class="seq-inspector seq-menu-item"><span id="seq-selection-info" class="seq-selection-info">音符を選択</span><label>音程 <input id="seq-pitch" aria-label="選択音符の音程" placeholder="C4"></label><label>ギターの弦・フレット<select id="seq-string" aria-label="選択音符の弦・フレット"></select></label><label>重なり音を選択<select id="seq-overlap" aria-label="重なり音を選択"></select></label><label>複製先の弦<select id="seq-duplicate-string" aria-label="複製先の弦"></select></label><button id="seq-duplicate-note">別の弦に複製</button><small id="seq-string-help">標準調弦・0〜20フレット。「Physical Guitar（弦を設定）」とTABに使用。他の音源には無効。</small><label>位置（拍）<input id="seq-at" type="number" min="0" max="4095" step="0.25"></label><label>長さ（拍）<input id="seq-duration" type="number" min="0.0078125" max="4096" step="0.25"></label><label>強さ <input id="seq-velocity" type="range" min="1" max="127" value="127"><output id="seq-velocity-out">127</output></label></div>
    <p id="seq-help" class="seq-help seq-menu-item">空白のドラッグでスクロール。小節番号の行をピンチで横方向、左の鍵盤列をピンチで縦方向に拡大・縮小。描画領域ではピンチは無効です。音符をダブルタップで削除。鉛筆モードでは空白をタップで音符を追加、ドラッグでスクロール。選択モードでは空白のダブルタップで追加。音符をドラッグで移動、右端で長さ変更。<kbd>Shift</kbd>＋クリック／Shift＋空白のドラッグで範囲選択。小節バーのカーソルをドラッグして再生位置を移動。<br><kbd>V</kbd> 選択 · <kbd>P</kbd> 鉛筆 · <kbd>Space</kbd> 再生／停止 · <kbd>Delete</kbd> 削除 · <kbd>Ctrl / ⌘ C・V</kbd> コピー／貼り付け · <kbd>Ctrl / ⌘ Z</kbd> Undo<span id="seq-origin" class="seq-origin"></span></p>`;
   const $=id=>document.getElementById(id),scroll=$('seq-scroll'),grid=$('seq-grid'),roll=$('seq-roll'),ruler=$('seq-ruler');
   const visible=n=>layer==='all'||(layer==='unassigned'?!n.stringNumber:n.stringNumber===Number(layer));
@@ -104,7 +104,7 @@ const ScoreEditor=(()=>{
    $('seq-auto-strings').disabled=readonly()||!doc().notes.some(n=>!n.stringNumber);
    const conflicts=M.stringConflicts(doc().notes).size;
    $('seq-layer-status').textContent=`${doc().notes.filter(visible).length}音`+(conflicts?` · ⚠ 同弦重複${conflicts}音`:'');
-   $('seq-string-help').textContent='標準調弦・0〜19フレット。「Physical Guitar（弦を設定）」とTABに使用。他の音源には無効。'+(doc().source?.requiredTuning?' 必要調弦が標準と異なる弦は指定できません。':'');
+   $('seq-string-help').textContent='標準調弦・0〜20フレット。「Physical Guitar（弦を設定）」とTABに使用。他の音源には無効。'+(doc().source?.requiredTuning?' 必要調弦が標準と異なる弦は指定できません。':'');
    $('seq-delete').disabled=readonly()||!selected.length;$('seq-quantize').disabled=readonly()||!selected.length||!snap();
    $('seq-undo').disabled=readonly()||!history.past.length;$('seq-redo').disabled=readonly()||!history.future.length;
   }
@@ -140,7 +140,7 @@ const ScoreEditor=(()=>{
   function addNote(p){
    const beat=Math.max(0,quantize(p.beat)),duration=Math.min(+$('seq-length').value,M.MAX_BEATS-beat);if(duration<M.MIN_LENGTH)return;
    const n={id:M.uid('note'),beat,pitch:p.pitch,duration,velocity:1};
-   if(!['all','unassigned'].includes(layer)){if(!M.guitarPositions(n.pitch,doc().source).some(p=>p.stringNumber===Number(layer))){message('この弦では0〜19フレットの範囲外、または必要調弦が異なります',true);return;}n.stringNumber=Number(layer);}
+   if(!['all','unassigned'].includes(layer)){if(!M.guitarPositions(n.pitch,doc().source).some(p=>p.stringNumber===Number(layer))){message('この弦では0〜20フレットの範囲外、または必要調弦が異なります',true);return;}n.stringNumber=Number(layer);}
    selection=new Set([n.id]);edit(d=>{d.notes.push(n);if(layer==='all'&&api.isGuitarInstrument?.())d.notes=M.assignStrings(d,{noteIds:new Set([n.id])}).document.notes;});return n.id;
   }
   function setTool(next){tool=next;for(const t of ['select','draw','pan','range'])$('seq-'+t)?.setAttribute('aria-pressed',String(t===tool));grid.dataset.tool=tool;renderGrip()}

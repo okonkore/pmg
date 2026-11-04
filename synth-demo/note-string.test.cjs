@@ -13,3 +13,11 @@ const drop={requiredTuning:{instrument:'guitar',pitchesLowToHigh:[38,45,50,55,59
 assert.throws(()=>M.normalize({...doc,source:drop,notes:[{...doc.notes[0],pitch:40,stringNumber:6}]}),/調弦/);assert.equal(M.normalize({...doc,source:drop}).notes[0].stringNumber,undefined);
 assert.equal(M.normalize(doc).notes[0].stringNumber,undefined);
 console.log('PASS: fixed pitch choices, invalid/pitch/tuning validation, Undo, copy, persistence, JSON/events, TAB constraints, legacy Auto');
+
+for(let sn=1;sn<=6;sn++){
+ const pitch=[64,59,55,50,45,40][sn-1]+20;
+ const d=M.normalize({...doc,notes:[{...doc.notes[0],pitch,stringNumber:sn}]});
+ assert.equal(TAB.plan(d).entries[0].fret,20);
+ assert.equal(M.fromSong('roundtrip',M.toSong(d)).notes[0].stringNumber,sn);
+ assert.throws(()=>M.normalize({...d,notes:[{...d.notes[0],pitch:pitch+1}]}));
+}

@@ -11,7 +11,9 @@ root=$(cd -- "$(dirname -- "$0")/.." && pwd)
  "$root/synth-demo/instruments/configured-guitar/cpp/coefficients.cpp" \
  -mexec-model=reactor -Wl,--initial-memory=16777216 -Wl,--max-memory=268435456 \
  -Wl,-z,stack-size=2097152 -Wl,--strip-all \
- -Wl,--export=allocate -Wl,--export=deallocate -Wl,--export=last_error \
+ -Wl,--export=coefficient_abi_version -Wl,--export=allocate -Wl,--export=deallocate -Wl,--export=last_error \
  -Wl,--export=initialize_body -Wl,--export=prepare_coefficients \
  -Wl,--export=result_data -Wl,--export=result_size -Wl,--export=result_metadata \
  -o "$root/synth-demo/instruments/configured-guitar/coefficients.wasm"
+
+chmod 644 "$root/synth-demo/instruments/configured-guitar/coefficients.wasm"

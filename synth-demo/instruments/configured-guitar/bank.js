@@ -1,4 +1,4 @@
-import {validateSettings,signature,MIDI_RANGE,prepareSettings} from './settings.js?v=short-scale-1';
+import {validateSettings,signature,MIDI_RANGE,prepareSettings} from './settings.js?v=stopped-contact-1';
 export const MAX_PREPARATION_CONCURRENCY=4;
 const DB_NAME='pmg-physical-guitar-prepared-v1',MAX_MEMORY=64*1024*1024;
 export function noteRequest(value){
@@ -23,7 +23,7 @@ export async function createPreparedGuitar(context,{destination=context.destinat
  function check(token){if(token!==generation)throw aborted();}
  function ask(entry,type,params={}){const id=++job;return new Promise((resolve,reject)=>{entry.pending.set(id,{resolve,reject});try{entry.worker.postMessage({type,id,...params});}catch(e){entry.pending.delete(id);reject(e);}});}
  async function spawn(token,onStage){
-  check(token);const entry={worker:new Worker(new URL('./worker.js?v=refinement-1',import.meta.url),{type:'module'}),pending:new Map()};workers.add(entry);
+  check(token);const entry={worker:new Worker(new URL('./worker.js?v=stopped-contact-1',import.meta.url),{type:'module'}),pending:new Map()};workers.add(entry);
   entry.worker.onmessage=({data})=>{const p=entry.pending.get(data.id);if(!p||token!==generation)return;if(data.type==='progress'){onStage(data);return;}entry.pending.delete(data.id);data.type==='error'?p.reject(Error(data.message)):p.resolve(data);};
   entry.worker.onerror=e=>{const error=Error(e.message||'計算Workerが停止しました');for(const p of entry.pending.values())p.reject(error);entry.pending.clear();};
   entry.worker.onmessageerror=()=>{for(const p of entry.pending.values())p.reject(Error('計算結果を読み取れませんでした'));entry.pending.clear();};
@@ -33,7 +33,7 @@ export async function createPreparedGuitar(context,{destination=context.destinat
   const config=validateSettings(input),list=[...new Set(midis)];
   if(!Number.isInteger(concurrency)||concurrency<1||concurrency>MAX_PREPARATION_CONCURRENCY)throw Error('並列数は1〜4で指定してください');
   const preparedSettings=prepareSettings(config);for(const n of list){const request=noteRequest(n);preparedSettings.conditions(request.midi,request.stringNumber);}
-  cancel();const token=generation,started=performance.now(),configKey='full-pressure-m256-refinement-retry-4-2-1-v1:'+signature(config),running=new Map(),notes=[];preparing=true;
+  cancel();const token=generation,started=performance.now(),configKey='full-pressure-m256-stopped-contact-8e-7-v1:'+signature(config),running=new Map(),notes=[];preparing=true;
   let done=0,reused=0,cursor=0,workerCount=0;const missing=[];
   const stage=()=>{check(token);onProgress({type:'stage',running:[...running.values()].map(item=>({...item})),workers:workerCount,concurrency,done,total:list.length,benchmark:benchmarkOnly});};
   const progress=midi=>{check(token);onProgress({type:'note',done,total:list.length,midi,concurrency,workers:workerCount,reused,benchmark:benchmarkOnly});};

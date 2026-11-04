@@ -24,6 +24,13 @@ export function buildModel(input,midi,body,{debug=false,sampleRate=48000,stringN
  const BM=mm(B,Men),massDynamic=eye(b+d);put(massDynamic,mm(B,mm(Mee,transpose(B))).add(eye(b)),0,0);put(massDynamic,BM,0,b);put(massDynamic,transpose(BM),b,0);
  const massSolve=new CholeskyDecomposition(symmetric(massDynamic)),rhs=zeros(b+d,size);put(rhs,Matrix.sub(ABody,mm(B,mm(Ke,Q))),0,0);
  for(let i=0;i<d;i++){rhs.set(b+i,q0+i,-omega[i]);rhs.set(b+i,v0+i,-2*sigma[i]);if(relax)rhs.set(b+i,z0+i,-alpha[i]);}
+ // End rotation relative to the moving chord: thetaDot_pol=sum(k_n*v_n/sqrt(mn)).
+ // Rayleigh dissipation c/2 * sum(thetaDot_pol^2); both transverse axes.
+ // Apply BEFORE the mass solve, including off-diagonal modal velocity coupling.
+ if(spec.contactDampingNms>0)for(let pol=0;pol<2;pol++)for(let ni=0;ni<modeCount;ni++)for(let nj=0;nj<modeCount;nj++){
+  const i=2*ni+pol,j=2*nj+pol;
+  rhs.set(b+i,v0+j,rhs.get(b+i,v0+j)-spec.contactDampingNms*waveNumber[i]*waveNumber[j]/mn);
+ }
  const solved=massSolve.solve(rhs);let A=zeros(size,size);put(A,solved.subMatrix(0,b-1,0,size-1),0,0);put(A,solved.subMatrix(b,b+d-1,0,size-1),v0,0);
  for(let i=0;i<d;i++){A.set(q0+i,v0+i,omega[i]);if(relax){A.set(z0+i,v0+i,alpha[i]);A.set(z0+i,z0+i,-2*Math.PI*1000);}}
  let R=zeros(125,size);put(R,deltaQ,0,0);for(let i=0;i<d;i++)R.set(3+i,q0+i,1/sqrtK[i]);

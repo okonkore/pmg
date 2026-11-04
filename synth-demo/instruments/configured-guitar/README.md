@@ -71,8 +71,8 @@ Actual iPhone hardware performance has not been measured.
 
 Standard open pitches are E4/B3/G3/D3/A2/E2. Higher pitches use the highest
 available string, shortened at its nominal tension; below E2 the sixth string
-is detuned. Only one speaking string is simulated per note. There is no finger
-contact or sympathetic vibration between voices. Velocity scales the prepared
+is detuned. Only one speaking string is simulated per note. There is no resolved finger contact geometry or sympathetic vibration between voices.
+Explicit stopped notes now use the rotational contact proxy described below. Velocity scales the prepared
 wave, so it does not recompute nonlinear pluck strength; change force in setup
 for a different physical pluck. Initial displacement is limited to 5 mm, reported
 in per-note physics metadata. Pluck distance is clamped only if the speaking
@@ -134,10 +134,51 @@ integrator has its separate memory. iPhone hardware performance is unmeasured.
 The JS-to-C++ comparison includes E2, D3 on two strings, plain-string notes,
 lowest/highest piano pitches, and 44.1/48/96 kHz. Modal basis and floating-point
 roundoff can differ; the preexisting 3% sparse nonlinear-port threshold is also
-basis-dependent. No new mode reduction, decay, EQ or model approximation is
-introduced. Cached PCM from the previous JS coefficient backend remains usable.
+basis-dependent. The original backend migration did not change the physical model.
+The stopped-contact revision uses a new PCM namespace; previous records are retained but not reused.
 See the numerical report for measured waveform error and coefficient timings;
 these timings do not include 15-second waveform rendering or storage.
 
 Eigen is used unmodified with `EIGEN_MPL2_ONLY`. Sources and notices for the
 compiled third-party components are listed in `vendor/COEFFICIENT-NOTICES.md`.
+
+## Stopped-end rotational resistance
+
+Explicit `stringNumber` plus MIDI determines a fret in 0–20. A positive fret
+receives `c = 8e-7 N·m·s/rad`; fret 0 receives zero. Pitch-only notes, old songs
+without string assignments, keyboard notes, and virtual basses retain zero
+contact resistance even when the synthesis algorithm shortens a chosen string.
+The model never treats inferred string selection as a physical fingering.
+The existing note editor/string layers, stored fifth event field and explicit
+user-invoked string assignment feed the same `stringNumber` path to the worker.
+TAB suggestions alone do not alter songs. No separate fret field is introduced.
+
+At x=0 (the stopped/nut end), relative to the moving endpoint chord,
+`thetaDot[p] = sum(k[n] * v[n,p] / sqrt(mu*L/2))`.
+Torque is `-c*thetaDot`; the generalized velocity damping for each of the two
+transverse axes is `C[i,j] = c*k[i]*k[j]/(mu*L/2)`, including cross-mode terms.
+JS and C++ subtract this matrix before the coupled mass solve. Added dissipation
+is `c*sum(thetaDot**2) >= 0`; c=0 removes the term exactly.
+
+This unmeasured proxy was selected by listening to separate experiments, not
+validated against recorded fingers or frets. It also damps low partials. It does
+not simulate finger mass, distributed contact, slip, fret buzz, or the string
+behind the fret. Its inherent length dependence is not evidence for nut support.
+It applies only to the configured physical instrument, not other sound presets.
+
+Default internal loss remains **0.02**; no Loss7 preset migration occurs. Auditions
+used **0.14 on the speaking string**. The contact coefficient has the same units
+and meaning in both settings, but resulting timbre and decay can differ.
+Contact notes start integration at block2 with the existing refinement/fresh
+block1 retry; unspecified and open notes retain their prior block4/2/1 policy.
+
+Settings/song schema and storage keys are unchanged. The PCM cache prefix and
+module/WASM URLs are versioned; old cached audio is kept, new audio is generated
+on demand. No stored user song, setting or old PCM is deleted. Coefficient ABI2
+adds the resistance value and fails clearly if an old WASM is accidentally loaded.
+The coefficient binary consumed by the waveform integrator keeps its layout.
+
+Regression: `node scripts/test_stopped_contact.cjs` covers six strings at 20F,
+sixth-string 5/12F, both losses, JS/WASM equivalence, step refinement, no clipping,
+open/unspecified behavior and boundary validation. This does not establish
+physical validity over every material, scale or device.

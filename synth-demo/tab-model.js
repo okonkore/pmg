@@ -10,7 +10,7 @@
   if(barCount>512)throw Error('この出力は512小節まで対応しています。曲データは変更していません。');
   let states=[{busy:Array(6).fill(null),position:0,cost:0,path:null}];
   for(const note of notes){
-   const candidates=tuning.map((p,i)=>({string:6-i,fret:note.pitch-p,i})).filter(c=>c.fret>=0&&c.fret<=19&&(note.stringNumber===undefined||c.string===note.stringNumber));
+   const candidates=tuning.map((p,i)=>({string:6-i,fret:note.pitch-p,i})).filter(c=>c.fret>=0&&c.fret<=20&&(note.stringNumber===undefined||c.string===note.stringNumber));
    const next=[];
    for(const s of states){
     const busy=s.busy.map(n=>n&&n.end>note.beat+EPS?n:null);
@@ -19,7 +19,7 @@
      const b=busy.slice();b[c.i]={end:note.beat+note.duration,fret:c.fret};
      const entry={...note,string:c.string,fret:c.fret,stretch:span>4};next.push({busy:b,position:c.fret||s.position,cost:s.cost+Math.abs((c.fret||s.position)-s.position)*.8+c.fret*.15+Math.max(0,span-4)*8,path:{entry,previous:s.path}});
     }
-    next.push({busy,position:s.position,cost:s.cost+10000,path:{entry:{...note,string:null,fret:null,reason:candidates.length?'保持音・同時音の弦競合':'調弦・0〜19フレットの範囲外'},previous:s.path}});
+    next.push({busy,position:s.position,cost:s.cost+10000,path:{entry:{...note,string:null,fret:null,reason:candidates.length?'保持音・同時音の弦競合':'調弦・0〜20フレットの範囲外'},previous:s.path}});
    }
    next.sort((a,b)=>a.cost-b.cost);states=next.slice(0,24);
   }

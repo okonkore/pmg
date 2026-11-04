@@ -1,4 +1,4 @@
-import './tab-model.js?v=string-choice-1';
+import './tab-model.js?v=stopped-contact-1';
 const $=id=>document.getElementById(id),number=v=>{for(const d of [1,2,3,4,6,8,12,16,24,32,48,64,96]){const n=Math.round(v*d);if(Math.abs(v*d-n)<1e-8){const whole=Math.floor(n/d),part=n%d;return part?(whole?whole+'＋':'')+part+'/'+d:String(whole)}}const rounded=Number(v.toFixed(6));return (rounded===v?'':'≈')+rounded},pitch=n=>['C','C♯','D','E♭','E','F','F♯','G','A♭','A','B♭','B'][n%12]+(Math.floor(n/12)-1);
 const node=(tag,text)=>{const e=document.createElement(tag);if(text!==undefined)e.textContent=text;return e};
 export function renderTab(host,doc){

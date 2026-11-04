@@ -2,6 +2,8 @@
  * Geometry and material coefficients are physical inputs; no tone-fit parameters.
  */
 export const VERSION=1;
+// Listening-selected stopped-end rotational dashpot, not a measured finger model.
+export const STOPPED_END_RESISTANCE_NMS=8e-7;
 export const MIDI_RANGE=Object.freeze(Array.from({length:88},(_,i)=>21+i));
 export function validateSettings(input){
  if(!input||input.version!==VERSION||!Array.isArray(input.strings)||input.strings.length!==6)throw Error('6本の弦を設定してください');
@@ -42,7 +44,7 @@ export function prepareSettings(input){
   if(!Number.isInteger(midi)||midi<21||midi>108)throw Error('音域はA0〜C8です');
   if(stringNumber!==undefined&&(!Number.isInteger(stringNumber)||stringNumber<1||stringNumber>6))throw Error('弦番号を確認してください');
   const s=stringNumber===undefined?([...config.strings].reverse().filter(s=>s.openMidi<=midi).at(-1)||config.strings[5]):config.strings[stringNumber-1];
-  if(stringNumber!==undefined&&(midi<s.openMidi||midi-s.openMidi>19))throw Error('指定弦の0〜19フレットで演奏できない音程です');
+  if(stringNumber!==undefined&&(midi<s.openMidi||midi-s.openMidi>20))throw Error('指定弦の0〜20フレットで演奏できない音程です');
   const sec=sections[s.number-1],L0=config.scaleMm/1000,k0=Math.PI/L0,T0=opens[s.number-1],hz=440*2**((midi-69)/12);let length=L0,tension=T0;
   if(midi<s.openMidi)tension=(sec.mu*(2*Math.PI*hz)**2-sec.ei*k0**4)/(k0*k0);
   // Positive bending stiffness requires a length >= the flexible-string length.
@@ -52,7 +54,7 @@ export function prepareSettings(input){
   if(!Number.isFinite(length)||length<=0)throw Error(`${s.number}弦・MIDI ${midi}：振動長を有限の精度で解決できません`);
   const k=Math.PI/length,solvedHz=Math.sqrt((tension*k*k+sec.ei*k**4)/sec.mu)/(2*Math.PI);
   if(!Number.isFinite(solvedHz)||Math.abs(solvedHz/hz-1)>1e-10)throw Error(`${s.number}弦・MIDI ${midi}：振動長の計算精度が不足しています`);
-  return {midi,string:s.number,fret:Math.max(0,midi-s.openMidi),hz,lengthM:length,tensionN:tension,section:sec,pluckPositionM:Math.min(config.pluckPositionMm/1000,length*.9),positionLimited:config.pluckPositionMm/1000>length*.9};
+  return {contactDampingNms:stringNumber!==undefined&&midi>s.openMidi?STOPPED_END_RESISTANCE_NMS:0,contactAssignment:stringNumber===undefined?'unspecified':midi===s.openMidi?'open':'stopped',midi,string:s.number,fret:Math.max(0,midi-s.openMidi),hz,lengthM:length,tensionN:tension,section:sec,pluckPositionM:Math.min(config.pluckPositionMm/1000,length*.9),positionLimited:config.pluckPositionMm/1000>length*.9};
  }
  return {config,sections,totalTensionN,sixthTensionN:opens[5],conditions};
 }

@@ -2,7 +2,7 @@
 // Song data and edit history are independent of the DOM and audio engine.
 const SequencerModel=(()=>{
  const MAX_BEATS=4096,MAX_NOTES=20000,MIN_LENGTH=1/128,VERSION=1;
- const GUITAR_OPENS=[64,59,55,50,45,40],MAX_FRET=19;
+ const GUITAR_OPENS=[64,59,55,50,45,40],MAX_FRET=20;
  function guitarPositions(pitch,source){return GUITAR_OPENS.map((open,i)=>({stringNumber:i+1,fret:pitch-open})).filter(p=>p.fret>=0&&p.fret<=MAX_FRET&&(!source?.requiredTuning||source.requiredTuning.pitchesLowToHigh?.[6-p.stringNumber]===GUITAR_OPENS[p.stringNumber-1]));}
  const clone=value=>JSON.parse(JSON.stringify(value));
  const uid=prefix=>prefix+'-'+(globalThis.crypto?.randomUUID?.()||Date.now().toString(36)+'-'+Math.random().toString(36).slice(2));
@@ -20,7 +20,7 @@ const SequencerModel=(()=>{
    if(!Number.isFinite(velocity)||velocity<=0||velocity>1)throw new Error('ベロシティの形式が正しくありません');
    let id=typeof n.id==='string'&&n.id.length<100?n.id:uid('note');if(ids.has(id))id=uid('note');ids.add(id);
    const stringNumber=n.stringNumber;
-   if(stringNumber!==undefined&&(!Number.isInteger(stringNumber)||!guitarPositions(pitch,input.source).some(p=>p.stringNumber===stringNumber)))throw new Error('指定弦ではこの音程・調弦を0〜19フレットで演奏できません。弦を未指定に戻してから変更してください');
+   if(stringNumber!==undefined&&(!Number.isInteger(stringNumber)||!guitarPositions(pitch,input.source).some(p=>p.stringNumber===stringNumber)))throw new Error('指定弦ではこの音程・調弦を0〜20フレットで演奏できません。弦を未指定に戻してから変更してください');
    return {id,beat,pitch,duration,velocity,...(stringNumber===undefined?{}:{stringNumber,...(n.stringAssignment==='auto'?{stringAssignment:'auto'}:{})})};
   }).sort((a,b)=>a.beat-b.beat||a.pitch-b.pitch);
   const source=input.source&&typeof input.source==='object'?Object.fromEntries(['title','key','credit','license','url','licenseUrl','modifications','pitch','terms','endingStatus'].filter(k=>typeof input.source[k]==='string').map(k=>[k,input.source[k].slice(0,500)])):null;
