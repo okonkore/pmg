@@ -1,0 +1,17 @@
+/* App chrome, including dynamically created dialogs and preparation progress.
+   Do not cancel touch/pointer events: scrolling, zoom and score gestures retain
+   their existing policies. WebKit prefixes cover iPhone selection/callouts. */
+* {
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+
+/* Keep native caret, selection, copy/paste and editing menus in fields.
+   Readonly textareas (e.g. exported TAB) must remain selectable for copying.
+   :read-write also covers descendants of contenteditable editing hosts. */
+input, textarea, select, :read-write {
+  -webkit-user-select: text;
+  user-select: text;
+  -webkit-touch-callout: default;
+}

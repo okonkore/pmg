@@ -2,21 +2,22 @@
 // Catalog-wide checks supplement individual source/score tests.
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),vm=require('node:vm');
 const M=require('./sequencer-model.js'),scope=vm.createContext({});
-for(const name of ['gavotte','prelude','bach-solos','bach-1012','sor-op60','sor-op6','repertoire-batch1','repertoire-batch2','repertoire-batch3','repertoire-batch4','catalog-quality','repertoire-batch5','repertoire-batch6','repertoire-batch7','bwv1006a-complete','bwv1009-complete','bwv1004-chaconne','bwv1004-complete'])
+const catalogFiles=['gavotte','prelude','bach-solos','bach-1012','sor-op60','sor-op6','repertoire-batch1','repertoire-batch2','repertoire-batch3','repertoire-batch4','catalog-quality','repertoire-batch5','repertoire-batch6','repertoire-batch7','bwv1006a-complete','bwv1009-complete','bwv1004-chaconne','bwv1004-complete','bwv1068-air'];
+for(const name of catalogFiles)
  vm.runInContext(fs.readFileSync(path.join(__dirname,name+'.js'),'utf8'),scope);
 const elements=new Map();
 function element(){return {children:[],value:'',textContent:'',append(child){this.children.push(child)}}}
 scope.document={getElementById(id){if(!elements.has(id))elements.set(id,element());return elements.get(id)},createElement:element};
 const html=fs.readFileSync(path.join(__dirname,'index.html'),'utf8');
-const inline=[...html.matchAll(/<script>([\s\S]*?)<\/script>/g)][0][1];
+const inline=[...html.matchAll(/<script>([\s\S]*?)<\/script>/g)].find(m=>m[1].includes('const songs='))[1];
 vm.runInContext(inline.slice(0,inline.indexOf('const presets=')),scope);
-const {songs,collections}=vm.runInContext('({songs,collections:[suite1012,suite1007,sorOp60Collection,sorOp6Collection,sorOp35Songs,suite1009,sorOp1Songs,giulianiSongs,carcassiSongs,tarregaSongs,aguadoSongs,suite1006a,partita1004]})',scope);
+const {songs,collections}=vm.runInContext('({songs,collections:[suite1012,suite1007,sorOp60Collection,sorOp6Collection,sorOp35Songs,suite1009,sorOp1Songs,giulianiSongs,carcassiSongs,tarregaSongs,aguadoSongs,suite1006a,partita1004,bwv1068Air]})',scope);
 const keys=collections.flatMap(Object.keys);
-assert.equal(keys.length,55);assert.equal(new Set(keys).size,55,'No spread silently overwrites duplicate keys');
+assert.equal(keys.length,56);assert.equal(new Set(keys).size,56,'No spread silently overwrites duplicate keys');
 const options=elements.get('song').children.flatMap(group=>group.children);
-assert.equal(options.length,55);assert.equal(new Set(options.map(o=>o.value)).size,55);
+assert.equal(options.length,56);assert.equal(new Set(options.map(o=>o.value)).size,56);
 const legacy=['prelude','allemande','courante','sarabande','gigue','menuet1007','menuet2_1007','prelude1012','allemande1012','courante1012','sarabande1012','gavotte','gavotte2','gigue1012','sor60_1','sor60_2','sor60_3','sor60_4','sor60_5','sor60_12','sor6_8','sor6_11','sor35_17','sor35_22','bourree1009'];
-const added=['sor60_8','sor60_9','sor60_10','bourree2_1009','sor1_1','sor1_2','sor1_6','sor35_13','giuliani50_18','carcassi60_9','tarrega_adelita','aguado3_1','carcassi60_2','menuet1006a','menuet2_1006a','bourree1006a','prelude1006a','loure1006a','gavotte1006a','gigue1006a','prelude1009','allemande1009','courante1009','sarabande1009','gigue1009','chaconne1004','allemande1004','courante1004','sarabanda1004','giga1004'];
+const added=['air1068','sor60_8','sor60_9','sor60_10','bourree2_1009','sor1_1','sor1_2','sor1_6','sor35_13','giuliani50_18','carcassi60_9','tarrega_adelita','aguado3_1','carcassi60_2','menuet1006a','menuet2_1006a','bourree1006a','prelude1006a','loure1006a','gavotte1006a','gigue1006a','prelude1009','allemande1009','courante1009','sarabande1009','gigue1009','chaconne1004','allemande1004','courante1004','sarabanda1004','giga1004'];
 assert.deepEqual([...keys].sort(),[...legacy,...added].sort());
 const before=JSON.stringify(songs),missingLicenseLinks=[],missingEndMarkers=[];
 for(const [key,song] of Object.entries(songs)){
@@ -38,7 +39,7 @@ for(const [key,song] of Object.entries(songs)){
  }
 }
 assert.equal(JSON.stringify(songs),before,'Catalog QA never mutates source music');
-console.log('PASS: 55 unique keys/options, original 25 retained, license/source attribution, note ranges, end markers where provided, every-song metadata/event JSON round-trip.');
+console.log('PASS: 56 unique keys/options, original 25 retained, license/source attribution, note ranges, end markers where provided, every-song metadata/event JSON round-trip.');
 console.log('Existing legacy entries lacking dedicated licenseUrl:',missingLicenseLinks.join(', '));
 console.log('Existing legacy entries lacking explicit endBeat:',missingEndMarkers.join(', '));
 
@@ -85,3 +86,13 @@ for(const [key,hash] of Object.entries(checkpoint50))assert.equal(require("crypt
 const checkpoint51=JSON.parse(fs.readFileSync(path.join(__dirname,"../scripts/score-sources/bwv1004-complete/checkpoint51.json")));
 assert.equal(Object.keys(checkpoint51).length,51);
 for(const [key,hash] of Object.entries(checkpoint51))assert.equal(require("crypto").createHash("sha256").update(JSON.stringify(songs[key])).digest("hex"),hash,key+" entire song unchanged");
+
+// This addition must preserve all55 previously published song objects exactly.
+const previousHTML=require('node:child_process').execFileSync('git',['show','e19b2dba02f0cf273ca9f249533ace23165a0e5f:synth-demo/index.html'],{encoding:'utf8'});
+const previousScope=vm.createContext({});for(const name of catalogFiles)vm.runInContext(fs.readFileSync(path.join(__dirname,name+'.js'),'utf8'),previousScope);
+const previousElements=new Map();previousScope.document={getElementById:id=>{if(!previousElements.has(id))previousElements.set(id,element());return previousElements.get(id)},createElement:element};
+const previousInline=[...previousHTML.matchAll(/<script>([\s\S]*?)<\/script>/g)].find(m=>m[1].includes('const songs='))[1];
+vm.runInContext(previousInline.slice(0,previousInline.indexOf('const presets=')),previousScope);
+const previousSongs=vm.runInContext('songs',previousScope);assert.equal(Object.keys(previousSongs).length,55);
+for(const [key,song] of Object.entries(previousSongs))assert.equal(JSON.stringify(songs[key]),JSON.stringify(song),key+' previously published song unchanged');
+console.log('PASS: all55 published song objects unchanged; Air is the sole new catalog entry.');
