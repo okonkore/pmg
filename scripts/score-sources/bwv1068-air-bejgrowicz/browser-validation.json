@@ -1,0 +1,71 @@
+{
+  "scope": "Chromium catalog/editor and actual organ audio at start, repeat section and ending; not full Physical Guitar bank rendering or human listening",
+  "title": "J. S. Bach · G線上のアリア（Seweryn Bejgrowicz編）",
+  "notes": 903,
+  "endBeat": 288,
+  "source": {
+    "title": "J. S. Bach · G線上のアリア（Seweryn Bejgrowicz編）",
+    "key": "air1068_bejgrowicz",
+    "credit": "J. S. Bach; guitar arrangement Seweryn Bejgrowicz (www.sew.prv.pl), Cantorion 4244; PMG digital transcription from supplied voices-v1 data.",
+    "license": "CC BY-SA 3.0",
+    "url": "https://cantorion.org/music/4244/Orchestral-Suite-(Overture)-No.-3-Air-on-the-G-String",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/",
+    "modifications": "Supplied sounding pitches retained; repeats expanded; explicit ties joined. Overlapping same-pitch voices coalesced into one sustain (audit lists suppressed inner attacks). Ornament realizations omitted; no implied ties added. Quarter=56 and voice velocities are editorial. Source PDF could not be independently inspected in this execution environment.",
+    "pitch": "C major; standard E2 A2 D3 G3 B3 E4. Algorithmic string assignment, frets0-12 allowed, no simultaneous string collision and nonzero fret spread<=6. Finger numbers, shifts, barres and human playability unverified. Original voice tokens retained separately.",
+    "terms": "Arrangement and derived score CC BY-SA 3.0: retain composer/arranger/source/license/change notices; share adaptations alike. No endorsement implied. Application code and existing two-voice arrangement are separate.",
+    "endingStatus": "37 written bars; order1-12,1-11,13,14-37,14-37; 72 performed bars, 288 quarter beats; 4/4. Source gaps retained as rests; final chord ends288. No added fermata time."
+  },
+  "samples": [
+    {
+      "fromBeat": 0,
+      "pitches": [
+        64,
+        60,
+        55,
+        52,
+        48
+      ],
+      "strings": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "peak": 0.05285196006298065
+    },
+    {
+      "fromBeat": 96,
+      "pitches": [
+        59,
+        55,
+        50,
+        43
+      ],
+      "strings": [
+        2,
+        3,
+        4,
+        6
+      ],
+      "peak": 0.0434429869055748
+    },
+    {
+      "fromBeat": 284,
+      "pitches": [
+        48,
+        52,
+        55,
+        60
+      ],
+      "strings": [
+        2,
+        3,
+        4,
+        5
+      ],
+      "peak": 0.043667905032634735
+    }
+  ],
+  "oldEditionPresent": true
+}
