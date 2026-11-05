@@ -198,7 +198,7 @@ window.visualViewport?.addEventListener('resize',fitViewport);window.visualViewp
 // Flush only valid song fields; do not silently commit a guitar design draft.
 window.addEventListener('pagehide',()=>{
  const field=document.activeElement;
- if(field?.matches('#seq-title,#seq-bpm,#seq-meter,#seq-pitch,#seq-at,#seq-duration,#seq-velocity')&&field.checkValidity()&&!(field.type==='number'&&field.value===''))field.dispatchEvent(new Event('change',{bubbles:true}));
+ if(field?.matches('#seq-title,#seq-bpm,#seq-meter,#seq-pitch,#seq-at,#seq-duration,#seq-velocity,#seq-velocity-number')&&field.checkValidity()&&!(field.type==='number'&&field.value===''))field.dispatchEvent(new Event('change',{bubbles:true}));
  scoreEditor.save();
 },{capture:true});
 // A UI switch carries the selected song without moving or migrating its data.
@@ -257,6 +257,6 @@ sharedUpdate.innerHTML='<div class="app-dialog-header"><h2 id="shared-update-tit
 document.body.append(sharedUpdate);sharedUpdate.addEventListener('cancel',e=>e.preventDefault());
 byId('shared-export').onclick=()=>byId('seq-export').click();byId('shared-reload').onclick=()=>location.reload();
 window.addEventListener('storage',e=>{if(e.key===null||(e.key.startsWith('pmg')&&e.oldValue!==e.newValue)){stop();if(!sharedUpdate.open)sharedUpdate.showModal();}});
-if(isV2){await import('./ui-v2.js?v=tempo-display-1');window.PMGV2Ready?.();}
+if(isV2){await import('./ui-v2.js?v=stop-rewind-1');window.PMGV2Ready?.();}
 
 installResumeState(resumeState,{getPreset:()=>preset,getOctave:()=>octaveOffset,setOctave:n=>{octaveOffset=n;updateOctave()},getGuitar:()=>guitarParameters,setGuitar:v=>{guitarParameters=v},getRoute:()=>state.route});

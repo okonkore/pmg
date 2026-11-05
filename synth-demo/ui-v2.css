@@ -60,3 +60,5 @@ body:has(dialog[open]) .seq-duration-grip{visibility:hidden}
 /* Keep both transport readouts when V2 replaces the original toolbar. */
 .ui-v2 #v2-position{display:flex;flex-direction:column;align-items:stretch;min-width:0;gap:2px}
 .ui-v2 #v2-position #seq-current-bpm{font-size:11px;text-align:center;min-width:0}
+
+.ui-v2 #seq-stop .seq-stop-label{display:none}

@@ -10,7 +10,7 @@ const ScoreEditor=(()=>{
   const library=new M.Library(api.songs,storage),histories=new Map();
   const panel=document.getElementById('score-editor'),picker=document.getElementById('song');
   let history,currentId,selection=new Set(),tool='select',px=56,cursor=0,clipboard=[],gesture,transport,raf=0,saveTimer;
-  let layer='all';
+  let layer='all',strengthNumberEdited=false;
   let draft=null,rowHeight=20,pinch=null,pinchTail=false,tapStart=null,lastTap=null,lastTouch=-Infinity,suppressClicksUntil=0,pinchFrame=0,rulerTap=null;
   const touches=new Map();
   panel.innerHTML=`
@@ -28,7 +28,7 @@ const ScoreEditor=(()=>{
     <div class="seq-tools"><label>ズーム <input id="seq-zoom" type="range" min="1" max="160" value="56"></label><button id="seq-fit">全体</button><button id="seq-save">保存</button><button id="seq-export">JSON書出</button><button id="seq-import">読込</button><button id="seq-remove">曲を削除</button><input id="seq-file" type="file" accept=".json,application/json" hidden></div>
    </div>
    <div id="seq-scroll" class="seq-scroll" tabindex="0" role="region" aria-label="ピアノロール。音符を選択し矢印キーで移動。Deleteで削除。" aria-describedby="seq-help"><div id="seq-roll" class="seq-roll"><div id="seq-grid" class="seq-grid"></div><div id="seq-playhead" class="seq-playhead"></div><div id="seq-piano" class="seq-piano"></div><div id="seq-ruler" class="seq-ruler"></div><div id="seq-corner" class="seq-corner">小節</div></div></div>
-   <div class="seq-inspector seq-menu-item"><span id="seq-selection-info" class="seq-selection-info">音符を選択</span><label>音程 <input id="seq-pitch" aria-label="選択音符の音程" placeholder="C4"></label><label>ギターの弦・フレット<select id="seq-string" aria-label="選択音符の弦・フレット"></select></label><label>重なり音を選択<select id="seq-overlap" aria-label="重なり音を選択"></select></label><label>複製先の弦<select id="seq-duplicate-string" aria-label="複製先の弦"></select></label><button id="seq-duplicate-note">別の弦に複製</button><small id="seq-string-help">標準調弦・0〜20フレット。「Physical Guitar（弦を設定）」とTABに使用。他の音源には無効。</small><label>位置（拍）<input id="seq-at" type="number" min="0" max="4095" step="0.25"></label><label>長さ（拍）<input id="seq-duration" type="number" min="0.0078125" max="4096" step="0.25"></label><label>強さ <input id="seq-velocity" type="range" min="1" max="127" value="127"><output id="seq-velocity-out">127</output></label></div>
+   <div class="seq-inspector seq-menu-item"><span id="seq-selection-info" class="seq-selection-info">音符を選択</span><div class="seq-note-dynamics"><label>弾く強さ（音符ごと）<input id="seq-velocity-number" type="number" min="1" max="127" step="1" value="127" aria-describedby="seq-velocity-help"></label><label>強さを調整<input id="seq-velocity" type="range" min="1" max="127" step="1" value="127" aria-label="選択音符の弾く強さ" aria-describedby="seq-velocity-help"><output id="seq-velocity-out" for="seq-velocity seq-velocity-number">127 / 127</output></label><button id="seq-velocity-reset" type="button">標準の127に戻す</button><small id="seq-velocity-help">音符を選択して設定。1〜127、127が標準です。複数選択時は同じ値をまとめて設定します。全体の音量・演奏設定はそのままに、音符ごとの強弱を付けます。Physical Guitarは準備した波形の振幅を変えます。</small></div><label>音程 <input id="seq-pitch" aria-label="選択音符の音程" placeholder="C4"></label><label>ギターの弦・フレット<select id="seq-string" aria-label="選択音符の弦・フレット"></select></label><label>重なり音を選択<select id="seq-overlap" aria-label="重なり音を選択"></select></label><label>複製先の弦<select id="seq-duplicate-string" aria-label="複製先の弦"></select></label><button id="seq-duplicate-note">別の弦に複製</button><small id="seq-string-help">標準調弦・0〜20フレット。「Physical Guitar（弦を設定）」とTABに使用。他の音源には無効。</small><label>位置（拍）<input id="seq-at" type="number" min="0" max="4095" step="0.25"></label><label>長さ（拍）<input id="seq-duration" type="number" min="0.0078125" max="4096" step="0.25"></label></div>
    <p id="seq-help" class="seq-help seq-menu-item">空白のドラッグでスクロール。小節番号の行をピンチで横方向、左の鍵盤列をピンチで縦方向に拡大・縮小。描画領域ではピンチは無効です。音符をダブルタップで削除。鉛筆モードでは空白をタップで音符を追加、ドラッグでスクロール。選択モードでは空白のダブルタップで追加。音符をドラッグで移動、右端で長さ変更。<kbd>Shift</kbd>＋クリック／Shift＋空白のドラッグで範囲選択。小節バーのカーソルをドラッグして再生位置を移動。<br><kbd>V</kbd> 選択 · <kbd>P</kbd> 鉛筆 · <kbd>Space</kbd> 再生／停止 · <kbd>Delete</kbd> 削除 · <kbd>Ctrl / ⌘ C・V</kbd> コピー／貼り付け · <kbd>Ctrl / ⌘ Z</kbd> Undo<span id="seq-origin" class="seq-origin"></span></p>`;
   const $=id=>document.getElementById(id),scroll=$('seq-scroll'),grid=$('seq-grid'),roll=$('seq-roll'),ruler=$('seq-ruler');
   const visible=n=>layer==='all'||(layer==='unassigned'?!n.stringNumber:n.stringNumber===Number(layer));
@@ -91,9 +91,11 @@ const ScoreEditor=(()=>{
    const selected=doc().notes.filter(n=>selection.has(n.id)),n=selected[0],single=selected.length===1;
    $('seq-selection-info').textContent=selected.length?`${selected.length}音を選択`:`${doc().notes.length}音`;
    for(const id of ['seq-pitch','seq-at','seq-duration'])$(id).disabled=readonly()||!single;
-   $('seq-velocity').disabled=readonly()||!selected.length;
+   for(const id of ['seq-velocity','seq-velocity-number','seq-velocity-reset'])$(id).disabled=readonly()||!selected.length;
    $('seq-pitch').value=single?noteName(n.pitch):'';$('seq-at').value=single?rounded(n.beat):'';$('seq-duration').value=single?rounded(n.duration):'';
-   $('seq-velocity').value=n?Math.round(n.velocity*127):127;$('seq-velocity-out').textContent=$('seq-velocity').value;
+   const mixed=selected.some(x=>x.velocity!==n.velocity),value=n?Math.max(1,Math.round(n.velocity*127)):127;
+   $('seq-velocity').value=value;$('seq-velocity-number').value=mixed?'':value;$('seq-velocity-number').placeholder=mixed?'混在':'';strengthNumberEdited=false;
+   $('seq-velocity-out').textContent=mixed?'異なる強さが混在':value+' / 127';$('seq-velocity-number').setCustomValidity('');
    const choice=$('seq-string');choice.replaceChildren(new Option('未指定（従来の再生）',''));if(single)for(const p of M.guitarPositions(n.pitch,doc().source))choice.add(new Option(`${p.stringNumber}弦 · ${p.fret===0?'開放':p.fret+'フレット'}`,String(p.stringNumber)));choice.value=single&&n.stringNumber?String(n.stringNumber):'';choice.disabled=readonly()||!single;
    const overlap=$('seq-overlap');overlap.replaceChildren();
    const overlapping=single?doc().notes.filter(x=>visible(x)&&x.pitch===n.pitch&&x.beat<n.beat+n.duration&&x.beat+x.duration>n.beat):[];
@@ -109,7 +111,13 @@ const ScoreEditor=(()=>{
    $('seq-delete').disabled=readonly()||!selected.length;$('seq-quantize').disabled=readonly()||!selected.length||!snap();
    $('seq-undo').disabled=readonly()||!history.past.length;$('seq-redo').disabled=readonly()||!history.future.length;
   }
+  function updateStopButton(){
+   const button=$('seq-stop'),playing=!!transport,label=playing?'再生を停止':'先頭に戻る';
+   button.dataset.action=playing?'stop':'rewind';button.setAttribute('aria-label',label);button.title=label;
+   button.innerHTML=`<span aria-hidden="true">${playing?'■':'|◀'}</span><span class="seq-stop-label"> ${playing?'停止':'先頭'}</span>`;
+  }
   function render(){
+   updateStopButton();
    const d=doc(),bar=barBeats(),beats=Math.min(M.MAX_BEATS,Math.ceil(endBeat()/bar)*bar+bar*2),width=beats*px;
    $('seq-title').value=d.title;$('seq-title').disabled=readonly();$('seq-bpm').value=d.bpm;$('seq-bpm').disabled=readonly();
    const meter=d.meter.join('/');if(![...$('seq-meter').options].some(o=>o.value===meter)){$('seq-meter').add(new Option(meter,meter))}$('seq-meter').value=meter;$('seq-meter').disabled=readonly();
@@ -262,7 +270,8 @@ const ScoreEditor=(()=>{
   $('seq-zoom').oninput=()=>zoom(+$('seq-zoom').value);
   $('seq-fit').onclick=()=>{zoom(clamp((scroll.clientWidth-GUTTER-30)/endBeat(),1,160));scroll.scrollLeft=0};
   $('seq-play').onclick=()=>{if(!transport)api.play({fromBeat:cursor,loop:$('seq-loop').checked})};
-  $('seq-stop').onclick=()=>api.stop();$('seq-rewind').onclick=()=>{api.stop();setPosition(0);scroll.scrollLeft=0};
+  function rewind(){api.stop();setPosition(0);scroll.scrollLeft=0}
+  $('seq-stop').onclick=()=>{if(transport)api.stop();else rewind()};$('seq-rewind').onclick=rewind;
   $('seq-remove').onclick=()=>{if(readonly()||!confirm('「'+history.current.title+'」をこのブラウザから削除しますか？'))return;api.stop();clearTimeout(saveTimer);library.remove(currentId);histories.delete(currentId);history=null;currentId=null;updateLibraryMenu();choose('gavotte')};
   $('seq-export').onclick=()=>{const blob=new Blob([library.export(history.current)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=history.current.title.replace(/[\\/:*?"<>|]/g,'_')+'.pmg.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)};
   $('seq-import').onclick=()=>$('seq-file').click();
@@ -284,8 +293,16 @@ const ScoreEditor=(()=>{
   $('seq-pitch').onchange=()=>{const match=/^([A-Ga-g])([#♯b♭]?)(-?\d)$/.exec($('seq-pitch').value.trim());if(!match){message('音程はC4、F#3などで入力してください',true);inspector();return}const pc={C:0,D:2,E:4,F:5,G:7,A:9,B:11}[match[1].toUpperCase()]+(['#','♯'].includes(match[2])?1:['b','♭'].includes(match[2])?-1:0);changeSingle(n=>n.pitch=(+match[3]+1)*12+pc)};
   $('seq-at').onchange=()=>changeSingle(n=>n.beat=+$('seq-at').value);
   $('seq-duration').onchange=()=>changeSingle(n=>n.duration=+$('seq-duration').value);
-  $('seq-velocity').oninput=()=>$('seq-velocity-out').textContent=$('seq-velocity').value;
-  $('seq-velocity').onchange=()=>edit(d=>d.notes.filter(n=>selection.has(n.id)).forEach(n=>n.velocity=+$('seq-velocity').value/127));
+  function setNoteStrength(value){
+   if(readonly()||!selection.size)return;
+   if(!Number.isInteger(value)||value<1||value>127){$('seq-velocity-number').setCustomValidity('強さは1〜127の整数で入力してください');$('seq-velocity-number').reportValidity();return}
+   $('seq-velocity-number').setCustomValidity('');edit(d=>d.notes.filter(n=>selection.has(n.id)).forEach(n=>n.velocity=value/127));
+  }
+  $('seq-velocity').oninput=()=>{$('seq-velocity-number').setCustomValidity('');$('seq-velocity-number').value=$('seq-velocity').value;$('seq-velocity-out').textContent=$('seq-velocity').value+' / 127'};
+  $('seq-velocity').onchange=()=>setNoteStrength(+$('seq-velocity').value);
+  $('seq-velocity-number').oninput=()=>{strengthNumberEdited=true;$('seq-velocity-number').setCustomValidity('')};
+  $('seq-velocity-number').onchange=()=>{if(strengthNumberEdited)setNoteStrength(+$('seq-velocity-number').value)};
+  $('seq-velocity-reset').onclick=()=>setNoteStrength(127);
   function copyNotes(){if(!selection.size)return;clipboard=M.clone(doc().notes.filter(n=>selection.has(n.id)));message(clipboard.length+'音をコピーしました')}
   function paste(at=cursor){if(!Number.isFinite(at)||at<0||at>M.MAX_BEATS){message('貼り付け位置は0〜4096拍で指定してください',true);return;}if(readonly()||!clipboard.length)return;const first=Math.min(...clipboard.map(n=>n.beat)),last=Math.max(...clipboard.map(n=>n.beat+n.duration))-first;if(at+last>M.MAX_BEATS){message('貼り付け位置が曲の上限を超えています',true);return}const notes=clipboard.map(n=>({...n,id:M.uid('note'),beat:n.beat-first+at}));try{M.normalize({...history.current,notes:[...history.current.notes,...notes]});}catch(error){message(error.message,true);return;}selection=new Set(notes.map(n=>n.id));edit(d=>d.notes.push(...notes));if(notes.some(n=>!visible(n))){layer='all';$('seq-layer').value=layer;renderNotes();inspector();}}
   panel.addEventListener('keydown',e=>{
@@ -306,14 +323,14 @@ const ScoreEditor=(()=>{
   });
   function transportBeat(){if(!transport)return cursor;const seconds=Math.max(0,transport.clock()-transport.startTime);if(transport.beatAt)return transport.beatAt(seconds);const elapsed=seconds*transport.bpm/60,span=transport.endBeat-transport.fromBeat;return transport.loop?transport.fromBeat+(elapsed%span):Math.min(transport.endBeat,transport.fromBeat+elapsed)}
   function frame(){if(!transport)return;setPosition(transportBeat());if(!panel.hidden&&!gesture&&!pinchTail){const x=cursor*px+GUTTER;if(x>scroll.scrollLeft+scroll.clientWidth-35)scroll.scrollLeft=x-scroll.clientWidth*.3;else if(x<scroll.scrollLeft+GUTTER)scroll.scrollLeft=Math.max(0,x-GUTTER-px)}raf=requestAnimationFrame(frame)}
-  function transportStop(){if(transport)setPosition(transportBeat());transport=null;cancelAnimationFrame(raf);$('seq-play').disabled=false}
+  function transportStop(){if(transport)setPosition(transportBeat());transport=null;cancelAnimationFrame(raf);$('seq-play').disabled=false;updateStopButton()}
   window.addEventListener('pagehide',()=>{if(history&&!readonly())save()});
   updateLibraryMenu();load(picker.value);
   return {
    save,
    selectionTools:{setTool(next){finishGesture(true);setTool(next)},copy:copyNotes,paste,clear(){finishGesture(true);selection.clear();renderNotes();inspector()},state(){return {count:selection.size,copied:clipboard.length,cursor,readonly:readonly(),tool}}},
    songChanged(){load(picker.value)},
-   transportStart(info){transportStop();transport=info;$('seq-play').disabled=true;cancelAnimationFrame(raf);frame()},
+   transportStart(info){transportStop();transport=info;updateStopButton();$('seq-play').disabled=true;cancelAnimationFrame(raf);frame()},
    transportStop,
    open,
    importDocument(doc){save();const d=library.addSaved(doc);updateLibraryMenu();choose(d.id);return d.id},

@@ -92,3 +92,11 @@
 .seq-ruler-cursor::before{content:"";position:absolute;left:14px;top:0;height:74px;width:1px;background:#f3dd9f;pointer-events:none}
 
 .seq-tempo-lane{background-image:repeating-linear-gradient(to right,#bcd5d433 0px,#bcd5d433 1px,transparent 1px,transparent var(--tempo-beat-px))}
+
+/* Keep the stop/rewind control stationary when its icon changes. */
+#seq-stop > [aria-hidden=true]{display:inline-block;width:1.8em;text-align:center;white-space:nowrap}
+
+.seq-note-dynamics{width:100%;padding-bottom:12px;border-bottom:1px solid #71594066;display:flex;flex-wrap:wrap;align-items:center;gap:10px}
+.seq-note-dynamics small{width:100%;line-height:1.6;font-size:12px}
+.seq-note-dynamics input[type=range]{min-height:44px;width:140px}
+.seq-note-dynamics #seq-velocity-number{width:90px;min-height:44px;font-size:16px}
