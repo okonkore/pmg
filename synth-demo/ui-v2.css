@@ -56,3 +56,7 @@
 
 .ui-v2 .seq-duration-grip{position:absolute;width:44px;height:44px;min-width:44px;min-height:44px;padding:0;border:2px solid #fff;border-radius:12px;background:#ecc889;color:#171b18;font-size:25px;line-height:40px;text-align:center;z-index:3;touch-action:none;cursor:ew-resize;box-shadow:0 2px 6px #0009}
 body:has(dialog[open]) .seq-duration-grip{visibility:hidden}
+
+/* Keep both transport readouts when V2 replaces the original toolbar. */
+.ui-v2 #v2-position{display:flex;flex-direction:column;align-items:stretch;min-width:0;gap:2px}
+.ui-v2 #v2-position #seq-current-bpm{font-size:11px;text-align:center;min-width:0}

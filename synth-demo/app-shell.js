@@ -257,6 +257,6 @@ sharedUpdate.innerHTML='<div class="app-dialog-header"><h2 id="shared-update-tit
 document.body.append(sharedUpdate);sharedUpdate.addEventListener('cancel',e=>e.preventDefault());
 byId('shared-export').onclick=()=>byId('seq-export').click();byId('shared-reload').onclick=()=>location.reload();
 window.addEventListener('storage',e=>{if(e.key===null||(e.key.startsWith('pmg')&&e.oldValue!==e.newValue)){stop();if(!sharedUpdate.open)sharedUpdate.showModal();}});
-if(isV2){await import('./ui-v2.js');window.PMGV2Ready?.();}
+if(isV2){await import('./ui-v2.js?v=tempo-display-1');window.PMGV2Ready?.();}
 
 installResumeState(resumeState,{getPreset:()=>preset,getOctave:()=>octaveOffset,setOctave:n=>{octaveOffset=n;updateOctave()},getGuitar:()=>guitarParameters,setGuitar:v=>{guitarParameters=v},getRoute:()=>state.route});

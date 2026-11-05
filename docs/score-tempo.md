@@ -43,3 +43,11 @@
 既存の `catalog-playback.test.cjs` はVMにURLSearchParamsがないため起動時点で失敗する。未変更の公開ベースの別worktreeでも同一エラーを再確認した。今回の変更には含めない。
 
 iPhone Safari実機、全音源の全曲聴き通しは未検証。Chromiumの実タッチイベント・WebAudioテストはその代替を断言しない。公開時のコミットと配備結果はリポジトリ履歴・GitHub Actionsを参照。
+
+## UI V2の再生開始エラー修正
+
+公開コミット4306e03で、`?ui=v2` の画面組み替えが `seq-current-bpm` を含む旧ツールバーを削除していた。再生開始時の `setPosition()` が存在しない表示要素のtextContentを設定して例外になった。Chromiumでも `音声を開始できませんでした: Cannot set properties of null (setting 'textContent')` を再現した。テンポボタンも編集ツールのreplaceChildrenから漏れていた。
+
+修正ではBPM表示を再生位置とともにV2ドックへ移し、テンポボタンもV2ツールバーへ移す。保存・時間計算・音響モデルは変更しない。V2モジュールとCSS、その呼び出し側のキャッシュキーを更新。
+
+`test_tempo_v2_browser.cjs` が従来UI/V2双方でテンポ編集画面、曲頭・途中ループ再生の非ゼロ波形、BPM表示、エラーの不在、保存データの不変性、モバイル幅を確認する。`test_ui_v2.cjs` のモジュール読込制御は新しいクエリ付きURLに対応させ、古い固定曲数を実カタログ数との比較に変更した。

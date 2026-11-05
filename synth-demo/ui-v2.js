@@ -1,7 +1,7 @@
 // Optional presentation only. No song, waveform or instrument storage is duplicated.
 const $=id=>document.getElementById(id),shell=$('app-shell'),editor=$('score-editor');
 document.body.classList.add('ui-v2');
-await new Promise((resolve,reject)=>{const link=document.createElement('link');link.rel='stylesheet';link.href=new URL('./ui-v2.css',import.meta.url).href;link.onload=resolve;link.onerror=()=>reject(Error('V2 stylesheet unavailable'));document.head.append(link);});
+await new Promise((resolve,reject)=>{const link=document.createElement('link');link.rel='stylesheet';link.href=new URL('./ui-v2.css?v=tempo-display-1',import.meta.url).href;link.onload=resolve;link.onerror=()=>reject(Error('V2 stylesheet unavailable'));document.head.append(link);});
 const make=(tag,id,text)=>{const e=document.createElement(tag);if(id)e.id=id;if(text)e.textContent=text;return e;};
 const trigger=(id,text,panel)=>{const e=make('button',id,text);e.dataset.panel=panel;e.setAttribute('aria-haspopup','dialog');return e;};
 const songSheet=AppShell.createPanel('v2-song-dialog','曲を選ぶ');songSheet.append($('song-picker'));
@@ -38,11 +38,12 @@ const selectionButton=trigger('v2-selection','コピー ▾','v2-selection-dialo
 const tools=document.querySelector('.app-editor-tools'),dock=make('div','v2-editor-dock');
 const toolButton=trigger('v2-tool','選択 ▾','v2-tool-dialog'),layerButton=trigger('v2-layer','全体 ▾','v2-layer-dialog');
 const copyButton=make('button','v2-copy-edit','コピーして編集');copyButton.onclick=()=>$('seq-copy').click();
-dock.append($('seq-undo'),$('seq-play'),$('seq-stop'),$('seq-position'),$('seq-note-settings'));editor.append(dock);
+const position=make('div','v2-position');position.append($('seq-position'),$('seq-current-bpm'));
+dock.append($('seq-undo'),$('seq-play'),$('seq-stop'),position,$('seq-note-settings'));editor.append(dock);
 $('seq-undo').textContent='↶';$('seq-play').textContent='▶';$('seq-play').setAttribute('aria-label','カーソルから再生');$('seq-stop').textContent='■';$('seq-stop').setAttribute('aria-label','再生を停止');$('seq-note-settings').textContent='音符';
 const playbackBody=$('playback-dialog').querySelector('.app-dialog-body');playbackBody.prepend($('seq-rewind'),$('seq-loop').closest('label'));
 editor.querySelector(':scope > .seq-toolbar').remove();
-tools.replaceChildren(toolButton,layerButton,selectionButton,$('seq-layer-status'),copyButton);editor.append(dock);
+tools.replaceChildren(toolButton,layerButton,selectionButton,$('seq-tempo'),$('seq-layer-status'),copyButton);editor.append(dock);
 const info=make('div','v2-save-alert');info.setAttribute('role','status');info.hidden=true;tools.after(info);
 // Keep editing errors visible even though routine status has moved into its sheet.
 function syncEditor(){
