@@ -69,3 +69,19 @@
 .seq-note[data-string="5"]{--note-color:#b4aff0}
 .seq-note[data-string="6"]{--note-color:#e4a3bf}
 .seq-note[data-string="unassigned"]{--note-color:#b6b9bd}
+
+/* The 44px tempo lane is separate from the original 30px seek / pinch ruler. */
+.seq-ruler,.seq-corner{height:74px}
+.seq-grid,.seq-piano,.seq-playhead{top:74px}
+.seq-tempo-lane{position:absolute;top:30px;left:0;right:0;height:44px;background:#223436;border-top:1px solid #779b9e;touch-action:none;overflow:hidden}
+.tempo-hint{position:sticky;left:8px;font-size:11px;line-height:44px;color:#bcd5d4;pointer-events:none}
+.seq-tempo-range,.app-shell .seq-tempo-range{position:absolute;top:0;height:44px;min-height:44px;min-width:0;border:1px solid #8bc5c9;background:linear-gradient(120deg,#42696d,#274349);border-radius:5px;color:#fff;padding:0 4px;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;touch-action:none}
+.seq-tempo-lane[data-dragging=true]::after{content:'';position:absolute;top:0;height:44px;left:var(--selection-start);width:var(--selection-width);background:#a5d4d666;border:2px solid #d5ffff;pointer-events:none;box-sizing:border-box}
+.tempo-dialog{max-width:540px;width:calc(100% - 32px);max-height:85dvh;overflow:auto;box-sizing:border-box;background:#28231e;color:#f7ead4;border:1px solid #a58b63;border-radius:14px;padding:20px}
+.tempo-dialog::backdrop{background:#0009}
+.tempo-dialog p,.tempo-dialog small{font-size:13px;line-height:1.6}
+.tempo-dialog label{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:10px 0}
+.tempo-dialog input,.tempo-dialog select,.tempo-dialog button{font-size:16px;min-height:44px;box-sizing:border-box;max-width:100%;border:1px solid #b6a17f;border-radius:6px;padding:8px;background:#3d342b;color:#fff}
+.tempo-dialog input{width:120px}.tempo-dialog select{max-width:65%}.tempo-dialog button{margin:4px 4px 4px 0}
+.tempo-dialog :disabled{opacity:.45}.tempo-dialog details{margin:18px 0}.tempo-dialog summary{min-height:44px;cursor:pointer}
+#tempo-error{color:#ffd0a4}#tempo-list{display:flex;flex-direction:column;gap:4px}#tempo-list button{text-align:left}#seq-current-bpm{font-size:12px;min-width:70px}

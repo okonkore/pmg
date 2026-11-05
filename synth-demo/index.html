@@ -12,7 +12,7 @@ html.pmg-v2-boot,html.pmg-v2-boot body{margin:0;padding:0;background:#181a19;col
 #v2-startup a{color:inherit;padding:12px;border:1px solid #737c74;border-radius:10px}
 </style>
 <link rel="stylesheet" href="configured-guitar.css?v=touch-fields-1">
-<link rel="stylesheet" href="sequencer.css?v=string-choice-1">
+<link rel="stylesheet" href="sequencer.css?v=tempo-2-string-choice-1">
 <style>
 :root{color-scheme:dark;font-family:ui-sans-serif,system-ui,-apple-system,sans-serif;background:#191510;color:#f5ead8}*{box-sizing:border-box}html{touch-action:manipulation}body{margin:0;padding:44px 20px;min-height:100vh;background:radial-gradient(ellipse at 50% 0,#483425,transparent 70%)}main{max-width:980px;margin:auto}header{display:flex;justify-content:space-between;align-items:center;gap:20px;margin-bottom:28px}h1{font-size:clamp(25px,4vw,40px);letter-spacing:-1.5px;margin:6px 0}a{color:#f0d59e}small,.muted{color:#c2b39e;font-size:13px}.eyebrow{font-size:11px;letter-spacing:3px;color:#d5ad76}.panel{background:repeating-linear-gradient(92deg,#e8bd7c04 0 1px,transparent 1px 8px),linear-gradient(140deg,#79503a,#4c2e22);border:1px solid #a77b52;border-radius:20px;padding:28px;box-shadow:0 25px 65px #0006,inset 0 1px #f6dfb933}.top{display:flex;align-items:center;justify-content:space-between;gap:20px}.brand{font-size:14px;letter-spacing:4px;font-weight:800}.status{font-size:12px;color:#eedcc0}button,select{font:inherit}.song-picker{margin-top:22px}.song-picker label{color:#f0d9b4;letter-spacing:.5px;margin-bottom:9px}.song-picker select{width:100%;padding:12px;border:1px solid #ffffff35;border-radius:9px;background:#2c2018;color:#f5ead8}.song-picker .hint{margin:8px 0 0}select:focus-visible{outline:3px solid #f1ce8f;outline-offset:3px}button{cursor:pointer;border:1px solid #ffffff30;border-radius:9px;background:#2c2018;color:#f5ead8;padding:11px 17px}button:hover{filter:brightness(1.2)}button:focus-visible,input:focus-visible{outline:3px solid #f1ce8f;outline-offset:3px}.primary{background:linear-gradient(#f3e4c3,#dfc89e);color:#39291d;border:0;font-weight:700;white-space:nowrap}.preset-picker{margin:26px 0 22px}.guitar-controls{margin-top:22px;border-top:1px solid #ffffff25;padding-top:20px}.guitar-controls .controls{grid-template-columns:repeat(3,minmax(0,1fr))}.controls{display:grid;grid-template-columns:repeat(4,1fr);gap:24px}label{display:flex;flex-direction:column;gap:13px;font-size:12px;letter-spacing:1px}label span{display:flex;justify-content:space-between}output{color:#f0d39f;letter-spacing:0}input{width:100%;accent-color:#e4c18a;cursor:pointer}.monitor{margin-top:25px;background:#211b15;border:1px solid #ffffff22;border-radius:10px;overflow:hidden}canvas{display:block;width:100%;height:88px}.monitor-foot{display:flex;justify-content:space-between;padding:8px 12px;border-top:1px solid #ffffff12;font:11px ui-monospace,monospace;color:#cfb58b}.octave-bar{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-top:20px}.octave-buttons{display:flex;align-items:center;gap:10px}.octave-bar output{font:13px ui-monospace,monospace;color:#f2dfbb}button:disabled{opacity:.3;cursor:default}.key span{white-space:pre-line;line-height:1.7}.keyboard{height:195px;position:relative;display:flex;margin-top:24px;user-select:none;touch-action:none}.key{border-radius:0 0 7px 7px;padding:0;position:relative;display:flex;align-items:flex-end;justify-content:center;padding-bottom:15px;touch-action:none}.white{width:12.5%;height:100%;background:linear-gradient(#f5e9ce,#ddc8a1);border:1px solid #8c7455;color:#665039}.black{position:absolute;top:0;height:62%;width:7.5%;background:linear-gradient(#3c2c21,#201710);border:1px solid #150f0b;color:#d0b997;z-index:2;box-shadow:0 5px 5px #0006}.key.active.white{background:#d8ac68}.key.active.black{background:#976338;color:#fff0d6}.keyboard,.keyboard *{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}.key span{font-size:11px;pointer-events:none}.bottom{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:21px}.actions{display:flex;gap:8px}footer{margin-top:20px;line-height:1.8;font-size:12px;color:#b8a78f}.hint{margin-top:16px;color:#e7d1b0;font-size:12px;line-height:1.7}@media(max-width:650px){body{padding:24px 12px}.panel{padding:18px}.controls{grid-template-columns:repeat(2,1fr);gap:20px}.keyboard{height:155px}header{align-items:flex-start;flex-direction:column;gap:10px}.bottom{align-items:flex-start;flex-direction:column}.status{font-size:10px}.brand{letter-spacing:2px}}
 .guitar-loading[hidden]{display:none}.guitar-loading{position:fixed;inset:0;z-index:10000;display:grid;place-items:center;background:#18120d88;backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);touch-action:none;overscroll-behavior:contain}.loading-card{width:min(320px,85vw);padding:28px;text-align:center;border:1px solid #c49b6b;background:#36271ff2;border-radius:18px;box-shadow:0 15px 60px #0006}.loading-spinner{width:38px;height:38px;margin:0 auto 18px;border:3px solid #bfa17b55;border-top-color:#f0d59e;border-radius:50%;animation:loading-spin .85s linear infinite}.loading-card progress{width:100%;accent-color:#e4c18a}.loading-card p{margin:12px 0;color:#e7d1b0}@keyframes loading-spin{to{transform:rotate(360deg)}}@media(prefers-reduced-motion:reduce){.loading-spinner{animation:none}}
@@ -89,9 +89,9 @@ if(document.documentElement.classList.contains('pmg-v2-boot')){
    <div id="song-playback-settings" class="seq-toolbar" aria-label="再生設定">
     <div class="seq-tools"><span>曲の再生設定</span><label><input id="seq-strum" type="checkbox">ストラム</label><label>音の間隔 <input id="seq-strum-ms" type="range" min="5" max="100" step="5" value="20"><output id="seq-strum-out">20 ms</output></label><label>方向 <select id="seq-strum-direction"><option value="up">低音 → 高音</option><option value="down">高音 → 低音</option></select></label></div>
     <small>同時に置いた音を順番に鳴らします。短い音や次の音が近いときは間隔を自動調整します。</small>
-    <div class="seq-tools"><label><input id="song-rit-ending" type="checkbox">曲末をリタルダンド</label><label>小節ごとのリタルダンド <input id="song-rit-every" type="number" min="0" max="4096" step="1" value="0" aria-describedby="song-rit-help">小節ごと</label><label>指定小節 <input id="song-rit-bars" type="text" placeholder="例：4, 8, 12" aria-describedby="song-rit-help" style="width:140px;min-width:100px"></label></div>
+    <div id="legacy-rit-settings"><div class="seq-tools"><label><input id="song-rit-ending" type="checkbox">曲末をリタルダンド</label><label>小節ごとのリタルダンド <input id="song-rit-every" type="number" min="0" max="4096" step="1" value="0" aria-describedby="song-rit-help">小節ごと</label><label>指定小節 <input id="song-rit-bars" type="text" placeholder="例：4, 8, 12" aria-describedby="song-rit-help" style="width:140px;min-width:100px"></label></div>
     <div class="seq-tools"><label>ゆっくりにする範囲 <select id="song-rit-beats"><option value="1">最後の1拍</option><option value="2" selected>最後の2拍</option><option value="4">最後の4拍</option></select></label><label>終点のテンポ <input id="song-rit-percent" type="range" min="25" max="95" step="5" value="65"><output id="song-rit-out">65%</output></label></div>
-    <small id="song-rit-help">小節ごとは0でオフ。指定小節はカンマ区切りで追加できます。各小節の終わりで徐々に遅くなり、次の小節で元のテンポに戻ります。「拍」は4分音符単位です。</small>
+    <small id="song-rit-help">小節ごとは0でオフ。指定小節はカンマ区切りで追加できます。各小節の終わりで徐々に遅くなり、次の小節で元のテンポに戻ります。「拍」は4分音符単位です。</small></div>
    </div>
 <div class="bottom"><div class="actions"><button id="demo">▶ 曲を再生</button><button id="stop">すべて止める</button></div><small>和音OK · 最大12音</small></div>
 <div class="hint">白鍵 A S D F G H J K ／ 黒鍵 W E T Y U<br>Z / X でオクターブ上下 · 対応音域 A0〜C8（88鍵）<br>鍵盤を押して演奏できます。弦楽器系は押し続けても自然に減衰します。スマホは画面の鍵盤で。</div>
@@ -127,10 +127,11 @@ if(document.documentElement.classList.contains('pmg-v2-boot')){
 <script src="bwv1068-air.js?v=1"></script>
 <script src="bwv1068-bejgrowicz.js?v=1"></script>
 <script src="catalog-quality.js?v=1"></script>
-<script src="sequencer-model.js?v=stopped-contact-1"></script>
-<script src="sequencer.js?v=stopped-contact-1"></script>
-<script src="playback-timing.js?v=1"></script>
-<script src="song-playback-settings.js?v=rit-1"></script>
+<script src="sequencer-model.js?v=tempo-2"></script>
+<script src="tempo-editor.js?v=tempo-2"></script>
+<script src="sequencer.js?v=tempo-2"></script>
+<script src="playback-timing.js?v=tempo-2"></script>
+<script src="song-playback-settings.js?v=tempo-2"></script>
 <script src="string-lab/physics.js?v=39"></script>
 <script src="physical-string-model.js?v=1"></script>
 <script src="physical-string-instrument.js?v=1"></script>
@@ -172,7 +173,7 @@ for(const [label,collection] of [['バッハ / J. S. Bach · BWV 1012 · 無伴�
  $('song').append(group);
 }
 $('song').value='gavotte';
-function updateSong(){const {score,edition}=songs[$('song').value];const seconds=Math.round(score.events.reduce((end,[at,midi,duration])=>Math.max(end,at+duration),score.endBeat||0)*60/score.bpm);$('song-info').textContent=edition+'／約'+seconds+'秒／♩ = '+score.bpm+'（試聴曲はオクターブ移動の対象外）'}
+function updateSong(){const {score,edition}=songs[$('song').value];const endBeat=score.events.reduce((end,[at,midi,duration])=>Math.max(end,at+duration),Math.max(score.endBeat||0,...(score.tempoChanges||[]).map(r=>r.endBeat)));const seconds=Math.round(PlaybackTiming.create({bpm:score.bpm,endBeat,tempoChanges:score.tempoChanges??[]}).duration);$('song-info').textContent=edition+'／約'+seconds+'秒'+(score.tempoChanges===undefined?'（共通リタルダンドを除く）':'')+'／基本 ♩ = '+score.bpm+'（試聴曲はオクターブ移動の対象外）'}
 $('song').onchange=()=>{stop();updateSong();scoreEditor?.songChanged();warmGuitar()};
 updateSong();
 const presets={
@@ -475,15 +476,15 @@ window.addEventListener('keyup',e=>releaseToken('k'+e.key.toLowerCase()));window
 async function startSong({fromBeat=0,loop=false}={}){
   stop();
   try {
-    const run=playbackRun,options=SongPlaybackSettings.get();
+    const run=playbackRun,options=SongPlaybackSettings.get({ignoreRit:scoreEditor.currentDocument().tempoChanges!==undefined});
     await enable([]);
     if(run!==playbackRun)return;
     const {score,label}=songs[$('song').value];
-    const endBeat=score.events.reduce((end,[at,midi,duration])=>Math.max(end,at+duration),score.endBeat||0);
+    const endBeat=score.events.reduce((end,[at,midi,duration])=>Math.max(end,at+duration),Math.max(score.endBeat||0,...(score.tempoChanges||[]).map(r=>r.endBeat)));
     if(!endBeat){$('status').textContent='音符を追加してから再生してください';return}
     if(fromBeat>=endBeat)fromBeat=0;
     const meter=scoreEditor.currentDocument().meter,barBeats=meter[0]*4/meter[1];
-    const timing=PlaybackTiming.create({bpm:score.bpm,endBeat,barBeats,...options.rit});
+    const timing=PlaybackTiming.create({bpm:score.bpm,endBeat,barBeats,...options.rit,tempoChanges:score.tempoChanges});
     const fromTime=timing.timeAt(fromBeat);
     const timedEvents=score.events.map(([at,midi,duration,velocity=1,stringNumber])=>[timing.timeAt(at),midi,timing.timeAt(at+duration)-timing.timeAt(at),velocity,stringNumber]);
     const events=SequencerModel.playbackEvents(timedEvents,60,options).filter(([at,midi,duration])=>at+duration>fromTime).map(([at,midi,duration,velocity,stringNumber])=>[Math.max(at,fromTime)-fromTime,midi,at+duration-Math.max(at,fromTime),velocity,stringNumber]);
@@ -492,7 +493,7 @@ async function startSong({fromBeat=0,loop=false}={}){
     const length=timing.duration-fromTime;
     let start=ctx.currentTime+.06,index=0,cycle=0;
     demoEnds=loop?Infinity:start+length;
-    scoreEditor?.transportStart({fromBeat,endBeat,bpm:score.bpm,startTime:start,loop,clock:()=>ctx.currentTime,beatAt:elapsed=>timing.beatAt(fromTime+(loop?elapsed%length:Math.min(elapsed,length)))});
+    scoreEditor?.transportStart({fromBeat,endBeat,bpm:score.bpm,startTime:start,loop,clock:()=>ctx.currentTime,bpmAt:timing.bpmAt,beatAt:elapsed=>timing.beatAt(fromTime+(loop?elapsed%length:Math.min(elapsed,length)))});
     function tick(){
       if(!demoEnds||run!==playbackRun)return;
       while(index<events.length&&start+events[index][0]<ctx.currentTime+.12){
@@ -538,5 +539,5 @@ scoreEditor=ScoreEditor.mount({songs,updateSong,stop,isGuitarInstrument:()=>isGu
 if(location.hash==='#piano-roll')scoreEditor.open();
 updateOctave();
 function draw(){const canvas=$('scope'),g=canvas.getContext('2d'),data=new Uint8Array(analyser.fftSize);let lastFrame=0;function frame(now=performance.now()){requestAnimationFrame(frame);if(document.hidden||$('performance-screen').hidden||now-lastFrame<30)return;lastFrame=now;const width=Math.round(canvas.clientWidth*devicePixelRatio),height=Math.round(canvas.clientHeight*devicePixelRatio);if(canvas.width!==width||canvas.height!==height){canvas.width=width;canvas.height=height}analyser.getByteTimeDomainData(data);g.clearRect(0,0,width,height);g.strokeStyle='#ffffff09';g.lineWidth=1;for(let x=0;x<width;x+=width/16){g.beginPath();g.moveTo(x,0);g.lineTo(x,height);g.stroke()}g.strokeStyle='#e6bf7c';g.lineWidth=1.5*devicePixelRatio;g.beginPath();for(let i=0;i<data.length;i++){const x=i/(data.length-1)*width,y=data[i]/255*height;i?g.lineTo(x,y):g.moveTo(x,y)}g.stroke()}frame()}
-</script><script type="module" src="app-shell.js?v=nut-contact-1"></script>
+</script><script type="module" src="app-shell.js?v=tempo-2-nut-contact-1"></script>
 </body></html>

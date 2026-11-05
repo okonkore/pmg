@@ -1,6 +1,6 @@
 'use strict';
 const ScoreEditor=(()=>{
- const M=SequencerModel,TOP=108,GUTTER=62,RULER=30;
+ const M=SequencerModel,TOP=108,GUTTER=62,RULER=74;
  const names=['C','C♯','D','D♯','E','F','F♯','G','G♯','A','A♯','B'];
  const noteName=p=>names[p%12]+(Math.floor(p/12)-1);
  const clamp=(v,min,max)=>Math.max(min,Math.min(max,v));
@@ -19,11 +19,11 @@ const ScoreEditor=(()=>{
    <p id="seq-notice" class="seq-notice seq-menu-item"></p>
    <div id="seq-layers" class="seq-tools"><label>弦 <select id="seq-layer" aria-label="弦レイヤー。全体ではギターの追加音を自動配置、未指定では配置しません" title="全体：ギターの追加音だけ自動配置。未指定：配置しない"><option value="all">全体</option><option value="unassigned">未指定</option>${[1,2,3,4,5,6].map(i=>`<option value="${i}">${i}弦</option>`).join('')}</select></label><button id="seq-auto-strings">弦を自動配置</button><output id="seq-layer-status" role="status"></output></div>
    <div class="seq-toolbar">
-    <div class="seq-tools"><button id="seq-play" aria-label="カーソルから再生">▶ 再生</button><button id="seq-stop">■ 停止</button><button id="seq-rewind" aria-label="先頭へ戻る">|◀</button><output id="seq-position" class="seq-position">1.1.000</output><label><input id="seq-loop" type="checkbox">ループ</label></div>
+    <div class="seq-tools"><button id="seq-play" aria-label="カーソルから再生">▶ 再生</button><button id="seq-stop">■ 停止</button><button id="seq-rewind" aria-label="先頭へ戻る">|◀</button><output id="seq-current-bpm" aria-label="現在のBPM"></output><output id="seq-position" class="seq-position">1.1.000</output><label><input id="seq-loop" type="checkbox">ループ</label></div>
     <div class="seq-tools seq-menu-item"><label>BPM <input id="seq-bpm" type="number" min="20" max="300" step="1"></label><label>拍子 <select id="seq-meter"><option value="4/4">4/4</option><option value="2/2">2/2</option><option value="3/4">3/4</option><option value="3/2">3/2</option><option value="6/8">6/8</option><option value="12/8">12/8</option></select></label></div>
    </div>
    <div class="seq-toolbar seq-menu-item">
-    <div class="seq-tools"><button id="seq-select" aria-pressed="true" title="選択・移動 (V)">↖ 選択</button><button id="seq-draw" aria-pressed="false" title="音符を描く (P)">✎ 鉛筆</button><button id="seq-pan" aria-pressed="false" title="画面を移動 (H)">✋ 移動</button><label>グリッド <select id="seq-snap"><option value="0.125">1/32</option><option value="0.25" selected>1/16</option><option value="0.5">1/8</option><option value="1">1/4</option><option value="0">オフ</option></select></label><label>音符長 <select id="seq-length"><option value="0.125">1/32</option><option value="0.25">1/16</option><option value="0.5">1/8</option><option value="1" selected>1/4</option><option value="2">1/2</option><option value="4">全音符</option></select></label></div>
+    <div class="seq-tools"><button id="seq-select" aria-pressed="true" title="選択・移動 (V)">↖ 選択</button><button id="seq-draw" aria-pressed="false" title="音符を描く (P)">✎ 鉛筆</button><button id="seq-tempo">テンポ変化</button><button id="seq-pan" aria-pressed="false" title="画面を移動 (H)">✋ 移動</button><label>グリッド <select id="seq-snap"><option value="0.125">1/32</option><option value="0.25" selected>1/16</option><option value="0.5">1/8</option><option value="1">1/4</option><option value="0">オフ</option></select></label><label>音符長 <select id="seq-length"><option value="0.125">1/32</option><option value="0.25">1/16</option><option value="0.5">1/8</option><option value="1" selected>1/4</option><option value="2">1/2</option><option value="4">全音符</option></select></label></div>
     <div class="seq-tools"><button id="seq-undo" aria-label="元に戻す" title="元に戻す (Ctrl / ⌘ Z)">↶</button><button id="seq-redo" aria-label="やり直す" title="やり直す (Ctrl / ⌘ Shift Z)">↷</button><button id="seq-quantize">クオンタイズ</button><button id="seq-delete">音符を削除</button></div>
     <div class="seq-tools"><label>ズーム <input id="seq-zoom" type="range" min="1" max="160" value="56"></label><button id="seq-fit">全体</button><button id="seq-save">保存</button><button id="seq-export">JSON書出</button><button id="seq-import">読込</button><button id="seq-remove">曲を削除</button><input id="seq-file" type="file" accept=".json,application/json" hidden></div>
    </div>
@@ -38,7 +38,8 @@ const ScoreEditor=(()=>{
   const snap=()=>+$('seq-snap').value;
   const quantize=beat=>snap()?Math.round(beat/snap())*snap():beat;
   const minLength=()=>snap()||M.MIN_LENGTH;
-  const endBeat=()=>Math.max(barBeats()*4,doc().endBeat||0,...doc().notes.map(n=>n.beat+n.duration));
+  const endBeat=()=>Math.max(barBeats()*4,doc().endBeat||0,...(doc().tempoChanges||[]).map(r=>r.endBeat),...doc().notes.map(n=>n.beat+n.duration));
+  const tempoEditor=TempoEditor.mount({doc,readonly,edit,stop:()=>api.stop(),cursor:()=>cursor});
   function message(text,error=false){$('seq-save-state').textContent=text;$('seq-save-state').dataset.error=error}
   function updateLibraryMenu(){
    let group=$('my-song-group');
@@ -53,7 +54,7 @@ const ScoreEditor=(()=>{
    message('保存中…');clearTimeout(saveTimer);save();render();
   }
   function edit(change){if(readonly())return;try{if(history.edit(change))changed()}catch(error){message(error.message,true);render()}}
-  function setPosition(beat){cursor=clamp(beat,0,M.MAX_BEATS);const bar=barBeats(),unit=4/doc().meter[1];$('seq-position').textContent=`${Math.floor(cursor/bar)+1}.${Math.floor((cursor%bar)/unit)+1}.${String(Math.round((cursor%unit)/unit*960)).padStart(3,'0')}`;$('seq-playhead').style.left=GUTTER+cursor*px+'px';const marker=$('seq-ruler-cursor');if(marker)marker.style.left=cursor*px+'px'}
+  function setPosition(beat){cursor=clamp(beat,0,M.MAX_BEATS);const bar=barBeats(),unit=4/doc().meter[1];$('seq-position').textContent=`${Math.floor(cursor/bar)+1}.${Math.floor((cursor%bar)/unit)+1}.${String(Math.round((cursor%unit)/unit*960)).padStart(3,'0')}`;$('seq-playhead').style.left=GUTTER+cursor*px+'px';const marker=$('seq-ruler-cursor');if(marker)marker.style.left=cursor*px+'px';$('seq-current-bpm').textContent=(transport?.bpmAt?transport.bpmAt(cursor):PlaybackTiming.create({bpm:doc().bpm,endBeat:endBeat(),tempoChanges:doc().tempoChanges??[]}).bpmAt(cursor)).toFixed(1)+' BPM'}
   function sticky(){ $('seq-piano').style.transform=`translateX(${scroll.scrollLeft}px)`;ruler.style.transform=`translateY(${scroll.scrollTop}px)`;$('seq-corner').style.transform=`translate(${scroll.scrollLeft}px,${scroll.scrollTop}px)` }
   function renderNotes(){
    const frag=document.createDocumentFragment(),conflicts=M.stringConflicts(doc().notes);
@@ -123,7 +124,7 @@ const ScoreEditor=(()=>{
    const stride=Math.max(1,Math.ceil(45/(bar*px)));
    for(let at=0;at<beats;at+=bar*stride){const label=document.createElement('span');label.className='seq-bar';label.textContent=String(Math.round(at/bar)+1);label.style.left=at*px+'px';ruler.append(label)}
    const marker=document.createElement('span');marker.id='seq-ruler-cursor';marker.className='seq-ruler-cursor';ruler.append(marker);
-   renderNotes();inspector();setPosition(cursor);sticky();
+   tempoEditor.render(ruler,px);renderNotes();inspector();setPosition(cursor);sticky();
   }
   function load(id,reset=true){
    if(currentId&&history&&!readonly())save();api.stop();clearTimeout(saveTimer);draft=null;currentId=id;
@@ -209,9 +210,9 @@ const ScoreEditor=(()=>{
   grid.addEventListener('dblclick',e=>{if(e.target.closest('.seq-duration-grip'))return;if(performance.now()<suppressClicksUntil||performance.now()-lastTouch<700||readonly()||tool!=='select')return;const note=e.target.closest('[data-note]');if(note){selection=new Set([note.dataset.note]);deleteSelection();return}addNote(point(e))});
   function touchGeometry(){const points=[...touches.values()].slice(0,2);return {x:(points[0].x+points[1].x)/2,y:(points[0].y+points[1].y)/2,width:Math.max(1,Math.abs(points[0].x-points[1].x)),height:Math.max(1,Math.abs(points[0].y-points[1].y)),distance:Math.max(1,Math.hypot(points[0].x-points[1].x,points[0].y-points[1].y))}}
   scroll.addEventListener('pointerdown',e=>{
-   if(e.pointerType!=='touch')return;lastTouch=performance.now();const axis=e.target.closest('#seq-ruler')?'time':e.target.closest('#seq-piano')?'pitch':e.target.closest('#seq-grid')?'both':null;touches.set(e.pointerId,{x:e.clientX,y:e.clientY,axis});
+   if(e.pointerType!=='touch')return;lastTouch=performance.now();const axis=e.target.closest('#seq-tempo-lane')?null:e.target.closest('#seq-ruler')?'time':e.target.closest('#seq-piano')?'pitch':e.target.closest('#seq-grid')?'both':null;touches.set(e.pointerId,{x:e.clientX,y:e.clientY,axis});
    if(touches.size<2&&!pinchTail)return;
-   e.preventDefault();e.stopPropagation();tapStart=lastTap=null;rulerTap=null;finishGesture(true);pinchTail=true;
+   e.preventDefault();e.stopPropagation();tapStart=lastTap=null;rulerTap=null;tempoEditor.cancel();finishGesture(true);pinchTail=true;
    if(touches.size===2){const points=[...touches.values()],axis=points[0].axis&&points[0].axis===points[1].axis?points[0].axis:null;const c=touchGeometry(),r=scroll.getBoundingClientRect();pinch=axis?{...c,axis,distance:axis==='both'?c.distance:axis==='time'?c.width:c.height,px,rowHeight,beat:(scroll.scrollLeft+c.x-r.left-GUTTER)/px,row:(scroll.scrollTop+c.y-r.top-RULER)/rowHeight}:null;for(const id of touches.keys())scroll.setPointerCapture(id)}
   },{capture:true});
   function paintPinch(){

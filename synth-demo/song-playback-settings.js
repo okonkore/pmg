@@ -14,5 +14,5 @@ const SongPlaybackSettings=(()=>{
   }
   for(const id of ['seq-strum','seq-strum-ms','seq-strum-direction','song-rit-ending','song-rit-every','song-rit-bars','song-rit-beats','song-rit-percent'])$(id).addEventListener('input',()=>updatePlaybackSettings(true));
   updatePlaybackSettings();
-  return {get(){for(const id of ['song-rit-every','song-rit-bars'])if(!$(id).reportValidity())throw Error('リタルダンドの小節指定を確認してください');return playbackSettings()}};
+  return {get({ignoreRit=false}={}){if(!ignoreRit)for(const id of ['song-rit-every','song-rit-bars'])if(!$(id).reportValidity())throw Error('リタルダンドの小節指定を確認してください');return playbackSettings()}};
 })();

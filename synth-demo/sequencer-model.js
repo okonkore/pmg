@@ -1,12 +1,27 @@
 'use strict';
 // Song data and edit history are independent of the DOM and audio engine.
 const SequencerModel=(()=>{
- const MAX_BEATS=4096,MAX_NOTES=20000,MIN_LENGTH=1/128,VERSION=1;
+ const MAX_BEATS=4096,MAX_NOTES=20000,MIN_LENGTH=1/128,VERSION=2;
  const GUITAR_OPENS=[64,59,55,50,45,40],MAX_FRET=20;
  function guitarPositions(pitch,source){return GUITAR_OPENS.map((open,i)=>({stringNumber:i+1,fret:pitch-open})).filter(p=>p.fret>=0&&p.fret<=MAX_FRET&&(!source?.requiredTuning||source.requiredTuning.pitchesLowToHigh?.[6-p.stringNumber]===GUITAR_OPENS[p.stringNumber-1]));}
  const clone=value=>JSON.parse(JSON.stringify(value));
  const uid=prefix=>prefix+'-'+(globalThis.crypto?.randomUUID?.()||Date.now().toString(36)+'-'+Math.random().toString(36).slice(2));
  function freeze(value){if(value&&typeof value==='object'){Object.values(value).forEach(freeze);Object.freeze(value)}return value}
+ // Missing tempoChanges means legacy playback preferences; [] explicitly means constant tempo.
+ function normalizeTempoChanges(changes){
+  if(changes===undefined)return undefined;
+  if(!Array.isArray(changes)||changes.length>1024)throw Error('テンポ範囲は1024個以内で指定してください');
+  const ids=new Set();
+  const result=changes.map(r=>{
+   if(!r||!Number.isFinite(r.startBeat)||!Number.isFinite(r.endBeat)||r.startBeat<0||r.endBeat>MAX_BEATS||(r.curve==='period'?r.endBeat<=r.startBeat:r.endBeat-r.startBeat<.25))throw Error('テンポ範囲は0〜4096拍、長さは0.25拍以上（旧方式は正の長さ）で指定してください');
+   if(!Number.isFinite(r.targetBpm)||r.targetBpm<5||r.targetBpm>600)throw Error('到達BPMは5〜600で指定してください');
+   if(!['hold','base'].includes(r.after)||!['bpm','period'].includes(r.curve))throw Error('テンポ変化の方式が正しくありません');
+   const id=typeof r.id==='string'&&r.id.length<=100&&r.id&&!ids.has(r.id)?r.id:uid('tempo');ids.add(id);
+   return {id,startBeat:r.startBeat,endBeat:r.endBeat,targetBpm:r.targetBpm,after:r.after,curve:r.curve};
+  }).sort((a,b)=>a.startBeat-b.startBeat);
+  for(let i=1;i<result.length;i++)if(result[i].startBeat<result[i-1].endBeat)throw Error('テンポ範囲は重ねられません。隣接する範囲は設定できます');
+  return result;
+ }
  function normalize(input){
   if(!input||typeof input!=='object'||!Array.isArray(input.notes)||input.notes.length>MAX_NOTES)throw new Error('曲データの形式が正しくありません');
   const title=String(input.title||'無題').trim().slice(0,100)||'無題',bpm=Number(input.bpm),meter=input.meter||[4,4];
@@ -31,8 +46,8 @@ const SequencerModel=(()=>{
   }
   if(input.endBeat!==undefined&&(!Number.isFinite(input.endBeat)||input.endBeat<0||input.endBeat>MAX_BEATS))throw new Error('曲の終端が対応範囲外です');
   // Preserve the explicit score marker; playback/editor extent also includes current note ends.
-  const endBeat=input.endBeat;
-  return {id:String(input.id||''),title,bpm,meter:[...meter],...(endBeat===undefined?{}:{endBeat}),notes,source};
+  const endBeat=input.endBeat,tempoChanges=normalizeTempoChanges(input.tempoChanges);
+  return {id:String(input.id||''),title,bpm,meter:[...meter],...(endBeat===undefined?{}:{endBeat}),notes,source,...(tempoChanges===undefined?{}:{tempoChanges})};
  }
  // Explicit assignment only: original songs and MIDI stay unassigned until requested.
  function assignStrings(document,{noteIds}={}){
@@ -69,9 +84,9 @@ const SequencerModel=(()=>{
  function fromSong(key,song){
   const is1012=key==='gavotte'||key==='gavotte2'||key.endsWith('1012');
   const meter=song.score.meter|| (key.startsWith('prelude')&&is1012?[12,8]:key.startsWith('gigue')?[6,8]:key.startsWith('sarabande')?(is1012?[3,2]:[3,4]):key.startsWith('courante')?[3,4]:key.startsWith('gavotte')?[2,2]:[4,4]);
-  return normalize({id:key,title:song.score.title,bpm:song.score.bpm,meter,endBeat:song.score.endBeat,notes:song.score.events.map(([beat,pitch,duration,velocity,stringNumber],i)=>({id:'original-'+i,beat,pitch,duration,velocity:velocity??1,...(stringNumber===undefined?{}:{stringNumber})})),source:song.source?{...song.source,key,title:song.score.title}:{key,title:song.score.title,credit:is1012?'J. S. Bach / Hajo Dezelski / Mutopia':'J. S. Bach / Andreas Scherer / Mutopia',license:is1012?'CC BY-SA 3.0':'Public Domain',url:'https://www.mutopiaproject.org/cgibin/piece-info.cgi?id='+(is1012?({prelude1012:1494,allemande1012:1503,courante1012:1504,sarabande1012:1505,gavotte:1506,gavotte2:1507,gigue1012:1508}[key]||1506):517)}});
+  return normalize({id:key,title:song.score.title,bpm:song.score.bpm,meter,endBeat:song.score.endBeat,tempoChanges:song.score.tempoChanges,notes:song.score.events.map(([beat,pitch,duration,velocity,stringNumber],i)=>({id:'original-'+i,beat,pitch,duration,velocity:velocity??1,...(stringNumber===undefined?{}:{stringNumber})})),source:song.source?{...song.source,key,title:song.score.title}:{key,title:song.score.title,credit:is1012?'J. S. Bach / Hajo Dezelski / Mutopia':'J. S. Bach / Andreas Scherer / Mutopia',license:is1012?'CC BY-SA 3.0':'Public Domain',url:'https://www.mutopiaproject.org/cgibin/piece-info.cgi?id='+(is1012?({prelude1012:1494,allemande1012:1503,courante1012:1504,sarabande1012:1505,gavotte:1506,gavotte2:1507,gigue1012:1508}[key]||1506):517)}});
  }
- function toSong(document){const d=normalize(document);return {label:d.title,option:d.title,edition:'マイソング',source:d.source,score:{title:d.title,bpm:d.bpm,meter:d.meter,endBeat:d.endBeat,events:d.notes.map(n=>[n.beat,n.pitch,n.duration,n.velocity,...(n.stringNumber===undefined?[]:[n.stringNumber])])}}}
+ function toSong(document){const d=normalize(document);return {label:d.title,option:d.title,edition:'マイソング',source:d.source,score:{title:d.title,bpm:d.bpm,meter:d.meter,endBeat:d.endBeat,...(d.tempoChanges===undefined?{}:{tempoChanges:d.tempoChanges}),events:d.notes.map(n=>[n.beat,n.pitch,n.duration,n.velocity,...(n.stringNumber===undefined?[]:[n.stringNumber])])}}}
  // Offset chord attacks only; keep their original ends and the loop length.
  function playbackEvents(events,bpm,{enabled=false,intervalMs=20,direction='up'}={}){
   const sorted=events.map(e=>[...e]).sort((a,b)=>a[0]-b[0]);
@@ -100,7 +115,7 @@ const SequencerModel=(()=>{
    this.songs=songs;this.storage=storage;this.key='pmg.songs.v1';this.builtins=new Set(Object.keys(songs));this.users=new Map();this.error='';this.storageSnapshot=null;
    for(const key of this.builtins)Object.defineProperty(songs,key,{value:freeze(songs[key]),writable:false,configurable:false,enumerable:true});
    try{
-    const raw=storage?.getItem(this.key);this.storageSnapshot=raw??null;if(raw){const data=JSON.parse(raw);if(data.version!==VERSION||!Array.isArray(data.songs))throw new Error('保存データの形式が正しくありません');for(const item of data.songs){const doc=normalize(item);if(!doc.id.startsWith('user-')||this.builtins.has(doc.id))throw new Error('保存された曲IDが正しくありません');this.users.set(doc.id,doc);songs[doc.id]=toSong(doc)}}
+    const raw=storage?.getItem(this.key);this.storageSnapshot=raw??null;if(raw){const data=JSON.parse(raw);if(![1,VERSION].includes(data.version)||!Array.isArray(data.songs))throw new Error('保存データの形式が正しくありません');for(const item of data.songs){const doc=normalize(item);if(!doc.id.startsWith('user-')||this.builtins.has(doc.id))throw new Error('保存された曲IDが正しくありません');this.users.set(doc.id,doc);songs[doc.id]=toSong(doc)}}
    }catch(error){this.error='保存データを読み込めませんでした。既存データは上書きしません。';this.loadFailed=true}
   }
   isBuiltin(id){return this.builtins.has(id)}
@@ -109,7 +124,7 @@ const SequencerModel=(()=>{
   add(document){const doc=normalize({...clone(document),id:uid('user')});doc.title=this.uniqueTitle(doc.title);this.users.set(doc.id,doc);this.songs[doc.id]=toSong(doc);this.persist();return clone(doc)}
   addSaved(document){const doc=this.add(document);if(this.error){this.users.delete(doc.id);delete this.songs[doc.id];throw new Error(this.error)}return doc}
   duplicate(id){const doc=this.get(id);doc.title=doc.title+' のコピー';doc.notes.forEach(n=>n.id=uid('note'));return this.add(doc)}
-  create(){return this.add({title:'新しい曲',bpm:108,meter:[4,4],notes:[]})}
+  create(){return this.add({title:'新しい曲',bpm:108,meter:[4,4],notes:[],tempoChanges:[]})}
   save(document){const doc=normalize(document);if(this.isBuiltin(doc.id)||!this.users.has(doc.id))throw new Error('内蔵曲は上書きできません');this.users.set(doc.id,clone(doc));this.songs[doc.id]=toSong(doc);return this.persist()}
   remove(id){if(this.isBuiltin(id))throw new Error('内蔵曲は削除できません');this.users.delete(id);delete this.songs[id];return this.persist()}
   persist(){
@@ -117,8 +132,8 @@ const SequencerModel=(()=>{
    try{if(!this.storage)throw new Error('Storage unavailable');if((this.storage.getItem(this.key)??null)!==this.storageSnapshot){this.error='別の画面で曲が更新されました。未保存の編集をJSONで書き出してから、再読み込みしてください。';return false;}const raw=JSON.stringify({version:VERSION,songs:[...this.users.values()]});this.storage.setItem(this.key,raw);this.storageSnapshot=raw;this.error='';return true}catch(error){this.error='ブラウザに保存できません。JSONで書き出して曲を保管してください。';return false}
   }
   export(document){return JSON.stringify({format:'pmg-song',version:VERSION,song:normalize(document)},null,2)}
-  import(text){const data=JSON.parse(text);if(data.format!=='pmg-song'||data.version!==VERSION)throw new Error('PMGの曲ファイルを選んでください');return this.add(data.song)}
+  import(text){const data=JSON.parse(text);if(data.format!=='pmg-song'||![1,VERSION].includes(data.version))throw new Error('PMGの曲ファイルを選んでください');return this.add(data.song)}
  }
- return {assignStrings,stringConflicts,guitarPositions,MAX_FRET,MAX_BEATS,MAX_NOTES,MIN_LENGTH,clone,uid,normalize,fromSong,toSong,playbackEvents,History,Library};
+ return {normalizeTempoChanges,assignStrings,stringConflicts,guitarPositions,MAX_FRET,MAX_BEATS,MAX_NOTES,MIN_LENGTH,clone,uid,normalize,fromSong,toSong,playbackEvents,History,Library};
 })();
 if(typeof module!=='undefined')module.exports=SequencerModel;

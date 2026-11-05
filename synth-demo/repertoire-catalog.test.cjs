@@ -1,7 +1,7 @@
 'use strict';
 // Catalog-wide checks supplement individual source/score tests.
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),vm=require('node:vm');
-const M=require('./sequencer-model.js'),scope=vm.createContext({});
+const M=require('./sequencer-model.js'),scope=vm.createContext({PlaybackTiming:require('./playback-timing.js')});
 const catalogFiles=['gavotte','prelude','bach-solos','bach-1012','sor-op60','sor-op6','repertoire-batch1','repertoire-batch2','repertoire-batch3','repertoire-batch4','catalog-quality','repertoire-batch5','repertoire-batch6','repertoire-batch7','bwv1006a-complete','bwv1009-complete','bwv1004-chaconne','bwv1004-complete','bwv1068-air','bwv1068-bejgrowicz'];
 for(const name of catalogFiles)
  vm.runInContext(fs.readFileSync(path.join(__dirname,name+'.js'),'utf8'),scope);
