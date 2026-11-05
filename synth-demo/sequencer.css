@@ -85,3 +85,10 @@
 .tempo-dialog input{width:120px}.tempo-dialog select{max-width:65%}.tempo-dialog button{margin:4px 4px 4px 0}
 .tempo-dialog :disabled{opacity:.45}.tempo-dialog details{margin:18px 0}.tempo-dialog summary{min-height:44px;cursor:pointer}
 #tempo-error{color:#ffd0a4}#tempo-list{display:flex;flex-direction:column;gap:4px}#tempo-list button{text-align:left}#seq-current-bpm{font-size:12px;min-width:70px}
+
+/* Cursor paints above notes and the sticky tempo lane without intercepting input. */
+.seq-playhead{top:0;z-index:8;pointer-events:none}
+.seq-ruler-cursor{z-index:2}
+.seq-ruler-cursor::before{content:"";position:absolute;left:14px;top:0;height:74px;width:1px;background:#f3dd9f;pointer-events:none}
+
+.seq-tempo-lane{background-image:repeating-linear-gradient(to right,#bcd5d433 0px,#bcd5d433 1px,transparent 1px,transparent var(--tempo-beat-px))}

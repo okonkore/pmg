@@ -5,10 +5,11 @@ const TempoEditor=(()=>{
   const M=SequencerModel,$=id=>document.getElementById(id);
   const dialog=document.createElement('dialog');dialog.id='seq-tempo-dialog';dialog.className='tempo-dialog';dialog.setAttribute('aria-labelledby','tempo-title');
   dialog.innerHTML=`<h2 id="tempo-title">曲のテンポ変化</h2><button id="tempo-close" type="button">閉じる</button>
-   <p>小節バーの下の「テンポ」行をドラッグして範囲を指定。範囲をタップすると編集できます。小さな範囲は下の一覧から選べます。</p>
+   <p>小節バーの下の「テンポ」行をドラッグして四分音符1拍単位で範囲を指定。範囲をタップすると編集できます。小さな範囲は下の一覧から選べます。</p>
    <p id="tempo-status"></p><div id="tempo-list"></div><button id="tempo-new" type="button">＋ 範囲を追加</button>
-   <form id="tempo-form"><label>開始の小節位置 <input id="tempo-start" type="number" min="1" step="any" required></label><label>終了の小節位置 <input id="tempo-end" type="number" min="1" step="any" required></label>
-   <small>1＝1小節の先頭、2＝2小節の先頭。1.5は1小節の中央。長さは4分音符の0.25拍以上。</small>
+   <form id="tempo-form"><label>開始位置（通算の拍） <input id="tempo-start" type="number" min="1" step="any" required></label><label>終了位置（通算の拍） <input id="tempo-end" type="number" min="1" step="any" required></label>
+   <small>1＝曲の先頭、2＝四分音符1拍後。終了位置は範囲に含みません。拍子にかかわらず四分音符を1拍と数えます。小数も入力できます。</small>
+   <label>範囲の長さ（拍）<input id="tempo-length" type="number" min="0" max="4096" step="any" required></label>
    <label>到達BPM <input id="tempo-target" type="number" min="5" max="600" step="any" required></label>
    <label>変化のしかた <select id="tempo-curve"><option value="bpm">BPMをなめらかに変える</option><option value="period">拍の時間をなめらかに変える（旧方式）</option></select></label>
    <label>範囲の後 <select id="tempo-after"><option value="hold">到達BPMを保つ</option><option value="base">曲の基本BPMに戻す</option></select></label>
@@ -25,25 +26,28 @@ const TempoEditor=(()=>{
    try{const valid=M.normalizeTempoChanges(changes);api.edit(d=>d.tempoChanges=valid);return true}catch(e){$('tempo-error').textContent=e.message;return false}
   }
   function select(r){
-   selected=r?.id||null;const start=r?.startBeat??Math.min(4095.75,Math.floor(api.cursor()/bar())*bar());
-   $('tempo-start').value=position(1+start/bar());$('tempo-end').value=position(1+(r?.endBeat??Math.min(4096,start+bar()))/bar());
-   initial={startBeat:start,endBeat:r?.endBeat??Math.min(4096,start+bar()),startValue:$('tempo-start').value,endValue:$('tempo-end').value};
+   selected=r?.id||null;const start=r?.startBeat??Math.min(4095.75,Math.floor(api.cursor()));
+   $('tempo-start').value=position(1+start);$('tempo-end').value=position(1+(r?.endBeat??Math.min(4096,start+1)));
+   initial={startBeat:start,endBeat:r?.endBeat??Math.min(4096,start+1),startValue:$('tempo-start').value,endValue:$('tempo-end').value};
+   $('tempo-length').value=position(initial.endBeat-initial.startBeat);
    $('tempo-target').value=r?.targetBpm??Math.max(5,Math.round(api.doc().bpm*.75));$('tempo-after').value=r?.after||'hold';$('tempo-curve').value=r?.curve||'bpm';
    $('tempo-error').textContent='';$('tempo-delete').disabled=api.readonly()||!selected;
   }
   function refresh(){
    const d=api.doc(),legacy=d.tempoChanges===undefined;
    $('tempo-status').textContent=(api.readonly()?'内蔵曲です。「曲の設定・保存」からコピーして編集してください。 ':'')+`基本BPM ${d.bpm}。`+(legacy?'現在は以前の共通設定で再生しています。最初の範囲を保存すると曲専用に切り替わります。':`${ranges().length}個の範囲を曲に保存しています。`);
-   for(const id of ['tempo-new','tempo-start','tempo-end','tempo-target','tempo-after','tempo-curve','tempo-apply','tempo-constant'])$(id).disabled=api.readonly();
+   for(const id of ['tempo-new','tempo-start','tempo-end','tempo-length','tempo-target','tempo-after','tempo-curve','tempo-apply','tempo-constant'])$(id).disabled=api.readonly();
    $('tempo-migrate').disabled=api.readonly()||!legacy;$('tempo-delete').disabled=api.readonly()||!selected;
    $('tempo-list').replaceChildren();
-   for(const r of ranges()){const b=document.createElement('button');b.type='button';b.textContent=`${position(1+r.startBeat/bar())} → ${position(1+r.endBeat/bar())}小節：${position(r.targetBpm)} BPM${r.after==='base'?'・復帰':''}`;b.onclick=()=>select(r);$('tempo-list').append(b)}
+   for(const r of ranges()){const b=document.createElement('button');b.type='button';b.textContent=`${position(1+r.startBeat/bar())} → ${position(1+r.endBeat/bar())}小節（${position(r.endBeat-r.startBeat)}拍）：${position(r.targetBpm)} BPM${r.after==='base'?'・復帰':''}`;b.onclick=()=>select(r);$('tempo-list').append(b)}
   }
   function open(r){api.stop();refresh();select(r);if(!dialog.open)dialog.showModal()}
   $('seq-tempo').onclick=()=>open();$('tempo-close').onclick=()=>dialog.close();$('tempo-new').onclick=()=>select();
+  for(const id of ['tempo-start','tempo-end'])$(id).oninput=()=>{$('tempo-length').value=position(Number($('tempo-end').value)-Number($('tempo-start').value))};
+  $('tempo-length').oninput=()=>{$('tempo-end').value=position(Number($('tempo-start').value)+Number($('tempo-length').value))};
   $('tempo-form').onsubmit=e=>{
    e.preventDefault();if(api.readonly())return;
-   const r={id:selected||M.uid('tempo'),startBeat:$('tempo-start').value===initial.startValue?initial.startBeat:position((Number($('tempo-start').value)-1)*bar()),endBeat:$('tempo-end').value===initial.endValue?initial.endBeat:position((Number($('tempo-end').value)-1)*bar()),targetBpm:Number($('tempo-target').value),after:$('tempo-after').value,curve:$('tempo-curve').value};
+   const r={id:selected||M.uid('tempo'),startBeat:$('tempo-start').value===initial.startValue?initial.startBeat:position(Number($('tempo-start').value)-1),endBeat:$('tempo-end').value===initial.endValue?initial.endBeat:position(Number($('tempo-end').value)-1),targetBpm:Number($('tempo-target').value),after:$('tempo-after').value,curve:$('tempo-curve').value};
    if(commit([...ranges().filter(x=>x.id!==selected),r])){selected=r.id;refresh();dialog.close()}
   };
   $('tempo-delete').onclick=()=>{if(!api.readonly()&&commit(ranges().filter(r=>r.id!==selected))){select();refresh()}};
@@ -54,19 +58,19 @@ const TempoEditor=(()=>{
   };
   // Pointer gestures are on a dedicated lane. The original ruler still scrubs/pinches.
   function wire(lane){
-   lane.onpointerdown=e=>{if(e.button!==0)return;e.stopPropagation();e.preventDefault();if(gesture){gesture=null;return}gesture={id:e.pointerId,x:e.clientX,beat:Math.floor(Math.max(0,(e.clientX-lane.getBoundingClientRect().left)/lastPx)/bar())*bar(),target:e.target.closest('[data-tempo]')?.dataset.tempo};lane.setPointerCapture(e.pointerId)};
-   lane.onpointermove=e=>{if(!gesture||gesture.id!==e.pointerId)return;const end=(Math.floor(Math.max(0,(e.clientX-lane.getBoundingClientRect().left)/lastPx)/bar())+1)*bar();lane.style.setProperty('--selection-start',Math.min(gesture.beat,end-bar())*lastPx+'px');lane.style.setProperty('--selection-width',(Math.abs(end-bar()-gesture.beat)+bar())*lastPx+'px');lane.dataset.dragging='true'};
+   lane.onpointerdown=e=>{if(e.button!==0)return;e.stopPropagation();e.preventDefault();if(gesture){gesture=null;return}gesture={id:e.pointerId,x:e.clientX,beat:Math.floor(Math.max(0,(e.clientX-lane.getBoundingClientRect().left)/lastPx)),target:e.target.closest('[data-tempo]')?.dataset.tempo};lane.setPointerCapture(e.pointerId)};
+   lane.onpointermove=e=>{if(!gesture||gesture.id!==e.pointerId)return;const end=(Math.floor(Math.max(0,(e.clientX-lane.getBoundingClientRect().left)/lastPx))+1);lane.style.setProperty('--selection-start',Math.min(gesture.beat,end-1)*lastPx+'px');lane.style.setProperty('--selection-width',(Math.abs(end-1-gesture.beat)+1)*lastPx+'px');lane.dataset.dragging='true'};
    lane.onpointerup=e=>{if(!gesture||gesture.id!==e.pointerId)return;const g=gesture;gesture=null;delete lane.dataset.dragging;e.stopPropagation();
     if(Math.abs(e.clientX-g.x)<8&&g.target){open(ranges().find(r=>r.id===g.target));return}
-    const at=Math.floor(Math.max(0,(e.clientX-lane.getBoundingClientRect().left)/lastPx)/bar())*bar();open({startBeat:Math.min(4095.75,g.beat,at),endBeat:Math.min(4096,Math.max(g.beat,at)+bar()),targetBpm:Math.max(5,Math.round(api.doc().bpm*.75))});
+    const at=Math.floor(Math.max(0,(e.clientX-lane.getBoundingClientRect().left)/lastPx));open({startBeat:Math.min(4095.75,g.beat,at),endBeat:Math.min(4096,Math.max(g.beat,at)+1),targetBpm:Math.max(5,Math.round(api.doc().bpm*.75))});
    };
    lane.onpointercancel=lane.onlostpointercapture=()=>{gesture=null;delete lane.dataset.dragging};
    lane.onclick=e=>{e.stopPropagation();if(e.detail===0&&e.target.dataset.tempo)open(ranges().find(r=>r.id===e.target.dataset.tempo))};
   }
   function render(ruler,px){
    lastPx=px;gesture=null;
-   const lane=document.createElement('div');lane.className='seq-tempo-lane';lane.id='seq-tempo-lane';lane.setAttribute('aria-label','テンポ範囲。ドラッグして小節を選択');
-   const hint=document.createElement('span');hint.className='tempo-hint';hint.textContent=api.doc().tempoChanges===undefined?'テンポ：以前の共通設定':'テンポ：ドラッグで範囲を追加';lane.append(hint);
+   const lane=document.createElement('div');lane.className='seq-tempo-lane';lane.id='seq-tempo-lane';lane.style.setProperty('--tempo-beat-px',px+'px');lane.setAttribute('aria-label','テンポ範囲。ドラッグして四分音符1拍単位で選択');
+   const hint=document.createElement('span');hint.className='tempo-hint';hint.textContent=api.doc().tempoChanges===undefined?'テンポ：以前の共通設定':'テンポ：1拍単位で範囲を追加';lane.append(hint);
    let from=api.doc().bpm;
    for(const r of ranges()){const chip=document.createElement('button');chip.type='button';chip.className='seq-tempo-range';chip.dataset.tempo=r.id;chip.style.left=r.startBeat*px+'px';chip.style.width=(r.endBeat-r.startBeat)*px+'px';chip.textContent=`${r.targetBpm<from?'↘':r.targetBpm>from?'↗':'→'} ${position(r.targetBpm)} BPM${r.after==='base'?' ↩':''}`;chip.title=chip.textContent;chip.setAttribute('aria-label',`${position(1+r.startBeat/bar())}から${position(1+r.endBeat/bar())}小節、到達${r.targetBpm} BPM`);lane.append(chip);from=r.after==='base'?api.doc().bpm:r.targetBpm}
    wire(lane);ruler.append(lane);

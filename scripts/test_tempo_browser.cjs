@@ -7,22 +7,26 @@ const {chromium,launchOptions}=require('./playwright_runtime.cjs');
  try{
   browser=await chromium.launch(launchOptions({headless:true,args:['--autoplay-policy=no-user-gesture-required','--mute-audio']}));
   const page=await browser.newPage({viewport:{width:390,height:844},isMobile:true,hasTouch:true}),errors=[];page.on('pageerror',e=>errors.push(e.message));
-  await page.goto('http://127.0.0.1:'+server.address().port);await page.waitForSelector('.app-ready');
+  await page.goto('http://127.0.0.1:'+server.address().port+(process.env.PMG_TEST_UI==='v2'?'/?ui=v2':''));await page.waitForSelector(process.env.PMG_TEST_UI==='v2'?'[data-v2-ready=true]':'.app-ready');
   await page.click('#nav-piano-roll');await page.click('#seq-tempo');assert(await page.locator('#tempo-apply').isDisabled());await page.click('#tempo-close');
-  const id=await page.evaluate(()=>scoreEditor.importDocument({title:'Tempo browser',bpm:120,meter:[4,4],notes:[{id:'n',beat:0,pitch:60,duration:12,velocity:1}],tempoChanges:[]}));
+  const id=await page.evaluate(()=>scoreEditor.importDocument({title:'Tempo browser',bpm:120,meter:[6,8],notes:[{id:'n',beat:0,pitch:60,duration:12,velocity:1}],tempoChanges:[]}));
   await page.locator('#seq-scroll').evaluate(e=>e.scrollLeft=0);
   const cdp=await page.context().newCDPSession(page),send=(type,touchPoints=[])=>cdp.send('Input.dispatchTouchEvent',{type,touchPoints});
   const lane=await page.locator('#seq-tempo-lane').boundingBox();const p={x:lane.x+15,y:lane.y+22,id:1};
-  await send('touchStart',[p]);await send('touchMove',[{...p,x:p.x+240}]);await send('touchEnd');
+  await send('touchStart',[p]);await send('touchMove',[{...p,x:p.x+56}]);await send('touchEnd');
   await page.waitForSelector('#seq-tempo-dialog[open]');assert.equal(await page.inputValue('#tempo-start'),'1');assert.equal(await page.inputValue('#tempo-end'),'3');
   await page.fill('#tempo-target','60');await page.click('#tempo-apply');
-  let d=await page.evaluate(()=>scoreEditor.currentDocument());assert.equal(d.tempoChanges.length,1);assert.equal(d.tempoChanges[0].endBeat,8);
-  await page.click('#seq-undo');assert.equal(await page.locator('.seq-tempo-range').count(),0);await page.click('#seq-redo');assert.equal(await page.locator('.seq-tempo-range').count(),1);
+  let d=await page.evaluate(()=>scoreEditor.currentDocument());assert.equal(d.tempoChanges.length,1);assert.equal(d.tempoChanges[0].endBeat,2);
+  await page.click('#seq-undo');assert.equal(await page.locator('.seq-tempo-range').count(),0);await page.locator('#seq-redo').evaluate(e=>e.click());assert.equal(await page.locator('.seq-tempo-range').count(),1);
   await page.click('#seq-tempo');await page.fill('#tempo-start','2');await page.fill('#tempo-end','4');await page.click('#tempo-apply');assert.match(await page.locator('#tempo-error').textContent(),/重ね/);
-  await page.fill('#tempo-start','3');await page.fill('#tempo-end','4');await page.fill('#tempo-target','180');await page.selectOption('#tempo-after','base');await page.click('#tempo-apply');
+  await page.fill('#tempo-start','3');await page.fill('#tempo-length','10');await page.fill('#tempo-target','180');await page.selectOption('#tempo-after','base');await page.click('#tempo-apply');
   d=await page.evaluate(()=>scoreEditor.currentDocument());assert.equal(d.tempoChanges.length,2);
-  await page.reload();await page.waitForSelector('.app-ready');await page.evaluate(id=>{document.getElementById('song').value=id;document.getElementById('song').dispatchEvent(new Event('change'));},id);assert.deepEqual((await page.evaluate(()=>scoreEditor.currentDocument())).tempoChanges,d.tempoChanges);
+  await page.reload();await page.waitForSelector(process.env.PMG_TEST_UI==='v2'?'[data-v2-ready=true]':'.app-ready');await page.evaluate(id=>{document.getElementById('song').value=id;document.getElementById('song').dispatchEvent(new Event('change'));},id);assert.deepEqual((await page.evaluate(()=>scoreEditor.currentDocument())).tempoChanges,d.tempoChanges);
   await page.click('#nav-piano-roll');await page.click('#seq-tempo');await page.locator('#tempo-list button').last().click();await page.click('#tempo-delete');assert.equal((await page.evaluate(()=>scoreEditor.currentDocument())).tempoChanges.length,1);await page.click('#tempo-close');await page.click('#seq-undo');
+  const layers=await page.evaluate(()=>{
+   const head=document.getElementById('seq-playhead'),scroll=document.getElementById('seq-scroll');scroll.scrollLeft=0;head.style.left='150px';head.style.pointerEvents='auto';
+   const box=scroll.getBoundingClientRect();const hit=document.elementFromPoint(box.left+150,box.top+50)?.id;head.style.pointerEvents='';return {hit,z:+getComputedStyle(head).zIndex};
+  });assert.equal(layers.hit,'seq-playhead');assert(layers.z>6);
   // Continuous scheduler / displayed BPM from a seek within an acceleration.
   const audio=await page.evaluate(async()=>{document.getElementById('preset').value='organ';selectPreset();const calls=[],original=play;play=(...args)=>{calls.push(args);return original(...args)};try{await startSong({fromBeat:10});await new Promise(r=>setTimeout(r,250));const wave=new Float32Array(analyser.fftSize);analyser.getFloatTimeDomainData(wave);return {calls:calls.length,bpm:document.getElementById('seq-current-bpm').textContent,peak:Math.max(...wave.map(Math.abs))}}finally{stop();play=original}});
   assert(audio.calls>0);assert(audio.peak>1e-6);assert(parseFloat(audio.bpm)>120&&parseFloat(audio.bpm)<180);
