@@ -260,3 +260,11 @@ window.addEventListener('storage',e=>{if(e.key===null||(e.key.startsWith('pmg')&
 if(isV2){await import('./ui-v2.js?v=stop-rewind-1');window.PMGV2Ready?.();}
 
 installResumeState(resumeState,{getPreset:()=>preset,getOctave:()=>octaveOffset,setOctave:n=>{octaveOffset=n;updateOctave()},getGuitar:()=>guitarParameters,setGuitar:v=>{guitarParameters=v},getRoute:()=>state.route});
+
+// WAV uses the same live graph and scheduler; export never rewrites a song.
+const {mountWavExport}=await import('./wav-export.js?v=1');
+window.PMGWavExport=mountWavExport({stop:()=>stop(),enable:()=>enable([]),context:()=>ctx,output:()=>mixOutput.output,run:()=>playbackRun,play:options=>startSong(options),title:()=>scoreEditor.currentDocument().title,audioError:()=>$('status').textContent.startsWith('音声を開始できませんでした'),credits:()=>{const s=scoreEditor.currentDocument().source;return s?[s.credit,s.license,s.url,s.licenseUrl].filter(Boolean).join(' · '):''},duration:()=>{
+ const doc=scoreEditor.currentDocument();if(!doc.notes.length)throw Error('音符を追加してから書き出してください');
+ const endBeat=Math.max(doc.endBeat||0,...doc.notes.map(n=>n.beat+n.duration),...(doc.tempoChanges||[]).map(r=>r.endBeat));
+ return PlaybackTiming.create({bpm:doc.bpm,endBeat,barBeats:doc.meter[0]*4/doc.meter[1],...SongPlaybackSettings.get({ignoreRit:doc.tempoChanges!==undefined}).rit,tempoChanges:doc.tempoChanges}).duration;
+}});

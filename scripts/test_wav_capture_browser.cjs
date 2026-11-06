@@ -1,0 +1,17 @@
+const assert=require('node:assert/strict');const {chromium,launchOptions}=require('./playwright_runtime.cjs');
+(async()=>{const browser=await chromium.launch(launchOptions({headless:true,args:['--autoplay-policy=no-user-gesture-required','--mute-audio']}));try{
+ const p=await browser.newPage(),errors=[];p.on('pageerror',e=>errors.push(e.message));await p.goto(process.argv[2]||'http://127.0.0.1:8787/synth-demo/');await p.waitForFunction(()=>!!window.PMGWavExport);
+ // Actual audio-thread capture must match a known stereo source, including boundaries.
+ const pcm=await p.evaluate(async()=>{
+  const c=new AudioContext({sampleRate:48000});await c.audioWorklet.addModule('wav-capture-worklet.js');const node=new AudioWorkletNode(c,'pmg-wav-capture',{outputChannelCount:[2],channelCount:2,channelCountMode:'explicit'});node.connect(c.destination);
+  const source=c.createBufferSource(),buffer=c.createBuffer(2,48000,c.sampleRate);for(let n=0;n<48000;n++){buffer.getChannelData(0)[n]=Math.sin(n*.1)*.7;buffer.getChannelData(1)[n]=Math.cos(n*.1)*.3}source.buffer=buffer;source.connect(node);await c.resume();const startFrame=Math.ceil((c.currentTime+.2)*c.sampleRate),count=12345,parts=[];
+  const result=new Promise((resolve,reject)=>{node.port.onmessage=({data:d})=>{if(d.type==='error')reject(Error(d.message));if(d.type==='chunk')parts.push(d.buffer);if(d.type==='done')resolve(d)}});
+  node.port.postMessage({type:'start',start:startFrame,end:startFrame+count});source.start(startFrame/c.sampleRate);await result;
+  let at=0,maxError=0;for(const b of parts){const d=new DataView(b);for(let i=0;i<b.byteLength;i+=4){for(let ch=0;ch<2;ch++){const x=buffer.getChannelData(ch)[at],expected=Math.round(x*(x<0?32768:32767));maxError=Math.max(maxError,Math.abs(expected-d.getInt16(i+ch*2,true)))}at++}}node.disconnect();await c.close();return {count:at,maxError};
+ });assert.equal(pcm.count,12345);assert.equal(pcm.maxError,0);console.log('Real AudioWorklet PCM exact stereo/boundaries:',pcm);
+ await p.evaluate(()=>{scoreEditor.importDocument({title:'Guitar WAV',bpm:300,meter:[4,4],notes:[{id:'g',pitch:64,beat:0,duration:1,velocity:.5,stringNumber:1}],tempoChanges:[]});$('preset').value='configuredGuitar';selectPreset();PMGWavExport.open()});await p.click('#wav-start');await p.waitForSelector('#wav-result:not([hidden])',{timeout:180000});
+ const result=await p.evaluate(async()=>{const a=await (await fetch($('wav-download').href)).arrayBuffer(),d=new DataView(a);let peak=0;for(let i=44;i<a.byteLength;i+=2)peak=Math.max(peak,Math.abs(d.getInt16(i,true)));return {bytes:a.byteLength,rate:d.getUint32(24,true),peak}});assert(result.peak>0);console.log('Actual configured-guitar WAV:',result);
+ await p.click('#wav-close');await p.evaluate(()=>{PMGWavExport.open()});await p.click('#wav-start');await p.waitForFunction(()=>$('wav-progress').value>0);await p.evaluate(()=>stop());await p.waitForFunction(()=>!PMGWavExport.active);assert.equal(await p.locator('#wav-result').isVisible(),false);assert.match(await p.locator('#wav-status').textContent(),/中止/);
+ await p.click('#wav-start');await p.waitForFunction(()=>$('wav-progress').value>0);await p.evaluate(()=>ctx.suspend());await p.waitForFunction(()=>!PMGWavExport.active);assert.equal(await p.locator('#wav-result').isVisible(),false);
+ assert.deepEqual(errors,[]);
+}finally{await browser.close()}})().catch(e=>{console.error(e);process.exitCode=1});

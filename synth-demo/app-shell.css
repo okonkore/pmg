@@ -84,3 +84,7 @@ body:has(.app-shell) #configured-string-sets .configured-actions{background:var(
 #seq-layers { display:flex; align-items:center; }
 #seq-layers label { display:inline-flex; flex-direction:row; align-items:center; gap:6px; white-space:nowrap; }
 #seq-layers select { border:1px solid var(--app-line); border-radius:8px; padding:4px; }
+
+#wav-dialog progress{width:100%;height:24px}#wav-dialog p{line-height:1.6}#wav-dialog .wav-download{display:inline-block;min-height:44px;padding:12px;border:1px solid #b6a17f;border-radius:8px;color:inherit}#wav-dialog [hidden]{display:none}
+
+#wav-source{overflow-wrap:anywhere}
